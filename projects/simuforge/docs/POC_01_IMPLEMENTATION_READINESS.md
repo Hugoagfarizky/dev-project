@@ -695,7 +695,7 @@ If a check fails:
 
 ### 8.5 Status
 
-**In progress.** SP-01 (engine initialization) executed on 2026-10-31 and recorded as PASS in `projects/simuforge/reports/poc-01/results/spike.md`. Regression with pinned Babylon.js 9.32.1 also PASS. SP-02 through SP-08 have not been executed. No claim for SP-02 or later is backed by evidence.
+**In progress.** SP-01 (engine initialization) executed and recorded as PASS. SP-02 executed with numeric coordinate consistency confirmed; visual verification pending user review (recorded as PARTIAL in `projects/simuforge/reports/poc-01/results/spike.md`). SP-03 through SP-08 have not been executed.
 
 ## 9. Remaining Blockers
 

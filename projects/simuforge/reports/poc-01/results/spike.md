@@ -62,6 +62,38 @@ PASS
 - Screenshot: `screenshots/sp-01_20261101_chrome_1280x720_pinned9321.png`
 - DOM dump: `results/sp-01_dom_dump_pinned9321.html`
 
+## SP-02 — Right-Handed Coordinate Verification
+
+### Action
+Created a disposable Babylon.js 9.32.1 scene with `scene.useRightHandedSystem = true` set before any content. Added asymmetric markers: red box on +X, green box on +Y, blue box on -Z (forward), and a white origin cube. Used a fixed ArcRotateCamera (alpha=π/4, beta=π/3, radius=8, target (0,0,0)). Captured a screenshot and a DOM dump with numeric camera parameters. Executed in Google Chrome 156.0.8078.76 in headless mode.
+
+### Expected observation
++X appears right, +Y appears up, and the forward direction is -Z from the default camera view.
+
+### Actual numeric results
+- `useRightHandedSystem`: true
+- Camera alpha: 0.7853981633974483
+- Camera beta: 1.0471975511965976
+- Camera radius: 8
+- Camera target: (0, 0, 0)
+- Camera position: (4.8990, 4.0000, 4.8990)
+- Camera upVector: (0, 1, 0)
+- Test vector +X: (1, 0, 0)
+- Test vector -Z (forward): (0, 0, -1)
+- WebGL 2: available; engine init and resize OK.
+- Console errors/warnings: none.
+
+### Visual verification status
+The screenshot `screenshots/sp-02_axes.png` was captured, but visual confirmation of axis directions was **not** performed by the executor because only headless capture was available. Visual verification is pending user review. The numeric evidence is consistent with the documented right-handed convention, but the go/no-go criterion "right-handed axes match the world convention visually" remains pending visual review.
+
+### Status
+PARTIAL — numeric coordinate consistency confirmed; visual verification pending user review.
+
+### Evidence
+- Screenshot: `screenshots/sp-02_axes.png`
+- Numeric log: `results/sp-02_coordinates.json`
+- DOM dump: `results/sp-02_coordinates.html`
+
 ## SP-02 Preparation (not executed)
 
 Documented SP-02 procedure (from readiness §8.2): set `scene.useRightHandedSystem = true` immediately after scene creation and before any content; place an asymmetric marker on +X and another on -Z; expected observation: +X appears right, +Y appears up, forward direction is -Z from the default camera view. Evidence: screenshot from a known camera pose.

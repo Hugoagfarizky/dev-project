@@ -1,0 +1,27 @@
+{
+  "spike": "SP-02",
+  "date": "2026-10-31",
+  "browser": "Google Chrome 156.0.8078.76",
+  "babylonVersion": "9.32.1",
+  "useRightHandedSystem": true,
+  "camera": {
+    "type": "ArcRotateCamera",
+    "alpha": 0.7853981633974483,
+    "beta": 1.0471975511965976,
+    "radius": 8,
+    "target": [0, 0, 0],
+    "position": [4.899, 4.0, 4.899],
+    "upVector": [0, 1, 0]
+  },
+  "testVectors": {
+    "plusX": [1, 0, 0],
+    "forwardNegZ": [0, 0, -1]
+  },
+  "markers": {
+    "markerX": { "position": [2, 0, 0], "color": "red" },
+    "markerY": { "position": [0, 2, 0], "color": "green" },
+    "markerNegZ": { "position": [0, 0, -2], "color": "blue" }
+  },
+  "consoleErrors": [],
+  "notes": "Visual verification of axis directions is pending user review of screenshot sp-02_axes.png. Numeric coordinate consistency only confirmed by executor."
+}
