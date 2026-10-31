@@ -4,7 +4,7 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 0.3 — Draft |
+| Version | 0.4 — Draft |
 | Date | 2026-10-31 |
 | Status | Research complete; technical spike not started |
 | Owner role | Technical Lead, SimuForge |
@@ -19,6 +19,7 @@
 | 0.1 | 2026-10-31 | Resolved the implementation-blocking questions Q-01, Q-02, Q-04, Q-05, Q-09, and Q-10 at documentation level; recorded the vendor research, provisional version combination, import limit policy, environment matrix, evidence structure, and spike plan. |
 | 0.2 | 2026-10-31 | Recorded the approved hybrid transform policy (world-space translate, world-space rotate, local-space scale). B-01 is resolved as a product decision. Updated SP-05, the go/no-go criteria, and the remaining blocker list. Overall status remains conditionally ready. |
 | 0.3 | 2026-10-31 | Confirmed the provisional, configurable 1 MiB import limit and its below/at/above boundary tests, and designated `projects/simuforge/reports/poc-01/` as the official POC-01 evidence location. |
+| 0.4 | 2026-10-31 | Recorded the approved TypeScript 6.0.3 POC decision, the unverifiable Firefox installation status, and the proposed evidence ownership model. |
 
 This document is research and planning only. It contains no application code, no installed dependencies, and no test results. Statements about browser or library behavior are separated into documented behavior and assumptions that still require the technical spike.
 
@@ -78,7 +79,7 @@ Supporting rules, recorded in full in the POC specification:
 | Q-06 | Duplicate entity names | Deferred, non-blocking | Duplicates allowed; IDs are identity | No |
 | Q-07 | Plane double-sided rendering | Deferred, non-blocking | Double-sided plane for the POC | No |
 | Q-08 | Euler display order | Deferred, non-blocking | Store quaternion; display Euler in YXZ yaw-pitch-roll order | No |
-| Q-09 | Browser and hardware matrix | Resolved | Primary environment captured; support targets and fallback defined; Firefox must be updated | No |
+| Q-09 | Browser and hardware matrix | Resolved | Primary environment captured; support targets and fallback defined; Firefox is not verifiably installed and must be resolved before secondary-browser testing | No |
 | Q-10 | Evidence and evaluation ownership | Resolved | `projects/simuforge/reports/poc-01/` is the official location; directory structure, artifact rules, and review ownership are defined | No |
 
 Q-03, Q-06, Q-07, and Q-08 are not implementation blockers and remain as proposals in the POC specification. They were not part of this readiness task's research scope.
@@ -258,6 +259,28 @@ This approval resolves the policy question. It does not prove Babylon's technica
 - A regression in Babylon 9.32.1 that is fixed only in 9.33.1 (fallback: upgrade after the spike).
 - Evidence that local-space scale cannot be used acceptably on rotated entities, which would force reconsidering the interaction design rather than silently enabling world-space scale.
 
+### 3.8 Approved TypeScript decision for POC-01
+
+The user has approved **TypeScript 6.0.3** for POC-01.
+
+| Item | Value |
+| --- | --- |
+| Selected version | TypeScript 6.0.3 (npm; released 2026-04-16 per the GitHub release tag v6.0.3) |
+| Status | POC-specific decision, not a permanent product-wide technology commitment |
+| Scope | POC-01 only; the final product stack is still subject to POC evidence and an ADR |
+| Future alternative | TypeScript 7.0.2 remains a candidate for a later, separately validated migration |
+| React | 19.3.1 (unchanged) |
+| Vite | 8.3.5 (unchanged) |
+| Babylon.js | 9.32.1 (unchanged) |
+
+Rationale:
+- TypeScript 6 is the stable bridge release with a mature tooling ecosystem and a stable programmatic API.
+- Vite performs transpilation with Oxc and relies on a separate `tsc --noEmit` step for type checking; TS 6 is the predictable choice for that step.
+- TypeScript 7 is a native port with no stable programmatic API and breaking default changes; adopting it during the POC would add churn unrelated to the questions the POC is trying to answer.
+- Code that compiles cleanly on TS 6 with `stableTypeOrdering` and no `ignoreDeprecations` is expected to compile identically on TS 7, so the upgrade path is preserved.
+
+This approval resolves B-03. It does not imply TypeScript has been installed, and it does not change the provisional status of the other technology candidates.
+
 ## 4. State Management Recommendation
 
 ### 4.1 Options evaluated
@@ -436,7 +459,7 @@ Do not cite 1 MiB as a measured browser limit or as a product requirement. It is
 | npm | 11.19.0 |
 | Chrome | 156.0.8078.76 |
 | Edge | 156.0.4314.50 |
-| Firefox | 141.0.3 installed; current stable is 157.0.1 |
+| Firefox | Not verifiably installed; winget/registry records appear stale. Latest stable per Mozilla: 159.0; winget offers 157.0.1. |
 
 This is the **primary available test machine**. It is not the minimum supported hardware. It is above the likely future minimum, so passing on it says little about low-end devices.
 
@@ -445,7 +468,7 @@ This is the **primary available test machine**. It is not the minimum supported 
 | Dimension | Target | Status |
 | --- | --- | --- |
 | Primary browser | Chrome stable, current and previous major | Proposed |
-| Secondary browser | Firefox stable, current and previous major | Proposed; current installation must be updated |
+| Secondary browser | Firefox stable, current and previous major | Proposed; current installation is not verifiable and must be resolved before testing |
 | Optional additional browser | Microsoft Edge stable | Available, not required for the first pass |
 | Minimum viewport | 1024 × 640 application viewport | Proposed, matches POC spec |
 | Display scaling | 100% and 125% | Proposed |
@@ -488,7 +511,7 @@ Do not use CPU-only software rendering (SwiftShader) as a performance baseline. 
 
 | Gap | Action | Owner |
 | --- | --- | --- |
-| Firefox is version 141.0.3, while current stable is 157.0.1 | Update Firefox before POC testing | User |
+| Firefox is not verifiably installed; winget/registry records appear stale | Install or update Firefox with the Mozilla installer (recommended) or winget, then verify version, WebGL 2, and hardware acceleration | User |
 | Only one physical machine is available | Use the iGPU fallback as the secondary environment; do not claim minimum hardware coverage | User/assistant |
 | Edge is available but not in the required matrix | Use as an optional third browser if time allows | User/assistant |
 | GPU selection per browser is untested on this machine | Verify before performance runs; record the method | User/assistant |
@@ -571,6 +594,37 @@ Rules:
 - Log: `sp-05_gizmo_20261101_chrome.log`
 - Issue: `POC01-001`
 
+### 7.6 Proposed evidence ownership model (awaiting confirmation)
+
+This model is proposed from the environment audit and is **not yet explicitly approved** by the user. It is recorded so B-06 can be reviewed and confirmed before execution.
+
+| Role | Responsibility |
+| --- | --- |
+| User / Project Owner | Approves scope, technical decisions, execution, and final Go/No-Go |
+| OpenCode / Spike Executor | Implements spike code, runs local tests, captures screenshots and logs, and records results |
+| ChatGPT / Technical Reviewer | Prepares instructions, analyzes reports, checks consistency, and recommends next steps |
+
+Notes:
+- The reviewer does not operate the user's local machine and does not execute local tests directly.
+- The executor records results; the owner reviews and signs off.
+- The model remains flexible and sequential; no calendar dates are assigned. Evidence gates between spikes are defined in §8.6.
+
+### 7.7 Evidence gate sequence for SP-01 to SP-08
+
+Evidence must exist before proceeding to the next spike, and the final Go/No-Go waits until SP-08:
+
+1. Record `environment.md` before SP-01.
+2. SP-01 evidence (console log + screenshot) before SP-02.
+3. SP-02 evidence (screenshot) before SP-03.
+4. SP-03 evidence (screenshot + scene log) before SP-04.
+5. SP-04 evidence (picking log + screenshots) before SP-05. If picking fails, stop and record the failure.
+6. SP-05 evidence (drag logs, screenshots, Inspector values, quaternion values) before SP-06.
+7. SP-06 evidence (input log + screenshots) before SP-07.
+8. SP-07 evidence (numeric log) before SP-08.
+9. SP-08 writes `results/spike.md` with the Go/No-Go decision, issue links, and environment details.
+
+No POC-01 acceptance criterion is marked PASS until the relevant evidence exists. The evidence directory is created only when SP-01 is authorized to begin.
+
 ## 8. Technical Spike Plan
 
 ### 8.1 Purpose and boundaries
@@ -644,12 +698,14 @@ If a check fails:
 | --- | --- | --- | --- | --- | --- |
 | B-01 | Scale-space transform policy — **resolved** | Resolved (was High) | Previously blocked the transform contract and acceptance test E-04 | Approved: world-space translate, world-space rotate, local-space scale. The hybrid policy is owned by the Editor/Transform Controller layer, and TRS remains the primary representation. This resolves the product decision, not Babylon's technical behavior. | User |
 | B-02 | Right-handed picking, gizmos, and camera behavior are not empirically verified | High | The architecture depends on them; documentation alone is not evidence | Execute SP-01 to SP-08 | Assistant, reviewed by user |
-| B-03 | TypeScript 6.0.3 versus 7.0.2 is a provisional choice | Low | Tooling compatibility could force a change | Confirm the choice before scaffolding; switch is low risk | User |
-| B-04 | Firefox is outdated (141.0.3 versus 157.0.1) | Medium | Secondary-browser results would not represent current Firefox | Update Firefox before testing | User |
+| B-03 | TypeScript version for POC-01 | **Resolved — version approved** | Tooling compatibility could force a change | Approved: TypeScript 6.0.3 for POC-01. This is a POC-specific decision, not a permanent product-wide technology commitment. TypeScript 7.0.2 remains a future alternative subject to separate validation. | User |
+| B-04 | Firefox test environment | Awaiting user action (was Medium) | Firefox is not verifiably installed; winget and registry records appear stale. Mozilla installer is the recommended method. | Install/update Firefox via Mozilla installer (recommended, latest stable) or winget; then verify version, WebGL 2, and hardware acceleration. Do not install automatically. | User |
 | B-05 | The 1 MiB import limit is a provisional policy guardrail — **resolved** | Resolved (was Low) | The limit is not a measured result and may change after measurement | Approved as a provisional, configurable POC-01 guardrail; the final product limit remains deferred. Record measured parse and validation times during the POC. | User |
-| B-06 | Evidence ownership and testing time are not scheduled | Medium | Acceptance criteria cannot be marked PASS without execution | Agree on a testing window and who records each area | User and assistant |
+| B-06 | Evidence ownership and execution schedule | Awaiting user confirmation (was Medium) | Acceptance criteria cannot be marked PASS without execution | Proposed ownership model in §7.6 and evidence gate sequence in §7.7; create the evidence directory only when SP-01 is authorized. | User and assistant |
 
-B-01 is resolved as a product decision. It is not technical proof: no Babylon.js behavior has been verified. B-02 is the highest remaining technical blocker and is resolved by executing the spike. B-03, B-04, and B-06 remain open and must not be treated as completed because B-01 and B-05 are closed.
+B-01 is resolved as a product decision. It is not technical proof: no Babylon.js behavior has been verified. B-02 is the highest remaining technical blocker and is resolved by executing the spike. B-03 is resolved: TypeScript 6.0.3 approved for POC-01. B-04 is awaiting user action: Firefox is not verifiably installed. B-06 is awaiting user confirmation: the proposed ownership model and evidence gate sequence are recorded but not yet approved. B-05 is resolved.
+
+Audit note for B-04: Mozilla listed Firefox 159.0 as the stable release on 2026-10-27; winget offered 157.0.1. The Firefox installation on this machine could not be verified, and no browser settings or system configuration were changed during this audit.
 
 ## 10. Implementation Readiness Recommendation
 
@@ -663,34 +719,39 @@ B-01 is resolved as a product decision. It is not technical proof: no Babylon.js
 | --- | --- | --- | --- |
 | C-01 | Approve local-space scale handles and amend the POC specification | **Met** — decision approved and POC specification amended to the hybrid policy | Implementing the transform system |
 | C-02 | Execute the spike and record results | Open | Implementing the full workspace |
-| C-03 | Confirm TypeScript 6.0.3 and the version combination | Open | Creating the project scaffold |
-| C-04 | Update Firefox to current stable | Open | Running secondary-browser tests |
+| C-03 | Confirm TypeScript 6.0.3 and the version combination | **Met** — TypeScript 6.0.3 approved for POC-01; React 19.3.1, Vite 8.3.5, Babylon 9.32.1 retained | Creating the project scaffold |
+| C-04 | Update Firefox to current stable | Open — Firefox is not verifiably installed; Mozilla installer recommended | Running secondary-browser tests |
 | C-05 | Approve the 1 MiB provisional import limit and boundary tests | **Met** — approved as a provisional, configurable guardrail; below/at/above tests are defined as FS-02 to FS-04 | Implementing import |
 
 ### 10.3 What is ready
 
 - Approved hybrid transform policy: world-space translate, world-space rotate, local-space scale.
+- Approved TypeScript 6.0.3 for POC-01 (POC-specific; not a permanent product-wide commitment).
 - Version and license research with sources.
 - Right-handed behavior documented separately from assumptions.
 - State management decision and store contract.
 - Provisional 1 MiB import policy, enforcement order, and below/at/above boundary tests.
 - Browser and hardware matrix with a real primary environment.
 - Official evidence location: `projects/simuforge/reports/poc-01/`.
+- Proposed evidence ownership model and gate sequence (awaiting confirmation).
 - Spike plan with go/no-go criteria.
 
 ### 10.4 What is not ready
 
 - No empirical proof of right-handed picking, gizmos, or camera behavior.
 - No empirical proof that the approved hybrid transform policy works as specified in Babylon.js.
+- Firefox is not verifiably installed; secondary-browser testing is blocked until resolved.
+- Evidence ownership and execution schedule are not yet confirmed.
 - No scaffold, dependency lockfile, or license inventory.
 - No test execution or evidence.
 - No performance baseline.
 
 ### 10.5 Next step
 
-1. Confirm C-03 (TypeScript version and version combination) and schedule C-04 and B-06.
-2. Create the scaffold in a separate implementation task, with pinned versions and a license inventory.
-3. Execute SP-01 to SP-08 and record the evidence under `projects/simuforge/reports/poc-01/`.
-4. Review the spike results together and decide whether to proceed to the full POC.
+1. Confirm the proposed evidence ownership model (§7.6) and schedule a testing window.
+2. Resolve Firefox (install/update and verify) before secondary-browser testing.
+3. Create the scaffold in a separate implementation task, with pinned versions and a license inventory.
+4. Execute SP-01 to SP-08 and record the evidence under `projects/simuforge/reports/poc-01/`.
+5. Review the spike results together and decide whether to proceed to the full POC.
 
 No implementation starts from this document alone.
