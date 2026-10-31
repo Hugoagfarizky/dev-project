@@ -172,7 +172,7 @@ PASS (automated). Visual verification of the picking screenshots is pending user
 BLOCKED — no interactive Chrome pointer session is available in this environment. No SP-05 acceptance criterion has been passed. A-03 and A-04 remain unverified.
 
 ### Harness prepared
-An interactive browser harness has been prepared at `projects/simuforge/reports/poc-01/harness/sp05.html`. It uses Babylon.js 9.32.1, right-handed mode, the existing test cube and editor grid, a GizmoManager with world-oriented translate/rotate and local-oriented scale, a live Inspector (position, quaternion, Euler display, scale, quaternion length, active mode), reset, capture, observation recording, and JSON export. Manual evidence should be stored in `projects/simuforge/reports/poc-01/results/sp-05-manual/`.
+An interactive browser harness has been prepared at `projects/simuforge/reports/poc-01/harness/sp05.html`. It uses Babylon.js 9.32.1, right-handed mode, the existing test cube and editor grid, a GizmoManager with world-oriented translate/rotate and local-oriented scale, a live Inspector (position, quaternion, Euler display, scale, quaternion length, active mode), reset, capture, observation recording, and JSON export. The harness now includes automatic quaternion validation (finite components, length within 1e-5), scale validation (finite, positive, >= 1e-3), T-05 baseline/final capture and comparison (tolerance 1e-5), an evidence checklist, and validation fields in exported JSON. Manual evidence should be stored in `projects/simuforge/reports/poc-01/results/sp-05-manual/`.
 
 ### Test cases (to be executed manually)
 - T-01 World Translate
