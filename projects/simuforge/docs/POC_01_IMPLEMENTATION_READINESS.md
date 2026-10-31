@@ -4,7 +4,7 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 0.4 — Draft |
+| Version | 0.5 — Draft |
 | Date | 2026-10-31 |
 | Status | Research complete; technical spike not started |
 | Owner role | Technical Lead, SimuForge |
@@ -20,6 +20,7 @@
 | 0.2 | 2026-10-31 | Recorded the approved hybrid transform policy (world-space translate, world-space rotate, local-space scale). B-01 is resolved as a product decision. Updated SP-05, the go/no-go criteria, and the remaining blocker list. Overall status remains conditionally ready. |
 | 0.3 | 2026-10-31 | Confirmed the provisional, configurable 1 MiB import limit and its below/at/above boundary tests, and designated `projects/simuforge/reports/poc-01/` as the official POC-01 evidence location. |
 | 0.4 | 2026-10-31 | Recorded the approved TypeScript 6.0.3 POC decision, the unverifiable Firefox installation status, and the proposed evidence ownership model. |
+| 0.5 | 2026-10-31 | Resolved B-04 as Chrome-only browser scope: Google Chrome is the only supported and tested browser for POC-01; Firefox is explicitly excluded; cross-browser compatibility is outside POC-01 scope. Removed Firefox installation from prerequisites and execution gates. |
 
 This document is research and planning only. It contains no application code, no installed dependencies, and no test results. Statements about browser or library behavior are separated into documented behavior and assumptions that still require the technical spike.
 
@@ -79,7 +80,7 @@ Supporting rules, recorded in full in the POC specification:
 | Q-06 | Duplicate entity names | Deferred, non-blocking | Duplicates allowed; IDs are identity | No |
 | Q-07 | Plane double-sided rendering | Deferred, non-blocking | Double-sided plane for the POC | No |
 | Q-08 | Euler display order | Deferred, non-blocking | Store quaternion; display Euler in YXZ yaw-pitch-roll order | No |
-| Q-09 | Browser and hardware matrix | Resolved | Primary environment captured; support targets and fallback defined; Firefox is not verifiably installed and must be resolved before secondary-browser testing | No |
+| Q-09 | Browser and hardware matrix | Resolved | Primary environment captured; Chrome-only browser scope approved; cross-browser compatibility is outside POC-01 scope | No |
 | Q-10 | Evidence and evaluation ownership | Resolved | `projects/simuforge/reports/poc-01/` is the official location; directory structure, artifact rules, and review ownership are defined | No |
 
 Q-03, Q-06, Q-07, and Q-08 are not implementation blockers and remain as proposals in the POC specification. They were not part of this readiness task's research scope.
@@ -459,7 +460,7 @@ Do not cite 1 MiB as a measured browser limit or as a product requirement. It is
 | npm | 11.19.0 |
 | Chrome | 156.0.8078.76 |
 | Edge | 156.0.4314.50 |
-| Firefox | Not verifiably installed; winget/registry records appear stale. Latest stable per Mozilla: 159.0; winget offers 157.0.1. |
+| Firefox | Not verifiably installed; winget/registry records appear stale. Not required for POC-01 (Chrome-only scope). |
 
 This is the **primary available test machine**. It is not the minimum supported hardware. It is above the likely future minimum, so passing on it says little about low-end devices.
 
@@ -467,9 +468,9 @@ This is the **primary available test machine**. It is not the minimum supported 
 
 | Dimension | Target | Status |
 | --- | --- | --- |
-| Primary browser | Chrome stable, current and previous major | Proposed |
-| Secondary browser | Firefox stable, current and previous major | Proposed; current installation is not verifiable and must be resolved before testing |
-| Optional additional browser | Microsoft Edge stable | Available, not required for the first pass |
+| Supported and tested browser | Google Chrome only | Approved for POC-01 (Chrome-only scope) |
+| Chrome version tested | 156.0.8078.76 (captured in §6.1) | Environment information, not a permanent minimum version requirement |
+| Cross-browser compatibility | Not validated by POC-01 | Out of scope |
 | Minimum viewport | 1024 × 640 application viewport | Proposed, matches POC spec |
 | Display scaling | 100% and 125% | Proposed |
 | Graphics API | WebGL 2.0 | Required for the POC |
@@ -511,10 +512,9 @@ Do not use CPU-only software rendering (SwiftShader) as a performance baseline. 
 
 | Gap | Action | Owner |
 | --- | --- | --- |
-| Firefox is not verifiably installed; winget/registry records appear stale | Install or update Firefox with the Mozilla installer (recommended) or winget, then verify version, WebGL 2, and hardware acceleration | User |
 | Only one physical machine is available | Use the iGPU fallback as the secondary environment; do not claim minimum hardware coverage | User/assistant |
-| Edge is available but not in the required matrix | Use as an optional third browser if time allows | User/assistant |
-| GPU selection per browser is untested on this machine | Verify before performance runs; record the method | User/assistant |
+| Cross-browser testing | Not performed in POC-01 | Out of scope (Chrome-only) |
+| GPU selection is untested on this machine | Verify before performance runs; record the method | User/assistant |
 
 ## 7. Evidence and Report Structure
 
@@ -699,13 +699,13 @@ If a check fails:
 | B-01 | Scale-space transform policy — **resolved** | Resolved (was High) | Previously blocked the transform contract and acceptance test E-04 | Approved: world-space translate, world-space rotate, local-space scale. The hybrid policy is owned by the Editor/Transform Controller layer, and TRS remains the primary representation. This resolves the product decision, not Babylon's technical behavior. | User |
 | B-02 | Right-handed picking, gizmos, and camera behavior are not empirically verified | High | The architecture depends on them; documentation alone is not evidence | Execute SP-01 to SP-08 | Assistant, reviewed by user |
 | B-03 | TypeScript version for POC-01 | **Resolved — version approved** | Tooling compatibility could force a change | Approved: TypeScript 6.0.3 for POC-01. This is a POC-specific decision, not a permanent product-wide technology commitment. TypeScript 7.0.2 remains a future alternative subject to separate validation. | User |
-| B-04 | Firefox test environment | Awaiting user action (was Medium) | Firefox is not verifiably installed; winget and registry records appear stale. Mozilla installer is the recommended method. | Install/update Firefox via Mozilla installer (recommended, latest stable) or winget; then verify version, WebGL 2, and hardware acceleration. Do not install automatically. | User |
+| B-04 | Chrome-only browser scope for POC-01 | **Resolved — Chrome-only scope approved** | Cross-browser compatibility is outside POC-01 scope; no Firefox installation or update is required | Google Chrome 156 is the primary and only browser used for POC-01. Firefox is explicitly excluded. No Firefox installation or update is required. Cross-browser compatibility is not validated by this POC. Chrome WebGL 2 support and hardware acceleration must still be verified before relevant rendering tests. The actual Chrome version from the audit (156.0.8078.76) is recorded as environment information, not as a permanent minimum version requirement. | User |
 | B-05 | The 1 MiB import limit is a provisional policy guardrail — **resolved** | Resolved (was Low) | The limit is not a measured result and may change after measurement | Approved as a provisional, configurable POC-01 guardrail; the final product limit remains deferred. Record measured parse and validation times during the POC. | User |
 | B-06 | Evidence ownership and execution schedule | Awaiting user confirmation (was Medium) | Acceptance criteria cannot be marked PASS without execution | Proposed ownership model in §7.6 and evidence gate sequence in §7.7; create the evidence directory only when SP-01 is authorized. | User and assistant |
 
-B-01 is resolved as a product decision. It is not technical proof: no Babylon.js behavior has been verified. B-02 is the highest remaining technical blocker and is resolved by executing the spike. B-03 is resolved: TypeScript 6.0.3 approved for POC-01. B-04 is awaiting user action: Firefox is not verifiably installed. B-06 is awaiting user confirmation: the proposed ownership model and evidence gate sequence are recorded but not yet approved. B-05 is resolved.
+B-01 is resolved as a product decision. It is not technical proof: no Babylon.js behavior has been verified. B-02 is the highest remaining technical blocker and is resolved by executing the spike. B-03 is resolved: TypeScript 6.0.3 approved for POC-01. B-04 is resolved: Chrome-only browser scope approved; Firefox is excluded and no Firefox installation or update is required. B-06 is awaiting user confirmation: the proposed ownership model and evidence gate sequence are recorded but not yet approved. B-05 is resolved.
 
-Audit note for B-04: Mozilla listed Firefox 159.0 as the stable release on 2026-10-27; winget offered 157.0.1. The Firefox installation on this machine could not be verified, and no browser settings or system configuration were changed during this audit.
+Audit note for B-04: Chrome 156.0.8078.76 is recorded in §6.1 as the captured environment. It is environment information, not a permanent minimum version requirement. Firefox is explicitly excluded from POC-01; no Firefox installation or update is required. Cross-browser compatibility is outside POC-01 scope. Chrome WebGL 2 support and hardware acceleration must still be verified before relevant rendering tests. No browser settings or system configuration were changed during this audit.
 
 ## 10. Implementation Readiness Recommendation
 
@@ -720,7 +720,7 @@ Audit note for B-04: Mozilla listed Firefox 159.0 as the stable release on 2026-
 | C-01 | Approve local-space scale handles and amend the POC specification | **Met** — decision approved and POC specification amended to the hybrid policy | Implementing the transform system |
 | C-02 | Execute the spike and record results | Open | Implementing the full workspace |
 | C-03 | Confirm TypeScript 6.0.3 and the version combination | **Met** — TypeScript 6.0.3 approved for POC-01; React 19.3.1, Vite 8.3.5, Babylon 9.32.1 retained | Creating the project scaffold |
-| C-04 | Update Firefox to current stable | Open — Firefox is not verifiably installed; Mozilla installer recommended | Running secondary-browser tests |
+| C-04 | Cross-browser testing | Not applicable — Chrome-only scope approved; cross-browser compatibility is outside POC-01 | Not required for POC-01 |
 | C-05 | Approve the 1 MiB provisional import limit and boundary tests | **Met** — approved as a provisional, configurable guardrail; below/at/above tests are defined as FS-02 to FS-04 | Implementing import |
 
 ### 10.3 What is ready
@@ -740,7 +740,7 @@ Audit note for B-04: Mozilla listed Firefox 159.0 as the stable release on 2026-
 
 - No empirical proof of right-handed picking, gizmos, or camera behavior.
 - No empirical proof that the approved hybrid transform policy works as specified in Babylon.js.
-- Firefox is not verifiably installed; secondary-browser testing is blocked until resolved.
+- Cross-browser compatibility is outside POC-01 scope; Google Chrome is the only supported and tested browser.
 - Evidence ownership and execution schedule are not yet confirmed.
 - No scaffold, dependency lockfile, or license inventory.
 - No test execution or evidence.
@@ -749,7 +749,7 @@ Audit note for B-04: Mozilla listed Firefox 159.0 as the stable release on 2026-
 ### 10.5 Next step
 
 1. Confirm the proposed evidence ownership model (§7.6) and schedule a testing window.
-2. Resolve Firefox (install/update and verify) before secondary-browser testing.
+2. Record the captured Chrome version (156.0.8078.76) as environment information; it is not a permanent minimum version requirement. Chrome WebGL 2 support and hardware acceleration must still be verified before relevant rendering tests.
 3. Create the scaffold in a separate implementation task, with pinned versions and a license inventory.
 4. Execute SP-01 to SP-08 and record the evidence under `projects/simuforge/reports/poc-01/`.
 5. Review the spike results together and decide whether to proceed to the full POC.
