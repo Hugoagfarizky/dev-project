@@ -94,6 +94,40 @@ PARTIAL — numeric coordinate consistency confirmed; visual verification pendin
 - Numeric log: `results/sp-02_coordinates.json`
 - DOM dump: `results/sp-02_coordinates.html`
 
+## SP-03 — Create One Test Cube
+
+### Action
+Created a disposable Babylon.js 9.32.1 scene with `useRightHandedSystem = true` set before content. Added an editor-only grid helper (not a world entity) and exactly one test cube: 1×1×1, position (0, 0.5, 0), `StandardMaterial` with `disableLighting = true`, emissive color for visibility, and no world light entity (`scene.lights.length === 0`). Used the same fixed camera pose as SP-02. Captured screenshot and runtime log.
+
+### Expected observation
+Cube rests on the grid plane, is visible, and has no light dependency.
+
+### Actual result
+- Babylon.js version: 9.32.1
+- `useRightHandedSystem`: true
+- Light count: 0 (no world light entity)
+- Cube name: testCube
+- Cube position: (0, 0.5, 0)
+- Cube scaling: (1, 1, 1) → dimensions 1×1×1
+- Cube bottom Y: 0.0 (rests on grid plane)
+- Material `disableLighting`: true
+- Material has texture: false
+- Mesh count including editor grid: 2
+- Console errors/warnings: none
+- Engine init and resize: OK
+
+### Visual verification status
+Screenshot `screenshots/sp-03_cube.png` captured. Visual confirmation of the cube resting on the grid plane and rendering visibly without lighting is pending user review (headless capture only).
+
+### Status
+PARTIAL — numeric/runtime configuration verified; visual verification pending user review.
+
+### Evidence
+- Screenshot: `screenshots/sp-03_cube.png`
+- Scene log: `results/sp-03_scene.json`
+- Console log: `results/sp-03_console.log` (local-only; `*.log` is gitignored)
+- DOM dump: `results/sp-03_dom_dump.html`
+
 ## SP-02 Preparation (not executed)
 
 Documented SP-02 procedure (from readiness §8.2): set `scene.useRightHandedSystem = true` immediately after scene creation and before any content; place an asymmetric marker on +X and another on -Z; expected observation: +X appears right, +Y appears up, forward direction is -Z from the default camera view. Evidence: screenshot from a known camera pose.

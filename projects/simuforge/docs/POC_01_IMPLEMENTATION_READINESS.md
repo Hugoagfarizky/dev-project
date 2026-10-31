@@ -695,7 +695,7 @@ If a check fails:
 
 ### 8.5 Status
 
-**In progress.** SP-01 (engine initialization) executed and recorded as PASS. SP-02 executed with numeric coordinate consistency confirmed; visual verification pending user review (recorded as PARTIAL in `projects/simuforge/reports/poc-01/results/spike.md`). SP-03 through SP-08 have not been executed.
+**In progress.** SP-01 executed and recorded as PASS. SP-02 executed with numeric coordinate consistency confirmed; visual verification pending user review (recorded as PARTIAL). SP-03 executed: one unlit 1×1×1 cube at (0, 0.5, 0), no light entity, material `disableLighting = true`; visual verification pending user review (recorded as PARTIAL). SP-04 through SP-08 have not been executed. B-02 remains open.
 
 ## 9. Remaining Blockers
 
