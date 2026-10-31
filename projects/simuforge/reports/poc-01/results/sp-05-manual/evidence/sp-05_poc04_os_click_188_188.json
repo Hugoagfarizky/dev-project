@@ -1,0 +1,73 @@
+﻿{
+    "timestamp":  "2026-11-01T03:29:58.7010375+07:00",
+    "titleSubstring":  "SP-05 Interactive Transform Gizmo Harness",
+    "dpiAwareness":  {
+                         "setContextReturn":  1,
+                         "lastError":  0,
+                         "processAwareness":  2,
+                         "perMonitorV2":  true
+                     },
+    "targetHwnd":  "25430550",
+    "targetTitle":  "SimuForge POC-01 — SP-05 Interactive Transform Gizmo Harness - Google Chrome",
+    "windowRect":  {
+                       "Left":  -9,
+                       "Right":  1929,
+                       "Bottom":  1089,
+                       "Top":  -9
+                   },
+    "clientRect":  {
+                       "Left":  0,
+                       "Right":  1920,
+                       "Bottom":  1078,
+                       "Top":  0
+                   },
+    "clientScreenOrigin":  {
+                               "Y":  0,
+                               "X":  0
+                           },
+    "foregroundHwnd":  "25430550",
+    "foregroundTitle":  "SimuForge POC-01 — SP-05 Interactive Transform Gizmo Harness - Google Chrome",
+    "foregroundMatch":  true,
+    "waitSeconds":  60,
+    "waitedSeconds":  0.4,
+    "screen":  {
+                   "primaryWidth":  1536,
+                   "virtualHeight":  864,
+                   "virtualWidth":  1536,
+                   "primaryHeight":  864,
+                   "appliedDpi":  120
+               },
+    "cursorBefore":  {
+                         "Y":  866,
+                         "X":  900
+                     },
+    "targetPoint":  {
+                        "Y":  188,
+                        "ClientY":  188,
+                        "ClientX":  188,
+                        "X":  188
+                    },
+    "setCursorPosReturn":  true,
+    "cursorAfterMove":  {
+                            "Y":  188,
+                            "X":  188
+                        },
+    "moveDelta":  {
+                      "Y":  0,
+                      "X":  0
+                  },
+    "mouseDownReturn":  1,
+    "mouseUpReturn":  1,
+    "cursorAfterClick":  {
+                             "Y":  188,
+                             "X":  188
+                         },
+    "screenshots":  [
+                        "C:\\Users\\Acer\\AppData\\Local\\Temp\\opencode\\mouse-poc04\\before.png",
+                        "C:\\Users\\Acer\\AppData\\Local\\Temp\\opencode\\mouse-poc04\\after.png"
+                    ],
+    "mouseButtonInputPerformed":  true,
+    "transformVerification":  "Manual comparison required: inspect sp05.html Inspector/screenshots before and after the click. Script does not read harness transform values.",
+    "status":  "completed_one_click",
+    "error":  null
+}

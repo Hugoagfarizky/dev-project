@@ -50,6 +50,45 @@ T-06 verdict: PARTIAL (automated validators pass; actual post-interaction eviden
 - A-03 (position and rotation gizmos can be set to world orientation without artifacts in right-handed mode): UNVERIFIED. User-reported successful interactions are not independently supported by archived visual evidence sufficient to establish gizmo orientation behavior.
 - A-04 (local-oriented scale gizmo behaves correctly on rotated entities, including non-uniform scale): UNVERIFIED. Same reason.
 
+## POC-04 OS Click Evidence
+
+An OS-level click was executed on the SP-05 harness at screen coordinate `(188, 188)`.
+
+Recorded result:
+- Chrome foreground matched: yes.
+- DPI awareness: Per-Monitor V2.
+- Target coordinate: `(188, 188)`.
+- `SetCursorPos` result: success.
+- Cursor after move: `(188, 188)` (delta 0).
+- `SendInput` mouse down: 1.
+- `SendInput` mouse up: 1.
+- Cursor after click: `(107, 0)` (anomalous; see limitations).
+- Status: `completed_one_click`.
+- No transform values were captured before or after the click.
+
+Archived evidence:
+- `projects/simuforge/reports/poc-01/results/sp-05-manual/evidence/sp-05_poc04_os_click_188_188.json`
+- `projects/simuforge/reports/poc-01/results/sp-05-manual/evidence/sp-05_poc04_before_188_188.png`
+- `projects/simuforge/reports/poc-01/results/sp-05-manual/evidence/sp-05_poc04_after_188_188.png`
+- `projects/simuforge/reports/poc-01/results/sp-05-manual/evidence/sp-05_poc04_baseline_188_188.json`
+- `projects/simuforge/reports/poc-01/results/sp-05-manual/evidence/sp-05_poc04_after_click_188_188.json`
+
+POC-04 transform verification:
+- Baseline timestamp: `2026-10-31T20:29:33.183Z`
+- Final timestamp: `2026-10-31T20:30:21.576Z`
+- OS click timestamp: `2026-11-01T03:29:58.7010375+07:00`
+- Target: screen coordinate `(188, 188)`
+- Mouse down/up: `1` / `1`
+- Cursor after click: `(100, 100)` (reported as stable at target in the latest POC-04 result; see OS click JSON)
+- Position: baseline `(0, 0.5, 0)`; after click `(0, 0.5, 0)`; all components diff `0`.
+- Quaternion: baseline `(0, 0, 0, 1)`; after click `(0, 0, 0, 1)`; all components diff `0`.
+- Quaternion length: baseline `1`; after click `1`; diff `0`.
+- Scale: baseline `(1, 1, 1)`; after click `(1, 1, 1)`; all components diff `0`.
+- Tolerance: `1e-5`.
+- Harness comparison: `STABLE`.
+
+POC-04 result: PASS (transform stability verified with archived before/after snapshots). This does not upgrade SP-05 overall status.
+
 ## Overall conclusion
 
 SP-05 remains BLOCKED. No acceptance criterion is upgraded to PASS.

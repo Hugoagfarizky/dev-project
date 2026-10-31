@@ -190,6 +190,9 @@ An interactive browser harness has been prepared at `projects/simuforge/reports/
 ### Consolidated report
 A consolidated SP-05 report is available at `projects/simuforge/reports/poc-01/results/sp-05-manual/SP-05_CONSOLIDATED_REPORT.md`. It records user-reported T-01 through T-05 results, automated T-06 validator results (8/8 PASS), and the conclusion that SP-05 remains BLOCKED with A-03 and A-04 unverified.
 
+### POC-04 OS click evidence
+An OS-level click was executed at screen coordinate `(188, 188)` on the SP-05 harness. Archived evidence includes the OS click JSON, before/after screenshots, and baseline/after-click transform JSON snapshots. Transform comparison is STABLE (all 11 components diff 0 within tolerance 1e-5). OS click POC-04 is PASS for transform stability. SP-05 overall remains BLOCKED.
+
 ## SP-02 Preparation (not executed)
 
 Documented SP-02 procedure (from readiness §8.2): set `scene.useRightHandedSystem = true` immediately after scene creation and before any content; place an asymmetric marker on +X and another on -Z; expected observation: +X appears right, +Y appears up, forward direction is -Z from the default camera view. Evidence: screenshot from a known camera pose.

@@ -1,0 +1,85 @@
+{
+  "harness": "SP-05 interactive transform gizmo (improved validation)",
+  "babylonVersion": "9.32.1",
+  "useRightHandedSystem": true,
+  "initialTransform": {
+    "position": [
+      0,
+      0.5,
+      0
+    ],
+    "quaternion": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ]
+  },
+  "validation": {
+    "quaternionTolerance": 0.00001,
+    "scaleMinimum": 0.001,
+    "modeSwitchTolerance": 0.00001
+  },
+  "checklistStatus": {
+    "T-01": "Not tested",
+    "T-02": "Not tested",
+    "T-03": "Not tested",
+    "T-04": "Not tested",
+    "T-05": "Not tested",
+    "T-06": "Not tested"
+  },
+  "entries": [],
+  "baseline": {
+    "timestamp": "2026-10-31T20:29:33.183Z",
+    "mode": "translate",
+    "position": [
+      0,
+      0.5,
+      0
+    ],
+    "quaternion": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "eulerDisplay": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "quaternionLength": 1,
+    "quaternionValidation": {
+      "finite": true,
+      "length": 1,
+      "diffFromOne": 0,
+      "tolerance": 0.00001,
+      "valid": true
+    },
+    "scaleValidation": {
+      "values": [
+        1,
+        1,
+        1
+      ],
+      "finite": true,
+      "positive": true,
+      "minAllowed": 0.001,
+      "valid": true,
+      "reasons": []
+    },
+    "testId": "BASELINE"
+  },
+  "final": null,
+  "t05Comparison": "INCOMPLETE"
+}
