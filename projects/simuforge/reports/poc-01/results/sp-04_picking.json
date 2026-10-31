@@ -1,0 +1,50 @@
+{
+  "spike": "SP-04",
+  "date": "2026-10-31",
+  "browser": "Google Chrome 156.0.8078.76",
+  "babylonVersion": "9.32.1",
+  "useRightHandedSystem": true,
+  "tolerance": 0.001,
+  "cubeBounds": { "x": [-0.5, 0.5], "y": [0, 1], "z": [-0.5, 0.5] },
+  "gridPickable": false,
+  "results": [
+    {
+      "view": "front", "orbit180": false,
+      "cameraPosition": [0.0, 0.5, 8.0],
+      "cubePick": { "coords": [381, 242], "hit": true, "mesh": "testCube", "point": [0.0, 0.5, 0.5], "plausible": true },
+      "emptyPick": { "coords": [10, 10], "hit": false, "mesh": null, "point": null }
+    },
+    {
+      "view": "front", "orbit180": true,
+      "cameraPosition": [0.0, 0.5, -8.0],
+      "cubePick": { "coords": [381, 242], "hit": true, "mesh": "testCube", "point": [0.0, 0.5, -0.5], "plausible": true },
+      "emptyPick": { "coords": [10, 10], "hit": false, "mesh": null, "point": null }
+    },
+    {
+      "view": "side", "orbit180": false,
+      "cameraPosition": [8.0, 0.5, 0.0],
+      "cubePick": { "coords": [381, 242], "hit": true, "mesh": "testCube", "point": [0.5, 0.5, 0.0], "plausible": true },
+      "emptyPick": { "coords": [10, 10], "hit": false, "mesh": null, "point": null }
+    },
+    {
+      "view": "side", "orbit180": true,
+      "cameraPosition": [-8.0, 0.5, 0.0],
+      "cubePick": { "coords": [381, 242], "hit": true, "mesh": "testCube", "point": [-0.5, 0.5, 0.0], "plausible": true },
+      "emptyPick": { "coords": [10, 10], "hit": false, "mesh": null, "point": null }
+    },
+    {
+      "view": "top", "orbit180": false,
+      "cameraPosition": [0.7987, 8.46, 0.0],
+      "cubePick": { "coords": [381, 242], "hit": true, "mesh": "testCube", "point": [0.050167, 0.5, 0.5], "plausible": true },
+      "emptyPick": { "coords": [10, 10], "hit": false, "mesh": null, "point": null }
+    },
+    {
+      "view": "top", "orbit180": true,
+      "cameraPosition": [-0.7987, 8.46, 0.0],
+      "cubePick": { "coords": [381, 242], "hit": true, "mesh": "testCube", "point": [-0.050167, 0.5, 0.5], "plausible": true },
+      "emptyPick": { "coords": [10, 10], "hit": false, "mesh": null, "point": null }
+    }
+  ],
+  "consoleErrors": [],
+  "notes": "Picking performed via scene.pick in headless Chrome (automated, not interactive user clicks). Grid set isPickable=false to avoid false world-object selection. Visual verification pending user review."
+}

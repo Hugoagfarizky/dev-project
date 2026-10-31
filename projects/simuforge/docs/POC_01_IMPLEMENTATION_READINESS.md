@@ -230,7 +230,7 @@ Because POC-01 entities are unparented, Babylon's node-local `position` and `rot
 | ID | Assumption | Why it is not yet proven | Spike check |
 | --- | --- | --- | --- |
 | A-01 | Setting `useRightHandedSystem` before content makes all POC transforms behave as +X right, +Y up, -Z forward | Documentation describes the convention but not this exact POC scene | SP-02 |
-| A-02 | `scene.pick` returns the correct mesh and point in right-handed mode | No handedness-specific picking caveat is documented, but no explicit guarantee is stated | SP-04 |
+| A-02 | `scene.pick` returns the correct mesh and point in right-handed mode | Verified by SP-04: all front/side/top and 180-orbit picks returned `testCube` with plausible points; empty-space picks returned no hit | SP-04 |
 | A-03 | Position and rotation gizmos can be set to world orientation without artifacts in right-handed mode | The flag is documented; handedness interaction is not explicitly discussed | SP-05 |
 | A-04 | The local-oriented scale gizmo behaves correctly on rotated entities under the approved policy, including non-uniform scale | The policy is approved, but Babylon's local scale behavior on rotated entities is not empirically verified | SP-05 |
 | A-05 | ArcRotateCamera orbit, pan, and zoom behave correctly in right-handed mode | Camera fix is documented for 8.10.1+, but axes and panning feel must be verified | SP-06 |
@@ -695,7 +695,7 @@ If a check fails:
 
 ### 8.5 Status
 
-**In progress.** SP-01 executed and recorded as PASS. SP-02 executed with numeric coordinate consistency confirmed; visual verification pending user review (recorded as PARTIAL). SP-03 executed: one unlit 1×1×1 cube at (0, 0.5, 0), no light entity, material `disableLighting = true`; visual verification pending user review (recorded as PARTIAL). SP-04 through SP-08 have not been executed. B-02 remains open.
+**In progress.** SP-01 executed and recorded as PASS. SP-02 executed with numeric coordinate consistency confirmed; visual verification pending user review (recorded as PARTIAL). SP-03 executed: one unlit 1×1×1 cube at (0, 0.5, 0), no light entity, material `disableLighting = true`; visual verification pending user review (recorded as PARTIAL). SP-04 executed and recorded as PASS (automated): all front/side/top and 180-orbit picks returned `testCube` with plausible points; empty-space picks returned no hit. SP-05 through SP-08 have not been executed. B-02 remains open.
 
 ## 9. Remaining Blockers
 

@@ -128,6 +128,44 @@ PARTIAL — numeric/runtime configuration verified; visual verification pending 
 - Console log: `results/sp-03_console.log` (local-only; `*.log` is gitignored)
 - DOM dump: `results/sp-03_dom_dump.html`
 
+## SP-04 — Picking Verification
+
+### Test interpretation (recorded, not an official criteria change)
+- Camera views: front (+Z side), side (+X side), top (+Y side), target near cube center (0, 0.5, 0).
+- Tolerance for picked-point plausibility: 0.001 world units against cube bounds X[-0.5,0.5], Y[0,1], Z[-0.5,0.5].
+- Empty-space pick uses screen coordinate (10, 10).
+- Editor grid set `isPickable = false` to avoid false world-object selection.
+- Picking executed via `scene.pick` in headless Chrome (automated, not interactive user clicks).
+
+### Action
+For each of front, side, and top views, in both original and 180°-orbit states: set the camera, render, pick the canvas center (cube) and a corner (empty space), log mesh name, hit boolean, and picked point. Captured screenshots and a picking log.
+
+### Results
+
+| View | Orbit 180° | Camera position | Cube hit | Mesh | Picked point | Plausible | Empty hit |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| front | no | (0.00, 0.50, 8.00) | true | testCube | (0.00, 0.50, 0.50) | true | false |
+| front | yes | (0.00, 0.50, -8.00) | true | testCube | (0.00, 0.50, -0.50) | true | false |
+| side | no | (8.00, 0.50, 0.00) | true | testCube | (0.50, 0.50, 0.00) | true | false |
+| side | yes | (-8.00, 0.50, 0.00) | true | testCube | (-0.50, 0.50, 0.00) | true | false |
+| top | no | (0.80, 8.46, 0.00) | true | testCube | (0.05, 0.50, 0.50) | true | false |
+| top | yes | (-0.80, 8.46, 0.00) | true | testCube | (-0.05, 0.50, 0.50) | true | false |
+
+- All cube picks returned mesh name exactly `testCube`.
+- All picked points were within 0.001 of the cube surface bounds.
+- All empty-space picks returned no hit; no false selection from the editor grid.
+- Results remained correct after 180° orbit.
+- Console errors/warnings: none.
+
+### Status
+PASS (automated). Visual verification of the picking screenshots is pending user review.
+
+### Evidence
+- Screenshots: `screenshots/sp-04_front.png`, `screenshots/sp-04_side.png`, `screenshots/sp-04_top.png`, `screenshots/sp-04_after_180_orbit.png`
+- Picking log: `results/sp-04_picking.json`
+- Console log: `results/sp-04_console.log` (local-only; `*.log` is gitignored)
+- DOM dump: `results/sp-04_dom_dump_front.html`
+
 ## SP-02 Preparation (not executed)
 
 Documented SP-02 procedure (from readiness §8.2): set `scene.useRightHandedSystem = true` immediately after scene creation and before any content; place an asymmetric marker on +X and another on -Z; expected observation: +X appears right, +Y appears up, forward direction is -Z from the default camera view. Evidence: screenshot from a known camera pose.
