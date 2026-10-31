@@ -41,7 +41,8 @@ Save screenshots with these exact filenames:
 2. `sp-05_translate_y.png`
 3. `sp-05_translate_z.png`
 4. `sp-05_rotate_45.png`
-5. `sp-05_rotate_90.png`
+5. `sp-05_rotate_world_x.png`
+6. `sp-05_rotate_90_y_supplementary.png` (optional supplementary observation only)
 6. `sp-05_scale_unrotated.png`
 7. `sp-05_scale_rotated_45.png`
 8. `sp-05_scale_rotated_90.png`
@@ -117,19 +118,17 @@ Expected visual behavior: translation follows world X/Y/Z axes, not the cube's l
 #### T-02 World Rotate
 
 1. Click `Reset Transform`.
-2. Apply an initial rotation of approximately 45° around Y.
-3. Capture the initial quaternion and Euler display values.
+2. Rotate approximately 45° around world Y.
+3. Capture the initial quaternion.
 4. Select Rotate mode.
-5. Rotate around a world axis that does not coincide with the cube's rotated local axes (for example, world X or world Z, or continue around world Y and compare the resulting axis behavior against the rotated local frame).
-6. Record quaternion and Inspector values before and after the rotation.
-7. Capture screenshot `sp-05_rotate_45.png`.
-8. Continue to approximately 90° around world Y.
-9. Capture screenshot `sp-05_rotate_90.png`.
-10. Record quaternion and Euler display values again.
-11. Click `Record Observation` with the observed rotation values.
-12. Click `Export JSON` and save as `sp-05_rotate_log.json`.
+5. Rotate approximately 45° around world X (world-space axis).
+6. Capture the resulting quaternion and screenshot `sp-05_rotate_world_x.png`.
+7. Record the observed result.
+8. Do not instruct the user to continue rotating around Y to 90° as part of this same test.
 
-Expected visual behavior: rotation occurs around the selected world axis. The quaternion must reflect world-space rotation. Do not claim a PASS based only on the displayed Euler angle; record quaternion components and compare them against the expected world-axis rotation.
+If a separate 90° Y rotation screenshot is captured, classify it as a supplementary observation (`sp-05_rotate_90_y_supplementary.png`), not evidence proving world-space rotation.
+
+Expected visual behavior: rotation occurs around the selected world X axis. The quaternion must reflect world-space rotation. Do not claim a PASS based only on the displayed Euler angle; record quaternion components and compare them against the expected world-axis rotation.
 
 ### A-04 — Local Scale on rotated entities
 
