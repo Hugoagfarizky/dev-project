@@ -12,6 +12,8 @@ Rules for project architecture documents:
 
 Status: **provisional, not validated.** This is a high-level decomposition only. It is subject to change, and no component below should be treated as a committed design or an existing implementation. Validation happens through a proof of concept before any production work begins.
 
+Product scope and requirements are defined in the [SimuForge product specification](../../projects/simuforge/docs/PRODUCT_SPECIFICATION.md). The current architectural direction is recorded in [ADR 0001](../decisions/0001-proposed-architecture-direction.md) with status `proposed`.
+
 ### Studio Application
 
 The browser-based authoring surface. Hosts the scene view, inspectors, asset organization, and the programming editors. It is a client of the engines below and holds no simulation authority of its own.

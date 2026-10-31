@@ -55,7 +55,7 @@ dev-project/
 │   ├── architecture/   # Cross-project architecture documentation
 │   ├── decisions/      # Architecture Decision Records (ADRs)
 │   └── development/    # Workflow and engineering standards
-├── projects/           # Future projects; each keeps its own docs/
+├── projects/           # Projects; each keeps its own docs/
 ├── templates/          # Reusable project templates
 ├── .github/
 │   └── ISSUE_TEMPLATE/ # Issue templates for future work
@@ -76,6 +76,7 @@ Architecture documentation in `docs/architecture/` covers concerns that span pro
 | [`docs/decisions/README.md`](docs/decisions/README.md) | How Architecture Decision Records are written. |
 | [`projects/README.md`](projects/README.md) | How projects in this workspace are organized. |
 | [`templates/README.md`](templates/README.md) | Purpose of the reusable project templates. |
+| [`projects/simuforge/docs/PRODUCT_SPECIFICATION.md`](projects/simuforge/docs/PRODUCT_SPECIFICATION.md) | SimuForge product vision, MVP increments, and acceptance criteria. |
 
 ## Working in this repository
 

@@ -55,7 +55,9 @@ What becomes easier, what becomes harder, and what must now be maintained.
 
 ## Index
 
-No decisions have been recorded yet.
+| ADR | Title | Status |
+| --- | --- | --- |
+| [0001](0001-proposed-architecture-direction.md) | Proposed architecture direction for SimuForge | proposed |
 
 ## Guardrail
 

@@ -1,6 +1,12 @@
 # Projects
 
-This directory is reserved for the software projects developed in this workspace. It contains this README until a project is ready to start.
+This directory holds the software projects developed in this workspace.
+
+## Projects
+
+| Project | Status | Documentation |
+| --- | --- | --- |
+| [SimuForge](simuforge/README.md) | Concept / specification; no implementation | [Product specification](simuforge/docs/PRODUCT_SPECIFICATION.md) |
 
 ## Organization
 
@@ -34,4 +40,4 @@ Projects may add stricter rules of their own, documented in their local `docs/` 
 
 ## Status
 
-No projects exist yet. SimuForge is in the concept and technical planning stage and has not been added here.
+SimuForge is the only registered project. It is in the concept and specification stage: no implementation, dependencies, or proof of concept exist yet.
