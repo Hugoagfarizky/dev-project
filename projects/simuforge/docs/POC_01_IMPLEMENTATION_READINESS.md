@@ -695,7 +695,7 @@ If a check fails:
 
 ### 8.5 Status
 
-**In progress.** SP-01 executed and recorded as PASS. SP-02 executed with numeric coordinate consistency confirmed; visual verification pending user review (recorded as PARTIAL). SP-03 executed: one unlit 1×1×1 cube at (0, 0.5, 0), no light entity, material `disableLighting = true`; visual verification pending user review (recorded as PARTIAL). SP-04 executed and recorded as PASS (automated): all front/side/top and 180-orbit picks returned `testCube` with plausible points; empty-space picks returned no hit. SP-05 through SP-08 have not been executed. B-02 remains open.
+**In progress.** SP-01 executed and recorded as PASS. SP-02 executed with numeric coordinate consistency confirmed; visual verification pending user review (recorded as PARTIAL). SP-03 executed: one unlit 1×1×1 cube at (0, 0.5, 0), no light entity, material `disableLighting = true`; visual verification pending user review (recorded as PARTIAL). SP-04 executed and recorded as PASS (automated): all front/side/top and 180-orbit picks returned `testCube` with plausible points; empty-space picks returned no hit. SP-05 is BLOCKED pending manual interactive testing; an interactive Chrome harness has been prepared at `projects/simuforge/reports/poc-01/harness/sp05.html`. No SP-05 acceptance criteria have passed. A-03 and A-04 remain unverified. SP-06 through SP-08 have not been executed. B-02 remains open.
 
 ## 9. Remaining Blockers
 

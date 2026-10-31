@@ -166,6 +166,27 @@ PASS (automated). Visual verification of the picking screenshots is pending user
 - Console log: `results/sp-04_console.log` (local-only; `*.log` is gitignored)
 - DOM dump: `results/sp-04_dom_dump_front.html`
 
+## SP-05 — Transform Gizmos (BLOCKED pending manual interactive testing)
+
+### Status
+BLOCKED — no interactive Chrome pointer session is available in this environment. No SP-05 acceptance criterion has been passed. A-03 and A-04 remain unverified.
+
+### Harness prepared
+An interactive browser harness has been prepared at `projects/simuforge/reports/poc-01/harness/sp05.html`. It uses Babylon.js 9.32.1, right-handed mode, the existing test cube and editor grid, a GizmoManager with world-oriented translate/rotate and local-oriented scale, a live Inspector (position, quaternion, Euler display, scale, quaternion length, active mode), reset, capture, observation recording, and JSON export. Manual evidence should be stored in `projects/simuforge/reports/poc-01/results/sp-05-manual/`.
+
+### Test cases (to be executed manually)
+- T-01 World Translate
+- T-02 World Rotate (45° and 90° around Y)
+- T-03 Local Scale (unrotated)
+- T-04 Local Scale (rotated)
+- T-05 Mode Switching (Translate → Rotate → Scale → Translate)
+- T-06 Transform Integrity (finite components, quaternion length ~1 within 1e-5, no negative/zero scale, no shear)
+
+### Notes
+- No fabricated evidence or test logs have been created.
+- SP-04 remains PASS (automated), visual review pending.
+- SP-05 has not been executed.
+
 ## SP-02 Preparation (not executed)
 
 Documented SP-02 procedure (from readiness §8.2): set `scene.useRightHandedSystem = true` immediately after scene creation and before any content; place an asymmetric marker on +X and another on -Z; expected observation: +X appears right, +Y appears up, forward direction is -Z from the default camera view. Evidence: screenshot from a known camera pose.
