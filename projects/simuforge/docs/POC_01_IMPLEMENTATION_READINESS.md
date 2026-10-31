@@ -4,7 +4,7 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 0.2 — Draft |
+| Version | 0.3 — Draft |
 | Date | 2026-10-31 |
 | Status | Research complete; technical spike not started |
 | Owner role | Technical Lead, SimuForge |
@@ -18,6 +18,7 @@
 | --- | --- | --- |
 | 0.1 | 2026-10-31 | Resolved the implementation-blocking questions Q-01, Q-02, Q-04, Q-05, Q-09, and Q-10 at documentation level; recorded the vendor research, provisional version combination, import limit policy, environment matrix, evidence structure, and spike plan. |
 | 0.2 | 2026-10-31 | Recorded the approved hybrid transform policy (world-space translate, world-space rotate, local-space scale). B-01 is resolved as a product decision. Updated SP-05, the go/no-go criteria, and the remaining blocker list. Overall status remains conditionally ready. |
+| 0.3 | 2026-10-31 | Confirmed the provisional, configurable 1 MiB import limit and its below/at/above boundary tests, and designated `projects/simuforge/reports/poc-01/` as the official POC-01 evidence location. |
 
 This document is research and planning only. It contains no application code, no installed dependencies, and no test results. Statements about browser or library behavior are separated into documented behavior and assumptions that still require the technical spike.
 
@@ -73,12 +74,12 @@ Supporting rules, recorded in full in the POC specification:
 | Q-02 | Right-handed coordinate system | Partially resolved | Official behavior documented; picking, gizmos, and camera remapping still require empirical spike evidence | Yes, for confidence in the architecture |
 | Q-03 | Selection feedback technique | Deferred, non-blocking | Per-mesh outline first; highlight layer or bounding box as fallback | No |
 | Q-04 | State management | Resolved | Custom store with `useSyncExternalStore`; no state library | No |
-| Q-05 | Import size limit | Resolved (provisional) | 1 MiB POC limit with pre-parse enforcement and explicit boundary tests | No |
+| Q-05 | Import size limit | Resolved (provisional) | 1 MiB (1,048,576 bytes) configurable POC guardrail with pre-parse enforcement and below/at/above boundary tests; not a final product limit | No |
 | Q-06 | Duplicate entity names | Deferred, non-blocking | Duplicates allowed; IDs are identity | No |
 | Q-07 | Plane double-sided rendering | Deferred, non-blocking | Double-sided plane for the POC | No |
 | Q-08 | Euler display order | Deferred, non-blocking | Store quaternion; display Euler in YXZ yaw-pitch-roll order | No |
 | Q-09 | Browser and hardware matrix | Resolved | Primary environment captured; support targets and fallback defined; Firefox must be updated | No |
-| Q-10 | Evidence and evaluation ownership | Resolved | Directory structure, artifact rules, and review ownership defined | No |
+| Q-10 | Evidence and evaluation ownership | Resolved | `projects/simuforge/reports/poc-01/` is the official location; directory structure, artifact rules, and review ownership are defined | No |
 
 Q-03, Q-06, Q-07, and Q-08 are not implementation blockers and remain as proposals in the POC specification. They were not part of this readiness task's research scope.
 
@@ -342,8 +343,10 @@ Revisit the decision if any of these occur:
 | Limit | **1,048,576 bytes (1 MiB)** |
 | Scope | POC-01 JSON world import only |
 | Configurable | Yes, a single constant in the importer module |
+| Product status | Provisional POC-01 guardrail; **not** the final SimuForge product limit |
 | Basis | Policy choice for the POC, not a measured performance result |
 | Enforcement point | Before reading the file, using `File.size` |
+| Boundary tests | FS-02 (below), FS-03 (exactly at), and FS-04 (above) |
 
 A 1 MiB document is far larger than the POC's 100-entity test scene. It leaves room for metadata and formatting while keeping parse and validation work small enough that a mistake cannot easily freeze the tab.
 
@@ -385,14 +388,14 @@ These are safety limits, not product limits. They must be documented in the impo
 
 ### 5.5 Boundary test matrix
 
-These tests refine POC acceptance criteria G-02 and G-03. They are not additional product scope.
+These tests refine POC acceptance criteria G-05 and the related import criteria. They are not additional product scope.
 
 | ID | Input | Expected result | Current world | App state |
 | --- | --- | --- | --- | --- |
 | FS-01 | Empty file, 0 bytes | Rejected with `EMPTY_FILE`; message explains the file is empty | Unchanged | Usable |
-| FS-02 | Small valid file, about 1 KB, three entities | Accepted; world replaced; IDs and transforms preserved | Replaced | Usable |
+| FS-02 | Small valid file well below the limit, about 1 KB, three entities | Accepted; world replaced; IDs and transforms preserved | Replaced | Usable |
 | FS-03 | Valid file exactly 1,048,576 bytes | Accepted; size check uses `>` not `>=` | Replaced | Usable |
-| FS-04 | Valid file 1,048,577 bytes | Rejected with `FILE_TOO_LARGE` before parse; message includes actual size and limit | Unchanged | Usable |
+| FS-04 | Valid file 1,048,577 bytes | Rejected with `FILE_TOO_LARGE` before parse; message includes actual size and configured limit | Unchanged | Usable |
 | FS-05 | Malformed JSON, truncated mid-object | Rejected with `INVALID_JSON`; no partial world | Unchanged | Usable |
 | FS-06 | Excessively nested JSON, for example 100,000 nested arrays in metadata | Rejected with `METADATA_TOO_DEEP` or `INVALID_METADATA`; no stack overflow | Unchanged | Usable |
 | FS-07 | Valid structure with `schemaVersion: 999` | Rejected with `UNSUPPORTED_SCHEMA_VERSION`; message names the unsupported version | Unchanged | Usable |
@@ -493,6 +496,8 @@ Do not use CPU-only software rendering (SwiftShader) as a performance baseline. 
 ## 7. Evidence and Report Structure
 
 ### 7.1 Planned directory
+
+`projects/simuforge/reports/poc-01/` is the official POC-01 evidence location. All results, fixtures, screenshots, performance data, issues, evaluation, and recommendation go under it; no POC-01 evidence is stored under `projects/simuforge/docs/`.
 
 ```text
 projects/simuforge/reports/poc-01/
@@ -641,10 +646,10 @@ If a check fails:
 | B-02 | Right-handed picking, gizmos, and camera behavior are not empirically verified | High | The architecture depends on them; documentation alone is not evidence | Execute SP-01 to SP-08 | Assistant, reviewed by user |
 | B-03 | TypeScript 6.0.3 versus 7.0.2 is a provisional choice | Low | Tooling compatibility could force a change | Confirm the choice before scaffolding; switch is low risk | User |
 | B-04 | Firefox is outdated (141.0.3 versus 157.0.1) | Medium | Secondary-browser results would not represent current Firefox | Update Firefox before testing | User |
-| B-05 | The 1 MiB import limit is a policy choice, not a measured result | Low | The limit may change after measurement | Approve as a provisional guardrail; record measured parse and validation times during the POC | User |
+| B-05 | The 1 MiB import limit is a provisional policy guardrail — **resolved** | Resolved (was Low) | The limit is not a measured result and may change after measurement | Approved as a provisional, configurable POC-01 guardrail; the final product limit remains deferred. Record measured parse and validation times during the POC. | User |
 | B-06 | Evidence ownership and testing time are not scheduled | Medium | Acceptance criteria cannot be marked PASS without execution | Agree on a testing window and who records each area | User and assistant |
 
-B-01 is resolved as a product decision. It is not technical proof: no Babylon.js behavior has been verified. B-02 is the highest remaining technical blocker and is resolved by executing the spike. B-03 to B-06 remain open and must not be treated as completed because B-01 is closed.
+B-01 is resolved as a product decision. It is not technical proof: no Babylon.js behavior has been verified. B-02 is the highest remaining technical blocker and is resolved by executing the spike. B-03, B-04, and B-06 remain open and must not be treated as completed because B-01 and B-05 are closed.
 
 ## 10. Implementation Readiness Recommendation
 
@@ -660,7 +665,7 @@ B-01 is resolved as a product decision. It is not technical proof: no Babylon.js
 | C-02 | Execute the spike and record results | Open | Implementing the full workspace |
 | C-03 | Confirm TypeScript 6.0.3 and the version combination | Open | Creating the project scaffold |
 | C-04 | Update Firefox to current stable | Open | Running secondary-browser tests |
-| C-05 | Approve the 1 MiB provisional import limit and boundary tests | Open | Implementing import |
+| C-05 | Approve the 1 MiB provisional import limit and boundary tests | **Met** — approved as a provisional, configurable guardrail; below/at/above tests are defined as FS-02 to FS-04 | Implementing import |
 
 ### 10.3 What is ready
 
@@ -668,9 +673,9 @@ B-01 is resolved as a product decision. It is not technical proof: no Babylon.js
 - Version and license research with sources.
 - Right-handed behavior documented separately from assumptions.
 - State management decision and store contract.
-- Import limit policy, enforcement order, and boundary tests.
+- Provisional 1 MiB import policy, enforcement order, and below/at/above boundary tests.
 - Browser and hardware matrix with a real primary environment.
-- Evidence directory structure and review ownership.
+- Official evidence location: `projects/simuforge/reports/poc-01/`.
 - Spike plan with go/no-go criteria.
 
 ### 10.4 What is not ready
@@ -683,7 +688,7 @@ B-01 is resolved as a product decision. It is not technical proof: no Babylon.js
 
 ### 10.5 Next step
 
-1. Confirm C-03 (TypeScript version and version combination) and schedule C-04, C-05, and B-06.
+1. Confirm C-03 (TypeScript version and version combination) and schedule C-04 and B-06.
 2. Create the scaffold in a separate implementation task, with pinned versions and a license inventory.
 3. Execute SP-01 to SP-08 and record the evidence under `projects/simuforge/reports/poc-01/`.
 4. Review the spike results together and decide whether to proceed to the full POC.
