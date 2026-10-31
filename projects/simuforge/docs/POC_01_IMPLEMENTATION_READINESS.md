@@ -4,7 +4,7 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 0.5 — Draft |
+| Version | 0.6 — Draft |
 | Date | 2026-10-31 |
 | Status | Research complete; technical spike not started |
 | Owner role | Technical Lead, SimuForge |
@@ -21,6 +21,7 @@
 | 0.3 | 2026-10-31 | Confirmed the provisional, configurable 1 MiB import limit and its below/at/above boundary tests, and designated `projects/simuforge/reports/poc-01/` as the official POC-01 evidence location. |
 | 0.4 | 2026-10-31 | Recorded the approved TypeScript 6.0.3 POC decision, the unverifiable Firefox installation status, and the proposed evidence ownership model. |
 | 0.5 | 2026-10-31 | Resolved B-04 as Chrome-only browser scope: Google Chrome is the only supported and tested browser for POC-01; Firefox is explicitly excluded; cross-browser compatibility is outside POC-01 scope. Removed Firefox installation from prerequisites and execution gates. |
+| 0.6 | 2026-10-31 | Approved the POC-01 evidence ownership and sequential testing workflow; resolved B-06. Executed SP-01 engine initialization in Google Chrome; recorded PASS with evidence. |
 
 This document is research and planning only. It contains no application code, no installed dependencies, and no test results. Statements about browser or library behavior are separated into documented behavior and assumptions that still require the technical spike.
 
@@ -594,9 +595,9 @@ Rules:
 - Log: `sp-05_gizmo_20261101_chrome.log`
 - Issue: `POC01-001`
 
-### 7.6 Proposed evidence ownership model (awaiting confirmation)
+### 7.6 Approved evidence ownership model
 
-This model is proposed from the environment audit and is **not yet explicitly approved** by the user. It is recorded so B-06 can be reviewed and confirmed before execution.
+This model is approved by the user for POC-01. It records the responsibilities for executing and reviewing the sequential SP-01 to SP-08 testing workflow.
 
 | Role | Responsibility |
 | --- | --- |
@@ -607,6 +608,10 @@ This model is proposed from the environment audit and is **not yet explicitly ap
 Notes:
 - The reviewer does not operate the user's local machine and does not execute local tests directly.
 - The executor records results; the owner reviews and signs off.
+- Testing is sequential, SP-01 through SP-08. Each stage requires review before proceeding.
+- No fixed calendar schedule is required.
+- Evidence is stored in `projects/simuforge/reports/poc-01/`.
+- The evidence directory is authorized to be created when SP-01 begins.
 - The model remains flexible and sequential; no calendar dates are assigned. Evidence gates between spikes are defined in §8.6.
 
 ### 7.7 Evidence gate sequence for SP-01 to SP-08
@@ -690,7 +695,7 @@ If a check fails:
 
 ### 8.5 Status
 
-**Not started.** No experiment has been run. No claim in this document is backed by an executed spike.
+**In progress.** SP-01 (engine initialization) executed on 2026-10-31 and recorded as PASS in `projects/simuforge/reports/poc-01/results/spike.md` (evidence: screenshot `screenshots/sp-01_20261101_chrome_1280x720.png` and DOM dump `results/sp-01_dom_dump.html`). SP-02 through SP-08 have not been executed. No claim for SP-02 or later is backed by evidence.
 
 ## 9. Remaining Blockers
 
@@ -701,9 +706,9 @@ If a check fails:
 | B-03 | TypeScript version for POC-01 | **Resolved — version approved** | Tooling compatibility could force a change | Approved: TypeScript 6.0.3 for POC-01. This is a POC-specific decision, not a permanent product-wide technology commitment. TypeScript 7.0.2 remains a future alternative subject to separate validation. | User |
 | B-04 | Chrome-only browser scope for POC-01 | **Resolved — Chrome-only scope approved** | Cross-browser compatibility is outside POC-01 scope; no Firefox installation or update is required | Google Chrome 156 is the primary and only browser used for POC-01. Firefox is explicitly excluded. No Firefox installation or update is required. Cross-browser compatibility is not validated by this POC. Chrome WebGL 2 support and hardware acceleration must still be verified before relevant rendering tests. The actual Chrome version from the audit (156.0.8078.76) is recorded as environment information, not as a permanent minimum version requirement. | User |
 | B-05 | The 1 MiB import limit is a provisional policy guardrail — **resolved** | Resolved (was Low) | The limit is not a measured result and may change after measurement | Approved as a provisional, configurable POC-01 guardrail; the final product limit remains deferred. Record measured parse and validation times during the POC. | User |
-| B-06 | Evidence ownership and execution schedule | Awaiting user confirmation (was Medium) | Acceptance criteria cannot be marked PASS without execution | Proposed ownership model in §7.6 and evidence gate sequence in §7.7; create the evidence directory only when SP-01 is authorized. | User and assistant |
+| B-06 | Evidence ownership and execution schedule | **Resolved — Responsibility Model Approved** | Acceptance criteria cannot be marked PASS without execution | Ownership model approved in §7.6; sequential SP-01 to SP-08 testing with review before each stage; evidence stored in `projects/simuforge/reports/poc-01/`; evidence directory authorized when SP-01 begins. | User and assistant |
 
-B-01 is resolved as a product decision. It is not technical proof: no Babylon.js behavior has been verified. B-02 is the highest remaining technical blocker and is resolved by executing the spike. B-03 is resolved: TypeScript 6.0.3 approved for POC-01. B-04 is resolved: Chrome-only browser scope approved; Firefox is excluded and no Firefox installation or update is required. B-06 is awaiting user confirmation: the proposed ownership model and evidence gate sequence are recorded but not yet approved. B-05 is resolved.
+B-01 is resolved as a product decision. It is not technical proof: no Babylon.js behavior has been verified. B-02 is the highest remaining technical blocker and is resolved by executing the spike. B-03 is resolved: TypeScript 6.0.3 approved for POC-01. B-04 is resolved: Chrome-only browser scope approved; Firefox is excluded and no Firefox installation or update is required. B-06 is resolved: responsibility model approved; sequential SP-01 to SP-08 testing with review before each stage. B-05 is resolved.
 
 Audit note for B-04: Chrome 156.0.8078.76 is recorded in §6.1 as the captured environment. It is environment information, not a permanent minimum version requirement. Firefox is explicitly excluded from POC-01; no Firefox installation or update is required. Cross-browser compatibility is outside POC-01 scope. Chrome WebGL 2 support and hardware acceleration must still be verified before relevant rendering tests. No browser settings or system configuration were changed during this audit.
 
@@ -741,14 +746,14 @@ Audit note for B-04: Chrome 156.0.8078.76 is recorded in §6.1 as the captured e
 - No empirical proof of right-handed picking, gizmos, or camera behavior.
 - No empirical proof that the approved hybrid transform policy works as specified in Babylon.js.
 - Cross-browser compatibility is outside POC-01 scope; Google Chrome is the only supported and tested browser.
-- Evidence ownership and execution schedule are not yet confirmed.
+- Evidence ownership is approved; execution proceeds sequentially with review before each spike.
 - No scaffold, dependency lockfile, or license inventory.
 - No test execution or evidence.
 - No performance baseline.
 
 ### 10.5 Next step
 
-1. Confirm the proposed evidence ownership model (§7.6) and schedule a testing window.
+1. Evidence ownership model approved (§7.6); SP-01 begins with the evidence directory authorized.
 2. Record the captured Chrome version (156.0.8078.76) as environment information; it is not a permanent minimum version requirement. Chrome WebGL 2 support and hardware acceleration must still be verified before relevant rendering tests.
 3. Create the scaffold in a separate implementation task, with pinned versions and a license inventory.
 4. Execute SP-01 to SP-08 and record the evidence under `projects/simuforge/reports/poc-01/`.
