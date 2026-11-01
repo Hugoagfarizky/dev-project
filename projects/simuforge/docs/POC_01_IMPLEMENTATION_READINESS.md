@@ -6,7 +6,7 @@
 | --- | --- |
 | Version | 0.6 — Draft |
 | Date | 2026-10-31 |
-| Status | Research complete; technical spike not started |
+| Status | Research complete; technical spike in progress (SP-01 to SP-05 executed; SP-06 to SP-08 pending) |
 | Owner role | Technical Lead, SimuForge |
 | Project | simuforge |
 | Related specification | [POC-01 World Editor](POC_01_WORLD_EDITOR.md) |
@@ -67,7 +67,7 @@ Supporting rules, recorded in full in the POC specification:
 
 ### 1.2 Readiness verdict
 
-**Conditionally ready for the spike; not ready for full POC implementation.** The spike must confirm right-handed picking, gizmos, camera remapping, and quaternion behavior, plus the hybrid transform policy in practice. No spike has been executed, and no acceptance test has passed.
+**Conditionally ready for the spike; not ready for full POC implementation.** The spike must confirm right-handed picking, gizmos, camera remapping, and quaternion behavior, plus the hybrid transform policy in practice. SP-01 to SP-04 have been executed with recorded evidence; SP-05 is blocked pending manual interactive testing; SP-06 to SP-08 have not been executed. No POC-01 acceptance criterion may be marked PASS without the relevant evidence.
 
 ## 2. Q-01 through Q-10 Status
 
@@ -540,7 +540,7 @@ projects/simuforge/reports/poc-01/
 └── recommendation.md          # Final recommendation and conditions
 ```
 
-The directory does not exist yet. It will be created when the spike starts, not in this documentation task.
+The directory already exists and has been used for SP-01 through SP-05 evidence. It remains the official POC-01 evidence location and is not created by this documentation task.
 
 ### 7.2 Artifact requirements
 
@@ -611,7 +611,7 @@ Notes:
 - Testing is sequential, SP-01 through SP-08. Each stage requires review before proceeding.
 - No fixed calendar schedule is required.
 - Evidence is stored in `projects/simuforge/reports/poc-01/`.
-- The evidence directory is authorized to be created when SP-01 begins.
+- The evidence directory already exists and has been used for SP-01 through SP-05.
 - The model remains flexible and sequential; no calendar dates are assigned. Evidence gates between spikes are defined in §8.6.
 
 ### 7.7 Evidence gate sequence for SP-01 to SP-08
@@ -628,7 +628,7 @@ Evidence must exist before proceeding to the next spike, and the final Go/No-Go 
 8. SP-07 evidence (numeric log) before SP-08.
 9. SP-08 writes `results/spike.md` with the Go/No-Go decision, issue links, and environment details.
 
-No POC-01 acceptance criterion is marked PASS until the relevant evidence exists. The evidence directory is created only when SP-01 is authorized to begin.
+No POC-01 acceptance criterion is marked PASS until the relevant evidence exists. The evidence directory already exists and contains SP-01 through SP-05 evidence.
 
 ## 8. Technical Spike Plan
 
@@ -738,7 +738,7 @@ Audit note for B-04: Chrome 156.0.8078.76 is recorded in §6.1 as the captured e
 - Provisional 1 MiB import policy, enforcement order, and below/at/above boundary tests.
 - Browser and hardware matrix with a real primary environment.
 - Official evidence location: `projects/simuforge/reports/poc-01/`.
-- Proposed evidence ownership model and gate sequence (awaiting confirmation).
+- Approved evidence ownership model and gate sequence (approved; SP-01 to SP-05 executed under it).
 - Spike plan with go/no-go criteria.
 
 ### 10.4 What is not ready
@@ -753,7 +753,7 @@ Audit note for B-04: Chrome 156.0.8078.76 is recorded in §6.1 as the captured e
 
 ### 10.5 Next step
 
-1. Evidence ownership model approved (§7.6); SP-01 begins with the evidence directory authorized.
+1. Evidence ownership model approved (§7.6); SP-01 to SP-05 executed and recorded under it; evidence directory already exists.
 2. Record the captured Chrome version (156.0.8078.76) as environment information; it is not a permanent minimum version requirement. Chrome WebGL 2 support and hardware acceleration must still be verified before relevant rendering tests.
 3. Create the scaffold in a separate implementation task, with pinned versions and a license inventory.
 4. Execute SP-01 to SP-08 and record the evidence under `projects/simuforge/reports/poc-01/`.
