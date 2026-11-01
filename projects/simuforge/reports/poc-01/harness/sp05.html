@@ -408,7 +408,107 @@
         setStatus("JSON exported.");
       };
 
-      engine.runRenderLoop(function () {
+      window.__simuforgeDiagnostics = {
+  version: "poc-diagnostic-read-only",
+  note: "POC diagnostic interface only; not a production API. Read-only snapshots; no transform mutation or drag methods.",
+  getSnapshot: function () {
+    var q = cube.rotationQuaternion || new BABYLON.Quaternion(0,0,0,1);
+    var canvas = document.getElementById("renderCanvas");
+    var rect = canvas.getBoundingClientRect();
+    var dpr = window.devicePixelRatio || 1;
+    var posGizmo = gizmoManager.gizmos.positionGizmo;
+    var rotGizmo = gizmoManager.gizmos.rotationGizmo;
+    var scaleGizmo = gizmoManager.gizmos.scaleGizmo;
+    function vec(v){ return v ? [v.x, v.y, v.z] : null; }
+    function quat(qq){ return qq ? [qq.x, qq.y, qq.z, qq.w] : null; }
+    return {
+      babylonVersion: (BABYLON.Engine.Version || "unknown"),
+      mode: mode,
+      useRightHandedSystem: scene.useRightHandedSystem,
+      canvas: { cssWidth: rect.width, cssHeight: rect.height, dpr: dpr, left: rect.left, top: rect.top },
+      cube: {
+        name: cube.name,
+        id: cube.id,
+        position: vec(cube.position),
+        quaternion: quat(q),
+        scale: vec(cube.scaling),
+        quaternionLength: Math.sqrt(q.x*q.x+q.y*q.y+q.z*q.z+q.w*q.w)
+      },
+      camera: {
+        alpha: camera.alpha, beta: camera.beta, radius: camera.radius,
+        target: vec(camera.target)
+      },
+      gizmos: {
+        positionEnabled: gizmoManager.positionGizmoEnabled,
+        rotationEnabled: gizmoManager.rotationGizmoEnabled,
+        scaleEnabled: gizmoManager.scaleGizmoEnabled,
+        positionKeys: posGizmo ? Object.keys(posGizmo) : null,
+        rotationKeys: rotGizmo ? Object.keys(rotGizmo) : null,
+        scaleKeys: scaleGizmo ? Object.keys(scaleGizmo) : null
+      },
+      timestamp: new Date().toISOString()
+    };
+  },
+  getGizmoTree: function () {
+    var posGizmo = gizmoManager.gizmos.positionGizmo;
+    function walk(node, depth) {
+      var out = [];
+      if (!node) return out;
+      var children = node.getChildren ? node.getChildren() : [];
+      children.forEach(function (c) {
+        var ap = c.getAbsolutePosition ? c.getAbsolutePosition() : c.position;
+        out.push({ depth: depth, name: c.name, id: c.id, type: c.getClassName ? c.getClassName() : (c.constructor && c.constructor.name), position: [c.position.x, c.position.y, c.position.z], absolute: [ap.x, ap.y, ap.z], isVisible: c.isVisible, isPickable: c.isPickable });
+        walk(c, depth + 1).forEach(function (x) { out.push(x); });
+      });
+      return out;
+    }
+    var result = {};
+    ["x","y","z"].forEach(function (axis) {
+      var g = posGizmo && posGizmo[axis + "Gizmo"] ? posGizmo[axis + "Gizmo"] : null;
+      var root = g ? g._rootMesh : null;
+      result[axis] = root ? walk(root, 0) : null;
+    });
+    return { mode: mode, tree: result, timestamp: new Date().toISOString() };
+  }
+};
+
+window.__simuforgeDiagnostics.getHandleProjections = function () {
+  var posGizmo = gizmoManager.gizmos.positionGizmo;
+  var canvas = document.getElementById("renderCanvas");
+  var rect = canvas.getBoundingClientRect();
+  var cam = scene.activeCamera;
+  function proj(worldVec) {
+    if (!worldVec || !cam) return null;
+    try {
+      var v = new BABYLON.Vector3(worldVec.x, worldVec.y, worldVec.z);
+      var p = BABYLON.Vector3.Project(v, BABYLON.Matrix.Identity(), scene.getTransformMatrix(), new BABYLON.Viewport(0,0,1,1));
+      return { ndcX: p.x, ndcY: p.y, ndcZ: p.z, cssX: p.x * rect.width, cssY: (1 - p.y) * rect.height };
+    } catch (e) { return { error: String(e) }; }
+  }
+  var out = {};
+  ["x","y","z"].forEach(function (axis) {
+    var g = posGizmo && posGizmo[axis + "Gizmo"] ? posGizmo[axis + "Gizmo"] : null;
+    var gm = g ? g._gizmoMesh : null;
+    var collected = [];
+    function walk(node) {
+      if (!node) return;
+      var kids = node.getChildren ? node.getChildren() : [];
+      kids.forEach(function (c) {
+        if (c.getClassName && c.getClassName() === "Mesh") {
+          var ap = c.getAbsolutePosition();
+          collected.push({ name: c.name, absolute: [ap.x, ap.y, ap.z], projected: proj(ap) });
+        }
+        walk(c);
+      });
+    }
+    walk(gm);
+    out[axis] = collected;
+  });
+  out.cubeCenter = proj(cube.getAbsolutePosition());
+  return { mode: mode, rect: { left: rect.left, top: rect.top, width: rect.width, height: rect.height }, dpr: window.devicePixelRatio, handles: out, timestamp: new Date().toISOString() };
+};
+
+engine.runRenderLoop(function () {
         scene.render();
         updateInspector();
       });
