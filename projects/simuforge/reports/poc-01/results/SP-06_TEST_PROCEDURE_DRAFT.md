@@ -32,7 +32,7 @@ Verify that `ArcRotateCamera` navigation (orbit, pan, zoom) works correctly in r
   - `setInteraction(source, conditions, interaction)` — mutates in place if matched entry is at least as specific; otherwise inserts a more-specific entry.
   - `addEntry(...)` — inserts at the correct specificity bucket.
   - `setInteractions(...)` (plural) — bulk update; returns count.
-  - `getEntry(source, interaction)` — returns a live reference for property tweaks.
+  - `getEntry(source, interaction)` — returns a live reference for property tweaks. **Probe P2 finding:** returns `undefined` (not `null`) when no matching entry exists. Treat both as "no match".
   - `getEntries(...)` — bulk lookup.
   - `resetInputMap()` — restores defaults.
   - Direct array manipulation (push/splice/replace) is supported.
@@ -93,11 +93,37 @@ For every navigation gesture, record before and after:
 - Console errors/warnings
 - Inertia settle delay used (see §6)
 
+## 5a. Modifier investigation (post-P1, empirical)
+
+Probe P1 tested modifier combinations on the default input map using CDP trusted input (modifiers bit 0 = Alt, bit 1 = Ctrl).
+
+| Gesture | Modifiers sent | Observed change | Interpretation |
+| --- | --- | --- | --- |
+| Plain left-drag | none | alpha +0.7275, beta/radius/target unchanged | Orbit (default map: button 0 → rotate). Expected. |
+| Right-drag | button 2 | target −0.558/+0.008, radius unchanged | Pan (default map: button 2 → pan). Expected. |
+| Ctrl+left-drag | modifiers=2 | radius −2.257, target +0.556, alpha/beta 0 | **Unexpected.** Default map ctrl+left → pan (target only). Radius change suggests either modifier not applied, or inertia/residual motion, or handler coupling. Inconclusive. |
+| Alt+left-drag | modifiers=1 | target +0.046, radius −0.001 | Near-no-op; possibly modifier not applied or Alt triggers browser/OS behavior. Inconclusive. |
+
+### Factual observations
+- Plain left-drag and right-drag behave as the default map predicts.
+- Wheel up (deltaY −120) zooms in; wheel down zooms out (P3, confirmed).
+- `zoomToMouseLocation` is false by default (Babylon 9.32.1).
+
+### Unverified / suspected
+- Whether CDP `modifiers` field correctly sets `event.ctrlKey`/`event.altKey` in Babylon's input handlers (M6).
+- Whether Alt+drag triggers OS-level window movement or browser behavior on Windows.
+- Whether Ctrl+drag's radius change is inertia residual (settle not waited) or a genuine modifier mismatch.
+
+### Recommendation
+- Decision 1 (modifier assignment) remains **PROVISIONAL**.
+- Do not finalize modifier assignment until a follow-up probe isolates the modifier application (e.g., log `event.ctrlKey`/`event.altKey` inside Babylon's handler, or test with a minimal scene).
+- Alternative input schemes that avoid modifier conflicts (e.g., right-drag orbit, middle-drag pan) may be considered if Ctrl/Alt prove unreliable, without changing product scope.
+
 ## 6. Test scenarios
 
 All tolerances in this section are **PROVISIONAL internal thresholds** (N5, M4). They have no documented basis in the acceptance criteria and must not be treated as validated standards until justified empirically or approved by the Project Owner.
 
-All scenarios include a settle delay after the gesture: wait until `camera.movement` deltas are zero or a fixed timeout (PROPOSED: 500 ms, to be determined by Probe P4) before recording the final state. Final values are post-settle.
+All scenarios include a settle delay after the gesture: wait until `camera.movement` deltas are zero or a fixed timeout (PROVISIONAL: 2000 ms, based on P4 measured settle of 1434 ms) before recording the final state. Final values are post-settle. The 500 ms value proposed earlier is superseded by probe data.
 
 ### S-01 Baseline camera state
 - Action: Load scene, record camera state, screenshot.
@@ -208,7 +234,7 @@ PROPOSED: filenames and count are proposed; final list requires approval.
         "after":  { "alpha": 0, "beta": 0, "radius": 0, "target": [0,0,0] },
         "delta":  { "alpha": 0, "beta": 0, "radius": 0, "target": [0,0,0] },
         "pointer": { "from": {"x":0,"y":0}, "to": {"x":0,"y":0}, "button": 0, "modifiers": {} },
-        "settleDelayMs": 500,
+        "settleDelayMs": 2000,
         "timestamp": "ISO-8601",
         "consoleErrors": []
       }
@@ -269,6 +295,22 @@ New components needed: camera state reader, input-map editor, gesture sequencer 
 
 No responsibility may be reassigned without documented reason.
 
+## 11a. Empirical findings from probes (post-P1–P5)
+
+| Probe | Result | Key finding |
+| --- | --- | --- |
+| P1 | FAIL (9/10) | Orbit/pan/zoom work via trusted CDP. Zoom target shift was test methodology (zoom at canvas center, not projected target). Corrected: target delta = 0 when zooming at projected target center. Modifier tests inconclusive. |
+| P2 | FAIL (11/12) | Removal, non-orbit, reset, restore all work. `getEntry` returns `undefined` (not `null`) when no match — API detail, not defect. Check expectation to be corrected. |
+| P3 | PASS (2/2) | Wheel up (deltaY −120) → radius decreases (zoom in). Wheel down → radius increases (zoom out). S-06/S-07 signs confirmed. |
+| P4 | PASS (3/3) | Settle in 1434 ms. 500 ms insufficient; recommend ≥2000 ms. |
+| P5 | PASS (33/33) | Hard gate passed: input-map edit applied; gizmo drag produced non-uniform scale (1 → 1.2034); camera unchanged (S-10a == S-10b); no console errors. |
+
+### Implications for procedure
+- Settle delay: 500 ms → 2000 ms (PROVISIONAL).
+- P2 check expectation: accept `undefined` or `null` from `getEntry` when no match.
+- P1 zoom: zoom at projected target center, not canvas center.
+- P5: S-10a/S-10b confirmed feasible and recorded.
+
 ## 12. Risks (Babylon 9.32.1)
 
 | Risk | Notes | Mitigation |
@@ -315,6 +357,18 @@ Probes are read-only (no evidence files, no harness changes) and use the SP-05 t
 - Verify transform changes, camera state unchanged, no console errors.
 
 All probes are PROPOSED and require owner approval of scope before execution.
+
+### Probe execution status (post-P1–P5)
+
+| Probe | Status | Result |
+| --- | --- | --- |
+| P1 CDP Camera Input | Executed | FAIL (9/10) — orbit/pan/zoom work; zoom target shift was test methodology; modifier tests inconclusive |
+| P2 Input-map Removal/Restoration | Executed | FAIL (11/12) — removal/restore work; getEntry returns undefined not null |
+| P3 Wheel Direction | Executed | PASS (2/2) — wheel up zooms in |
+| P4 Inertia Settle | Executed | PASS (3/3) — settled in 1434 ms |
+| P5 Gizmo Survival | Executed | PASS (33/33) — hard gate passed |
+
+See `SP-06_PROBE_EXECUTION_REPORT.md` for full details.
 
 ## 13. Decisions requiring approval (all PROPOSED)
 
