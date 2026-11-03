@@ -59,11 +59,11 @@ The contact sheet is a scaled review aid, not evidence. Reviewers must open the 
 
 | Item | Status | Detail |
 | --- | --- | --- |
-| `sp-05_rotate_45.png` | **Missing** | Listed in the procedure's required-screenshot list (item 4) but never referenced by any procedure step and never captured by the T-02 case. Content is undefined. See `SP-05_VISUAL_REVIEW_PACKAGE.md` §A. |
+| `sp-05_rotate_45.png` | **Not required (waived from mandatory inventory, 2026-11-03)** | Listed in an earlier version of the procedure, but no procedure step requires it. `sp-05_rotate_world_x.png` is the T-02 evidence. A separate `sp-05_rotate_45_setup.png` capture is only needed if its content is defined by the Project Owner. |
 | `sp-05_rotate_90_y_supplementary.png` | **Missing (optional)** | Marked "optional supplementary observation only"; not captured. No acceptance impact. |
 | `sp-05_scale_rotated_local_z.png` | **Present (supplemental)** | Captured in a separate targeted run, not in the official full-suite run. Clearly labelled supplemental. |
 | `sp-05_scale_rotated_90.png` angle | **Ambiguous** | The cube is at ~87.45° Y (40.88° + measured 46.57°), not exactly 90°. Procedure step 9 says "approximately 90° … if practical". No numeric tolerance is documented. |
-| `sp-05_scale_rotated_90.png` coverage | **Ambiguous** | The procedure says "Repeat at approximately 90° around Y if practical"; the runner repeats only the local Y drag at that angle, not X/Y/Z. Whether "repeat" means the whole handle set is not specified. |
+| `sp-05_scale_rotated_90.png` coverage | **Not required to be broader** | The procedure says "Repeat at approximately 90° around Y if practical"; the runner repeats only the local Y drag at that angle. Repeating all three handles is not required unless an existing acceptance criterion explicitly requires it (none does). |
 | `sp-05_scale_rotated_45.png` content | **Ambiguous** | The file shows the local-X-scaled state at 40.88° Y. The subsequent local Y drag has no dedicated 45° screenshot; it appears only in the 90° image. |
 | `sp-05_rotate_world_x.png` angle | **Recorded** | The world-X test rotation measured 43.9206° for a requested 45°. The image is genuine; the value is recorded without adjustment. |
 

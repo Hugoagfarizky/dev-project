@@ -13,6 +13,17 @@ Preparation and evidence-gap analysis for the human visual review of SP-05.
 | SP-05 status | **BLOCKED — unchanged.** |
 | A-03 / A-04 | **Unverified.** |
 
+## 0. Decisions recorded (2026-11-03)
+
+The following decisions reconcile the procedure, the screenshot inventory, and the archived evidence. They do not change any measured value, archived artifact, or SHA-256 record.
+
+1. **Angle tolerance (T-01/T-02/T-04 setup).** The measured 40.8814° setup rotation (requested 42°) is accepted as sufficient POC evidence for axis distinction. The runner's 75–125% plausibility band is an internal assertion, not a product-level angular tolerance. The procedure's "approximately 45°" and E-07's "45°" carry no numeric tolerance; no tolerance was invented.
+2. **`sp-05_rotate_45.png` removed from mandatory inventory.** No procedure step requires it; `sp-05_rotate_world_x.png` is the T-02 evidence. A separate `sp-05_rotate_45_setup.png` is only needed if its content is defined by the Project Owner.
+3. **Supplemental local Z accepted for T-04 step 5.** The targeted run `targeted-localz-2026-11-03T09-26-28-166Z-914f38` (45/45 PASS) is accepted as evidence for the local Z handle, because its harness SHA-256, Babylon version, gizmo policy, and provenance match the official SP-05 configuration (verified: exact match). It is supplemental evidence, not a re-run of T-04.
+4. **90° repeat scope.** Repeating all three scale handles at approximately 90° is not required unless an existing acceptance criterion explicitly requires it (none does beyond E-07's local X scale).
+5. **No second full suite.** A second full SP-05 suite is not required. Targeted regression is used only if visual review identifies a concrete issue.
+6. **Visual sign-off pending.** A-03 and A-04 are not marked visually verified. The harness checklist remains "Not tested" until review is completed; "Evidence captured" is the appropriate intermediate status once the evidence is accepted, and "Validation passed" only after visual review.
+
 ## 1. Deliverables
 
 | Deliverable | Location |
@@ -59,9 +70,9 @@ The required-screenshot list and the procedure body disagree. Item 4 is orphaned
 
 `sp-05_rotate_world_x.png` is an adequate substitute for reading 1 and is the screenshot the T-02 procedure actually requires. It is **not** an adequate substitute for reading 2.
 
-### Proposed targeted capture (not executed)
+### Proposed targeted capture (not required)
 
-If reading 2 is intended, capture a fresh run: reset, rotate world Y ≈45°, remain in Rotate mode before the world-X drag, screenshot as `sp-05_rotate_45_setup.png` with its own sidecar and run ID. Do not rename it to `sp-05_rotate_45.png` and do not claim it belongs to the original suite. It was not captured here because the content is undefined and the instruction was to propose, not to invent, missing evidence.
+Decision 2 removes `sp-05_rotate_45.png` from the mandatory inventory, so no capture is required. If the Project Owner still wants a `sp-05_rotate_45_setup.png` image, it must be a fresh run with its own sidecar and run ID; no such image was fabricated here.
 
 ## 4. B — Local Z scale
 

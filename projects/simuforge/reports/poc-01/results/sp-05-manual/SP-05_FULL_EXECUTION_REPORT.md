@@ -245,16 +245,16 @@ These results support A-03 and A-04 but do not verify them. Axis alignment and h
 
 ---
 
-## 9. Deviations and gaps
+## 9. Deviations and gaps (post-decision)
 
-1. **`sp-05_rotate_45.png` was not produced.** The procedure's required-screenshot list includes it, but the current T-02 case captures only `sp-05_rotate_world_x.png`; the T-02 procedure itself calls only for the world-X screenshot. This is a documentation/runner inventory mismatch that requires review.
-2. **`sp-05_rotate_90_y_supplementary.png` was not produced.** The procedure marks it optional, and the current T-02 case does not capture it.
-3. **T-04 did not drag the local Z handle.** The procedure says to drag local X, Y, and Z. Execution dragged local X at ~41° and local Y at ~87.45°; local Z scaling has no interaction evidence in this run.
-4. **T-06 is an independent case, not a literal continuation of T-05.** The runner reloads the harness per case, so T-06 performs its own rotate → translate → scale sequence rather than continuing the T-05 session.
-5. **Harness checklist statuses remain "Not tested".** The runner does not set the manual checklist, consistent with the rule that "Validation passed" requires human review. The PASS results above are runner assertions, not checklist approvals.
-6. **Rotation angles are slightly under the nominal target.** Setup rotation measured 40.8814° for a requested 42° (and the T-01/T-02/T-04 procedure text says approximately 45°). The actual values are recorded without adjustment.
-7. **Screenshots are CDP viewport captures, not OS-level captures.** This is the approved automated method; human visual review is still mandatory.
-8. **`sp-05_transform_integrity.png` is additional evidence.** The procedure does not require a T-06 screenshot, but one was captured.
+1. **`sp-05_rotate_45.png` — removed from mandatory inventory (2026-11-03).** No procedure step requires it; `sp-05_rotate_world_x.png` remains the T-02 evidence. No capture was fabricated.
+2. **`sp-05_rotate_90_y_supplementary.png` not produced.** Optional; not captured.
+3. **T-04 local Z scaling.** The official run did not drag local Z. A supplemental targeted run (`targeted-localz-2026-11-03T09-26-28-166Z-914f38`, 45/45 PASS) is accepted as evidence for T-04 step 5, with matching harness SHA-256, Babylon version, gizmo policy, and provenance.
+4. **T-06 is an independent case**, not a literal continuation of T-05 (runner reloads per case).
+5. **Harness checklist statuses remain "Not tested".** The runner does not set the manual checklist. "Evidence captured" is the appropriate intermediate status once the evidence is accepted; "Validation passed" only after visual review.
+6. **Rotation angles slightly under nominal.** Setup 40.8814° for a requested 42° (accepted as sufficient POC evidence for axis distinction; the runner's 75–125% band is an internal assertion, not a product tolerance). T-02 world-X delta 43.9206° for a requested 45°. Values recorded without adjustment.
+7. **Screenshots are CDP viewport captures**, not OS-level captures (approved automated method).
+8. **`sp-05_transform_integrity.png` is additional evidence** beyond the procedure's required list.
 
 None of these deviations invalidates the executed interactions, but items 1–3 affect completeness against the written procedure.
 

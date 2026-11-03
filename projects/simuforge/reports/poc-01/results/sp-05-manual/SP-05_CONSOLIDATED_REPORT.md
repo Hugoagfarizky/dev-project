@@ -139,7 +139,7 @@ Fourteen genuine CDP drags were recorded. Every drag used `Input.dispatchMouseEv
 
 Key measurements: T-01 world deltas `(0.902087, 0, 0)`, `(0, 0.817648, 0)`, `(0, 0, 0.858875)`; T-02 world X delta axis `(1, 0, 0)` at 43.9206°; T-03 local X `1 → 1.214723`; T-04 local X `1 → 1.203411` plus supplementary local Y at ~87.45° `1 → 1.134295`; T-05 STABLE; T-06 quaternion normalized and scale positive.
 
-Evidence-completeness deviations remain: `sp-05_rotate_45.png` was not produced, local Z scaling was not exercised in T-04, and the harness checklist is still "Not tested". These require review or an explicit waiver. See `SP-05_FULL_EXECUTION_REPORT.md`.
+Evidence-completeness deviations updated 2026-11-03: `sp-05_rotate_45.png` removed from mandatory inventory (no procedure step requires it); local Z scaling is now covered by a supplemental targeted run (`targeted-localz-2026-11-03T09-26-28-166Z-914f38`, 45/45 PASS) accepted as T-04 step 5 evidence; the harness checklist remains "Not tested" pending visual review. The 40.8814° setup rotation is accepted as sufficient POC evidence. See `SP-05_VISUAL_REVIEW_PACKAGE.md` §0.
 
 ## Targeted local Z supplement and visual-review preparation (2026-11-03)
 

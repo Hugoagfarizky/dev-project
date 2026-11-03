@@ -211,7 +211,7 @@ Runner: `node run.js --cases all --out projects/simuforge/reports/poc-01/results
 
 All 14 drags recorded lifecycle `start=1`, `drag=24`, `end=1`, `allTrusted=true`, `pointerType="mouse"`. Every entry reports `inputMethod="cdp_trusted_input"`, `sp05Eligible=true`, `interactionManual=false`, `interactionAutomated=true`. No synthetic input, no console errors, no retries. An independent audit re-checked 750 evidence-integrity conditions: 750/750 PASS.
 
-Deviations remain: `sp-05_rotate_45.png` was not produced (the T-02 case captures only the world-X screenshot), T-04 did not drag the local Z handle, and the harness checklist remains "Not tested" pending human review. See `results/sp-05-manual/SP-05_FULL_EXECUTION_REPORT.md`.
+Deviations resolved by decision on 2026-11-03: `sp-05_rotate_45.png` removed from the mandatory inventory; local Z is covered by the supplemental targeted run; the 40.8814° setup rotation is accepted as sufficient POC evidence; repeating all three handles at 90° is not required. A visual-review package (contact sheet + manifest) is available under `results/sp-05-manual/visual-review/`. See `results/sp-05-manual/SP-05_VISUAL_REVIEW_PACKAGE.md`.
 
 ### Test cases
 - T-01 World Translate

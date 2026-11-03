@@ -108,13 +108,18 @@ Save screenshots with these exact filenames:
 1. `sp-05_translate_x.png`
 2. `sp-05_translate_y.png`
 3. `sp-05_translate_z.png`
-4. `sp-05_rotate_45.png`
-5. `sp-05_rotate_world_x.png`
-6. `sp-05_rotate_90_y_supplementary.png` (optional supplementary observation only)
-6. `sp-05_scale_unrotated.png`
-7. `sp-05_scale_rotated_45.png`
-8. `sp-05_scale_rotated_90.png`
-9. `sp-05_mode_switch.png`
+4. `sp-05_rotate_world_x.png`
+5. `sp-05_scale_unrotated.png`
+6. `sp-05_scale_rotated_45.png`
+7. `sp-05_scale_rotated_90.png`
+8. `sp-05_mode_switch.png`
+
+Optional supplementary observation only:
+
+- `sp-05_rotate_90_y_supplementary.png` (optional supplementary observation only)
+- `sp-05_scale_rotated_local_z.png` (supplemental local Z evidence; see §A-04 and the targeted run)
+
+Note on `sp-05_rotate_45.png`: this filename was listed in an earlier version of the procedure but no procedure step requires it. It is **not** mandatory evidence. Retain `sp-05_rotate_world_x.png` as the T-02 evidence. A separate `sp-05_rotate_45_setup.png` capture is only needed if the Project Owner defines its content; none was fabricated for this report. (Decision recorded 2026-11-03.)
 
 If a screenshot cannot be captured, record the limitation in your notes.
 
@@ -303,6 +308,17 @@ May not reliably capture:
 - A distinction between a physical mouse and CDP-injected input from inside the page. Both are trusted; the declared method must be recorded and reviewed.
 
 When a run is automated, the sidecar audit record is part of the evidence: it contains the CDP event sequence, the harness-observed drag lifecycle, and the before/after transform snapshots. Do not discard it.
+
+## Decisions recorded (2026-11-03)
+
+The following decisions reconcile the procedure, the screenshot inventory, and the archived evidence. They do not change any measured value, archived artifact, or SHA-256 record.
+
+1. **Angle tolerance (T-01/T-02/T-04 setup).** The measured 40.8814° setup rotation (requested 42°) is accepted as sufficient POC evidence for axis distinction. The runner's 75–125% plausibility band is an internal assertion, not a product-level angular tolerance. The procedure's "approximately 45°" and E-07's "45°" carry no numeric tolerance; no tolerance was invented. T-02's world-X test rotation measured 43.9206° for a requested 45°.
+2. **`sp-05_rotate_45.png` removed from mandatory inventory.** No procedure step requires it; `sp-05_rotate_world_x.png` is the T-02 evidence. A separate `sp-05_rotate_45_setup.png` is only needed if its content is defined by the Project Owner.
+3. **Supplemental local Z accepted for T-04 step 5.** The targeted run `targeted-localz-2026-11-03T09-26-28-166Z-914f38` (45/45 PASS) is accepted as evidence for the local Z handle, because its harness SHA-256, Babylon version, gizmo policy, and provenance match the official SP-05 configuration (verified: exact match). It is supplemental evidence, not a re-run of T-04.
+4. **90° repeat scope.** Repeating all three scale handles at approximately 90° is not required unless an existing acceptance criterion explicitly requires it (none does beyond E-07's local X scale).
+5. **No second full suite.** A second full SP-05 suite is not required. Targeted regression is used only if visual review identifies a concrete issue.
+6. **Visual sign-off pending.** A-03 and A-04 are not marked visually verified. The harness checklist remains "Not tested" until review is completed; "Evidence captured" is the appropriate intermediate status once the evidence is accepted, and "Validation passed" only after visual review.
 
 ## After evidence capture
 
