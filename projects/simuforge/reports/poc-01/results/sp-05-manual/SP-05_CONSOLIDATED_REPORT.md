@@ -89,17 +89,50 @@ POC-04 transform verification:
 
 POC-04 result: PASS (transform stability verified with archived before/after snapshots). This does not upgrade SP-05 overall status.
 
+## 2026-11-03 Harness Repair and CDP Proof
+
+The Project Owner approved direct CDP `Input.dispatchMouseEvent` as an SP-05 evidence method on 2026-11-02. The approval is recorded in `SP-05_EVIDENCE_PROCEDURE.md`; it does not change any acceptance criterion.
+
+### Repaired defect
+
+Babylon.js creates `GizmoManager` gizmos lazily on the first `*GizmoEnabled = true` assignment. The harness previously read `positionGizmo`, `rotationGizmo`, and `scaleGizmo` immediately after construction, when all were `null`, so the world/world/local assignments never reached a gizmo and Babylon's local default applied. The harness now calls `applyGizmoSpace()` after lazy creation and on every `setMode()`.
+
+The harness diagnostics confirm after a fresh reload: `positionSpaceWorld: true`, `positionUpdateFlag: false`. Rotation and scale flags are populated when their gizmos are first enabled, and each mode change re-applies the policy before the case interacts with it.
+
+### Corrected provenance
+
+The hardcoded `interactionManual: true` was removed. The harness now records a declared input method and marks every entry with `inputMethod`, `sp05Eligible`, `interactionManual`, `interactionAutomated`, `lastDrag`, and `dragCount`. Untrusted pointer events force `synthetic_input`. `interactionManual` is true only for `physical_mouse`; CDP interaction is recorded as `cdp_trusted_input`, `interactionManual: false`, `interactionAutomated: true`, and `sp05Eligible: true`.
+
+### Proof cases
+
+Run with the repository runner: `node run.js --cases proof --passes 2`. Each execution reloaded `sp05.html` from disk; no debugger injection, synthetic event, direct transform assignment, or internal gizmo drag call was used.
+
+| Case | Pass 1 | Pass 2 | Key measurement |
+| --- | --- | --- | --- |
+| T-01 world X translation after ~42° Y | 37/37 PASS | 37/37 PASS | Setup rotation 40.8814° about world Y; translation delta `(0.902087, 0, 0)`; world X handle direction matched exactly. |
+| T-02 world X rotation after ~42° Y | 35/35 PASS | 35/35 PASS | Orientation delta axis `(1, 0, 0)`, angle 43.9206°; rotated local X was `(0.756066, 0, -0.654495)`. |
+| T-04 local X scale after ~42° Y | 41/41 PASS | 41/41 PASS | Scale `(1, 1, 1) → (1.203411, 1, 1)`; handle matched the local X axis; Y/Z unchanged. |
+
+Both passes produced identical transforms. Every drag recorded lifecycle `start=1`, `drag=24`, `end=1`, `allTrusted=true`, `pointerType="mouse"`, with no cross-axis activity. No synthetic input and no console errors were observed.
+
+### Evidence location and scope
+
+Proof artifacts: `projects/simuforge/reports/poc-01/results/sp-05-automated/proof/`. They use `proof_` prefixes and `_passN` suffixes and are explicitly not the official evidence set.
+
+This proof covers three interactions. It does not cover the full T-01 through T-06 procedure, and it does not replace human review of the screenshots for visual axis alignment.
+
 ## Overall conclusion
 
 SP-05 remains BLOCKED. No acceptance criterion is upgraded to PASS.
 
-- T-01 through T-04: user-reported success; no archived evidence.
-- T-05: user-reported STABLE; supported by static code review (mode switching does not mutate transform), but no archived before/after values.
-- T-06: PARTIAL; automated validator tests passed (8/8), but actual post-interaction evidence is missing.
+- T-01 through T-04: user-reported success; no archived evidence from those manual runs.
+- T-05: user-reported STABLE; supported by static code review (mode switching does not mutate transform), but no archived before/after values from the manual run.
+- T-06: PARTIAL; automated validator tests passed (8/8), but actual post-interaction evidence from the manual run is missing.
 - A-03 and A-04 remain unverified.
+- The 2026-11-03 CDP proof demonstrates the repaired world/world/local behaviour and the trusted-input path for three interactions, but it is not the full T-01 through T-06 evidence set.
 
 SP-06 remains at NO-GO per the documented sequential evidence gate (SP-05 evidence required before SP-06).
 
 ## Evidence limitations
 
-No timestamps, screenshots, pointer coordinates, or JSON logs are fabricated. User-reported results are recorded as reported, without independent archival support. Programmatic validator results are recorded separately and are not represented as manual interaction evidence.
+No timestamps, screenshots, pointer coordinates, or JSON logs are fabricated. User-reported results are recorded as reported, without independent archival support. Programmatic validator results are recorded separately and are not represented as manual interaction evidence. The 2026-11-03 proof artifacts are recorded as `cdp_trusted_input`, not as physical-mouse interaction, and are kept separate from the official evidence directory.

@@ -9,13 +9,81 @@ Evidence destination: `projects/simuforge/reports/poc-01/results/sp-05-manual/ev
 
 Create that directory before starting if it does not exist.
 
+## Approval record
+
+| Field | Value |
+| --- | --- |
+| Approver | Project Owner |
+| Approval date | 2026-11-02 |
+| Approved method | Direct Chrome DevTools Protocol (CDP) over native Node.js WebSocket, using `Input.dispatchMouseEvent` |
+| Scope | SP-05 interaction evidence and the repository's SP-05 runner |
+| Explicitly not authorised | Synthetic JavaScript `PointerEvent`s, direct transform assignment, invoking Babylon.js drag methods internally, or bypassing gizmo interaction |
+| Evidence condition | Chrome must deliver the events as trusted browser input (`isTrusted: true`) |
+
+This approval adds an automated capture method. It does not relax, replace, or redefine any T-01 through T-06 acceptance criterion, and it does not change the SP-05 status. SP-05 remains BLOCKED until the full T-01 through T-06 evidence exists and has been reviewed.
+
+## Input provenance categories
+
+The harness records how pointer input was produced. The four categories are not interchangeable.
+
+| Method | Production path | `isTrusted` in the page | SP-05 eligibility |
+| --- | --- | --- | --- |
+| `physical_mouse` | A human operating a physical pointing device; the OS delivers the input to Chrome | `true` | Eligible (original manual procedure) |
+| `cdp_trusted_input` | Chrome DevTools Protocol `Input.dispatchMouseEvent`; Chrome's input pipeline produces the DOM pointer events | `true` | Eligible (Project Owner approval, 2026-11-02) |
+| `synthetic_input` | JavaScript constructs a `PointerEvent` and calls `dispatchEvent` | `false` | Rejected |
+| `programmatic_transform` | Code writes `position`, `rotationQuaternion`, or `scaling` directly | not applicable | Rejected |
+
+Browser-level trusted input and physical OS input are indistinguishable from inside the page: both arrive as trusted pointer events with `pointerType: "mouse"`. The harness therefore records a driver declaration rather than guessing. An approved driver sets:
+
+```js
+window.__simuforgeInputProvenance = {
+  method: "cdp_trusted_input",
+  driver: "simuforge-sp05-cdp-runner",
+  sessionId: "<run id>"
+};
+```
+
+The declaration is recorded verbatim. Any untrusted pointer event overrides the declaration and forces `synthetic_input`; the export is then not SP-05-eligible. A declaration alone cannot convert untrusted input into trusted input.
+
+Every exported entry records `inputMethod`, `provenance`, `sp05Eligible`, `interactionManual`, `interactionAutomated`, `lastDrag`, and `dragCount`. `interactionManual` is now truthful: it is `true` only for `physical_mouse`. CDP interaction is always `interactionManual: false` and `interactionAutomated: true`.
+
+## Automated evidence method (approved)
+
+Runner: `projects/simuforge/reports/poc-01/harness/runner/`
+
+Proof command (does not run the full suite):
+
+```text
+node run.js --cases proof --passes 2
+```
+
+Full-suite preparation command, for later review (not approved as a substitute for reviewing the evidence):
+
+```text
+node run.js --cases all --out projects/simuforge/reports/poc-01/results/sp-05-manual/evidence
+```
+
+The runner:
+
+- Owns a dedicated Chrome instance and a dedicated temporary profile, so the page is never treated as occluded.
+- Reloads the actual harness from disk before every case; no configuration is injected by a debugger.
+- Recomputes handle coordinates from the live gizmo scene graph for every drag.
+- Confirms the handle identity with a scene pick before pressing.
+- Uses deterministic `Input.dispatchMouseEvent` sequences (hover, press, fixed-step moves, release).
+- Captures before/after transform snapshots, screenshots, the harness export, and a sidecar audit record.
+- Records every CDP event with its timestamp and parameters, plus the harness-observed drag lifecycle (`start`/`drag`/`end` counts), `isTrusted`, `pointerType`, start/end coordinates, target gizmo and axis, and the resulting transform delta.
+- Fails the case on an untrusted event, a missing drag lifecycle, a cross-axis drag, an unexpected console error, or a provenance mismatch.
+- Retries only transport/session failures (closed WebSocket, destroyed execution context, navigation). It never retries a failed assertion.
+
+Proof artifacts are written under `projects/simuforge/reports/poc-01/results/sp-05-automated/proof/` with a `proof_` prefix and a `_passN` suffix. These are not official evidence. Official evidence keeps the filenames in the next section and belongs in `results/sp-05-manual/evidence/`.
+
 ## General rules
 
 - Use Google Chrome only.
 - Do not use Firefox.
-- Do not edit code or use DevTools.
-- Perform all gizmo drags with an actual mouse.
-- Do not use programmatic transforms as evidence.
+- Manual runs: do not edit code or use the DevTools UI.
+- Automated runs: only the repository's approved runner may use read-only CDP. Do not inject gizmo configuration through the debugger.
+- Perform all gizmo drags with an actual mouse, or with the approved CDP runner. Do not use programmatic transforms as evidence.
 - If a value cannot be captured, mark it unavailable; do not fabricate it.
 - Reset the cube before each independent test case where specified.
 - Save screenshots immediately after each required capture.
@@ -52,7 +120,7 @@ If a screenshot cannot be captured, record the limitation in your notes.
 
 ## Screenshot capture procedure
 
-Use the Windows snipping workflow:
+Manual runs use the Windows snipping workflow:
 
 1. Press `Win + Shift + S`.
 2. Select the rectangular snip.
@@ -61,7 +129,9 @@ Use the Windows snipping workflow:
 5. Save it with the exact required filename from the list above.
 6. Save it to `projects/simuforge/reports/poc-01/results/sp-05-manual/evidence/`.
 
-Do not use DevTools or code editing.
+Do not use DevTools or code editing for a manual run.
+
+Automated runs capture the same viewport with CDP `Page.captureScreenshot` and write the same filenames, plus a sidecar audit record. The human still reviews the screenshots for axis alignment; the runner does not declare visual PASS.
 
 ## Required JSON exports
 
@@ -225,10 +295,14 @@ Can capture:
 - Timestamps.
 - User observations.
 - JSON export.
+- Pointer start/end coordinates and the full pointer event sequence for each drag (including `isTrusted` and `pointerType`).
+- The declared input method and its SP-05 eligibility.
 
 May not reliably capture:
-- Pointer start/end coordinates for every drag. If unavailable, the exported JSON marks them unavailable. Do not fabricate coordinates.
 - Visual confirmation of axis alignment. This requires user review of screenshots.
+- A distinction between a physical mouse and CDP-injected input from inside the page. Both are trusted; the declared method must be recorded and reviewed.
+
+When a run is automated, the sidecar audit record is part of the evidence: it contains the CDP event sequence, the harness-observed drag lifecycle, and the before/after transform snapshots. Do not discard it.
 
 ## After evidence capture
 

@@ -125,7 +125,7 @@
     <div id="version"></div>
   </div>
   <div id="instructions">
-    <b>How to use:</b> Open this file in Google Chrome. Use the mouse to drag gizmo handles. Select a mode with the buttons. Reset restores the initial cube. "Capture State" records the current transform. "Capture Baseline"/"Capture Final" plus "Compare T-05" evaluate mode-switch stability. "Record Observation" adds your note plus before/after transforms. "Export JSON" downloads the collected evidence. Pointer start/end coordinates are captured when available; otherwise marked unavailable. Visual verification is performed by you; this harness does not declare PASS.
+    <b>How to use:</b> Open this file in Google Chrome. Use the mouse to drag gizmo handles. Select a mode with the buttons. Reset restores the initial cube. "Capture State" records the current transform. "Capture Baseline"/"Capture Final" plus "Compare T-05" evaluate mode-switch stability. "Record Observation" adds your note plus before/after transforms. "Export JSON" downloads the collected evidence. Pointer start/end coordinates are captured when available; otherwise marked unavailable. Exported evidence records the input method explicitly (`physical_mouse`, `cdp_trusted_input`, `synthetic_input`, or `programmatic_transform`); an approved CDP driver declares its method through `window.__simuforgeInputProvenance`. Visual verification is performed by you; this harness does not declare PASS.
   </div>
 
   <script src="https://cdn.babylonjs.com/v9.32.1/babylon.js"></script>
@@ -162,12 +162,19 @@
 
       var gizmoManager = new BABYLON.GizmoManager(scene);
       gizmoManager.attachToMesh(cube);
-      var posGizmo = gizmoManager.gizmos.positionGizmo;
-      var rotGizmo = gizmoManager.gizmos.rotationGizmo;
-      var scaleGizmo = gizmoManager.gizmos.scaleGizmo;
-      if (posGizmo) posGizmo.updateGizmoRotationToMatchAttachedMesh = false;
-      if (rotGizmo) rotGizmo.updateGizmoRotationToMatchAttachedMesh = false;
-      if (scaleGizmo) scaleGizmo.updateGizmoRotationToMatchAttachedMesh = true;
+
+      // Babylon.js creates each gizmo lazily on the first `*GizmoEnabled = true`
+      // assignment, so a gizmo does not exist immediately after GizmoManager is
+      // constructed. The coordinate-space policy must therefore be applied after
+      // lazy creation, and re-applied whenever setMode() activates a different
+      // gizmo. Approved hybrid policy: translate = world, rotate = world,
+      // scale = local.
+      function applyGizmoSpace() {
+        var g = gizmoManager.gizmos;
+        if (g.positionGizmo) g.positionGizmo.updateGizmoRotationToMatchAttachedMesh = false;
+        if (g.rotationGizmo) g.rotationGizmo.updateGizmoRotationToMatchAttachedMesh = false;
+        if (g.scaleGizmo) g.scaleGizmo.updateGizmoRotationToMatchAttachedMesh = true;
+      }
 
       var mode = "translate";
       function setMode(m) {
@@ -175,6 +182,7 @@
         gizmoManager.positionGizmoEnabled = (m === "translate");
         gizmoManager.rotationGizmoEnabled = (m === "rotate");
         gizmoManager.scaleGizmoEnabled = (m === "scale");
+        applyGizmoSpace();
         document.getElementById("btnTranslate").classList.toggle("active", m==="translate");
         document.getElementById("btnRotate").classList.toggle("active", m==="rotate");
         document.getElementById("btnScale").classList.toggle("active", m==="scale");
@@ -276,9 +284,130 @@
       }
       document.getElementById("btnReset").onclick = resetTransform;
 
+      // ---- Input provenance -------------------------------------------------
+      // SP-05 evidence must state how pointer input was produced. The harness
+      // cannot by itself distinguish a physical mouse from CDP-injected input:
+      // both arrive as trusted browser pointer events. A driver therefore
+      // declares its method before interacting:
+      //   window.__simuforgeInputProvenance = {
+      //     method: "cdp_trusted_input",
+      //     driver: "simuforge-sp05-cdp-runner",
+      //     sessionId: "..."
+      //   };
+      // Declarable methods:
+      //   physical_mouse        - a human operating a physical pointing device
+      //   cdp_trusted_input     - Chrome DevTools Protocol Input domain (approved)
+      //   synthetic_input       - JavaScript-constructed PointerEvent (rejected)
+      //   programmatic_transform- transform written outside gizmo interaction (rejected)
+      // Untrusted (isTrusted === false) pointer events always force
+      // synthetic_input, regardless of the declaration.
+      var PROVENANCE_POLICY = {
+        approvedForSp05: ["physical_mouse", "cdp_trusted_input"],
+        rejectedForSp05: ["synthetic_input", "programmatic_transform"],
+        ownerApproval: {
+          date: "2026-11-02",
+          approvedMethod: "cdp_trusted_input",
+          scope: "SP-05 interaction evidence; see SP-05_EVIDENCE_PROCEDURE.md"
+        },
+        note: "Trusted pointer events cannot be distinguished by source inside the page; the declared method is recorded verbatim and untrusted events override it."
+      };
+      var INPUT_METHODS = ["physical_mouse", "cdp_trusted_input", "synthetic_input", "programmatic_transform"];
+      var DRAG_RECORD_LIMIT = 60;
+      var DRAG_EVENT_LIMIT = 40;
+
       var pointerStart = null, pointerEnd = null;
-      canvas.addEventListener("pointerdown", function (e) { pointerStart = { x: e.clientX, y: e.clientY, t: new Date().toISOString() }; });
-      canvas.addEventListener("pointerup", function (e) { pointerEnd = { x: e.clientX, y: e.clientY, t: new Date().toISOString() }; });
+      var inputTrace = { syntheticSeen: false, physicalSeen: false, drags: [], active: null, eventCount: 0 };
+
+      function pointerRecord(e) {
+        return {
+          type: e.type,
+          t: new Date().toISOString(),
+          tms: (typeof performance !== "undefined" && performance.now) ? performance.now() : null,
+          x: e.clientX, y: e.clientY,
+          pointerId: e.pointerId,
+          pointerType: e.pointerType || "",
+          button: e.button,
+          buttons: e.buttons,
+          isTrusted: e.isTrusted === true
+        };
+      }
+      function notePointer(ev) {
+        inputTrace.eventCount += 1;
+        if (!ev.isTrusted) inputTrace.syntheticSeen = true;
+        else if (ev.pointerType === "mouse") inputTrace.physicalSeen = true;
+      }
+
+      canvas.addEventListener("pointerdown", function (e) {
+        var ev = pointerRecord(e);
+        notePointer(ev);
+        pointerStart = { x: e.clientX, y: e.clientY, t: ev.t, isTrusted: ev.isTrusted, pointerType: ev.pointerType };
+        inputTrace.active = { start: pointerStart, moveCount: 0, allTrusted: ev.isTrusted, events: [ev] };
+      });
+
+      canvas.addEventListener("pointermove", function (e) {
+        if (!inputTrace.active) return;
+        var ev = pointerRecord(e);
+        notePointer(ev);
+        var a = inputTrace.active;
+        if (a.events.length < DRAG_EVENT_LIMIT) a.events.push(ev);
+        a.moveCount += 1;
+        a.allTrusted = a.allTrusted && ev.isTrusted;
+      });
+
+      canvas.addEventListener("pointerup", function (e) {
+        var ev = pointerRecord(e);
+        notePointer(ev);
+        pointerEnd = { x: e.clientX, y: e.clientY, t: ev.t, isTrusted: ev.isTrusted, pointerType: ev.pointerType };
+        if (!inputTrace.active) return;
+        var a = inputTrace.active;
+        if (a.events.length < DRAG_EVENT_LIMIT) a.events.push(ev);
+        a.allTrusted = a.allTrusted && ev.isTrusted;
+        var started = new Date(a.start.t).getTime();
+        var ended = new Date(pointerEnd.t).getTime();
+        inputTrace.drags.push({
+          start: a.start,
+          end: pointerEnd,
+          moveCount: a.moveCount,
+          pointerType: a.start.pointerType,
+          allTrusted: a.allTrusted,
+          durationMs: Number.isFinite(started) && Number.isFinite(ended) ? (ended - started) : null,
+          eventSequence: a.events.slice()
+        });
+        if (inputTrace.drags.length > DRAG_RECORD_LIMIT) inputTrace.drags.shift();
+        inputTrace.active = null;
+      });
+
+      function computeProvenance() {
+        var declared = window.__simuforgeInputProvenance || null;
+        var method = declared && declared.method ? String(declared.method) : null;
+        var reasons = [];
+        if (method && INPUT_METHODS.indexOf(method) === -1) {
+          reasons.push("unknown declared input method '" + method + "'");
+          method = null;
+        }
+        if (inputTrace.syntheticSeen) {
+          if (method !== "synthetic_input") reasons.push("untrusted pointer events observed; method forced to synthetic_input");
+          method = "synthetic_input";
+        }
+        if (!method) method = inputTrace.physicalSeen ? "physical_mouse" : "unknown";
+        var eligible = PROVENANCE_POLICY.approvedForSp05.indexOf(method) !== -1;
+        if (!eligible && reasons.length === 0) {
+          reasons.push("input method '" + method + "' is not eligible for SP-05 evidence");
+        }
+        var last = inputTrace.drags.length ? inputTrace.drags[inputTrace.drags.length - 1] : null;
+        return {
+          inputMethod: method,
+          declared: declared,
+          approvedForSp05: eligible,
+          approvedMethods: PROVENANCE_POLICY.approvedForSp05.slice(),
+          rejectedMethods: PROVENANCE_POLICY.rejectedForSp05.slice(),
+          invalidityReasons: reasons,
+          syntheticSeen: inputTrace.syntheticSeen,
+          allObservedEventsTrusted: !inputTrace.syntheticSeen,
+          dragCount: inputTrace.drags.length,
+          lastPointerType: last ? last.pointerType : null
+        };
+      }
 
       var logEntries = [];
       var baselineSnap = null;
@@ -303,11 +432,21 @@
 
       function makeEntry(testId, note) {
         var s = snapshot();
+        var prov = computeProvenance();
+        var lastDrag = inputTrace.drags.length ? inputTrace.drags[inputTrace.drags.length - 1] : null;
         s.testId = testId;
         s.pointerStart = pointerStart ? pointerStart : null;
         s.pointerEnd = pointerEnd ? pointerEnd : null;
         s.userObservation = note || "";
-        s.interactionManual = true;
+        // Provenance is recorded explicitly. `interactionManual` is retained for
+        // older consumers but is now truthful: it is true only for a physical mouse.
+        s.provenance = prov;
+        s.inputMethod = prov.inputMethod;
+        s.sp05Eligible = prov.approvedForSp05;
+        s.interactionManual = prov.inputMethod === "physical_mouse";
+        s.interactionAutomated = prov.inputMethod === "cdp_trusted_input";
+        s.lastDrag = lastDrag;
+        s.dragCount = inputTrace.drags.length;
         s.checklistStatus = getChecklistStatus();
         return s;
       }
@@ -385,10 +524,31 @@
 
       document.getElementById("btnExport").onclick = function () {
         var payload = {
-          harness: "SP-05 interactive transform gizmo (improved validation)",
+          harness: "SP-05 interactive transform gizmo (improved validation, explicit provenance)",
+          harnessVersion: "2.0",
           babylonVersion: (BABYLON.Engine.Version || "unknown"),
           useRightHandedSystem: scene.useRightHandedSystem,
           initialTransform: initial,
+          gizmoSpacePolicy: {
+            translate: "world",
+            rotate: "world",
+            scale: "local",
+            appliedBy: "applyGizmoSpace() after lazy gizmo creation and on every setMode()"
+          },
+          provenancePolicy: {
+            approvedForSp05: PROVENANCE_POLICY.approvedForSp05.slice(),
+            rejectedForSp05: PROVENANCE_POLICY.rejectedForSp05.slice(),
+            declaredMethod: (window.__simuforgeInputProvenance && window.__simuforgeInputProvenance.method) || null,
+            harnessCannotDistinguishTrustedSources: true,
+            ownerApproval: PROVENANCE_POLICY.ownerApproval,
+            note: PROVENANCE_POLICY.note
+          },
+          inputTrace: {
+            dragCount: inputTrace.drags.length,
+            syntheticSeen: inputTrace.syntheticSeen,
+            eventCount: inputTrace.eventCount,
+            drags: inputTrace.drags.slice()
+          },
           validation: { quaternionTolerance: Q_TOL, scaleMinimum: SCALE_MIN, modeSwitchTolerance: CMP_TOL },
           checklistStatus: getChecklistStatus(),
           entries: logEntries,
@@ -442,10 +602,32 @@
         positionEnabled: gizmoManager.positionGizmoEnabled,
         rotationEnabled: gizmoManager.rotationGizmoEnabled,
         scaleEnabled: gizmoManager.scaleGizmoEnabled,
+        positionSpaceWorld: posGizmo ? (posGizmo.updateGizmoRotationToMatchAttachedMesh === false) : null,
+        rotationSpaceWorld: rotGizmo ? (rotGizmo.updateGizmoRotationToMatchAttachedMesh === false) : null,
+        scaleSpaceLocal: scaleGizmo ? (scaleGizmo.updateGizmoRotationToMatchAttachedMesh === true) : null,
+        positionUpdateFlag: posGizmo ? posGizmo.updateGizmoRotationToMatchAttachedMesh : null,
+        rotationUpdateFlag: rotGizmo ? rotGizmo.updateGizmoRotationToMatchAttachedMesh : null,
+        scaleUpdateFlag: scaleGizmo ? scaleGizmo.updateGizmoRotationToMatchAttachedMesh : null,
         positionKeys: posGizmo ? Object.keys(posGizmo) : null,
         rotationKeys: rotGizmo ? Object.keys(rotGizmo) : null,
         scaleKeys: scaleGizmo ? Object.keys(scaleGizmo) : null
       },
+      timestamp: new Date().toISOString()
+    };
+  },
+  getInputTrace: function () {
+    return {
+      declared: window.__simuforgeInputProvenance || null,
+      provenance: computeProvenance(),
+      policy: {
+        approvedForSp05: PROVENANCE_POLICY.approvedForSp05.slice(),
+        rejectedForSp05: PROVENANCE_POLICY.rejectedForSp05.slice(),
+        ownerApproval: PROVENANCE_POLICY.ownerApproval
+      },
+      dragCount: inputTrace.drags.length,
+      syntheticSeen: inputTrace.syntheticSeen,
+      eventCount: inputTrace.eventCount,
+      drags: inputTrace.drags.slice(),
       timestamp: new Date().toISOString()
     };
   },

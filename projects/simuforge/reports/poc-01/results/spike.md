@@ -166,15 +166,38 @@ PASS (automated). Visual verification of the picking screenshots is pending user
 - Console log: `results/sp-04_console.log` (local-only; `*.log` is gitignored)
 - DOM dump: `results/sp-04_dom_dump_front.html`
 
-## SP-05 — Transform Gizmos (BLOCKED pending manual interactive testing)
+## SP-05 — Transform Gizmos (repaired; automated proof captured; BLOCKED pending full suite)
 
 ### Status
-BLOCKED — no interactive Chrome pointer session is available in this environment. No SP-05 acceptance criterion has been passed. A-03 and A-04 remain unverified.
+BLOCKED. The gizmo configuration defect is repaired, and three genuine-CDP proof cases pass twice with a fresh reload before every execution. No SP-05 acceptance criterion has been upgraded to PASS. A-03 and A-04 remain unverified pending the full T-01 through T-06 evidence and human review of the screenshots.
 
-### Harness prepared
-An interactive browser harness has been prepared at `projects/simuforge/reports/poc-01/harness/sp05.html`. It uses Babylon.js 9.32.1, right-handed mode, the existing test cube and editor grid, a GizmoManager with world-oriented translate/rotate and local-oriented scale, a live Inspector (position, quaternion, Euler display, scale, quaternion length, active mode), reset, capture, observation recording, and JSON export. The harness now includes automatic quaternion validation (finite components, length within 1e-5), scale validation (finite, positive, >= 1e-3), T-05 baseline/final capture and comparison (tolerance 1e-5), an evidence checklist, and validation fields in exported JSON. Manual evidence should be stored in `projects/simuforge/reports/poc-01/results/sp-05-manual/`.
+### Verified repair
+Babylon's `GizmoManager` creates each gizmo lazily on the first `*GizmoEnabled = true` assignment. The harness previously read `gizmoManager.gizmos.positionGizmo`, `rotationGizmo`, and `scaleGizmo` immediately after construction, when all three were `null`, so the world/world/local assignments were dead code and Babylon's local default applied to every gizmo.
 
-### Test cases (to be executed manually)
+The harness now defines `applyGizmoSpace()`, which is called after the three enable assignments in `setMode()` and on every mode change. It applies:
+- Position gizmo: world orientation (`updateGizmoRotationToMatchAttachedMesh = false`).
+- Rotation gizmo: world orientation.
+- Scale gizmo: local orientation (`updateGizmoRotationToMatchAttachedMesh = true`).
+
+The diagnostics snapshot exposes `positionSpaceWorld`, `rotationSpaceWorld`, `scaleSpaceLocal`, and the raw update flags, so the applied state can be verified after a reload rather than inferred from source.
+
+### Provenance repair
+The hardcoded `interactionManual: true` has been removed. The harness records a declared method (`physical_mouse`, `cdp_trusted_input`, `synthetic_input`, `programmatic_transform`), forces `synthetic_input` for any untrusted pointer event, and records `inputMethod`, `sp05Eligible`, `interactionManual`, `interactionAutomated`, `lastDrag`, and `dragCount` in every entry and in the export. `interactionManual` is true only for `physical_mouse`. The Project Owner approved `cdp_trusted_input` on 2026-11-02; see `SP-05_EVIDENCE_PROCEDURE.md`.
+
+### Automated proof (2026-11-03)
+Runner: `projects/simuforge/reports/poc-01/harness/runner/`. Command: `node run.js --cases proof --passes 2`.
+
+| Case | Checks | Result | Key observation |
+| --- | --- | --- | --- |
+| T-01 World translate | 37/37 | PASS | Cube rotated 40.8814° around world Y; world X drag moved `(0.902087, 0, 0)`; handle direction matched world X exactly. |
+| T-02 World rotate | 35/35 | PASS | World X rotation delta axis `(1, 0, 0)`, angle 43.9206°; the rotated local X was `(0.756066, 0, -0.654495)`, so local-space rotation is excluded. |
+| T-04 Local scale | 41/41 | PASS | Scale `(1, 1, 1) → (1.203411, 1, 1)`; handle direction matched the local X axis in world; Y and Z unchanged. |
+
+Both passes produced identical transform values. Every drag reported lifecycle `start=1`, `drag=24`, `end=1`, `allTrusted=true`, `pointerType="mouse"`, with no cross-axis activity. All exported entries report `inputMethod="cdp_trusted_input"`, `sp05Eligible=true`, `interactionManual=false`, `interactionAutomated=true`; no synthetic input was observed and no console errors were recorded.
+
+Proof artifacts (not official evidence): `projects/simuforge/reports/poc-01/results/sp-05-automated/proof/`.
+
+### Test cases (full suite not yet executed)
 - T-01 World Translate
 - T-02 World Rotate (45° and 90° around Y)
 - T-03 Local Scale (unrotated)
@@ -185,10 +208,11 @@ An interactive browser harness has been prepared at `projects/simuforge/reports/
 ### Notes
 - No fabricated evidence or test logs have been created.
 - SP-04 remains PASS (automated), visual review pending.
-- SP-05 has not been executed.
+- The full T-01 through T-06 suite has not been executed. SP-05 remains BLOCKED; do not start SP-06.
+- The runner's proof artifacts are reproducible but are not a substitute for reviewing the full suite and the visual axis alignment.
 
 ### Consolidated report
-A consolidated SP-05 report is available at `projects/simuforge/reports/poc-01/results/sp-05-manual/SP-05_CONSOLIDATED_REPORT.md`. It records user-reported T-01 through T-05 results, automated T-06 validator results (8/8 PASS), and the conclusion that SP-05 remains BLOCKED with A-03 and A-04 unverified.
+A consolidated SP-05 report is available at `projects/simuforge/reports/poc-01/results/sp-05-manual/SP-05_CONSOLIDATED_REPORT.md`. It records user-reported T-01 through T-05 results, automated T-06 validator results (8/8 PASS), the 2026-11-03 harness repair and CDP proof update, and the conclusion that SP-05 remains BLOCKED with A-03 and A-04 unverified.
 
 ### POC-04 OS click evidence
 An OS-level click was executed at screen coordinate `(188, 188)` on the SP-05 harness. Archived evidence includes the OS click JSON, before/after screenshots, and baseline/after-click transform JSON snapshots. Transform comparison is STABLE (all 11 components diff 0 within tolerance 1e-5). OS click POC-04 is PASS for transform stability. SP-05 overall remains BLOCKED.
