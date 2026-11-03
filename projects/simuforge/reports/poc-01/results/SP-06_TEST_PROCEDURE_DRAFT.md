@@ -104,8 +104,18 @@ Probe P1 tested modifier combinations on the default input map using CDP trusted
 | Ctrl+left-drag | modifiers=2 | radius −2.257, target +0.556, alpha/beta 0 | **Unexpected.** Default map ctrl+left → pan (target only). Radius change suggests either modifier not applied, or inertia/residual motion, or handler coupling. Inconclusive. |
 | Alt+left-drag | modifiers=1 | target +0.046, radius −0.001 | Near-no-op; possibly modifier not applied or Alt triggers browser/OS behavior. Inconclusive. |
 
-### Factual observations
-- Plain left-drag and right-drag behave as the default map predicts.
+### Empirical update (2026-11-03, modifier validation)
+
+Follow-up probe confirmed:
+- CDP modifier delivery works: ctrlKey=true for modifiers=2, altKey=true for modifiers=1; both isTrusted=true, pointerType=mouse.
+- Plain left-drag -> orbit (alpha +1.001).
+- Ctrl+left-drag -> pan (target -0.707/+0.707, no orbit).
+- Alt+left-drag -> orbit (alpha +1.001) because alt is a wildcard in the plain rotate entry.
+- Right-drag -> pan.
+- No browser/OS interference observed on Windows/Chrome.
+- zoomToMouseLocation is false by default; target stays fixed when zooming at projected target center.
+
+Conclusion: modifier delivery is confirmed. Default behavior is ctrl+left=pan, alt+left=orbit (via wildcard). Decision 1 remains PROVISIONAL; recommendation: keep default behavior.
 - Wheel up (deltaY −120) zooms in; wheel down zooms out (P3, confirmed).
 - `zoomToMouseLocation` is false by default (Babylon 9.32.1).
 
