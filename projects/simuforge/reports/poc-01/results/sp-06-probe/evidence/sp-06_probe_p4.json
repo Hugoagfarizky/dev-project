@@ -1,0 +1,77 @@
+{
+  "id": "P4",
+  "title": "Inertia Settle",
+  "status": "PASS",
+  "checks": {
+    "caseId": "P4",
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "result": "PASS",
+    "checks": [
+      {
+        "name": "P4: camera settles within 3000ms",
+        "status": "PASS",
+        "detail": {
+          "settled": true,
+          "ms": 1434,
+          "state": {
+            "alpha": 1.9856564342080703,
+            "beta": 1.0471975511965976,
+            "radius": 8,
+            "target": [
+              0,
+              0.5,
+              0
+            ]
+          }
+        },
+        "timestamp": "2026-11-03T11:17:33.550Z"
+      },
+      {
+        "name": "P4: final state finite",
+        "status": "PASS",
+        "detail": {
+          "alpha": 1.9856564342080703,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:33.550Z"
+      },
+      {
+        "name": "P4: no console errors",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T11:17:33.550Z"
+      }
+    ]
+  },
+  "console": {
+    "counts": {
+      "log": 1
+    },
+    "warnings": [],
+    "errors": [],
+    "total": 1
+  },
+  "error": null,
+  "settle": {
+    "settled": true,
+    "ms": 1434,
+    "state": {
+      "alpha": 1.9856564342080703,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    }
+  }
+}

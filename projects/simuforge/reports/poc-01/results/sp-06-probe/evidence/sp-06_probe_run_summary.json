@@ -1,0 +1,64 @@
+{
+  "runId": "sp06-probe-2026-11-03T11-17-18-825Z-718e4d",
+  "purpose": "SP-06 empirical probes P1-P5 (read-only; not full SP-06)",
+  "harness": {
+    "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\harness\\sp06-probe.html",
+    "bytes": 36233,
+    "sha256": "0a05cda7c8407c747466fff21137820e551945de7b5e74c89a3d695807a1d222"
+  },
+  "browser": {
+    "version": "Chrome/156.0.8078.76",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+  },
+  "port": 9224,
+  "startedAt": "2026-11-03T11:17:18.829Z",
+  "completedAt": "2026-11-03T11:17:41.973Z",
+  "probes": [
+    {
+      "id": "P1",
+      "status": "FAIL",
+      "checks": {
+        "passed": 9,
+        "total": 10,
+        "failed": 1
+      }
+    },
+    {
+      "id": "P2",
+      "status": "FAIL",
+      "checks": {
+        "passed": 11,
+        "total": 12,
+        "failed": 1
+      }
+    },
+    {
+      "id": "P3",
+      "status": "PASS",
+      "checks": {
+        "passed": 2,
+        "total": 2,
+        "failed": 0
+      }
+    },
+    {
+      "id": "P4",
+      "status": "PASS",
+      "checks": {
+        "passed": 3,
+        "total": 3,
+        "failed": 0
+      }
+    },
+    {
+      "id": "P5",
+      "status": "PASS",
+      "checks": {
+        "passed": 33,
+        "total": 33,
+        "failed": 0
+      }
+    }
+  ],
+  "note": "Probes only. SP-06 remains NO-GO. SP-05 remains BLOCKED."
+}

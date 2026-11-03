@@ -1,0 +1,617 @@
+{
+  "id": "P5",
+  "title": "Gizmo Survival",
+  "status": "PASS",
+  "checks": {
+    "caseId": "P5",
+    "total": 33,
+    "passed": 33,
+    "failed": 0,
+    "result": "PASS",
+    "checks": [
+      {
+        "name": "P5: reset quaternion identity",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "expected": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "tolerance": 1e-9,
+          "deltas": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T11:17:37.695Z"
+      },
+      {
+        "name": "P5 setup: rotate Y ~42: handle picked as expected axis",
+        "status": "PASS",
+        "detail": {
+          "expected": "y",
+          "picked": "y",
+          "mesh": "ignore"
+        },
+        "timestamp": "2026-11-03T11:17:39.537Z"
+      },
+      {
+        "name": "P5 setup: rotate Y ~42: harness observed a trusted drag",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T11:17:39.537Z"
+      },
+      {
+        "name": "P5 setup: rotate Y ~42: drag lifecycle started once",
+        "status": "PASS",
+        "detail": {
+          "start": 1,
+          "drag": 24,
+          "end": 1,
+          "deltaSum": [
+            -0.5147700738688448,
+            0,
+            -0.2804195631727415
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:39.537Z"
+      },
+      {
+        "name": "P5 setup: rotate Y ~42: drag lifecycle progressed",
+        "status": "PASS",
+        "detail": {
+          "start": 1,
+          "drag": 24,
+          "end": 1,
+          "deltaSum": [
+            -0.5147700738688448,
+            0,
+            -0.2804195631727415
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:39.537Z"
+      },
+      {
+        "name": "P5 setup: rotate Y ~42: drag lifecycle ended once",
+        "status": "PASS",
+        "detail": {
+          "start": 1,
+          "drag": 24,
+          "end": 1,
+          "deltaSum": [
+            -0.5147700738688448,
+            0,
+            -0.2804195631727415
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:39.537Z"
+      },
+      {
+        "name": "P5 setup: rotate Y ~42: no cross-axis gizmo activity",
+        "status": "PASS",
+        "detail": {
+          "x": {
+            "start": 0,
+            "drag": 0,
+            "end": 0,
+            "deltaSum": [
+              0,
+              0,
+              0
+            ]
+          },
+          "z": {
+            "start": 0,
+            "drag": 0,
+            "end": 0,
+            "deltaSum": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "timestamp": "2026-11-03T11:17:39.537Z"
+      },
+      {
+        "name": "P5 setup: rotate Y ~42: harness pointer trace declares cdp_trusted_input",
+        "status": "PASS",
+        "detail": {
+          "inputMethod": "cdp_trusted_input",
+          "declared": {
+            "method": "cdp_trusted_input",
+            "driver": "simuforge-sp05-cdp-runner",
+            "sessionId": "sp06-probe-2026-11-03T11-17-18-825Z-718e4d",
+            "declaredAt": "2026-11-03T11:17:36.758Z",
+            "note": "Browser-level trusted input via CDP Input.dispatchMouseEvent"
+          },
+          "approvedForSp05": true,
+          "approvedMethods": [
+            "physical_mouse",
+            "cdp_trusted_input"
+          ],
+          "rejectedMethods": [
+            "synthetic_input",
+            "programmatic_transform"
+          ],
+          "invalidityReasons": [],
+          "syntheticSeen": false,
+          "allObservedEventsTrusted": true,
+          "dragCount": 1,
+          "lastPointerType": "mouse"
+        },
+        "timestamp": "2026-11-03T11:17:39.537Z"
+      },
+      {
+        "name": "P5 setup: rotate Y ~42: rotation delta is about world Y",
+        "status": "PASS",
+        "detail": {
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "expectedAxis": [
+            0,
+            1,
+            0
+          ],
+          "axisAlignment": 1,
+          "limit": 0.9995
+        },
+        "timestamp": "2026-11-03T11:17:39.538Z"
+      },
+      {
+        "name": "P5 setup: rotate Y ~42: rotation angle is plausible",
+        "status": "PASS",
+        "detail": {
+          "requested": 42,
+          "actual": 40.88135540793271
+        },
+        "timestamp": "2026-11-03T11:17:39.538Z"
+      },
+      {
+        "name": "P5: setup rotation non-identity",
+        "status": "PASS",
+        "detail": {
+          "angleDeg": 40.88135540793271
+        },
+        "timestamp": "2026-11-03T11:17:39.538Z"
+      },
+      {
+        "name": "scale x root follows the cube (local orientation)",
+        "status": "PASS",
+        "detail": {
+          "rotation": [
+            0,
+            0.34923739201427134,
+            0,
+            0.9370342811333374
+          ],
+          "cubeQuaternion": [
+            0,
+            0.34923739201427134,
+            0,
+            0.9370342811333374
+          ],
+          "localError": 0,
+          "dragAxis": [
+            1,
+            0,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:39.862Z"
+      },
+      {
+        "name": "scale y root follows the cube (local orientation)",
+        "status": "PASS",
+        "detail": {
+          "rotation": [
+            0,
+            0.34923739201427134,
+            0,
+            0.9370342811333374
+          ],
+          "cubeQuaternion": [
+            0,
+            0.34923739201427134,
+            0,
+            0.9370342811333374
+          ],
+          "localError": 0,
+          "dragAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:39.862Z"
+      },
+      {
+        "name": "scale z root follows the cube (local orientation)",
+        "status": "PASS",
+        "detail": {
+          "rotation": [
+            0,
+            0.34923739201427134,
+            0,
+            0.9370342811333374
+          ],
+          "cubeQuaternion": [
+            0,
+            0.34923739201427134,
+            0,
+            0.9370342811333374
+          ],
+          "localError": 0,
+          "dragAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:39.862Z"
+      },
+      {
+        "name": "P5: input-map edit applied",
+        "status": "PASS",
+        "detail": {
+          "removed": true,
+          "index": 1
+        },
+        "timestamp": "2026-11-03T11:17:39.864Z"
+      },
+      {
+        "name": "P5: S-10a camera state finite",
+        "status": "PASS",
+        "detail": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:39.868Z"
+      },
+      {
+        "name": "x local-space handle direction matches expectation",
+        "status": "PASS",
+        "detail": {
+          "space": "local",
+          "axis": "x",
+          "cubeQuaternion": [
+            0,
+            0.34923739201427134,
+            0,
+            0.9370342811333374
+          ],
+          "worldDirection": [
+            0.6048531532287598,
+            0,
+            -0.5235958099365234
+          ],
+          "expectedWorldDirection": [
+            0.7560664880381404,
+            0,
+            -0.6544948171419486
+          ],
+          "worldAngleDeg": 0,
+          "screenDirection": {
+            "x": 82.72970506655213,
+            "y": 2.9785998627966705
+          },
+          "projectedWorldAxisScreen": {
+            "x": 0.8944271944110072,
+            "y": 0.4472135886777754
+          },
+          "screenAngleDeg": 24.503064466092873
+        },
+        "timestamp": "2026-11-03T11:17:40.170Z"
+      },
+      {
+        "name": "P5: local X scale after edit: handle picked as expected axis",
+        "status": "PASS",
+        "detail": {
+          "expected": "x",
+          "picked": "x",
+          "mesh": "yPosMesh"
+        },
+        "timestamp": "2026-11-03T11:17:41.433Z"
+      },
+      {
+        "name": "P5: local X scale after edit: harness observed a trusted drag",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T11:17:41.433Z"
+      },
+      {
+        "name": "P5: local X scale after edit: drag lifecycle started once",
+        "status": "PASS",
+        "detail": {
+          "start": 1,
+          "drag": 24,
+          "end": 1,
+          "deltaSum": [
+            0.6491026302372607,
+            0,
+            -0.5619007171858362
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:41.433Z"
+      },
+      {
+        "name": "P5: local X scale after edit: drag lifecycle progressed",
+        "status": "PASS",
+        "detail": {
+          "start": 1,
+          "drag": 24,
+          "end": 1,
+          "deltaSum": [
+            0.6491026302372607,
+            0,
+            -0.5619007171858362
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:41.433Z"
+      },
+      {
+        "name": "P5: local X scale after edit: drag lifecycle ended once",
+        "status": "PASS",
+        "detail": {
+          "start": 1,
+          "drag": 24,
+          "end": 1,
+          "deltaSum": [
+            0.6491026302372607,
+            0,
+            -0.5619007171858362
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:41.433Z"
+      },
+      {
+        "name": "P5: local X scale after edit: no cross-axis gizmo activity",
+        "status": "PASS",
+        "detail": {
+          "y": {
+            "start": 0,
+            "drag": 0,
+            "end": 0,
+            "deltaSum": [
+              0,
+              0,
+              0
+            ]
+          },
+          "z": {
+            "start": 0,
+            "drag": 0,
+            "end": 0,
+            "deltaSum": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "timestamp": "2026-11-03T11:17:41.433Z"
+      },
+      {
+        "name": "P5: local X scale after edit: harness pointer trace declares cdp_trusted_input",
+        "status": "PASS",
+        "detail": {
+          "inputMethod": "cdp_trusted_input",
+          "declared": {
+            "method": "cdp_trusted_input",
+            "driver": "simuforge-sp05-cdp-runner",
+            "sessionId": "sp06-probe-2026-11-03T11-17-18-825Z-718e4d",
+            "declaredAt": "2026-11-03T11:17:36.758Z",
+            "note": "Browser-level trusted input via CDP Input.dispatchMouseEvent"
+          },
+          "approvedForSp05": true,
+          "approvedMethods": [
+            "physical_mouse",
+            "cdp_trusted_input"
+          ],
+          "rejectedMethods": [
+            "synthetic_input",
+            "programmatic_transform"
+          ],
+          "invalidityReasons": [],
+          "syntheticSeen": false,
+          "allObservedEventsTrusted": true,
+          "dragCount": 2,
+          "lastPointerType": "mouse"
+        },
+        "timestamp": "2026-11-03T11:17:41.433Z"
+      },
+      {
+        "name": "P5: local X scale after edit: scaled axis increased",
+        "status": "PASS",
+        "detail": {
+          "before": [
+            0.9999997998853689,
+            1,
+            0.9999997998853689
+          ],
+          "after": [
+            1.203410653657644,
+            1,
+            0.9999998059395139
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:41.433Z"
+      },
+      {
+        "name": "P5: local X scale after edit: scale is confined to local X",
+        "status": "PASS",
+        "detail": {
+          "before": [
+            0.9999997998853689,
+            1,
+            0.9999997998853689
+          ],
+          "after": [
+            1.203410653657644,
+            1,
+            0.9999998059395139
+          ],
+          "maxOther": 6.05414496313017e-9,
+          "tolerance": 0.000001
+        },
+        "timestamp": "2026-11-03T11:17:41.433Z"
+      },
+      {
+        "name": "P5: gizmo drag produced non-uniform scale",
+        "status": "PASS",
+        "detail": [
+          1.203410653657644,
+          1,
+          0.9999998059395139
+        ],
+        "timestamp": "2026-11-03T11:17:41.433Z"
+      },
+      {
+        "name": "P5: S-10b camera state finite",
+        "status": "PASS",
+        "detail": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:41.779Z"
+      },
+      {
+        "name": "P5: camera unchanged during gizmo drag (alpha)",
+        "status": "PASS",
+        "detail": {
+          "before": 0.7853981633974483,
+          "after": 0.7853981633974483
+        },
+        "timestamp": "2026-11-03T11:17:41.779Z"
+      },
+      {
+        "name": "P5: camera unchanged during gizmo drag (beta)",
+        "status": "PASS",
+        "detail": {
+          "before": 1.0471975511965976,
+          "after": 1.0471975511965976
+        },
+        "timestamp": "2026-11-03T11:17:41.779Z"
+      },
+      {
+        "name": "P5: camera unchanged during gizmo drag (radius)",
+        "status": "PASS",
+        "detail": {
+          "before": 8,
+          "after": 8
+        },
+        "timestamp": "2026-11-03T11:17:41.779Z"
+      },
+      {
+        "name": "P5: camera unchanged during gizmo drag (target)",
+        "status": "PASS",
+        "detail": {
+          "before": [
+            0,
+            0.5,
+            0
+          ],
+          "after": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:41.780Z"
+      },
+      {
+        "name": "P5: no console errors",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T11:17:41.785Z"
+      }
+    ]
+  },
+  "console": {
+    "counts": {
+      "log": 1
+    },
+    "warnings": [],
+    "errors": [],
+    "total": 1
+  },
+  "error": null,
+  "inputMapEdit": {
+    "removed": true,
+    "index": 1
+  },
+  "s10a": {
+    "alpha": 0.7853981633974483,
+    "beta": 1.0471975511965976,
+    "radius": 8,
+    "target": [
+      0,
+      0.5,
+      0
+    ]
+  },
+  "gizmoDrag": {
+    "before": [
+      0.9999997998853689,
+      1,
+      0.9999997998853689
+    ],
+    "after": [
+      1.203410653657644,
+      1,
+      0.9999998059395139
+    ],
+    "pickedAxis": "x"
+  },
+  "s10": {
+    "camState": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "settled": true,
+    "ms": 344
+  },
+  "s10b": {
+    "alpha": 0.7853981633974483,
+    "beta": 1.0471975511965976,
+    "radius": 8,
+    "target": [
+      0,
+      0.5,
+      0
+    ]
+  }
+}

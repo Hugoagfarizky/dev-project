@@ -1,0 +1,388 @@
+{
+  "id": "P2",
+  "title": "Input-map Removal and Restoration",
+  "status": "FAIL",
+  "checks": {
+    "caseId": "P2",
+    "total": 12,
+    "passed": 11,
+    "failed": 1,
+    "result": "FAIL",
+    "checks": [
+      {
+        "name": "P2: Babylon 9.32.1",
+        "status": "PASS",
+        "detail": "9.32.1",
+        "timestamp": "2026-11-03T11:17:26.406Z"
+      },
+      {
+        "name": "P2: plain rotate entry removed",
+        "status": "PASS",
+        "detail": {
+          "removed": true,
+          "index": 1,
+          "lengthAfter": 7
+        },
+        "timestamp": "2026-11-03T11:17:26.424Z"
+      },
+      {
+        "name": "P2: getEntry rotate is null after removal",
+        "status": "FAIL",
+        "detail": null,
+        "timestamp": "2026-11-03T11:17:26.433Z"
+      },
+      {
+        "name": "P2: plain left-drag does not orbit after removal",
+        "status": "PASS",
+        "detail": {
+          "alpha": 0,
+          "beta": 0,
+          "radius": 0,
+          "target": [
+            0,
+            0,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:27.334Z"
+      },
+      {
+        "name": "P2: getEntry rotate restored after resetInputMap",
+        "status": "PASS",
+        "detail": {
+          "source": "pointer",
+          "button": 0,
+          "interaction": "rotate"
+        },
+        "timestamp": "2026-11-03T11:17:27.336Z"
+      },
+      {
+        "name": "P2: plain left-drag orbits after reset",
+        "status": "PASS",
+        "detail": {
+          "alpha": 0.7475826992691295,
+          "beta": 0,
+          "radius": 0,
+          "target": [
+            0,
+            0,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T11:17:28.299Z"
+      },
+      {
+        "name": "P2: getEntries available",
+        "status": "PASS",
+        "detail": {
+          "hasGetEntries": true,
+          "hasSetInteractions": true,
+          "hasSetInteraction": true,
+          "hasAddEntry": true,
+          "hasReset": true
+        },
+        "timestamp": "2026-11-03T11:17:28.301Z"
+      },
+      {
+        "name": "P2: setInteractions available",
+        "status": "PASS",
+        "detail": {
+          "hasGetEntries": true,
+          "hasSetInteractions": true,
+          "hasSetInteraction": true,
+          "hasAddEntry": true,
+          "hasReset": true
+        },
+        "timestamp": "2026-11-03T11:17:28.301Z"
+      },
+      {
+        "name": "P2: setInteraction available",
+        "status": "PASS",
+        "detail": {
+          "hasGetEntries": true,
+          "hasSetInteractions": true,
+          "hasSetInteraction": true,
+          "hasAddEntry": true,
+          "hasReset": true
+        },
+        "timestamp": "2026-11-03T11:17:28.301Z"
+      },
+      {
+        "name": "P2: addEntry available",
+        "status": "PASS",
+        "detail": {
+          "hasGetEntries": true,
+          "hasSetInteractions": true,
+          "hasSetInteraction": true,
+          "hasAddEntry": true,
+          "hasReset": true
+        },
+        "timestamp": "2026-11-03T11:17:28.301Z"
+      },
+      {
+        "name": "P2: resetInputMap available",
+        "status": "PASS",
+        "detail": {
+          "hasGetEntries": true,
+          "hasSetInteractions": true,
+          "hasSetInteraction": true,
+          "hasAddEntry": true,
+          "hasReset": true
+        },
+        "timestamp": "2026-11-03T11:17:28.301Z"
+      },
+      {
+        "name": "P2: no console errors",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T11:17:28.305Z"
+      }
+    ]
+  },
+  "console": {
+    "counts": {
+      "log": 1
+    },
+    "warnings": [],
+    "errors": [],
+    "total": 1
+  },
+  "error": null,
+  "inputMapBefore": [
+    {
+      "source": "pointer",
+      "button": 0,
+      "modifiers": {
+        "ctrl": true
+      },
+      "interaction": "pan"
+    },
+    {
+      "source": "pointer",
+      "button": 0,
+      "interaction": "rotate"
+    },
+    {
+      "source": "pointer",
+      "button": 2,
+      "interaction": "pan"
+    },
+    {
+      "source": "wheel",
+      "interaction": "zoom"
+    },
+    {
+      "source": "keyboard",
+      "key": [
+        187,
+        107,
+        189,
+        109
+      ],
+      "interaction": "zoom"
+    },
+    {
+      "source": "keyboard",
+      "modifiers": {
+        "ctrl": true
+      },
+      "interaction": "pan"
+    },
+    {
+      "source": "keyboard",
+      "modifiers": {
+        "alt": true
+      },
+      "interaction": "zoom"
+    },
+    {
+      "source": "keyboard",
+      "interaction": "rotate"
+    }
+  ],
+  "getEntryBefore": {
+    "source": "pointer",
+    "button": 0,
+    "interaction": "rotate"
+  },
+  "removeResult": {
+    "removed": true,
+    "index": 1,
+    "lengthAfter": 7
+  },
+  "inputMapAfterRemove": [
+    {
+      "source": "pointer",
+      "button": 0,
+      "modifiers": {
+        "ctrl": true
+      },
+      "interaction": "pan"
+    },
+    {
+      "source": "pointer",
+      "button": 2,
+      "interaction": "pan"
+    },
+    {
+      "source": "wheel",
+      "interaction": "zoom"
+    },
+    {
+      "source": "keyboard",
+      "key": [
+        187,
+        107,
+        189,
+        109
+      ],
+      "interaction": "zoom"
+    },
+    {
+      "source": "keyboard",
+      "modifiers": {
+        "ctrl": true
+      },
+      "interaction": "pan"
+    },
+    {
+      "source": "keyboard",
+      "modifiers": {
+        "alt": true
+      },
+      "interaction": "zoom"
+    },
+    {
+      "source": "keyboard",
+      "interaction": "rotate"
+    }
+  ],
+  "plainDragAfterRemoval": {
+    "before": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "after": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "delta": {
+      "alpha": 0,
+      "beta": 0,
+      "radius": 0,
+      "target": [
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "getEntryAfterReset": {
+    "source": "pointer",
+    "button": 0,
+    "interaction": "rotate"
+  },
+  "plainDragAfterReset": {
+    "before": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "after": {
+      "alpha": 1.5329808626665777,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "delta": {
+      "alpha": 0.7475826992691295,
+      "beta": 0,
+      "radius": 0,
+      "target": [
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "apiAvailability": {
+    "hasGetEntries": true,
+    "hasSetInteractions": true,
+    "hasSetInteraction": true,
+    "hasAddEntry": true,
+    "hasReset": true
+  },
+  "inputMapAfterReset": [
+    {
+      "source": "pointer",
+      "button": 0,
+      "modifiers": {
+        "ctrl": true
+      },
+      "interaction": "pan"
+    },
+    {
+      "source": "pointer",
+      "button": 0,
+      "interaction": "rotate"
+    },
+    {
+      "source": "pointer",
+      "button": 2,
+      "interaction": "pan"
+    },
+    {
+      "source": "wheel",
+      "interaction": "zoom"
+    },
+    {
+      "source": "keyboard",
+      "key": [
+        187,
+        107,
+        189,
+        109
+      ],
+      "interaction": "zoom"
+    },
+    {
+      "source": "keyboard",
+      "modifiers": {
+        "ctrl": true
+      },
+      "interaction": "pan"
+    },
+    {
+      "source": "keyboard",
+      "modifiers": {
+        "alt": true
+      },
+      "interaction": "zoom"
+    },
+    {
+      "source": "keyboard",
+      "interaction": "rotate"
+    }
+  ]
+}

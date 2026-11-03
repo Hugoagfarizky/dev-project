@@ -1,0 +1,103 @@
+{
+  "id": "P3",
+  "title": "Wheel Direction",
+  "status": "PASS",
+  "checks": {
+    "caseId": "P3",
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "result": "PASS",
+    "checks": [
+      {
+        "name": "P3: wheel up changes radius",
+        "status": "PASS",
+        "detail": -7.318074187348196,
+        "timestamp": "2026-11-03T11:17:29.791Z"
+      },
+      {
+        "name": "P3: no console errors",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T11:17:30.055Z"
+      }
+    ]
+  },
+  "console": {
+    "counts": {
+      "log": 1
+    },
+    "warnings": [],
+    "errors": [],
+    "total": 1
+  },
+  "error": null,
+  "wheelUp": {
+    "before": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "after": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 0.6819258126518042,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "delta": {
+      "alpha": 0,
+      "beta": 0,
+      "radius": -7.318074187348196,
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    "deltaY": -120,
+    "direction": "zoom in (radius decreased)"
+  },
+  "wheelDown": {
+    "before": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 0.6819258126518042,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "after": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 6.049270334911939,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "delta": {
+      "alpha": 0,
+      "beta": 0,
+      "radius": 5.367344522260135,
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    "deltaY": 120,
+    "direction": "zoom out (radius increased)"
+  }
+}
