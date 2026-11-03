@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SP-05 Visual Review Gallery</title>
+<style>
+  :root { --bg:#0d0d0f; --fg:#e6e6e6; --muted:#9aa0a6; --accent:#4a90d9; --card:#1a1a1f; --border:#333; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: "Segoe UI", system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  header { padding:16px 24px; border-bottom:1px solid var(--border); background:#111; position:sticky; top:0; z-index:5; }
+  header h1 { margin:0; font-size:20px; }
+  header p { margin:4px 0 0; color:var(--muted); font-size:13px; }
+  .toolbar { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .toolbar button { background:#2a2a2a; color:var(--fg); border:1px solid #444; padding:6px 12px; border-radius:4px; cursor:pointer; font-size:12px; }
+  .toolbar button:hover { background:#3a3a3a; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:16px; padding:20px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; display:flex; flex-direction:column; }
+  .card img { width:100%; height:200px; object-fit:cover; cursor:zoom-in; background:#000; }
+  .card .meta { padding:10px 12px; font-size:12px; }
+  .card .file { font-family:monospace; font-size:12px; color:var(--accent); margin-bottom:4px; }
+  .card .case { color:var(--muted); margin-bottom:6px; }
+  .card .q { font-size:12px; margin-bottom:8px; }
+  .verdict { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:6px; }
+  .verdict button { flex:1; min-width:60px; background:#222; color:var(--fg); border:1px solid #444; padding:4px 6px; border-radius:3px; cursor:pointer; font-size:11px; }
+  .verdict button.active.pass { background:#1e4d2b; border-color:#2e7d32; }
+  .verdict button.active.fail { background:#4d1e1e; border-color:#c62828; }
+  .verdict button.active.unc { background:#4d3f1e; border-color:#f9a825; }
+  .verdict button.active.nr { background:#2a2a2a; border-color:#666; }
+  .note { width:100%; background:#111; color:var(--fg); border:1px solid #333; border-radius:3px; padding:6px; font-size:11px; resize:vertical; min-height:40px; }
+  .badge { display:inline-block; padding:2px 6px; border-radius:3px; font-size:10px; font-weight:bold; margin-left:6px; }
+  .badge.official { background:#1e3a5f; color:#90caf9; }
+  .badge.supp { background:#3a2a1e; color:#ffcc80; }
+  /* lightbox */
+  .lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.92); display:none; z-index:100; }
+  .lightbox.open { display:flex; flex-direction:column; }
+  .lb-bar { padding:10px 16px; background:#111; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; }
+  .lb-bar .title { font-family:monospace; font-size:13px; }
+  .lb-bar button { background:#2a2a2a; color:var(--fg); border:1px solid #444; padding:4px 10px; border-radius:3px; cursor:pointer; }
+  .lb-imgwrap { flex:1; overflow:auto; display:flex; align-items:center; justify-content:center; padding:16px; }
+  .lb-imgwrap img { max-width:100%; max-height:100%; cursor:zoom-out; }
+  .lb-meta { padding:10px 16px; background:#111; border-top:1px solid #333; font-size:12px; color:var(--muted); }
+  .status { font-size:12px; color:var(--muted); margin-left:12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>SP-05 Visual Review Gallery</h1>
+  <p>SimuForge POC-01 — screenshots are displayed at reduced size for review; click any image to open full resolution. Automated results are not verdicts. Do not mark A-03/A-04 PASS without visual evidence.</p>
+  <div class="toolbar">
+    <button onclick="saveJson()">Save review (JSON)</button>
+    <button onclick="saveMd()">Save review (Markdown)</button>
+    <button onclick="clearAll()">Clear all verdicts</button>
+    <span class="status" id="status">0/10 reviewed</span>
+  </div>
+</header>
+<div class="grid" id="grid"></div>
+
+<div class="lightbox" id="lb">
+  <div class="lb-bar">
+    <span class="title" id="lb-title"></span>
+    <div>
+      <button onclick="lbZoom(1.25)">Zoom in</button>
+      <button onclick="lbZoom(0.8)">Zoom out</button>
+      <button onclick="lbReset()">Reset</button>
+      <button onclick="closeLb()">Close (Esc)</button>
+    </div>
+  </div>
+  <div class="lb-imgwrap" id="lb-wrap"><img id="lb-img" src="" alt=""></div>
+  <div class="lb-meta" id="lb-meta"></div>
+</div>
+
+<script>
+const items = [
+  { file:"sp-05_translate_x.png", caseId:"T-01", crit:"A-03", official:true, q:"After ~41° Y rotation, does the X translate handle follow world X (not rotated local X), and does the cube move along that world axis?" },
+  { file:"sp-05_translate_y.png", caseId:"T-01", crit:"A-03", official:true, q:"Does the Y handle remain vertical/world-aligned after cube rotation?" },
+  { file:"sp-05_translate_z.png", caseId:"T-01", crit:"A-03", official:true, q:"Does the Z handle follow world Z (not rotated local Z)?" },
+  { file:"sp-05_rotate_world_x.png", caseId:"T-02", crit:"A-03", official:true, q:"Is the rotation ring world-oriented, and does the result read as rotation about world X (not local X)?" },
+  { file:"sp-05_scale_unrotated.png", caseId:"T-03", crit:"A-04", official:true, q:"On the unrotated cube, do scale handles coincide with world axes?" },
+  { file:"sp-05_scale_rotated_45.png", caseId:"T-04", crit:"A-04", official:true, q:"Do scale handles follow the rotated cube's local axes, with local X clearly diverging from world X?" },
+  { file:"sp-05_scale_rotated_90.png", caseId:"T-04", crit:"A-04", official:true, q:"Near ~87° Y, do scale handles remain consistent with the cube's rotated local axes?" },
+  { file:"sp-05_mode_switch.png", caseId:"T-05", crit:"Mode-switch stability", official:true, q:"Does the cube appear unchanged across mode switches, and does the Inspector show STABLE?" },
+  { file:"sp-05_transform_integrity.png", caseId:"T-06", crit:"Transform integrity", official:true, q:"Does the final state look like a single non-uniformly scaled, rotated cube with no shear, inversion, or collapse?" },
+  { file:"sp-05_scale_rotated_local_z.png", caseId:"T-04-Z (supplemental)", crit:"A-04", official:false, q:"Do scale handles follow rotated local axes; is the cube stretched along local Z while X and Y unchanged?" }
+];
+
+const STORAGE_KEY = "sp05-visual-review-v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e){ state = {}; }
+
+function verdict(id){ return (state[id] && state[id].verdict) || "NOT REVIEWED"; }
+function note(id){ return (state[id] && state[id].note) || ""; }
+
+function setVerdict(id, v){
+  state[id] = state[id] || {};
+  state[id].verdict = v;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
+  render();
+  updateStatus();
+}
+function setNote(id, v){
+  state[id] = state[id] || {};
+  state[id].note = v;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
+}
+
+function render(){
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  items.forEach((it, idx) => {
+    const id = it.file;
+    const v = verdict(id);
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="../evidence/${it.file}" alt="${it.file}" onclick="openLb(${idx})">
+      <div class="meta">
+        <div class="file">${it.file} <span class="badge ${it.official?'official':'supp'}">${it.official?'OFFICIAL':'SUPPLEMENTAL'}</span></div>
+        <div class="case">${it.caseId} / ${it.crit}</div>
+        <div class="q">${it.q}</div>
+        <div class="verdict">
+          ${["PASS","FAIL","UNCERTAIN","NOT REVIEWED"].map(x=>`<button class="${v===x?'active '+({'PASS':'pass','FAIL':'fail','UNCERTAIN':'unc','NOT REVIEWED':'nr'}[x]):''}" onclick="setVerdict('${id}','${x}')">${x}</button>`).join("")}
+        </div>
+        <textarea class="note" placeholder="Reviewer notes (optional)" oninput="setNote('${id}', this.value)">${escapeHtml(note(id))}</textarea>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function escapeHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+function updateStatus(){
+  const n = items.filter(it => verdict(it.file) !== "NOT REVIEWED").length;
+  document.getElementById("status").textContent = n + "/" + items.length + " reviewed";
+}
+
+let lbZoomFactor = 1;
+function openLb(idx){
+  const it = items[idx];
+  const img = document.getElementById("lb-img");
+  img.src = "../evidence/" + it.file;
+  lbZoomFactor = 1; img.style.transform = "scale(1)";
+  document.getElementById("lb-title").textContent = it.file;
+  document.getElementById("lb-meta").textContent = it.caseId + " / " + it.crit + " — " + it.q;
+  document.getElementById("lb").classList.add("open");
+}
+function closeLb(){ document.getElementById("lb").classList.remove("open"); }
+function lbZoom(f){ lbZoomFactor *= f; document.getElementById("lb-img").style.transform = "scale("+lbZoomFactor+")"; }
+function lbReset(){ lbZoomFactor=1; document.getElementById("lb-img").style.transform="scale(1)"; }
+
+document.addEventListener("keydown", e => { if(e.key==="Escape") closeLb(); });
+
+function saveJson(){
+  const out = { generatedAt: new Date().toISOString(), items: items.map(it => ({ file:it.file, caseId:it.caseId, criterion:it.crit, official:it.official, verdict: verdict(it.file), note: note(it.file) })) };
+  download("sp-05-visual-review.json", JSON.stringify(out, null, 2), "application/json");
+}
+function saveMd(){
+  let md = "# SP-05 Visual Review Checklist\n\nGenerated: " + new Date().toISOString() + "\n\n";
+  md += "| File | Case | Criterion | Verdict | Notes |\n|---|---|---|---|---|\n";
+  items.forEach(it => {
+    md += `| ${it.file} | ${it.caseId} | ${it.crit} | ${verdict(it.file)} | ${note(it.file).replace(/\|/g,"/")} |\n`;
+  });
+  md += "\n## Reviewer signature\n\nName: ____________  Date: ____________\n";
+  download("sp-05-visual-review-checklist.md", md, "text/markdown");
+}
+function download(name, content, type){
+  const blob = new Blob([content], {type});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function clearAll(){
+  if(!confirm("Clear all verdicts and notes?")) return;
+  state = {};
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+  render(); updateStatus();
+}
+
+render(); updateStatus();
+</script>
+</body>
+</html>
