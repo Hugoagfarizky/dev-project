@@ -1,0 +1,250 @@
+{
+  "harness": "SP-05 interactive transform gizmo (improved validation, explicit provenance)",
+  "harnessVersion": "2.0",
+  "babylonVersion": "9.32.1",
+  "useRightHandedSystem": true,
+  "initialTransform": {
+    "position": [
+      0,
+      0.5,
+      0
+    ],
+    "quaternion": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ]
+  },
+  "gizmoSpacePolicy": {
+    "translate": "world",
+    "rotate": "world",
+    "scale": "local",
+    "appliedBy": "applyGizmoSpace() after lazy gizmo creation and on every setMode()"
+  },
+  "provenancePolicy": {
+    "approvedForSp05": [
+      "physical_mouse",
+      "cdp_trusted_input"
+    ],
+    "rejectedForSp05": [
+      "synthetic_input",
+      "programmatic_transform"
+    ],
+    "declaredMethod": "cdp_trusted_input",
+    "harnessCannotDistinguishTrustedSources": true,
+    "ownerApproval": {
+      "date": "2026-11-02",
+      "approvedMethod": "cdp_trusted_input",
+      "scope": "SP-05 interaction evidence; see SP-05_EVIDENCE_PROCEDURE.md"
+    },
+    "note": "Trusted pointer events cannot be distinguished by source inside the page; the declared method is recorded verbatim and untrusted events override it."
+  },
+  "inputTrace": {
+    "dragCount": 0,
+    "syntheticSeen": false,
+    "eventCount": 0,
+    "drags": []
+  },
+  "validation": {
+    "quaternionTolerance": 0.00001,
+    "scaleMinimum": 0.001,
+    "modeSwitchTolerance": 0.00001
+  },
+  "checklistStatus": {
+    "T-01": "Not tested",
+    "T-02": "Not tested",
+    "T-03": "Not tested",
+    "T-04": "Not tested",
+    "T-05": "Not tested",
+    "T-06": "Not tested"
+  },
+  "entries": [
+    {
+      "timestamp": "2026-11-03T09:16:50.815Z",
+      "mode": "translate",
+      "position": [
+        0,
+        0.5,
+        0
+      ],
+      "quaternion": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "eulerDisplay": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "quaternionLength": 1,
+      "quaternionValidation": {
+        "finite": true,
+        "length": 1,
+        "diffFromOne": 0,
+        "tolerance": 0.00001,
+        "valid": true
+      },
+      "scaleValidation": {
+        "values": [
+          1,
+          1,
+          1
+        ],
+        "finite": true,
+        "positive": true,
+        "minAllowed": 0.001,
+        "valid": true,
+        "reasons": []
+      },
+      "testId": "OBSERVATION",
+      "pointerStart": null,
+      "pointerEnd": null,
+      "userObservation": "Mode sequence translate -> rotate -> scale -> translate; harness comparison STABLE (all values within 0.00001)\nBaseline pos: 0.000000, 0.500000, 0.000000\nFinal   pos: 0.000000, 0.500000, 0.000000\nBaseline quat: 0.000000, 0.000000, 0.000000, 1.000000\nFinal   quat: 0.000000, 0.000000, 0.000000, 1.000000\nBaseline scale: 1.000000, 1.000000, 1.000000\nFinal   scale: 1.000000, 1.000000, 1.000000; no drags performed.",
+      "provenance": {
+        "inputMethod": "cdp_trusted_input",
+        "declared": {
+          "method": "cdp_trusted_input",
+          "driver": "simuforge-sp05-cdp-runner",
+          "sessionId": "2026-11-03T09-16-00-842Z-25efe7",
+          "declaredAt": "2026-11-03T09:16:47.704Z",
+          "note": "Browser-level trusted input via CDP Input.dispatchMouseEvent"
+        },
+        "approvedForSp05": true,
+        "approvedMethods": [
+          "physical_mouse",
+          "cdp_trusted_input"
+        ],
+        "rejectedMethods": [
+          "synthetic_input",
+          "programmatic_transform"
+        ],
+        "invalidityReasons": [],
+        "syntheticSeen": false,
+        "allObservedEventsTrusted": true,
+        "dragCount": 0,
+        "lastPointerType": null
+      },
+      "inputMethod": "cdp_trusted_input",
+      "sp05Eligible": true,
+      "interactionManual": false,
+      "interactionAutomated": true,
+      "lastDrag": null,
+      "dragCount": 0,
+      "checklistStatus": {
+        "T-01": "Not tested",
+        "T-02": "Not tested",
+        "T-03": "Not tested",
+        "T-04": "Not tested",
+        "T-05": "Not tested",
+        "T-06": "Not tested"
+      },
+      "t05Comparison": "STABLE"
+    }
+  ],
+  "baseline": {
+    "timestamp": "2026-11-03T09:16:48.702Z",
+    "mode": "translate",
+    "position": [
+      0,
+      0.5,
+      0
+    ],
+    "quaternion": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "eulerDisplay": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "quaternionLength": 1,
+    "quaternionValidation": {
+      "finite": true,
+      "length": 1,
+      "diffFromOne": 0,
+      "tolerance": 0.00001,
+      "valid": true
+    },
+    "scaleValidation": {
+      "values": [
+        1,
+        1,
+        1
+      ],
+      "finite": true,
+      "positive": true,
+      "minAllowed": 0.001,
+      "valid": true,
+      "reasons": []
+    },
+    "testId": "BASELINE"
+  },
+  "final": {
+    "timestamp": "2026-11-03T09:16:49.893Z",
+    "mode": "translate",
+    "position": [
+      0,
+      0.5,
+      0
+    ],
+    "quaternion": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "eulerDisplay": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "quaternionLength": 1,
+    "quaternionValidation": {
+      "finite": true,
+      "length": 1,
+      "diffFromOne": 0,
+      "tolerance": 0.00001,
+      "valid": true
+    },
+    "scaleValidation": {
+      "values": [
+        1,
+        1,
+        1
+      ],
+      "finite": true,
+      "positive": true,
+      "minAllowed": 0.001,
+      "valid": true,
+      "reasons": []
+    },
+    "testId": "FINAL"
+  },
+  "t05Comparison": "STABLE"
+}

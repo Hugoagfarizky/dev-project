@@ -1,0 +1,2645 @@
+{
+  "runner": {
+    "name": "simuforge-sp05-cdp-runner",
+    "version": "1.0.0"
+  },
+  "case": {
+    "id": "T-03",
+    "slug": "t03-local-scale-unrotated",
+    "title": "Local-space scale of an unrotated cube",
+    "proofCase": false
+  },
+  "run": {
+    "runId": "2026-11-03T09-16-00-842Z-25efe7",
+    "pass": 1,
+    "proof": false,
+    "startedAt": "2026-11-03T09:16:26.345Z",
+    "caseStartedAt": "2026-11-03T09:16:28.202Z",
+    "completedAt": "2026-11-03T09:16:32.233Z",
+    "durationMs": 4031
+  },
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "devicePixelRatio": 1.25,
+    "viewport": {
+      "width": 1386,
+      "height": 788
+    },
+    "status": "JSON exported.",
+    "harnessVersion": "Babylon.js 9.32.1 | useRightHandedSystem=true",
+    "chrome": "Chrome/156.0.8078.76",
+    "harnessFile": {
+      "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\harness\\sp05.html",
+      "sha256": "0a05cda7c8407c747466fff21137820e551945de7b5e74c89a3d695807a1d222",
+      "bytes": 36233
+    },
+    "canvas": {
+      "cssWidth": 986.4000244140625,
+      "cssHeight": 697.2750244140625,
+      "dpr": 1.25,
+      "left": 0,
+      "top": 0
+    },
+    "camera": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "babylonVersion": "9.32.1",
+    "useRightHandedSystem": true,
+    "gizmos": {
+      "positionEnabled": false,
+      "rotationEnabled": false,
+      "scaleEnabled": true,
+      "positionSpaceWorld": true,
+      "rotationSpaceWorld": null,
+      "scaleSpaceLocal": true,
+      "positionUpdateFlag": false,
+      "rotationUpdateFlag": null,
+      "scaleUpdateFlag": true,
+      "positionKeys": [
+        "gizmoLayer",
+        "_attachedMesh",
+        "_attachedNode",
+        "_customRotationQuaternion",
+        "_scaleRatio",
+        "_isHovered",
+        "_customMeshSet",
+        "_updateGizmoRotationToMatchAttachedMesh",
+        "_updateGizmoPositionToMatchAttachedMesh",
+        "_anchorPoint",
+        "_updateScale",
+        "_coordinatesMode",
+        "_interactionsEnabled",
+        "_rightHandtoLeftHandMatrix",
+        "_rootMesh",
+        "_beforeRenderObserver",
+        "_meshAttached",
+        "_nodeAttached",
+        "_observables",
+        "_gizmoAxisCache",
+        "onDragStartObservable",
+        "onDragObservable",
+        "onDragEndObservable",
+        "_planarGizmoEnabled",
+        "xGizmo",
+        "yGizmo",
+        "zGizmo",
+        "xPlaneGizmo",
+        "yPlaneGizmo",
+        "zPlaneGizmo"
+      ],
+      "rotationKeys": null,
+      "scaleKeys": [
+        "gizmoLayer",
+        "_attachedMesh",
+        "_attachedNode",
+        "_customRotationQuaternion",
+        "_scaleRatio",
+        "_isHovered",
+        "_customMeshSet",
+        "_updateGizmoRotationToMatchAttachedMesh",
+        "_updateGizmoPositionToMatchAttachedMesh",
+        "_anchorPoint",
+        "_updateScale",
+        "_coordinatesMode",
+        "_interactionsEnabled",
+        "_rightHandtoLeftHandMatrix",
+        "_rootMesh",
+        "_beforeRenderObserver",
+        "_meshAttached",
+        "_nodeAttached",
+        "_incrementalSnap",
+        "_sensitivity",
+        "_observables",
+        "_gizmoAxisCache",
+        "onDragStartObservable",
+        "onDragObservable",
+        "onDragEndObservable",
+        "_coloredMaterial",
+        "_hoverMaterial",
+        "_disableMaterial",
+        "_uniformScalingMesh",
+        "_octahedron",
+        "uniformScaleGizmo",
+        "xGizmo",
+        "yGizmo",
+        "zGizmo"
+      ]
+    },
+    "os": "win32",
+    "node": "v24.21.0"
+  },
+  "result": "PASS",
+  "checks": {
+    "caseId": "T-03",
+    "total": 26,
+    "passed": 26,
+    "failed": 0,
+    "result": "PASS",
+    "checks": [
+      {
+        "name": "T-03: reset quaternion",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "expected": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "tolerance": 1e-9,
+          "deltas": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:29.100Z"
+      },
+      {
+        "name": "T-03: reset scale",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            1,
+            1,
+            1
+          ],
+          "expected": [
+            1,
+            1,
+            1
+          ],
+          "tolerance": 1e-9,
+          "deltas": [
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:29.100Z"
+      },
+      {
+        "name": "scale x root follows the cube (local orientation)",
+        "status": "PASS",
+        "detail": {
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "cubeQuaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "localError": 0,
+          "dragAxis": [
+            1,
+            0,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T09:16:29.105Z"
+      },
+      {
+        "name": "scale y root follows the cube (local orientation)",
+        "status": "PASS",
+        "detail": {
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "cubeQuaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "localError": 0,
+          "dragAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T09:16:29.105Z"
+      },
+      {
+        "name": "scale z root follows the cube (local orientation)",
+        "status": "PASS",
+        "detail": {
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "cubeQuaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "localError": 0,
+          "dragAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "timestamp": "2026-11-03T09:16:29.105Z"
+      },
+      {
+        "name": "x local-space handle direction matches expectation",
+        "status": "PASS",
+        "detail": {
+          "space": "local",
+          "axis": "x",
+          "cubeQuaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "worldDirection": [
+            0.800000011920929,
+            0,
+            1.77635686587003e-16
+          ],
+          "expectedWorldDirection": [
+            1,
+            0,
+            0
+          ],
+          "worldAngleDeg": 0,
+          "screenDirection": {
+            "x": 62.087469402239776,
+            "y": 31.04373410915997
+          },
+          "projectedWorldAxisScreen": {
+            "x": 0.8944271944110072,
+            "y": 0.4472135886777754
+          },
+          "screenAngleDeg": 0
+        },
+        "timestamp": "2026-11-03T09:16:29.415Z"
+      },
+      {
+        "name": "T-03: local X scale: handle picked as expected axis",
+        "status": "PASS",
+        "detail": {
+          "expected": "x",
+          "picked": "x",
+          "mesh": "yPosMesh"
+        },
+        "timestamp": "2026-11-03T09:16:30.735Z"
+      },
+      {
+        "name": "T-03: local X scale: harness observed a trusted drag",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T09:16:30.735Z"
+      },
+      {
+        "name": "T-03: local X scale: drag lifecycle started once",
+        "status": "PASS",
+        "detail": {
+          "start": 1,
+          "drag": 24,
+          "end": 1,
+          "deltaSum": [
+            0.9020874544103896,
+            0,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T09:16:30.735Z"
+      },
+      {
+        "name": "T-03: local X scale: drag lifecycle progressed",
+        "status": "PASS",
+        "detail": {
+          "start": 1,
+          "drag": 24,
+          "end": 1,
+          "deltaSum": [
+            0.9020874544103896,
+            0,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T09:16:30.735Z"
+      },
+      {
+        "name": "T-03: local X scale: drag lifecycle ended once",
+        "status": "PASS",
+        "detail": {
+          "start": 1,
+          "drag": 24,
+          "end": 1,
+          "deltaSum": [
+            0.9020874544103896,
+            0,
+            0
+          ]
+        },
+        "timestamp": "2026-11-03T09:16:30.735Z"
+      },
+      {
+        "name": "T-03: local X scale: no cross-axis gizmo activity",
+        "status": "PASS",
+        "detail": {
+          "y": {
+            "start": 0,
+            "drag": 0,
+            "end": 0,
+            "deltaSum": [
+              0,
+              0,
+              0
+            ]
+          },
+          "z": {
+            "start": 0,
+            "drag": 0,
+            "end": 0,
+            "deltaSum": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "timestamp": "2026-11-03T09:16:30.735Z"
+      },
+      {
+        "name": "T-03: local X scale: harness pointer trace declares cdp_trusted_input",
+        "status": "PASS",
+        "detail": {
+          "inputMethod": "cdp_trusted_input",
+          "declared": {
+            "method": "cdp_trusted_input",
+            "driver": "simuforge-sp05-cdp-runner",
+            "sessionId": "2026-11-03T09-16-00-842Z-25efe7",
+            "declaredAt": "2026-11-03T09:16:28.187Z",
+            "note": "Browser-level trusted input via CDP Input.dispatchMouseEvent"
+          },
+          "approvedForSp05": true,
+          "approvedMethods": [
+            "physical_mouse",
+            "cdp_trusted_input"
+          ],
+          "rejectedMethods": [
+            "synthetic_input",
+            "programmatic_transform"
+          ],
+          "invalidityReasons": [],
+          "syntheticSeen": false,
+          "allObservedEventsTrusted": true,
+          "dragCount": 1,
+          "lastPointerType": "mouse"
+        },
+        "timestamp": "2026-11-03T09:16:30.735Z"
+      },
+      {
+        "name": "T-03: local X scale: scaled axis increased",
+        "status": "PASS",
+        "detail": {
+          "before": [
+            1,
+            1,
+            1
+          ],
+          "after": [
+            1.214722752571106,
+            1,
+            1
+          ]
+        },
+        "timestamp": "2026-11-03T09:16:30.735Z"
+      },
+      {
+        "name": "T-03: local X scale: scale is confined to local X",
+        "status": "PASS",
+        "detail": {
+          "before": [
+            1,
+            1,
+            1
+          ],
+          "after": [
+            1.214722752571106,
+            1,
+            1
+          ],
+          "maxOther": 0,
+          "tolerance": 0.000001
+        },
+        "timestamp": "2026-11-03T09:16:30.735Z"
+      },
+      {
+        "name": "T-03: scale remains non-uniform and positive",
+        "status": "PASS",
+        "detail": [
+          1.214722752571106,
+          1,
+          1
+        ],
+        "timestamp": "2026-11-03T09:16:30.735Z"
+      },
+      {
+        "name": "T-03: harness scale validation is VALID",
+        "status": "PASS",
+        "detail": {
+          "mode": "scale",
+          "position": [
+            "0.000000",
+            "0.500000",
+            "0.000000"
+          ],
+          "quaternion": [
+            "0.000000",
+            "0.000000",
+            "0.000000",
+            "1.000000"
+          ],
+          "euler": [
+            "0.000000",
+            "0.000000",
+            "0.000000"
+          ],
+          "scale": [
+            "1.214723",
+            "1.000000",
+            "1.000000"
+          ],
+          "quaternionLength": "1.00000000",
+          "quaternionValidation": "VALID",
+          "quaternionLengthDisplay": "1.00000000",
+          "quaternionDiff": "0.000e+0",
+          "quaternionFinite": "yes",
+          "scaleValidation": "VALID",
+          "scaleReason": "none",
+          "compare": "No comparison yet.",
+          "status": "Mode: scale"
+        },
+        "timestamp": "2026-11-03T09:16:30.956Z"
+      },
+      {
+        "name": "export: harnessVersion is 2.0",
+        "status": "PASS",
+        "detail": "2.0",
+        "timestamp": "2026-11-03T09:16:32.224Z"
+      },
+      {
+        "name": "export: gizmo space policy is world/world/local",
+        "status": "PASS",
+        "detail": {
+          "translate": "world",
+          "rotate": "world",
+          "scale": "local",
+          "appliedBy": "applyGizmoSpace() after lazy gizmo creation and on every setMode()"
+        },
+        "timestamp": "2026-11-03T09:16:32.224Z"
+      },
+      {
+        "name": "export: declared input method is cdp_trusted_input",
+        "status": "PASS",
+        "detail": "cdp_trusted_input",
+        "timestamp": "2026-11-03T09:16:32.224Z"
+      },
+      {
+        "name": "export: no synthetic input observed",
+        "status": "PASS",
+        "detail": false,
+        "timestamp": "2026-11-03T09:16:32.224Z"
+      },
+      {
+        "name": "export: at least one entry was recorded",
+        "status": "PASS",
+        "detail": 1,
+        "timestamp": "2026-11-03T09:16:32.224Z"
+      },
+      {
+        "name": "export: every entry labels input as cdp_trusted_input and SP-05 eligible",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T09:16:32.224Z"
+      },
+      {
+        "name": "export: every harness-recorded drag is fully trusted mouse input",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T09:16:32.224Z"
+      },
+      {
+        "name": "export: last entry has a fully trusted drag record",
+        "status": "PASS",
+        "detail": {
+          "start": {
+            "x": 555.0874633789062,
+            "y": 379.54376220703125,
+            "t": "2026-11-03T09:16:29.581Z",
+            "isTrusted": true,
+            "pointerType": "mouse"
+          },
+          "end": {
+            "x": 635.5859375,
+            "y": 419.79296875,
+            "t": "2026-11-03T09:16:30.478Z",
+            "isTrusted": true,
+            "pointerType": "mouse"
+          },
+          "moveCount": 24,
+          "pointerType": "mouse",
+          "allTrusted": true,
+          "durationMs": 897,
+          "eventSequence": [
+            {
+              "type": "pointerdown",
+              "t": "2026-11-03T09:16:29.581Z",
+              "tms": 3230.7999999998137,
+              "x": 555.0874633789062,
+              "y": 379.54376220703125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": 0,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.662Z",
+              "tms": 3311.399999999907,
+              "x": 558.4415893554688,
+              "y": 381.2207946777344,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.697Z",
+              "tms": 3346.2999999998137,
+              "x": 561.795654296875,
+              "y": 382.8978576660156,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.724Z",
+              "tms": 3373.7999999998137,
+              "x": 565.1498413085938,
+              "y": 384.5749206542969,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.751Z",
+              "tms": 3400.7999999998137,
+              "x": 568.50390625,
+              "y": 386.251953125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.786Z",
+              "tms": 3435,
+              "x": 571.8579711914062,
+              "y": 387.92901611328125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.814Z",
+              "tms": 3463.7000000001863,
+              "x": 575.2120971679688,
+              "y": 389.6060485839844,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.841Z",
+              "tms": 3490.7000000001863,
+              "x": 578.566162109375,
+              "y": 391.2831115722656,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.862Z",
+              "tms": 3511.5,
+              "x": 581.9203491210938,
+              "y": 392.9601745605469,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.890Z",
+              "tms": 3539.7999999998137,
+              "x": 585.2744140625,
+              "y": 394.63720703125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.918Z",
+              "tms": 3567.100000000093,
+              "x": 588.6284790039062,
+              "y": 396.31427001953125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.938Z",
+              "tms": 3587.7999999998137,
+              "x": 591.9826049804688,
+              "y": 397.9913024902344,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.967Z",
+              "tms": 3616.899999999907,
+              "x": 595.336669921875,
+              "y": 399.6683654785156,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.001Z",
+              "tms": 3650.399999999907,
+              "x": 598.6908569335938,
+              "y": 401.3454284667969,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.029Z",
+              "tms": 3678.2999999998137,
+              "x": 602.044921875,
+              "y": 403.0224609375,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.056Z",
+              "tms": 3705.7000000001863,
+              "x": 605.3989868164062,
+              "y": 404.69952392578125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.077Z",
+              "tms": 3726.7000000001863,
+              "x": 608.7531127929688,
+              "y": 406.3765563964844,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.105Z",
+              "tms": 3754.5,
+              "x": 612.107177734375,
+              "y": 408.0536193847656,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.140Z",
+              "tms": 3789.2999999998137,
+              "x": 615.4613647460938,
+              "y": 409.7306823730469,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.168Z",
+              "tms": 3818,
+              "x": 618.8154296875,
+              "y": 411.40771484375,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.203Z",
+              "tms": 3852.7999999998137,
+              "x": 622.1694946289062,
+              "y": 413.08477783203125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.230Z",
+              "tms": 3879.399999999907,
+              "x": 625.5236206054688,
+              "y": 414.7618103027344,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.265Z",
+              "tms": 3914.2000000001863,
+              "x": 628.877685546875,
+              "y": 416.4388732910156,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.293Z",
+              "tms": 3942.600000000093,
+              "x": 632.2318725585938,
+              "y": 418.1159362792969,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.328Z",
+              "tms": 3977.899999999907,
+              "x": 635.5859375,
+              "y": 419.79296875,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointerup",
+              "t": "2026-11-03T09:16:30.478Z",
+              "tms": 4127.700000000186,
+              "x": 635.5859375,
+              "y": 419.79296875,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": 0,
+              "buttons": 0,
+              "isTrusted": true
+            }
+          ]
+        },
+        "timestamp": "2026-11-03T09:16:32.224Z"
+      },
+      {
+        "name": "no unexplained console errors",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T09:16:32.224Z"
+      }
+    ]
+  },
+  "observation": "Unrotated local X scale; scale 1.214723, 1.000000, 1.000000; harness scale validation VALID.",
+  "drags": [
+    {
+      "label": "T-03: local X scale",
+      "target": {
+        "gizmo": "scale",
+        "axis": "x",
+        "pickedAxis": "x",
+        "pickedMesh": "yPosMesh"
+      },
+      "handle": {
+        "from": {
+          "x": 555.0874694022398,
+          "y": 379.54374936794903
+        },
+        "to": {
+          "x": 635.5859168992304,
+          "y": 419.7929723489488
+        }
+      },
+      "before": {
+        "position": [
+          0,
+          0.5,
+          0
+        ],
+        "quaternion": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "after": {
+        "position": [
+          0,
+          0.5,
+          0
+        ],
+        "quaternion": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1.214722752571106,
+          1,
+          1
+        ]
+      },
+      "lifecycle": {
+        "start": 1,
+        "drag": 24,
+        "end": 1,
+        "deltaSum": [
+          0.9020874544103896,
+          0,
+          0
+        ]
+      },
+      "otherAxes": {
+        "y": {
+          "start": 0,
+          "drag": 0,
+          "end": 0,
+          "deltaSum": [
+            0,
+            0,
+            0
+          ]
+        },
+        "z": {
+          "start": 0,
+          "drag": 0,
+          "end": 0,
+          "deltaSum": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "crossAxisActivity": 0,
+      "cdpEvents": {
+        "label": "T-03: local X scale",
+        "target": {
+          "gizmo": "scale",
+          "axis": "x",
+          "pickedAxis": "x",
+          "pickedMesh": "yPosMesh"
+        },
+        "from": {
+          "x": 555.0875,
+          "y": 379.5437
+        },
+        "to": {
+          "x": 635.5859,
+          "y": 419.793
+        },
+        "distancePx": 90,
+        "steps": 24,
+        "stepDelayMs": 12,
+        "eventCount": 27,
+        "events": [
+          {
+            "index": 0,
+            "type": "mouseMoved",
+            "x": 555.0875,
+            "y": 379.5437,
+            "button": "none",
+            "buttons": 0,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.519Z",
+            "elapsedMs": 0
+          },
+          {
+            "index": 1,
+            "type": "mousePressed",
+            "x": 555.0875,
+            "y": 379.5437,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 1,
+            "sentAt": "2026-11-03T09:16:29.577Z",
+            "elapsedMs": 58
+          },
+          {
+            "index": 2,
+            "type": "mouseMoved",
+            "x": 558.4416,
+            "y": 381.2208,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.655Z",
+            "elapsedMs": 136
+          },
+          {
+            "index": 3,
+            "type": "mouseMoved",
+            "x": 561.7957,
+            "y": 382.8979,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.686Z",
+            "elapsedMs": 167
+          },
+          {
+            "index": 4,
+            "type": "mouseMoved",
+            "x": 565.1498,
+            "y": 384.5749,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.717Z",
+            "elapsedMs": 198
+          },
+          {
+            "index": 5,
+            "type": "mouseMoved",
+            "x": 568.5039,
+            "y": 386.252,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.747Z",
+            "elapsedMs": 228
+          },
+          {
+            "index": 6,
+            "type": "mouseMoved",
+            "x": 571.858,
+            "y": 387.929,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.778Z",
+            "elapsedMs": 259
+          },
+          {
+            "index": 7,
+            "type": "mouseMoved",
+            "x": 575.2121,
+            "y": 389.6061,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.809Z",
+            "elapsedMs": 290
+          },
+          {
+            "index": 8,
+            "type": "mouseMoved",
+            "x": 578.5662,
+            "y": 391.2831,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.839Z",
+            "elapsedMs": 320
+          },
+          {
+            "index": 9,
+            "type": "mouseMoved",
+            "x": 581.9203,
+            "y": 392.9602,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.855Z",
+            "elapsedMs": 336
+          },
+          {
+            "index": 10,
+            "type": "mouseMoved",
+            "x": 585.2744,
+            "y": 394.6372,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.886Z",
+            "elapsedMs": 367
+          },
+          {
+            "index": 11,
+            "type": "mouseMoved",
+            "x": 588.6285,
+            "y": 396.3143,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.915Z",
+            "elapsedMs": 396
+          },
+          {
+            "index": 12,
+            "type": "mouseMoved",
+            "x": 591.9826,
+            "y": 397.9913,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.931Z",
+            "elapsedMs": 412
+          },
+          {
+            "index": 13,
+            "type": "mouseMoved",
+            "x": 595.3367,
+            "y": 399.6684,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.961Z",
+            "elapsedMs": 442
+          },
+          {
+            "index": 14,
+            "type": "mouseMoved",
+            "x": 598.6908,
+            "y": 401.3454,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:29.992Z",
+            "elapsedMs": 473
+          },
+          {
+            "index": 15,
+            "type": "mouseMoved",
+            "x": 602.0449,
+            "y": 403.0225,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.022Z",
+            "elapsedMs": 504
+          },
+          {
+            "index": 16,
+            "type": "mouseMoved",
+            "x": 605.399,
+            "y": 404.6995,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.054Z",
+            "elapsedMs": 535
+          },
+          {
+            "index": 17,
+            "type": "mouseMoved",
+            "x": 608.7531,
+            "y": 406.3766,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.071Z",
+            "elapsedMs": 552
+          },
+          {
+            "index": 18,
+            "type": "mouseMoved",
+            "x": 612.1072,
+            "y": 408.0536,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.101Z",
+            "elapsedMs": 582
+          },
+          {
+            "index": 19,
+            "type": "mouseMoved",
+            "x": 615.4613,
+            "y": 409.7307,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.133Z",
+            "elapsedMs": 614
+          },
+          {
+            "index": 20,
+            "type": "mouseMoved",
+            "x": 618.8154,
+            "y": 411.4077,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.163Z",
+            "elapsedMs": 644
+          },
+          {
+            "index": 21,
+            "type": "mouseMoved",
+            "x": 622.1695,
+            "y": 413.0848,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.195Z",
+            "elapsedMs": 676
+          },
+          {
+            "index": 22,
+            "type": "mouseMoved",
+            "x": 625.5236,
+            "y": 414.7618,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.226Z",
+            "elapsedMs": 707
+          },
+          {
+            "index": 23,
+            "type": "mouseMoved",
+            "x": 628.8777,
+            "y": 416.4389,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.256Z",
+            "elapsedMs": 737
+          },
+          {
+            "index": 24,
+            "type": "mouseMoved",
+            "x": 632.2318,
+            "y": 418.1159,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.287Z",
+            "elapsedMs": 768
+          },
+          {
+            "index": 25,
+            "type": "mouseMoved",
+            "x": 635.5859,
+            "y": 419.793,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-03T09:16:30.319Z",
+            "elapsedMs": 800
+          },
+          {
+            "index": 26,
+            "type": "mouseReleased",
+            "x": 635.5859,
+            "y": 419.793,
+            "button": "left",
+            "buttons": 0,
+            "clickCount": 1,
+            "sentAt": "2026-11-03T09:16:30.474Z",
+            "elapsedMs": 955
+          }
+        ],
+        "methods": {
+          "input": "cdp_trusted_input",
+          "domain": "Input",
+          "method": "Input.dispatchMouseEvent",
+          "pointerType": "mouse"
+        },
+        "startedAt": "2026-11-03T09:16:29.519Z",
+        "endedAt": "2026-11-03T09:16:30.568Z",
+        "wallClockMs": 1049,
+        "monotonicMs": 1049
+      },
+      "harnessDrag": {
+        "start": {
+          "x": 555.0874633789062,
+          "y": 379.54376220703125,
+          "t": "2026-11-03T09:16:29.581Z",
+          "isTrusted": true,
+          "pointerType": "mouse"
+        },
+        "end": {
+          "x": 635.5859375,
+          "y": 419.79296875,
+          "t": "2026-11-03T09:16:30.478Z",
+          "isTrusted": true,
+          "pointerType": "mouse"
+        },
+        "moveCount": 24,
+        "pointerType": "mouse",
+        "allTrusted": true,
+        "durationMs": 897,
+        "eventSequence": [
+          {
+            "type": "pointerdown",
+            "t": "2026-11-03T09:16:29.581Z",
+            "tms": 3230.7999999998137,
+            "x": 555.0874633789062,
+            "y": 379.54376220703125,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": 0,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.662Z",
+            "tms": 3311.399999999907,
+            "x": 558.4415893554688,
+            "y": 381.2207946777344,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.697Z",
+            "tms": 3346.2999999998137,
+            "x": 561.795654296875,
+            "y": 382.8978576660156,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.724Z",
+            "tms": 3373.7999999998137,
+            "x": 565.1498413085938,
+            "y": 384.5749206542969,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.751Z",
+            "tms": 3400.7999999998137,
+            "x": 568.50390625,
+            "y": 386.251953125,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.786Z",
+            "tms": 3435,
+            "x": 571.8579711914062,
+            "y": 387.92901611328125,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.814Z",
+            "tms": 3463.7000000001863,
+            "x": 575.2120971679688,
+            "y": 389.6060485839844,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.841Z",
+            "tms": 3490.7000000001863,
+            "x": 578.566162109375,
+            "y": 391.2831115722656,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.862Z",
+            "tms": 3511.5,
+            "x": 581.9203491210938,
+            "y": 392.9601745605469,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.890Z",
+            "tms": 3539.7999999998137,
+            "x": 585.2744140625,
+            "y": 394.63720703125,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.918Z",
+            "tms": 3567.100000000093,
+            "x": 588.6284790039062,
+            "y": 396.31427001953125,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.938Z",
+            "tms": 3587.7999999998137,
+            "x": 591.9826049804688,
+            "y": 397.9913024902344,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:29.967Z",
+            "tms": 3616.899999999907,
+            "x": 595.336669921875,
+            "y": 399.6683654785156,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.001Z",
+            "tms": 3650.399999999907,
+            "x": 598.6908569335938,
+            "y": 401.3454284667969,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.029Z",
+            "tms": 3678.2999999998137,
+            "x": 602.044921875,
+            "y": 403.0224609375,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.056Z",
+            "tms": 3705.7000000001863,
+            "x": 605.3989868164062,
+            "y": 404.69952392578125,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.077Z",
+            "tms": 3726.7000000001863,
+            "x": 608.7531127929688,
+            "y": 406.3765563964844,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.105Z",
+            "tms": 3754.5,
+            "x": 612.107177734375,
+            "y": 408.0536193847656,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.140Z",
+            "tms": 3789.2999999998137,
+            "x": 615.4613647460938,
+            "y": 409.7306823730469,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.168Z",
+            "tms": 3818,
+            "x": 618.8154296875,
+            "y": 411.40771484375,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.203Z",
+            "tms": 3852.7999999998137,
+            "x": 622.1694946289062,
+            "y": 413.08477783203125,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.230Z",
+            "tms": 3879.399999999907,
+            "x": 625.5236206054688,
+            "y": 414.7618103027344,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.265Z",
+            "tms": 3914.2000000001863,
+            "x": 628.877685546875,
+            "y": 416.4388732910156,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.293Z",
+            "tms": 3942.600000000093,
+            "x": 632.2318725585938,
+            "y": 418.1159362792969,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointermove",
+            "t": "2026-11-03T09:16:30.328Z",
+            "tms": 3977.899999999907,
+            "x": 635.5859375,
+            "y": 419.79296875,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": -1,
+            "buttons": 1,
+            "isTrusted": true
+          },
+          {
+            "type": "pointerup",
+            "t": "2026-11-03T09:16:30.478Z",
+            "tms": 4127.700000000186,
+            "x": 635.5859375,
+            "y": 419.79296875,
+            "pointerId": 1,
+            "pointerType": "mouse",
+            "button": 0,
+            "buttons": 0,
+            "isTrusted": true
+          }
+        ]
+      },
+      "reconciliation": {
+        "ok": true,
+        "issues": [],
+        "observedMoves": 24,
+        "dispatchedMoves": 25,
+        "extraObservedMoves": 0
+      },
+      "provenance": {
+        "inputMethod": "cdp_trusted_input",
+        "declared": {
+          "method": "cdp_trusted_input",
+          "driver": "simuforge-sp05-cdp-runner",
+          "sessionId": "2026-11-03T09-16-00-842Z-25efe7",
+          "declaredAt": "2026-11-03T09:16:28.187Z",
+          "note": "Browser-level trusted input via CDP Input.dispatchMouseEvent"
+        },
+        "approvedForSp05": true,
+        "approvedMethods": [
+          "physical_mouse",
+          "cdp_trusted_input"
+        ],
+        "rejectedMethods": [
+          "synthetic_input",
+          "programmatic_transform"
+        ],
+        "invalidityReasons": [],
+        "syntheticSeen": false,
+        "allObservedEventsTrusted": true,
+        "dragCount": 1,
+        "lastPointerType": "mouse"
+      },
+      "handleDiscovery": {
+        "kind": "scale",
+        "axis": "x",
+        "centerScreen": {
+          "x": 493,
+          "y": 348.50001525878906,
+          "z": 0.8750874735414982
+        },
+        "tip": {
+          "name": "yPosMesh",
+          "abs": [
+            0.800000011920929,
+            0.5,
+            1.77635686587003e-16
+          ],
+          "screen": {
+            "x": 555.0874694022398,
+            "y": 379.54374936794903,
+            "z": 0.8669326755690911
+          },
+          "distance": 0.800000011920929,
+          "mesh": "yPosMesh"
+        },
+        "candidateCount": 4,
+        "pickedAxis": "x",
+        "pickedMesh": "yPosMesh"
+      },
+      "spaceCheck": {
+        "space": "local",
+        "axis": "x",
+        "cubeQuaternion": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worldDirection": [
+          0.800000011920929,
+          0,
+          1.77635686587003e-16
+        ],
+        "expectedWorldDirection": [
+          1,
+          0,
+          0
+        ],
+        "worldAngleDeg": 0,
+        "screenDirection": {
+          "x": 62.087469402239776,
+          "y": 31.04373410915997
+        },
+        "projectedWorldAxisScreen": {
+          "x": 0.8944271944110072,
+          "y": 0.4472135886777754
+        },
+        "screenAngleDeg": 0
+      },
+      "appliedScaleDelta": [
+        0.21472275257110596,
+        0,
+        0
+      ]
+    }
+  ],
+  "export": {
+    "name": "sp-05_scale_unrotated_log.json",
+    "officialName": "sp-05_scale_unrotated_log.json",
+    "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\results\\sp-05-manual\\evidence\\sp-05_scale_unrotated_log.json",
+    "bytes": 23966,
+    "sha256": "b47b0281be6649b856df75c82fe940e812068bef49733236d6ef27d3c1389692",
+    "kind": "harness-export",
+    "source": "sp-05_transform_log.json"
+  },
+  "exportValidation": {
+    "harnessVersion": "2.0",
+    "gizmoSpacePolicy": {
+      "translate": "world",
+      "rotate": "world",
+      "scale": "local",
+      "appliedBy": "applyGizmoSpace() after lazy gizmo creation and on every setMode()"
+    },
+    "declaredMethod": "cdp_trusted_input",
+    "syntheticSeen": false,
+    "entryCount": 1,
+    "dragCount": 1,
+    "offenders": [],
+    "untrustedDrags": [],
+    "checkedAt": "2026-11-03T09:16:32.224Z"
+  },
+  "exportPayload": {
+    "harness": "SP-05 interactive transform gizmo (improved validation, explicit provenance)",
+    "harnessVersion": "2.0",
+    "babylonVersion": "9.32.1",
+    "useRightHandedSystem": true,
+    "initialTransform": {
+      "position": [
+        0,
+        0.5,
+        0
+      ],
+      "quaternion": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "gizmoSpacePolicy": {
+      "translate": "world",
+      "rotate": "world",
+      "scale": "local",
+      "appliedBy": "applyGizmoSpace() after lazy gizmo creation and on every setMode()"
+    },
+    "provenancePolicy": {
+      "approvedForSp05": [
+        "physical_mouse",
+        "cdp_trusted_input"
+      ],
+      "rejectedForSp05": [
+        "synthetic_input",
+        "programmatic_transform"
+      ],
+      "declaredMethod": "cdp_trusted_input",
+      "harnessCannotDistinguishTrustedSources": true,
+      "ownerApproval": {
+        "date": "2026-11-02",
+        "approvedMethod": "cdp_trusted_input",
+        "scope": "SP-05 interaction evidence; see SP-05_EVIDENCE_PROCEDURE.md"
+      },
+      "note": "Trusted pointer events cannot be distinguished by source inside the page; the declared method is recorded verbatim and untrusted events override it."
+    },
+    "inputTrace": {
+      "dragCount": 1,
+      "syntheticSeen": false,
+      "eventCount": 26,
+      "drags": [
+        {
+          "start": {
+            "x": 555.0874633789062,
+            "y": 379.54376220703125,
+            "t": "2026-11-03T09:16:29.581Z",
+            "isTrusted": true,
+            "pointerType": "mouse"
+          },
+          "end": {
+            "x": 635.5859375,
+            "y": 419.79296875,
+            "t": "2026-11-03T09:16:30.478Z",
+            "isTrusted": true,
+            "pointerType": "mouse"
+          },
+          "moveCount": 24,
+          "pointerType": "mouse",
+          "allTrusted": true,
+          "durationMs": 897,
+          "eventSequence": [
+            {
+              "type": "pointerdown",
+              "t": "2026-11-03T09:16:29.581Z",
+              "tms": 3230.7999999998137,
+              "x": 555.0874633789062,
+              "y": 379.54376220703125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": 0,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.662Z",
+              "tms": 3311.399999999907,
+              "x": 558.4415893554688,
+              "y": 381.2207946777344,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.697Z",
+              "tms": 3346.2999999998137,
+              "x": 561.795654296875,
+              "y": 382.8978576660156,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.724Z",
+              "tms": 3373.7999999998137,
+              "x": 565.1498413085938,
+              "y": 384.5749206542969,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.751Z",
+              "tms": 3400.7999999998137,
+              "x": 568.50390625,
+              "y": 386.251953125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.786Z",
+              "tms": 3435,
+              "x": 571.8579711914062,
+              "y": 387.92901611328125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.814Z",
+              "tms": 3463.7000000001863,
+              "x": 575.2120971679688,
+              "y": 389.6060485839844,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.841Z",
+              "tms": 3490.7000000001863,
+              "x": 578.566162109375,
+              "y": 391.2831115722656,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.862Z",
+              "tms": 3511.5,
+              "x": 581.9203491210938,
+              "y": 392.9601745605469,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.890Z",
+              "tms": 3539.7999999998137,
+              "x": 585.2744140625,
+              "y": 394.63720703125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.918Z",
+              "tms": 3567.100000000093,
+              "x": 588.6284790039062,
+              "y": 396.31427001953125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.938Z",
+              "tms": 3587.7999999998137,
+              "x": 591.9826049804688,
+              "y": 397.9913024902344,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.967Z",
+              "tms": 3616.899999999907,
+              "x": 595.336669921875,
+              "y": 399.6683654785156,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.001Z",
+              "tms": 3650.399999999907,
+              "x": 598.6908569335938,
+              "y": 401.3454284667969,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.029Z",
+              "tms": 3678.2999999998137,
+              "x": 602.044921875,
+              "y": 403.0224609375,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.056Z",
+              "tms": 3705.7000000001863,
+              "x": 605.3989868164062,
+              "y": 404.69952392578125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.077Z",
+              "tms": 3726.7000000001863,
+              "x": 608.7531127929688,
+              "y": 406.3765563964844,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.105Z",
+              "tms": 3754.5,
+              "x": 612.107177734375,
+              "y": 408.0536193847656,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.140Z",
+              "tms": 3789.2999999998137,
+              "x": 615.4613647460938,
+              "y": 409.7306823730469,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.168Z",
+              "tms": 3818,
+              "x": 618.8154296875,
+              "y": 411.40771484375,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.203Z",
+              "tms": 3852.7999999998137,
+              "x": 622.1694946289062,
+              "y": 413.08477783203125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.230Z",
+              "tms": 3879.399999999907,
+              "x": 625.5236206054688,
+              "y": 414.7618103027344,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.265Z",
+              "tms": 3914.2000000001863,
+              "x": 628.877685546875,
+              "y": 416.4388732910156,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.293Z",
+              "tms": 3942.600000000093,
+              "x": 632.2318725585938,
+              "y": 418.1159362792969,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.328Z",
+              "tms": 3977.899999999907,
+              "x": 635.5859375,
+              "y": 419.79296875,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointerup",
+              "t": "2026-11-03T09:16:30.478Z",
+              "tms": 4127.700000000186,
+              "x": 635.5859375,
+              "y": 419.79296875,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": 0,
+              "buttons": 0,
+              "isTrusted": true
+            }
+          ]
+        }
+      ]
+    },
+    "validation": {
+      "quaternionTolerance": 0.00001,
+      "scaleMinimum": 0.001,
+      "modeSwitchTolerance": 0.00001
+    },
+    "checklistStatus": {
+      "T-01": "Not tested",
+      "T-02": "Not tested",
+      "T-03": "Not tested",
+      "T-04": "Not tested",
+      "T-05": "Not tested",
+      "T-06": "Not tested"
+    },
+    "entries": [
+      {
+        "timestamp": "2026-11-03T09:16:31.284Z",
+        "mode": "scale",
+        "position": [
+          0,
+          0.5,
+          0
+        ],
+        "quaternion": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "eulerDisplay": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1.214722752571106,
+          1,
+          1
+        ],
+        "quaternionLength": 1,
+        "quaternionValidation": {
+          "finite": true,
+          "length": 1,
+          "diffFromOne": 0,
+          "tolerance": 0.00001,
+          "valid": true
+        },
+        "scaleValidation": {
+          "values": [
+            1.214722752571106,
+            1,
+            1
+          ],
+          "finite": true,
+          "positive": true,
+          "minAllowed": 0.001,
+          "valid": true,
+          "reasons": []
+        },
+        "testId": "OBSERVATION",
+        "pointerStart": {
+          "x": 555.0874633789062,
+          "y": 379.54376220703125,
+          "t": "2026-11-03T09:16:29.581Z",
+          "isTrusted": true,
+          "pointerType": "mouse"
+        },
+        "pointerEnd": {
+          "x": 635.5859375,
+          "y": 419.79296875,
+          "t": "2026-11-03T09:16:30.478Z",
+          "isTrusted": true,
+          "pointerType": "mouse"
+        },
+        "userObservation": "Unrotated local X scale; scale 1.214723, 1.000000, 1.000000; harness scale validation VALID.",
+        "provenance": {
+          "inputMethod": "cdp_trusted_input",
+          "declared": {
+            "method": "cdp_trusted_input",
+            "driver": "simuforge-sp05-cdp-runner",
+            "sessionId": "2026-11-03T09-16-00-842Z-25efe7",
+            "declaredAt": "2026-11-03T09:16:28.187Z",
+            "note": "Browser-level trusted input via CDP Input.dispatchMouseEvent"
+          },
+          "approvedForSp05": true,
+          "approvedMethods": [
+            "physical_mouse",
+            "cdp_trusted_input"
+          ],
+          "rejectedMethods": [
+            "synthetic_input",
+            "programmatic_transform"
+          ],
+          "invalidityReasons": [],
+          "syntheticSeen": false,
+          "allObservedEventsTrusted": true,
+          "dragCount": 1,
+          "lastPointerType": "mouse"
+        },
+        "inputMethod": "cdp_trusted_input",
+        "sp05Eligible": true,
+        "interactionManual": false,
+        "interactionAutomated": true,
+        "lastDrag": {
+          "start": {
+            "x": 555.0874633789062,
+            "y": 379.54376220703125,
+            "t": "2026-11-03T09:16:29.581Z",
+            "isTrusted": true,
+            "pointerType": "mouse"
+          },
+          "end": {
+            "x": 635.5859375,
+            "y": 419.79296875,
+            "t": "2026-11-03T09:16:30.478Z",
+            "isTrusted": true,
+            "pointerType": "mouse"
+          },
+          "moveCount": 24,
+          "pointerType": "mouse",
+          "allTrusted": true,
+          "durationMs": 897,
+          "eventSequence": [
+            {
+              "type": "pointerdown",
+              "t": "2026-11-03T09:16:29.581Z",
+              "tms": 3230.7999999998137,
+              "x": 555.0874633789062,
+              "y": 379.54376220703125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": 0,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.662Z",
+              "tms": 3311.399999999907,
+              "x": 558.4415893554688,
+              "y": 381.2207946777344,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.697Z",
+              "tms": 3346.2999999998137,
+              "x": 561.795654296875,
+              "y": 382.8978576660156,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.724Z",
+              "tms": 3373.7999999998137,
+              "x": 565.1498413085938,
+              "y": 384.5749206542969,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.751Z",
+              "tms": 3400.7999999998137,
+              "x": 568.50390625,
+              "y": 386.251953125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.786Z",
+              "tms": 3435,
+              "x": 571.8579711914062,
+              "y": 387.92901611328125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.814Z",
+              "tms": 3463.7000000001863,
+              "x": 575.2120971679688,
+              "y": 389.6060485839844,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.841Z",
+              "tms": 3490.7000000001863,
+              "x": 578.566162109375,
+              "y": 391.2831115722656,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.862Z",
+              "tms": 3511.5,
+              "x": 581.9203491210938,
+              "y": 392.9601745605469,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.890Z",
+              "tms": 3539.7999999998137,
+              "x": 585.2744140625,
+              "y": 394.63720703125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.918Z",
+              "tms": 3567.100000000093,
+              "x": 588.6284790039062,
+              "y": 396.31427001953125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.938Z",
+              "tms": 3587.7999999998137,
+              "x": 591.9826049804688,
+              "y": 397.9913024902344,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:29.967Z",
+              "tms": 3616.899999999907,
+              "x": 595.336669921875,
+              "y": 399.6683654785156,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.001Z",
+              "tms": 3650.399999999907,
+              "x": 598.6908569335938,
+              "y": 401.3454284667969,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.029Z",
+              "tms": 3678.2999999998137,
+              "x": 602.044921875,
+              "y": 403.0224609375,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.056Z",
+              "tms": 3705.7000000001863,
+              "x": 605.3989868164062,
+              "y": 404.69952392578125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.077Z",
+              "tms": 3726.7000000001863,
+              "x": 608.7531127929688,
+              "y": 406.3765563964844,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.105Z",
+              "tms": 3754.5,
+              "x": 612.107177734375,
+              "y": 408.0536193847656,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.140Z",
+              "tms": 3789.2999999998137,
+              "x": 615.4613647460938,
+              "y": 409.7306823730469,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.168Z",
+              "tms": 3818,
+              "x": 618.8154296875,
+              "y": 411.40771484375,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.203Z",
+              "tms": 3852.7999999998137,
+              "x": 622.1694946289062,
+              "y": 413.08477783203125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.230Z",
+              "tms": 3879.399999999907,
+              "x": 625.5236206054688,
+              "y": 414.7618103027344,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.265Z",
+              "tms": 3914.2000000001863,
+              "x": 628.877685546875,
+              "y": 416.4388732910156,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.293Z",
+              "tms": 3942.600000000093,
+              "x": 632.2318725585938,
+              "y": 418.1159362792969,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointermove",
+              "t": "2026-11-03T09:16:30.328Z",
+              "tms": 3977.899999999907,
+              "x": 635.5859375,
+              "y": 419.79296875,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": -1,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointerup",
+              "t": "2026-11-03T09:16:30.478Z",
+              "tms": 4127.700000000186,
+              "x": 635.5859375,
+              "y": 419.79296875,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": 0,
+              "buttons": 0,
+              "isTrusted": true
+            }
+          ]
+        },
+        "dragCount": 1,
+        "checklistStatus": {
+          "T-01": "Not tested",
+          "T-02": "Not tested",
+          "T-03": "Not tested",
+          "T-04": "Not tested",
+          "T-05": "Not tested",
+          "T-06": "Not tested"
+        },
+        "t05Comparison": "INCOMPLETE"
+      }
+    ],
+    "baseline": null,
+    "final": null,
+    "t05Comparison": "INCOMPLETE"
+  },
+  "console": {
+    "counts": {
+      "log": 1
+    },
+    "warnings": [],
+    "errors": [],
+    "total": 1
+  },
+  "artifacts": [
+    {
+      "name": "sp-05_scale_unrotated.png",
+      "officialName": "sp-05_scale_unrotated.png",
+      "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\results\\sp-05-manual\\evidence\\sp-05_scale_unrotated.png",
+      "bytes": 90960,
+      "sha256": "0204b96273fc38e02f8088755368a35fd723de945b8c4b074f0952fbfcc1b853",
+      "kind": "screenshot"
+    },
+    {
+      "name": "sp-05_scale_unrotated_log.json",
+      "officialName": "sp-05_scale_unrotated_log.json",
+      "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\results\\sp-05-manual\\evidence\\sp-05_scale_unrotated_log.json",
+      "bytes": 23966,
+      "sha256": "b47b0281be6649b856df75c82fe940e812068bef49733236d6ef27d3c1389692",
+      "kind": "harness-export",
+      "source": "sp-05_transform_log.json"
+    }
+  ],
+  "uncaughtError": null
+}

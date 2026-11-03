@@ -1,0 +1,1201 @@
+{
+  "runner": {
+    "name": "simuforge-sp05-cdp-runner",
+    "version": "1.0.0"
+  },
+  "case": {
+    "id": "T-05",
+    "slug": "t05-mode-switch",
+    "title": "Mode switching does not disturb the transform",
+    "proofCase": false
+  },
+  "run": {
+    "runId": "2026-11-03T09-16-00-842Z-25efe7",
+    "pass": 1,
+    "proof": false,
+    "startedAt": "2026-11-03T09:16:45.779Z",
+    "caseStartedAt": "2026-11-03T09:16:47.714Z",
+    "completedAt": "2026-11-03T09:16:51.623Z",
+    "durationMs": 3909
+  },
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "devicePixelRatio": 1.25,
+    "viewport": {
+      "width": 1386,
+      "height": 788
+    },
+    "status": "JSON exported.",
+    "harnessVersion": "Babylon.js 9.32.1 | useRightHandedSystem=true",
+    "chrome": "Chrome/156.0.8078.76",
+    "harnessFile": {
+      "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\harness\\sp05.html",
+      "sha256": "0a05cda7c8407c747466fff21137820e551945de7b5e74c89a3d695807a1d222",
+      "bytes": 36233
+    },
+    "canvas": {
+      "cssWidth": 986.4000244140625,
+      "cssHeight": 697.2750244140625,
+      "dpr": 1.25,
+      "left": 0,
+      "top": 0
+    },
+    "camera": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "babylonVersion": "9.32.1",
+    "useRightHandedSystem": true,
+    "gizmos": {
+      "positionEnabled": true,
+      "rotationEnabled": false,
+      "scaleEnabled": false,
+      "positionSpaceWorld": true,
+      "rotationSpaceWorld": true,
+      "scaleSpaceLocal": true,
+      "positionUpdateFlag": false,
+      "rotationUpdateFlag": false,
+      "scaleUpdateFlag": true,
+      "positionKeys": [
+        "gizmoLayer",
+        "_attachedMesh",
+        "_attachedNode",
+        "_customRotationQuaternion",
+        "_scaleRatio",
+        "_isHovered",
+        "_customMeshSet",
+        "_updateGizmoRotationToMatchAttachedMesh",
+        "_updateGizmoPositionToMatchAttachedMesh",
+        "_anchorPoint",
+        "_updateScale",
+        "_coordinatesMode",
+        "_interactionsEnabled",
+        "_rightHandtoLeftHandMatrix",
+        "_rootMesh",
+        "_beforeRenderObserver",
+        "_meshAttached",
+        "_nodeAttached",
+        "_observables",
+        "_gizmoAxisCache",
+        "onDragStartObservable",
+        "onDragObservable",
+        "onDragEndObservable",
+        "_planarGizmoEnabled",
+        "xGizmo",
+        "yGizmo",
+        "zGizmo",
+        "xPlaneGizmo",
+        "yPlaneGizmo",
+        "zPlaneGizmo"
+      ],
+      "rotationKeys": [
+        "gizmoLayer",
+        "_attachedMesh",
+        "_attachedNode",
+        "_customRotationQuaternion",
+        "_scaleRatio",
+        "_isHovered",
+        "_customMeshSet",
+        "_updateGizmoRotationToMatchAttachedMesh",
+        "_updateGizmoPositionToMatchAttachedMesh",
+        "_anchorPoint",
+        "_updateScale",
+        "_coordinatesMode",
+        "_interactionsEnabled",
+        "_rightHandtoLeftHandMatrix",
+        "_rootMesh",
+        "_beforeRenderObserver",
+        "onDragStartObservable",
+        "onDragObservable",
+        "onDragEndObservable",
+        "_observables",
+        "_sensitivity",
+        "_gizmoAxisCache",
+        "xGizmo",
+        "yGizmo",
+        "zGizmo",
+        "_meshAttached",
+        "_nodeAttached"
+      ],
+      "scaleKeys": [
+        "gizmoLayer",
+        "_attachedMesh",
+        "_attachedNode",
+        "_customRotationQuaternion",
+        "_scaleRatio",
+        "_isHovered",
+        "_customMeshSet",
+        "_updateGizmoRotationToMatchAttachedMesh",
+        "_updateGizmoPositionToMatchAttachedMesh",
+        "_anchorPoint",
+        "_updateScale",
+        "_coordinatesMode",
+        "_interactionsEnabled",
+        "_rightHandtoLeftHandMatrix",
+        "_rootMesh",
+        "_beforeRenderObserver",
+        "_meshAttached",
+        "_nodeAttached",
+        "_incrementalSnap",
+        "_sensitivity",
+        "_observables",
+        "_gizmoAxisCache",
+        "onDragStartObservable",
+        "onDragObservable",
+        "onDragEndObservable",
+        "_coloredMaterial",
+        "_hoverMaterial",
+        "_disableMaterial",
+        "_uniformScalingMesh",
+        "_octahedron",
+        "uniformScaleGizmo",
+        "xGizmo",
+        "yGizmo",
+        "zGizmo"
+      ]
+    },
+    "os": "win32",
+    "node": "v24.21.0"
+  },
+  "result": "PASS",
+  "checks": {
+    "caseId": "T-05",
+    "total": 26,
+    "passed": 26,
+    "failed": 0,
+    "result": "PASS",
+    "checks": [
+      {
+        "name": "T-05: reset position",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0.5,
+            0
+          ],
+          "expected": [
+            0,
+            0.5,
+            0
+          ],
+          "tolerance": 1e-9,
+          "deltas": [
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:48.546Z"
+      },
+      {
+        "name": "T-05: rotate gizmo space re-applied after setMode",
+        "status": "PASS",
+        "detail": {
+          "flag": "rotationSpaceWorld",
+          "value": true,
+          "gizmos": {
+            "positionEnabled": false,
+            "rotationEnabled": true,
+            "scaleEnabled": false,
+            "positionSpaceWorld": true,
+            "rotationSpaceWorld": true,
+            "scaleSpaceLocal": null,
+            "positionUpdateFlag": false,
+            "rotationUpdateFlag": false,
+            "scaleUpdateFlag": null,
+            "positionKeys": [
+              "gizmoLayer",
+              "_attachedMesh",
+              "_attachedNode",
+              "_customRotationQuaternion",
+              "_scaleRatio",
+              "_isHovered",
+              "_customMeshSet",
+              "_updateGizmoRotationToMatchAttachedMesh",
+              "_updateGizmoPositionToMatchAttachedMesh",
+              "_anchorPoint",
+              "_updateScale",
+              "_coordinatesMode",
+              "_interactionsEnabled",
+              "_rightHandtoLeftHandMatrix",
+              "_rootMesh",
+              "_beforeRenderObserver",
+              "_meshAttached",
+              "_nodeAttached",
+              "_observables",
+              "_gizmoAxisCache",
+              "onDragStartObservable",
+              "onDragObservable",
+              "onDragEndObservable",
+              "_planarGizmoEnabled",
+              "xGizmo",
+              "yGizmo",
+              "zGizmo",
+              "xPlaneGizmo",
+              "yPlaneGizmo",
+              "zPlaneGizmo"
+            ],
+            "rotationKeys": [
+              "gizmoLayer",
+              "_attachedMesh",
+              "_attachedNode",
+              "_customRotationQuaternion",
+              "_scaleRatio",
+              "_isHovered",
+              "_customMeshSet",
+              "_updateGizmoRotationToMatchAttachedMesh",
+              "_updateGizmoPositionToMatchAttachedMesh",
+              "_anchorPoint",
+              "_updateScale",
+              "_coordinatesMode",
+              "_interactionsEnabled",
+              "_rightHandtoLeftHandMatrix",
+              "_rootMesh",
+              "_beforeRenderObserver",
+              "onDragStartObservable",
+              "onDragObservable",
+              "onDragEndObservable",
+              "_observables",
+              "_sensitivity",
+              "_gizmoAxisCache",
+              "xGizmo",
+              "yGizmo",
+              "zGizmo",
+              "_meshAttached",
+              "_nodeAttached"
+            ],
+            "scaleKeys": null
+          }
+        },
+        "timestamp": "2026-11-03T09:16:49.122Z"
+      },
+      {
+        "name": "T-05: position unchanged in rotate",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0.5,
+            0
+          ],
+          "expected": [
+            0,
+            0.5,
+            0
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:49.122Z"
+      },
+      {
+        "name": "T-05: quaternion unchanged in rotate",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "expected": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:49.122Z"
+      },
+      {
+        "name": "T-05: scale unchanged in rotate",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            1,
+            1,
+            1
+          ],
+          "expected": [
+            1,
+            1,
+            1
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:49.122Z"
+      },
+      {
+        "name": "T-05: scale gizmo space re-applied after setMode",
+        "status": "PASS",
+        "detail": {
+          "flag": "scaleSpaceLocal",
+          "value": true,
+          "gizmos": {
+            "positionEnabled": false,
+            "rotationEnabled": false,
+            "scaleEnabled": true,
+            "positionSpaceWorld": true,
+            "rotationSpaceWorld": true,
+            "scaleSpaceLocal": true,
+            "positionUpdateFlag": false,
+            "rotationUpdateFlag": false,
+            "scaleUpdateFlag": true,
+            "positionKeys": [
+              "gizmoLayer",
+              "_attachedMesh",
+              "_attachedNode",
+              "_customRotationQuaternion",
+              "_scaleRatio",
+              "_isHovered",
+              "_customMeshSet",
+              "_updateGizmoRotationToMatchAttachedMesh",
+              "_updateGizmoPositionToMatchAttachedMesh",
+              "_anchorPoint",
+              "_updateScale",
+              "_coordinatesMode",
+              "_interactionsEnabled",
+              "_rightHandtoLeftHandMatrix",
+              "_rootMesh",
+              "_beforeRenderObserver",
+              "_meshAttached",
+              "_nodeAttached",
+              "_observables",
+              "_gizmoAxisCache",
+              "onDragStartObservable",
+              "onDragObservable",
+              "onDragEndObservable",
+              "_planarGizmoEnabled",
+              "xGizmo",
+              "yGizmo",
+              "zGizmo",
+              "xPlaneGizmo",
+              "yPlaneGizmo",
+              "zPlaneGizmo"
+            ],
+            "rotationKeys": [
+              "gizmoLayer",
+              "_attachedMesh",
+              "_attachedNode",
+              "_customRotationQuaternion",
+              "_scaleRatio",
+              "_isHovered",
+              "_customMeshSet",
+              "_updateGizmoRotationToMatchAttachedMesh",
+              "_updateGizmoPositionToMatchAttachedMesh",
+              "_anchorPoint",
+              "_updateScale",
+              "_coordinatesMode",
+              "_interactionsEnabled",
+              "_rightHandtoLeftHandMatrix",
+              "_rootMesh",
+              "_beforeRenderObserver",
+              "onDragStartObservable",
+              "onDragObservable",
+              "onDragEndObservable",
+              "_observables",
+              "_sensitivity",
+              "_gizmoAxisCache",
+              "xGizmo",
+              "yGizmo",
+              "zGizmo",
+              "_meshAttached",
+              "_nodeAttached"
+            ],
+            "scaleKeys": [
+              "gizmoLayer",
+              "_attachedMesh",
+              "_attachedNode",
+              "_customRotationQuaternion",
+              "_scaleRatio",
+              "_isHovered",
+              "_customMeshSet",
+              "_updateGizmoRotationToMatchAttachedMesh",
+              "_updateGizmoPositionToMatchAttachedMesh",
+              "_anchorPoint",
+              "_updateScale",
+              "_coordinatesMode",
+              "_interactionsEnabled",
+              "_rightHandtoLeftHandMatrix",
+              "_rootMesh",
+              "_beforeRenderObserver",
+              "_meshAttached",
+              "_nodeAttached",
+              "_incrementalSnap",
+              "_sensitivity",
+              "_observables",
+              "_gizmoAxisCache",
+              "onDragStartObservable",
+              "onDragObservable",
+              "onDragEndObservable",
+              "_coloredMaterial",
+              "_hoverMaterial",
+              "_disableMaterial",
+              "_uniformScalingMesh",
+              "_octahedron",
+              "uniformScaleGizmo",
+              "xGizmo",
+              "yGizmo",
+              "zGizmo"
+            ]
+          }
+        },
+        "timestamp": "2026-11-03T09:16:49.437Z"
+      },
+      {
+        "name": "T-05: position unchanged in scale",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0.5,
+            0
+          ],
+          "expected": [
+            0,
+            0.5,
+            0
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:49.437Z"
+      },
+      {
+        "name": "T-05: quaternion unchanged in scale",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "expected": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:49.437Z"
+      },
+      {
+        "name": "T-05: scale unchanged in scale",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            1,
+            1,
+            1
+          ],
+          "expected": [
+            1,
+            1,
+            1
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:49.437Z"
+      },
+      {
+        "name": "T-05: translate gizmo space re-applied after setMode",
+        "status": "PASS",
+        "detail": {
+          "flag": "positionSpaceWorld",
+          "value": true,
+          "gizmos": {
+            "positionEnabled": true,
+            "rotationEnabled": false,
+            "scaleEnabled": false,
+            "positionSpaceWorld": true,
+            "rotationSpaceWorld": true,
+            "scaleSpaceLocal": true,
+            "positionUpdateFlag": false,
+            "rotationUpdateFlag": false,
+            "scaleUpdateFlag": true,
+            "positionKeys": [
+              "gizmoLayer",
+              "_attachedMesh",
+              "_attachedNode",
+              "_customRotationQuaternion",
+              "_scaleRatio",
+              "_isHovered",
+              "_customMeshSet",
+              "_updateGizmoRotationToMatchAttachedMesh",
+              "_updateGizmoPositionToMatchAttachedMesh",
+              "_anchorPoint",
+              "_updateScale",
+              "_coordinatesMode",
+              "_interactionsEnabled",
+              "_rightHandtoLeftHandMatrix",
+              "_rootMesh",
+              "_beforeRenderObserver",
+              "_meshAttached",
+              "_nodeAttached",
+              "_observables",
+              "_gizmoAxisCache",
+              "onDragStartObservable",
+              "onDragObservable",
+              "onDragEndObservable",
+              "_planarGizmoEnabled",
+              "xGizmo",
+              "yGizmo",
+              "zGizmo",
+              "xPlaneGizmo",
+              "yPlaneGizmo",
+              "zPlaneGizmo"
+            ],
+            "rotationKeys": [
+              "gizmoLayer",
+              "_attachedMesh",
+              "_attachedNode",
+              "_customRotationQuaternion",
+              "_scaleRatio",
+              "_isHovered",
+              "_customMeshSet",
+              "_updateGizmoRotationToMatchAttachedMesh",
+              "_updateGizmoPositionToMatchAttachedMesh",
+              "_anchorPoint",
+              "_updateScale",
+              "_coordinatesMode",
+              "_interactionsEnabled",
+              "_rightHandtoLeftHandMatrix",
+              "_rootMesh",
+              "_beforeRenderObserver",
+              "onDragStartObservable",
+              "onDragObservable",
+              "onDragEndObservable",
+              "_observables",
+              "_sensitivity",
+              "_gizmoAxisCache",
+              "xGizmo",
+              "yGizmo",
+              "zGizmo",
+              "_meshAttached",
+              "_nodeAttached"
+            ],
+            "scaleKeys": [
+              "gizmoLayer",
+              "_attachedMesh",
+              "_attachedNode",
+              "_customRotationQuaternion",
+              "_scaleRatio",
+              "_isHovered",
+              "_customMeshSet",
+              "_updateGizmoRotationToMatchAttachedMesh",
+              "_updateGizmoPositionToMatchAttachedMesh",
+              "_anchorPoint",
+              "_updateScale",
+              "_coordinatesMode",
+              "_interactionsEnabled",
+              "_rightHandtoLeftHandMatrix",
+              "_rootMesh",
+              "_beforeRenderObserver",
+              "_meshAttached",
+              "_nodeAttached",
+              "_incrementalSnap",
+              "_sensitivity",
+              "_observables",
+              "_gizmoAxisCache",
+              "onDragStartObservable",
+              "onDragObservable",
+              "onDragEndObservable",
+              "_coloredMaterial",
+              "_hoverMaterial",
+              "_disableMaterial",
+              "_uniformScalingMesh",
+              "_octahedron",
+              "uniformScaleGizmo",
+              "xGizmo",
+              "yGizmo",
+              "zGizmo"
+            ]
+          }
+        },
+        "timestamp": "2026-11-03T09:16:49.734Z"
+      },
+      {
+        "name": "T-05: position unchanged in translate",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0.5,
+            0
+          ],
+          "expected": [
+            0,
+            0.5,
+            0
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:49.734Z"
+      },
+      {
+        "name": "T-05: quaternion unchanged in translate",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "expected": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:49.734Z"
+      },
+      {
+        "name": "T-05: scale unchanged in translate",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            1,
+            1,
+            1
+          ],
+          "expected": [
+            1,
+            1,
+            1
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:49.734Z"
+      },
+      {
+        "name": "T-05: harness comparison is STABLE",
+        "status": "PASS",
+        "detail": "STABLE (all values within 0.00001)\nBaseline pos: 0.000000, 0.500000, 0.000000\nFinal   pos: 0.000000, 0.500000, 0.000000\nBaseline quat: 0.000000, 0.000000, 0.000000, 1.000000\nFinal   quat: 0.000000, 0.000000, 0.000000, 1.000000\nBaseline scale: 1.000000, 1.000000, 1.000000\nFinal   scale: 1.000000, 1.000000, 1.000000",
+        "timestamp": "2026-11-03T09:16:50.299Z"
+      },
+      {
+        "name": "T-05: final position equals baseline",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0.5,
+            0
+          ],
+          "expected": [
+            0,
+            0.5,
+            0
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:50.299Z"
+      },
+      {
+        "name": "T-05: final quaternion equals baseline",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "expected": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:50.299Z"
+      },
+      {
+        "name": "T-05: final scale equals baseline",
+        "status": "PASS",
+        "detail": {
+          "actual": [
+            1,
+            1,
+            1
+          ],
+          "expected": [
+            1,
+            1,
+            1
+          ],
+          "tolerance": 0.00001,
+          "deltas": [
+            0,
+            0,
+            0
+          ],
+          "maxDelta": 0,
+          "note": null
+        },
+        "timestamp": "2026-11-03T09:16:50.299Z"
+      },
+      {
+        "name": "T-05: no drag was performed during mode switching",
+        "status": "PASS",
+        "detail": {
+          "dragCount": 0
+        },
+        "timestamp": "2026-11-03T09:16:50.302Z"
+      },
+      {
+        "name": "export: harnessVersion is 2.0",
+        "status": "PASS",
+        "detail": "2.0",
+        "timestamp": "2026-11-03T09:16:51.619Z"
+      },
+      {
+        "name": "export: gizmo space policy is world/world/local",
+        "status": "PASS",
+        "detail": {
+          "translate": "world",
+          "rotate": "world",
+          "scale": "local",
+          "appliedBy": "applyGizmoSpace() after lazy gizmo creation and on every setMode()"
+        },
+        "timestamp": "2026-11-03T09:16:51.619Z"
+      },
+      {
+        "name": "export: declared input method is cdp_trusted_input",
+        "status": "PASS",
+        "detail": "cdp_trusted_input",
+        "timestamp": "2026-11-03T09:16:51.619Z"
+      },
+      {
+        "name": "export: no synthetic input observed",
+        "status": "PASS",
+        "detail": false,
+        "timestamp": "2026-11-03T09:16:51.619Z"
+      },
+      {
+        "name": "export: at least one entry was recorded",
+        "status": "PASS",
+        "detail": 1,
+        "timestamp": "2026-11-03T09:16:51.619Z"
+      },
+      {
+        "name": "export: every entry labels input as cdp_trusted_input and SP-05 eligible",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T09:16:51.619Z"
+      },
+      {
+        "name": "export: every harness-recorded drag is fully trusted mouse input",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T09:16:51.619Z"
+      },
+      {
+        "name": "no unexplained console errors",
+        "status": "PASS",
+        "detail": [],
+        "timestamp": "2026-11-03T09:16:51.619Z"
+      }
+    ]
+  },
+  "observation": "Mode sequence translate -> rotate -> scale -> translate; harness comparison STABLE (all values within 0.00001)\nBaseline pos: 0.000000, 0.500000, 0.000000\nFinal   pos: 0.000000, 0.500000, 0.000000\nBaseline quat: 0.000000, 0.000000, 0.000000, 1.000000\nFinal   quat: 0.000000, 0.000000, 0.000000, 1.000000\nBaseline scale: 1.000000, 1.000000, 1.000000\nFinal   scale: 1.000000, 1.000000, 1.000000; no drags performed.",
+  "drags": [],
+  "export": {
+    "name": "sp-05_mode_switch_log.json",
+    "officialName": "sp-05_mode_switch_log.json",
+    "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\results\\sp-05-manual\\evidence\\sp-05_mode_switch_log.json",
+    "bytes": 5605,
+    "sha256": "f76df141369c8d2961b0f0f33e491c395c9013c87afbd274664841f1432bcda7",
+    "kind": "harness-export",
+    "source": "sp-05_transform_log.json"
+  },
+  "exportValidation": {
+    "harnessVersion": "2.0",
+    "gizmoSpacePolicy": {
+      "translate": "world",
+      "rotate": "world",
+      "scale": "local",
+      "appliedBy": "applyGizmoSpace() after lazy gizmo creation and on every setMode()"
+    },
+    "declaredMethod": "cdp_trusted_input",
+    "syntheticSeen": false,
+    "entryCount": 1,
+    "dragCount": 0,
+    "offenders": [],
+    "untrustedDrags": [],
+    "checkedAt": "2026-11-03T09:16:51.619Z"
+  },
+  "exportPayload": {
+    "harness": "SP-05 interactive transform gizmo (improved validation, explicit provenance)",
+    "harnessVersion": "2.0",
+    "babylonVersion": "9.32.1",
+    "useRightHandedSystem": true,
+    "initialTransform": {
+      "position": [
+        0,
+        0.5,
+        0
+      ],
+      "quaternion": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "gizmoSpacePolicy": {
+      "translate": "world",
+      "rotate": "world",
+      "scale": "local",
+      "appliedBy": "applyGizmoSpace() after lazy gizmo creation and on every setMode()"
+    },
+    "provenancePolicy": {
+      "approvedForSp05": [
+        "physical_mouse",
+        "cdp_trusted_input"
+      ],
+      "rejectedForSp05": [
+        "synthetic_input",
+        "programmatic_transform"
+      ],
+      "declaredMethod": "cdp_trusted_input",
+      "harnessCannotDistinguishTrustedSources": true,
+      "ownerApproval": {
+        "date": "2026-11-02",
+        "approvedMethod": "cdp_trusted_input",
+        "scope": "SP-05 interaction evidence; see SP-05_EVIDENCE_PROCEDURE.md"
+      },
+      "note": "Trusted pointer events cannot be distinguished by source inside the page; the declared method is recorded verbatim and untrusted events override it."
+    },
+    "inputTrace": {
+      "dragCount": 0,
+      "syntheticSeen": false,
+      "eventCount": 0,
+      "drags": []
+    },
+    "validation": {
+      "quaternionTolerance": 0.00001,
+      "scaleMinimum": 0.001,
+      "modeSwitchTolerance": 0.00001
+    },
+    "checklistStatus": {
+      "T-01": "Not tested",
+      "T-02": "Not tested",
+      "T-03": "Not tested",
+      "T-04": "Not tested",
+      "T-05": "Not tested",
+      "T-06": "Not tested"
+    },
+    "entries": [
+      {
+        "timestamp": "2026-11-03T09:16:50.815Z",
+        "mode": "translate",
+        "position": [
+          0,
+          0.5,
+          0
+        ],
+        "quaternion": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "eulerDisplay": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "quaternionLength": 1,
+        "quaternionValidation": {
+          "finite": true,
+          "length": 1,
+          "diffFromOne": 0,
+          "tolerance": 0.00001,
+          "valid": true
+        },
+        "scaleValidation": {
+          "values": [
+            1,
+            1,
+            1
+          ],
+          "finite": true,
+          "positive": true,
+          "minAllowed": 0.001,
+          "valid": true,
+          "reasons": []
+        },
+        "testId": "OBSERVATION",
+        "pointerStart": null,
+        "pointerEnd": null,
+        "userObservation": "Mode sequence translate -> rotate -> scale -> translate; harness comparison STABLE (all values within 0.00001)\nBaseline pos: 0.000000, 0.500000, 0.000000\nFinal   pos: 0.000000, 0.500000, 0.000000\nBaseline quat: 0.000000, 0.000000, 0.000000, 1.000000\nFinal   quat: 0.000000, 0.000000, 0.000000, 1.000000\nBaseline scale: 1.000000, 1.000000, 1.000000\nFinal   scale: 1.000000, 1.000000, 1.000000; no drags performed.",
+        "provenance": {
+          "inputMethod": "cdp_trusted_input",
+          "declared": {
+            "method": "cdp_trusted_input",
+            "driver": "simuforge-sp05-cdp-runner",
+            "sessionId": "2026-11-03T09-16-00-842Z-25efe7",
+            "declaredAt": "2026-11-03T09:16:47.704Z",
+            "note": "Browser-level trusted input via CDP Input.dispatchMouseEvent"
+          },
+          "approvedForSp05": true,
+          "approvedMethods": [
+            "physical_mouse",
+            "cdp_trusted_input"
+          ],
+          "rejectedMethods": [
+            "synthetic_input",
+            "programmatic_transform"
+          ],
+          "invalidityReasons": [],
+          "syntheticSeen": false,
+          "allObservedEventsTrusted": true,
+          "dragCount": 0,
+          "lastPointerType": null
+        },
+        "inputMethod": "cdp_trusted_input",
+        "sp05Eligible": true,
+        "interactionManual": false,
+        "interactionAutomated": true,
+        "lastDrag": null,
+        "dragCount": 0,
+        "checklistStatus": {
+          "T-01": "Not tested",
+          "T-02": "Not tested",
+          "T-03": "Not tested",
+          "T-04": "Not tested",
+          "T-05": "Not tested",
+          "T-06": "Not tested"
+        },
+        "t05Comparison": "STABLE"
+      }
+    ],
+    "baseline": {
+      "timestamp": "2026-11-03T09:16:48.702Z",
+      "mode": "translate",
+      "position": [
+        0,
+        0.5,
+        0
+      ],
+      "quaternion": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "eulerDisplay": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "quaternionLength": 1,
+      "quaternionValidation": {
+        "finite": true,
+        "length": 1,
+        "diffFromOne": 0,
+        "tolerance": 0.00001,
+        "valid": true
+      },
+      "scaleValidation": {
+        "values": [
+          1,
+          1,
+          1
+        ],
+        "finite": true,
+        "positive": true,
+        "minAllowed": 0.001,
+        "valid": true,
+        "reasons": []
+      },
+      "testId": "BASELINE"
+    },
+    "final": {
+      "timestamp": "2026-11-03T09:16:49.893Z",
+      "mode": "translate",
+      "position": [
+        0,
+        0.5,
+        0
+      ],
+      "quaternion": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "eulerDisplay": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "quaternionLength": 1,
+      "quaternionValidation": {
+        "finite": true,
+        "length": 1,
+        "diffFromOne": 0,
+        "tolerance": 0.00001,
+        "valid": true
+      },
+      "scaleValidation": {
+        "values": [
+          1,
+          1,
+          1
+        ],
+        "finite": true,
+        "positive": true,
+        "minAllowed": 0.001,
+        "valid": true,
+        "reasons": []
+      },
+      "testId": "FINAL"
+    },
+    "t05Comparison": "STABLE"
+  },
+  "console": {
+    "counts": {
+      "log": 1
+    },
+    "warnings": [],
+    "errors": [],
+    "total": 1
+  },
+  "artifacts": [
+    {
+      "name": "sp-05_mode_switch.png",
+      "officialName": "sp-05_mode_switch.png",
+      "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\results\\sp-05-manual\\evidence\\sp-05_mode_switch.png",
+      "bytes": 90734,
+      "sha256": "02a08b060d12f276f4696944748ecd910fe34c16a634440ba820873d0d5d0008",
+      "kind": "screenshot"
+    },
+    {
+      "name": "sp-05_mode_switch_log.json",
+      "officialName": "sp-05_mode_switch_log.json",
+      "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\results\\sp-05-manual\\evidence\\sp-05_mode_switch_log.json",
+      "bytes": 5605,
+      "sha256": "f76df141369c8d2961b0f0f33e491c395c9013c87afbd274664841f1432bcda7",
+      "kind": "harness-export",
+      "source": "sp-05_transform_log.json"
+    }
+  ],
+  "uncaughtError": null
+}

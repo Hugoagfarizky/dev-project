@@ -4,9 +4,9 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 0.7 — Draft |
+| Version | 0.8 — Draft |
 | Date | 2026-11-03 |
-| Status | Research complete; technical spike in progress (SP-01 to SP-04 executed; SP-05 blocked with a repaired harness and three CDP proof cases; SP-06 to SP-08 pending) |
+| Status | Research complete; technical spike in progress (SP-01 to SP-04 executed; SP-05 full automated suite executed and awaiting review; SP-06 to SP-08 pending) |
 | Owner role | Technical Lead, SimuForge |
 | Project | simuforge |
 | Related specification | [POC-01 World Editor](POC_01_WORLD_EDITOR.md) |
@@ -23,6 +23,7 @@
 | 0.5 | 2026-10-31 | Resolved B-04 as Chrome-only browser scope: Google Chrome is the only supported and tested browser for POC-01; Firefox is explicitly excluded; cross-browser compatibility is outside POC-01 scope. Removed Firefox installation from prerequisites and execution gates. |
 | 0.6 | 2026-10-31 | Approved the POC-01 evidence ownership and sequential testing workflow; resolved B-06. Executed SP-01 engine initialization in Google Chrome; recorded PASS with evidence. |
 | 0.7 | 2026-11-03 | Recorded the Project Owner's approval of direct-CDP `Input.dispatchMouseEvent` as an SP-05 evidence method and repaired the SP-05 harness: lazy gizmo creation now receives the world/world/local coordinate-space policy through `applyGizmoSpace()`, and input provenance distinguishes `physical_mouse`, `cdp_trusted_input`, `synthetic_input`, and `programmatic_transform`. Three proof cases (world X translation, world X rotation, local X scale after a genuine ~42° Y rotation) passed twice with fresh reloads and no false provenance. SP-05 remains BLOCKED pending the full T-01 through T-06 evidence and review; A-03 and A-04 remain unverified. |
+| 0.8 | 2026-11-03 | Executed the full SP-05 suite through the approved direct-CDP runner. T-01 through T-06 passed 256/256 assertions with 14 fully trusted drags, no retries, no synthetic input, and no console errors; an independent evidence audit passed 750/750 checks. Official evidence is archived under `results/sp-05-manual/evidence/`. SP-05 remains BLOCKED pending human review; A-03 and A-04 remain unverified. |
 
 This document is research and planning only. It contains no application code, no installed dependencies, and no test results. Statements about browser or library behavior are separated into documented behavior and assumptions that still require the technical spike.
 
@@ -68,7 +69,7 @@ Supporting rules, recorded in full in the POC specification:
 
 ### 1.2 Readiness verdict
 
-**Conditionally ready for the spike; not ready for full POC implementation.** The spike must confirm right-handed picking, gizmos, camera remapping, and quaternion behavior, plus the hybrid transform policy in practice. SP-01 to SP-04 have been executed with recorded evidence; SP-05 is blocked pending manual interactive testing; SP-06 to SP-08 have not been executed. No POC-01 acceptance criterion may be marked PASS without the relevant evidence.
+**Conditionally ready for the spike; not ready for full POC implementation.** The spike must confirm right-handed picking, gizmos, camera remapping, and quaternion behavior, plus the hybrid transform policy in practice. SP-01 to SP-04 have been executed with recorded evidence; the full SP-05 automated suite has been executed and awaits review; SP-06 to SP-08 have not been executed. No POC-01 acceptance criterion may be marked PASS without the relevant evidence.
 
 ## 2. Q-01 through Q-10 Status
 
@@ -232,8 +233,8 @@ Because POC-01 entities are unparented, Babylon's node-local `position` and `rot
 | --- | --- | --- | --- |
 | A-01 | Setting `useRightHandedSystem` before content makes all POC transforms behave as +X right, +Y up, -Z forward | Documentation describes the convention but not this exact POC scene | SP-02 |
 | A-02 | `scene.pick` returns the correct mesh and point in right-handed mode | Verified by SP-04: all front/side/top and 180-orbit picks returned `testCube` with plausible points; empty-space picks returned no hit | SP-04 |
-| A-03 | Position and rotation gizmos can be set to world orientation without artifacts in right-handed mode | The flag is documented; handedness interaction is not explicitly discussed. The repaired harness now applies it after lazy creation. A 2026-11-03 CDP proof produced a world X rotation delta axis of `(1, 0, 0)` after a ~41° Y rotation; full T-01/T-02 evidence and visual review are still pending. | SP-05 |
-| A-04 | The local-oriented scale gizmo behaves correctly on rotated entities under the approved policy, including non-uniform scale | The policy is approved. A 2026-11-03 CDP proof changed scale `(1, 1, 1) → (1.203411, 1, 1)` along the rotated local X axis after a ~41° Y rotation; full T-03/T-04 evidence and visual review are still pending. | SP-05 |
+| A-03 | Position and rotation gizmos can be set to world orientation without artifacts in right-handed mode | The flag is documented; handedness interaction is not explicitly discussed. The repaired harness applies it after lazy creation. The 2026-11-03 full suite passed T-01 (world X/Y/Z translation) and T-02 (world X rotation delta axis `(1, 0, 0)` after a ~41° Y rotation); visual review is still pending. | SP-05 |
+| A-04 | The local-oriented scale gizmo behaves correctly on rotated entities under the approved policy, including non-uniform scale | The policy is approved. The 2026-11-03 full suite passed T-03 and T-04: scale changed `(1, 1, 1) → (1.203411, 1, 1)` along the rotated local X axis after a ~41° Y rotation, with a supplementary local Y scale near 90°; visual review is still pending and local Z scaling was not exercised. | SP-05 |
 | A-05 | ArcRotateCamera orbit, pan, and zoom behave correctly in right-handed mode | Camera fix is documented for 8.10.1+, but axes and panning feel must be verified | SP-06 |
 | A-06 | The default plain-left-drag camera rotate can be removed cleanly so left click is free for selection | Input map is documented; removing a default entry is not shown as an example | SP-06 |
 | A-07 | A quaternion authored directly in the right-handed scene rotates +X to -Z for a positive 90° Y rotation | Quaternion math is documented, but handedness interpretation needs an empirical check | SP-07 |
@@ -696,7 +697,7 @@ If a check fails:
 
 ### 8.5 Status
 
-**In progress.** SP-01 executed and recorded as PASS. SP-02 executed with numeric coordinate consistency confirmed; visual verification pending user review (recorded as PARTIAL). SP-03 executed: one unlit 1×1×1 cube at (0, 0.5, 0), no light entity, material `disableLighting = true`; visual verification pending user review (recorded as PARTIAL). SP-04 executed and recorded as PASS (automated): all front/side/top and 180-orbit picks returned `testCube` with plausible points; empty-space picks returned no hit. SP-05 is BLOCKED. The harness gizmo configuration defect (lazy gizmo creation made the world-space assignments dead code) has been repaired with `applyGizmoSpace()`, and input provenance no longer reports automated CDP interaction as manual. A direct-CDP runner prepared the three proof cases (world X translation, world X rotation, local X scale after a genuine ~42° Y rotation); each passed twice with a fresh reload before every execution (`T-01` 37/37, `T-02` 35/35, `T-04` 41/41). These are proof artifacts, not the full T-01 through T-06 evidence set; no SP-05 acceptance criterion has been upgraded to PASS and A-03/A-04 remain unverified. SP-06 through SP-08 have not been executed. B-02 remains open.
+**In progress.** SP-01 executed and recorded as PASS. SP-02 executed with numeric coordinate consistency confirmed; visual verification pending user review (recorded as PARTIAL). SP-03 executed: one unlit 1×1×1 cube at (0, 0.5, 0), no light entity, material `disableLighting = true`; visual verification pending user review (recorded as PARTIAL). SP-04 executed and recorded as PASS (automated): all front/side/top and 180-orbit picks returned `testCube` with plausible points; empty-space picks returned no hit. SP-05 is BLOCKED. The harness gizmo configuration defect (lazy gizmo creation made the world-space assignments dead code) has been repaired with `applyGizmoSpace()`, and input provenance no longer reports automated CDP interaction as manual. A direct-CDP runner executed the full T-01 through T-06 suite on 2026-11-03: 256/256 assertions passed, with 14 fully trusted drags, no retries, no synthetic input, and no console errors; an independent evidence audit passed 750/750 checks. Official evidence is archived under `projects/simuforge/reports/poc-01/results/sp-05-manual/evidence/`, with the summary in `SP-05_FULL_EXECUTION_REPORT.md`. The evidence has not been reviewed, so no SP-05 acceptance criterion has been upgraded to PASS and A-03/A-04 remain unverified. Evidence-completeness deviations (missing `sp-05_rotate_45.png`, untested local Z scale, checklist not set) must be resolved or waived. SP-06 through SP-08 have not been executed. B-02 remains open.
 
 ## 9. Remaining Blockers
 

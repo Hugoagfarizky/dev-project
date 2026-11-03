@@ -166,10 +166,10 @@ PASS (automated). Visual verification of the picking screenshots is pending user
 - Console log: `results/sp-04_console.log` (local-only; `*.log` is gitignored)
 - DOM dump: `results/sp-04_dom_dump_front.html`
 
-## SP-05 — Transform Gizmos (repaired; automated proof captured; BLOCKED pending full suite)
+## SP-05 — Transform Gizmos (full automated suite executed; BLOCKED pending review)
 
 ### Status
-BLOCKED. The gizmo configuration defect is repaired, and three genuine-CDP proof cases pass twice with a fresh reload before every execution. No SP-05 acceptance criterion has been upgraded to PASS. A-03 and A-04 remain unverified pending the full T-01 through T-06 evidence and human review of the screenshots.
+BLOCKED. The gizmo configuration defect is repaired. The full T-01 through T-06 suite was executed on 2026-11-03 with the approved direct-CDP runner: 256/256 assertions passed across six cases, with no retries and no provenance violations. No SP-05 acceptance criterion has been upgraded to PASS. A-03 and A-04 remain unverified pending human review of the screenshots and acceptance of the evidence.
 
 ### Verified repair
 Babylon's `GizmoManager` creates each gizmo lazily on the first `*GizmoEnabled = true` assignment. The harness previously read `gizmoManager.gizmos.positionGizmo`, `rotationGizmo`, and `scaleGizmo` immediately after construction, when all three were `null`, so the world/world/local assignments were dead code and Babylon's local default applied to every gizmo.
@@ -197,7 +197,23 @@ Both passes produced identical transform values. Every drag reported lifecycle `
 
 Proof artifacts (not official evidence): `projects/simuforge/reports/poc-01/results/sp-05-automated/proof/`.
 
-### Test cases (full suite not yet executed)
+### Full suite execution (2026-11-03)
+Runner: `node run.js --cases all --out projects/simuforge/reports/poc-01/results/sp-05-manual/evidence`. Run ID `2026-11-03T09-16-00-842Z-25efe7`.
+
+| Case | Checks | Result | Key observation |
+| --- | --- | --- | --- |
+| T-01 World translate | 59/59 | PASS | Setup 40.8814° world Y; world X/Y/Z deltas `(0.902087, 0, 0)`, `(0, 0.817648, 0)`, `(0, 0, 0.858875)`; handles matched world axes. |
+| T-02 World rotate | 35/35 | PASS | World X delta axis `(1, 0, 0)` at 43.9206°; rotated local X was `(0.756066, 0, -0.654495)`. |
+| T-03 Unrotated local scale | 26/26 | PASS | Local X `(1, 1, 1) → (1.214723, 1, 1)`; Y/Z unchanged. |
+| T-04 Rotated local scale | 61/61 | PASS | Local X `(1, 1, 1) → (1.203411, 1, 1)`; supplementary local Y at ~87.45° `1 → 1.134295`. |
+| T-05 Mode switching | 26/26 | PASS | Harness comparison STABLE; zero drags. |
+| T-06 Transform integrity | 49/49 | PASS | Quaternion normalized, scale finite and positive; transform not back at initial. |
+
+All 14 drags recorded lifecycle `start=1`, `drag=24`, `end=1`, `allTrusted=true`, `pointerType="mouse"`. Every entry reports `inputMethod="cdp_trusted_input"`, `sp05Eligible=true`, `interactionManual=false`, `interactionAutomated=true`. No synthetic input, no console errors, no retries. An independent audit re-checked 750 evidence-integrity conditions: 750/750 PASS.
+
+Deviations remain: `sp-05_rotate_45.png` was not produced (the T-02 case captures only the world-X screenshot), T-04 did not drag the local Z handle, and the harness checklist remains "Not tested" pending human review. See `results/sp-05-manual/SP-05_FULL_EXECUTION_REPORT.md`.
+
+### Test cases
 - T-01 World Translate
 - T-02 World Rotate (45° and 90° around Y)
 - T-03 Local Scale (unrotated)
@@ -208,11 +224,12 @@ Proof artifacts (not official evidence): `projects/simuforge/reports/poc-01/resu
 ### Notes
 - No fabricated evidence or test logs have been created.
 - SP-04 remains PASS (automated), visual review pending.
-- The full T-01 through T-06 suite has not been executed. SP-05 remains BLOCKED; do not start SP-06.
-- The runner's proof artifacts are reproducible but are not a substitute for reviewing the full suite and the visual axis alignment.
+- The full suite has been executed, but its evidence has not been reviewed. SP-05 remains BLOCKED; do not start SP-06.
+- The runner's evidence does not replace visual axis-alignment review.
 
-### Consolidated report
-A consolidated SP-05 report is available at `projects/simuforge/reports/poc-01/results/sp-05-manual/SP-05_CONSOLIDATED_REPORT.md`. It records user-reported T-01 through T-05 results, automated T-06 validator results (8/8 PASS), the 2026-11-03 harness repair and CDP proof update, and the conclusion that SP-05 remains BLOCKED with A-03 and A-04 unverified.
+### Reports
+- Full execution report: `projects/simuforge/reports/poc-01/results/sp-05-manual/SP-05_FULL_EXECUTION_REPORT.md`.
+- Consolidated SP-05 report: `projects/simuforge/reports/poc-01/results/sp-05-manual/SP-05_CONSOLIDATED_REPORT.md`. It records user-reported T-01 through T-05 results, automated T-06 validator results (8/8 PASS), the 2026-11-03 harness repair and CDP proof update, and the conclusion that SP-05 remains BLOCKED with A-03 and A-04 unverified.
 
 ### POC-04 OS click evidence
 An OS-level click was executed at screen coordinate `(188, 188)` on the SP-05 harness. Archived evidence includes the OS click JSON, before/after screenshots, and baseline/after-click transform JSON snapshots. Transform comparison is STABLE (all 11 components diff 0 within tolerance 1e-5). OS click POC-04 is PASS for transform stability. SP-05 overall remains BLOCKED.

@@ -121,18 +121,38 @@ Proof artifacts: `projects/simuforge/reports/poc-01/results/sp-05-automated/proo
 
 This proof covers three interactions. It does not cover the full T-01 through T-06 procedure, and it does not replace human review of the screenshots for visual axis alignment.
 
+## Full suite execution (2026-11-03)
+
+The complete suite was executed once with `node run.js --cases all --out projects/simuforge/reports/poc-01/results/sp-05-manual/evidence/` (run `2026-11-03T09-16-00-842Z-25efe7`).
+
+| Case | Checks | Result |
+| --- | --- | --- |
+| T-01 World translate | 59/59 | PASS |
+| T-02 World rotate | 35/35 | PASS |
+| T-03 Unrotated local scale | 26/26 | PASS |
+| T-04 Rotated local scale | 61/61 | PASS |
+| T-05 Mode switching | 26/26 | PASS |
+| T-06 Transform integrity | 49/49 | PASS |
+| **Total** | **256/256** | **PASS** |
+
+Fourteen genuine CDP drags were recorded. Every drag used `Input.dispatchMouseEvent`, produced a harness lifecycle of `start=1`, `drag=24`, `end=1`, and was fully trusted (`isTrusted: true`, `pointerType: "mouse"`). Every export entry is `cdp_trusted_input`, SP-05 eligible, `interactionManual: false`, `interactionAutomated: true`. No synthetic input, programmatic transform, retry, or console error occurred. An independent audit of the evidence files passed 750/750 checks.
+
+Key measurements: T-01 world deltas `(0.902087, 0, 0)`, `(0, 0.817648, 0)`, `(0, 0, 0.858875)`; T-02 world X delta axis `(1, 0, 0)` at 43.9206°; T-03 local X `1 → 1.214723`; T-04 local X `1 → 1.203411` plus supplementary local Y at ~87.45° `1 → 1.134295`; T-05 STABLE; T-06 quaternion normalized and scale positive.
+
+Evidence-completeness deviations remain: `sp-05_rotate_45.png` was not produced, local Z scaling was not exercised in T-04, and the harness checklist is still "Not tested". These require review or an explicit waiver. See `SP-05_FULL_EXECUTION_REPORT.md`.
+
 ## Overall conclusion
 
 SP-05 remains BLOCKED. No acceptance criterion is upgraded to PASS.
 
-- T-01 through T-04: user-reported success; no archived evidence from those manual runs.
-- T-05: user-reported STABLE; supported by static code review (mode switching does not mutate transform), but no archived before/after values from the manual run.
-- T-06: PARTIAL; automated validator tests passed (8/8), but actual post-interaction evidence from the manual run is missing.
-- A-03 and A-04 remain unverified.
-- The 2026-11-03 CDP proof demonstrates the repaired world/world/local behaviour and the trusted-input path for three interactions, but it is not the full T-01 through T-06 evidence set.
+- Archived automated evidence now exists for all six cases under `results/sp-05-manual/evidence/`, with sidecar audits and harness exports.
+- The full suite passed 256/256 runner assertions, but it has not been reviewed or accepted.
+- A-03 and A-04 remain unverified until the screenshots are visually reviewed and the evidence is formally accepted.
+- The earlier user-reported manual results remain unarchived and are not replaced by this run.
+- The 2026-11-03 proof and full-suite artifacts are recorded as `cdp_trusted_input`, not as physical-mouse interaction.
 
 SP-06 remains at NO-GO per the documented sequential evidence gate (SP-05 evidence required before SP-06).
 
 ## Evidence limitations
 
-No timestamps, screenshots, pointer coordinates, or JSON logs are fabricated. User-reported results are recorded as reported, without independent archival support. Programmatic validator results are recorded separately and are not represented as manual interaction evidence. The 2026-11-03 proof artifacts are recorded as `cdp_trusted_input`, not as physical-mouse interaction, and are kept separate from the official evidence directory.
+No timestamps, screenshots, pointer coordinates, or JSON logs are fabricated. User-reported results are recorded as reported, without independent archival support. Programmatic validator results are recorded separately and are not represented as manual interaction evidence. The 2026-11-03 proof and full-suite artifacts are recorded as `cdp_trusted_input`, not as physical-mouse interaction. The full-suite screenshots still require human visual review; numeric assertions do not establish visual axis alignment.
