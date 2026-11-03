@@ -1,0 +1,138 @@
+{
+  "runId": "sp06-scenarioval3-2026-11-03T11-47-47-901Z-5fcbb2",
+  "purpose": "HARNESS_VALIDATION (non-official) - SP-06 scenario capability test (revision 3)",
+  "harness": {
+    "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\harness\\sp06.html",
+    "bytes": 40351,
+    "sha256": "0e580f0f798cab3a389654c134d5ab4138abc899cf0a808528b52bddf8f86c7d"
+  },
+  "browser": {
+    "version": "Chrome/156.0.8078.76"
+  },
+  "settleDelayMs": 2100,
+  "scenarios": [
+    {
+      "id": "S-01",
+      "title": "Baseline camera state",
+      "status": "PASS",
+      "checks": {
+        "passed": 6,
+        "total": 6,
+        "failed": 0
+      },
+      "error": null,
+      "observation": null
+    },
+    {
+      "id": "S-02",
+      "title": "Horizontal orbit",
+      "status": "PASS",
+      "checks": {
+        "passed": 5,
+        "total": 5,
+        "failed": 0
+      },
+      "error": null,
+      "observation": null
+    },
+    {
+      "id": "S-03",
+      "title": "Vertical orbit (with small horizontal component)",
+      "status": "PASS",
+      "checks": {
+        "passed": 4,
+        "total": 4,
+        "failed": 0
+      },
+      "error": null,
+      "observation": null
+    },
+    {
+      "id": "S-04",
+      "title": "Pan",
+      "status": "PASS",
+      "checks": {
+        "passed": 2,
+        "total": 2,
+        "failed": 0
+      },
+      "error": null,
+      "observation": null
+    },
+    {
+      "id": "S-05",
+      "title": "Wheel zoom in",
+      "status": "PASS",
+      "checks": {
+        "passed": 2,
+        "total": 2,
+        "failed": 0
+      },
+      "error": null,
+      "observation": null
+    },
+    {
+      "id": "S-06",
+      "title": "Wheel zoom out",
+      "status": "PASS",
+      "checks": {
+        "passed": 2,
+        "total": 2,
+        "failed": 0
+      },
+      "error": null,
+      "observation": null
+    },
+    {
+      "id": "S-07",
+      "title": "Camera state stability",
+      "status": "PASS",
+      "checks": {
+        "passed": 1,
+        "total": 1,
+        "failed": 0
+      },
+      "error": null,
+      "observation": null
+    },
+    {
+      "id": "S-08",
+      "title": "Gizmo drag isolation",
+      "status": "PASS",
+      "checks": {
+        "passed": 27,
+        "total": 27,
+        "failed": 0
+      },
+      "error": null,
+      "observation": null
+    },
+    {
+      "id": "S-09",
+      "title": "Plain click non-capture",
+      "status": "PASS",
+      "checks": {
+        "passed": 4,
+        "total": 4,
+        "failed": 0
+      },
+      "error": null,
+      "observation": null
+    },
+    {
+      "id": "S-10",
+      "title": "Gizmo drag isolation (S-10a/S-10b)",
+      "status": "PASS",
+      "checks": {
+        "passed": 29,
+        "total": 29,
+        "failed": 0
+      },
+      "error": null,
+      "observation": null
+    }
+  ],
+  "overall": "PASS",
+  "completedAt": "2026-11-03T11:48:32.472Z",
+  "note": "HARNESS_VALIDATION only. Not official SP-06 acceptance. SP-06 remains NO-GO. S-03 uses small horizontal component (pure vertical drag does not trigger beta change in Babylon 9.32.1)."
+}
