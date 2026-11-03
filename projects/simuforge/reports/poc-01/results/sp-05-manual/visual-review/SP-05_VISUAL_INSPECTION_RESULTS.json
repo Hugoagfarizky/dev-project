@@ -1,0 +1,113 @@
+{
+  "generatedAt": "2026-11-03T00:00:00.000Z",
+  "reviewer": {
+    "model": "Beam Free",
+    "provider": "opencode",
+    "visualCapability": false,
+    "note": "Model does not support image input. No image was inspected. No visual verdict assigned."
+  },
+  "commit": "7788cef3e1dd4a624e8b06a597c5797f88bb4962",
+  "images": [
+    {
+      "screenshot": "sp-05_translate_x.png",
+      "testId": "T-01",
+      "sha256": "b8cca8eedd7a38df5d079d2ce610ecd2688397aa5a99c924f48bb378ef6cd54c",
+      "verdict": "NOT REVIEWED",
+      "observedVisualEvidence": "None (image not readable by model)",
+      "acceptanceCriteria": "A-03",
+      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+    },
+    {
+      "screenshot": "sp-05_translate_y.png",
+      "testId": "T-01",
+      "sha256": "bd74c1272ffdf7f56b932b12a77ed1bb316510a6418e57901be8f9fa78759eba",
+      "verdict": "NOT REVIEWED",
+      "observedVisualEvidence": "None (image not readable by model)",
+      "acceptanceCriteria": "A-03",
+      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+    },
+    {
+      "screenshot": "sp-05_translate_z.png",
+      "testId": "T-01",
+      "sha256": "6c46052a6f591104a0de05aae4107fd60d1692e346863d4ae43a42bf916b293d",
+      "verdict": "NOT REVIEWED",
+      "observedVisualEvidence": "None (image not readable by model)",
+      "acceptanceCriteria": "A-03",
+      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+    },
+    {
+      "screenshot": "sp-05_rotate_world_x.png",
+      "testId": "T-02",
+      "sha256": "ef5b636f27899ed389c1f597af1260d4efc154dedaff1acb3fd3cdf8db712dcb",
+      "verdict": "NOT REVIEWED",
+      "observedVisualEvidence": "None (image not readable by model)",
+      "acceptanceCriteria": "A-03",
+      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+    },
+    {
+      "screenshot": "sp-05_scale_unrotated.png",
+      "testId": "T-03",
+      "sha256": "0204b96273fc38e02f8088755368a35fd723de945b8c4b074f0952fbfcc1b853",
+      "verdict": "NOT REVIEWED",
+      "observedVisualEvidence": "None (image not readable by model)",
+      "acceptanceCriteria": "A-04",
+      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+    },
+    {
+      "screenshot": "sp-05_scale_rotated_45.png",
+      "testId": "T-04",
+      "sha256": "8c6508e7be682b1bc9b4ac9f63e399ec7717c230441188cf98f7382394b9f134",
+      "verdict": "NOT REVIEWED",
+      "observedVisualEvidence": "None (image not readable by model)",
+      "acceptanceCriteria": "A-04",
+      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+    },
+    {
+      "screenshot": "sp-05_scale_rotated_90.png",
+      "testId": "T-04",
+      "sha256": "9acf4d05b3d1162062409ab4578dc3ae4008c29deb45e1dd2e8c715f17fcaf3b",
+      "verdict": "NOT REVIEWED",
+      "observedVisualEvidence": "None (image not readable by model)",
+      "acceptanceCriteria": "A-04",
+      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+    },
+    {
+      "screenshot": "sp-05_mode_switch.png",
+      "testId": "T-05",
+      "sha256": "02a08b060d12f276f4696944748ecd910fe34c16a634440ba820873d0d5d0008",
+      "verdict": "NOT REVIEWED",
+      "observedVisualEvidence": "None (image not readable by model)",
+      "acceptanceCriteria": "Mode-switch stability",
+      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+    },
+    {
+      "screenshot": "sp-05_transform_integrity.png",
+      "testId": "T-06",
+      "sha256": "3a33572c99dcd8ca9a0707249e4f4fd8e42a4e0d6d7e9742d8f5378bb9e813af",
+      "verdict": "NOT REVIEWED",
+      "observedVisualEvidence": "None (image not readable by model)",
+      "acceptanceCriteria": "Transform integrity",
+      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+    },
+    {
+      "screenshot": "sp-05_scale_rotated_local_z.png",
+      "testId": "T-04-Z (supplemental)",
+      "sha256": "00077f6774d59619602521cc5eaf146e65e18b12d65dabd08ed76386987f8b56",
+      "verdict": "NOT REVIEWED",
+      "observedVisualEvidence": "None (image not readable by model)",
+      "acceptanceCriteria": "A-04",
+      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+    }
+  ],
+  "summary": {
+    "totalImages": 10,
+    "reviewed": 0,
+    "notReviewed": 10,
+    "pass": 0,
+    "fail": 0,
+    "uncertain": 0,
+    "a03Status": "unverified",
+    "a04Status": "unverified",
+    "sp05Status": "BLOCKED"
+  }
+}
