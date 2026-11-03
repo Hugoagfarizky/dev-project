@@ -1,0 +1,67 @@
+{
+  "runId": "targeted-localz-2026-11-03T09-26-28-166Z-914f38",
+  "targeted": true,
+  "purpose": "Supplemental T-04 local Z scale interaction",
+  "result": "PASS",
+  "checks": {
+    "total": 45,
+    "passed": 45,
+    "failed": 0
+  },
+  "setupAngleDeg": 40.88135540793271,
+  "localZWorld": [
+    0.6544948171419486,
+    0,
+    0.7560664880381404
+  ],
+  "localZDivergenceDeg": 40.881355407932745,
+  "scaleBefore": [
+    0.9999997998853689,
+    1,
+    0.9999997998853689
+  ],
+  "scaleAfter": [
+    0.9999997998853689,
+    1,
+    1.3048000961646478
+  ],
+  "harness": {
+    "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\harness\\sp05.html",
+    "bytes": 36233,
+    "sha256": "0a05cda7c8407c747466fff21137820e551945de7b5e74c89a3d695807a1d222"
+  },
+  "browser": {
+    "version": "Chrome/156.0.8078.76",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+  },
+  "port": 9224,
+  "startedAt": "2026-11-03T09:26:28.168Z",
+  "completedAt": "2026-11-03T09:26:37.004Z",
+  "artifacts": [
+    {
+      "name": "sp-05_scale_rotated_local_z.png",
+      "officialName": "sp-05_scale_rotated_local_z.png",
+      "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\results\\sp-05-manual\\evidence\\sp-05_scale_rotated_local_z.png",
+      "bytes": 86681,
+      "sha256": "00077f6774d59619602521cc5eaf146e65e18b12d65dabd08ed76386987f8b56",
+      "kind": "screenshot"
+    },
+    {
+      "name": "sp-05_scale_rotated_local_z_log.json",
+      "officialName": "sp-05_scale_rotated_local_z_log.json",
+      "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\results\\sp-05-manual\\evidence\\sp-05_scale_rotated_local_z_log.json",
+      "bytes": 34075,
+      "sha256": "a3893d9ddc92be27c78d2c0ae6e63978fccc7aa0c880e95c96fe97d1dc08d770",
+      "kind": "harness-export",
+      "source": "sp-05_transform_log.json"
+    },
+    {
+      "name": "sp-05_scale_rotated_local_z_audit.json",
+      "officialName": "sp-05_scale_rotated_local_z_audit.json",
+      "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\results\\sp-05-manual\\evidence\\sp-05_scale_rotated_local_z_audit.json",
+      "bytes": 107509,
+      "sha256": "ad7d9291a44e8481bb32c4941cfff6a8251e1344f24774e15f534093820ea77b",
+      "kind": "json"
+    }
+  ]
+}

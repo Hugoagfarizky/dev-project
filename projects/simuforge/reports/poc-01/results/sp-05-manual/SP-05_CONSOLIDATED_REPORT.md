@@ -141,6 +141,20 @@ Key measurements: T-01 world deltas `(0.902087, 0, 0)`, `(0, 0.817648, 0)`, `(0,
 
 Evidence-completeness deviations remain: `sp-05_rotate_45.png` was not produced, local Z scaling was not exercised in T-04, and the harness checklist is still "Not tested". These require review or an explicit waiver. See `SP-05_FULL_EXECUTION_REPORT.md`.
 
+## Targeted local Z supplement and visual-review preparation (2026-11-03)
+
+Automated result PASS; visual review still pending.
+
+- The full suite was **not** re-executed. All T-01 through T-06 artifacts, checks, and hashes are unchanged.
+- The T-04 procedure requires dragging local X, Y, and Z; the official run covered X and Y only. A separate targeted run (`targeted-localz-2026-11-03T09-26-28-166Z-914f38`) used the same trusted CDP pipeline and passed 45/45 checks: local Z in world `(0.654495, 0, 0.756066)`, scale `(0.9999998, 1, 0.9999998) → (0.9999998, 1, 1.304800)`, X/Y unchanged within `1e-6`, quaternion unchanged, lifecycle `1/24/1`, fully trusted, 0 console errors.
+- Supplemental artifacts: `sp-05_scale_rotated_local_z.png`, `sp-05_scale_rotated_local_z_log.json`, `sp-05_scale_rotated_local_z_audit.json`, `sp-05_targeted_local_z_run.json`. New files only; nothing was overwritten.
+- The local Y change `1 → 1.134295` belongs to the intentional supplementary local Y drag, not to the local X drag. The local X drag changed only X; the local Y drag changed only Y. Confinement checks passed with `maxOther ≤ 1e-6`. This is expected behavior, not a defect or a tolerance violation.
+- Visual-review package: contact sheet `visual-review/sp-05_visual_review_contact_sheet.png` and manifest `visual-review/SP-05_VISUAL_REVIEW_MANIFEST.md`. All nine official screenshot hashes match their sidecar audit records.
+- `sp-05_rotate_45.png` remains absent. The required-screenshot list contains it, but no procedure step defines or captures it; `sp-05_rotate_world_x.png` is the screenshot the T-02 body requires. The item needs to be amended or defined by the owner.
+- Angle: 40.8814° for a requested 42° passes the runner's 75–125% plausibility band. No numeric acceptance tolerance exists in the procedure or E-07, so accepting "approximately 45°" remains an owner decision; no tolerance was invented.
+
+Full analysis and open decisions: `SP-05_VISUAL_REVIEW_PACKAGE.md`.
+
 ## Overall conclusion
 
 SP-05 remains BLOCKED. No acceptance criterion is upgraded to PASS.
@@ -148,8 +162,11 @@ SP-05 remains BLOCKED. No acceptance criterion is upgraded to PASS.
 - Archived automated evidence now exists for all six cases under `results/sp-05-manual/evidence/`, with sidecar audits and harness exports.
 - The full suite passed 256/256 runner assertions, but it has not been reviewed or accepted.
 - A-03 and A-04 remain unverified until the screenshots are visually reviewed and the evidence is formally accepted.
+- The supplemental local Z run passed 45/45 and is recorded as `cdp_trusted_input`, but it is supplemental evidence, not a re-run of T-04.
+- `sp-05_rotate_45.png` and the absence of a numeric angle tolerance remain unresolved.
 - The earlier user-reported manual results remain unarchived and are not replaced by this run.
-- The 2026-11-03 proof and full-suite artifacts are recorded as `cdp_trusted_input`, not as physical-mouse interaction.
+- The 2026-11-03 proof, full-suite, and supplemental artifacts are recorded as `cdp_trusted_input`, not as physical-mouse interaction.
+- Visual review of the screenshots has not been performed.
 
 SP-06 remains at NO-GO per the documented sequential evidence gate (SP-05 evidence required before SP-06).
 
