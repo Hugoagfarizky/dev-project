@@ -1,0 +1,239 @@
+{
+  "runId": "sp06-modifier-settle-2026-11-03T11-23-56-352Z-a3732e",
+  "purpose": "Modifier validation (P1 follow-up)",
+  "cases": [
+    {
+      "name": "plain-left-drag",
+      "modifiersSent": 0,
+      "button": "left",
+      "expectedInteraction": "rotate (default map)",
+      "modifierBits": {
+        "alt": 0,
+        "ctrl": 0,
+        "meta": 0,
+        "shift": 0
+      },
+      "domEvent": {
+        "ctrlKey": false,
+        "altKey": false,
+        "shiftKey": false,
+        "metaKey": false,
+        "isTrusted": true,
+        "pointerType": "mouse",
+        "button": -1,
+        "type": "pointermove"
+      },
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 1.7863650260636557,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 1.0009668626662074,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "classifiedAs": "orbit",
+      "settledWithin2000ms": true,
+      "settleMs": 1103,
+      "consoleErrors": 0
+    },
+    {
+      "name": "ctrl-left-drag",
+      "modifiersSent": 2,
+      "button": "left",
+      "expectedInteraction": "pan (default map: ctrl+left -> pan)",
+      "modifierBits": {
+        "alt": 0,
+        "ctrl": 2,
+        "meta": 0,
+        "shift": 0
+      },
+      "domEvent": {
+        "ctrlKey": true,
+        "altKey": false,
+        "shiftKey": false,
+        "metaKey": false,
+        "isTrusted": true,
+        "pointerType": "mouse",
+        "button": -1,
+        "type": "pointermove"
+      },
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          -0.7071830673634063,
+          0.5,
+          0.7071830673634063
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          -0.7071830673634063,
+          0,
+          0.7071830673634063
+        ]
+      },
+      "classifiedAs": "pan",
+      "settledWithin2000ms": true,
+      "settleMs": 1080,
+      "consoleErrors": 0
+    },
+    {
+      "name": "alt-left-drag",
+      "modifiersSent": 1,
+      "button": "left",
+      "expectedInteraction": "pan or browser/OS interference",
+      "modifierBits": {
+        "alt": 1,
+        "ctrl": 0,
+        "meta": 0,
+        "shift": 0
+      },
+      "domEvent": {
+        "ctrlKey": false,
+        "altKey": true,
+        "shiftKey": false,
+        "metaKey": false,
+        "isTrusted": true,
+        "pointerType": "mouse",
+        "button": -1,
+        "type": "pointermove"
+      },
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 1.786097880576015,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 1.0006997171785668,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "classifiedAs": "orbit",
+      "settledWithin2000ms": true,
+      "settleMs": 1081,
+      "consoleErrors": 0
+    },
+    {
+      "name": "right-drag",
+      "modifiersSent": 0,
+      "button": "right",
+      "expectedInteraction": "pan (default map: button 2 -> pan)",
+      "modifierBits": {
+        "alt": 0,
+        "ctrl": 0,
+        "meta": 0,
+        "shift": 0
+      },
+      "domEvent": {
+        "ctrlKey": false,
+        "altKey": false,
+        "shiftKey": false,
+        "metaKey": false,
+        "isTrusted": true,
+        "pointerType": "mouse",
+        "button": -1,
+        "type": "pointermove"
+      },
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          -0.7059495611807363,
+          0.5,
+          0.7059495611807363
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          -0.7059495611807363,
+          0,
+          0.7059495611807363
+        ]
+      },
+      "classifiedAs": "pan",
+      "settledWithin2000ms": true,
+      "settleMs": 1094,
+      "consoleErrors": 0
+    }
+  ],
+  "console": {
+    "counts": {
+      "log": 1
+    },
+    "warnings": [],
+    "errors": [],
+    "total": 1
+  },
+  "error": null
+}
