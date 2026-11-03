@@ -82,7 +82,7 @@ A-06-P1: After removing the plain-left-drag rotate entry, a plain left-drag does
 A-06-P2: Left click on empty space / on the cube does not orbit (camera state unchanged within 1e-6).
 A-06-P3 (HARD GATE): Gizmo drag on the cube still works after the input-map edit (transform changes; camera state unchanged during drag; no console errors). If this fails, SP-06 FAILS regardless of other results.
 A-06-P4: `resetInputMap()` restores the default behavior (verified by re-enabling plain-left-drag rotate and confirming orbit returns).
-A-06-P5 (scope clarification, H3): A-06 verifies that left click is **not captured by the camera**. Full left-click selection (selection UI, hit-testing, selection state) is out of SP-06 scope per §8.1 and is deferred to a later spike. SP-06 does not claim selection works; it claims only that the camera does not intercept left click.
+A-06-P5 (PROPOSED — requires Project Owner approval, N2): A-06 verifies that left click is **not captured by the camera**. Full left-click selection (selection UI, hit-testing, selection state) is out of SP-06 scope per §8.1 and is deferred to a later spike. SP-06 does not claim selection works; it claims only that the camera does not intercept left click. This is a proposed scoping of A-06 and must be explicitly approved; it narrows the official criterion "left click is free for selection".
 
 ## 5. Parameters to record
 
@@ -95,7 +95,9 @@ For every navigation gesture, record before and after:
 
 ## 6. Test scenarios
 
-All scenarios include a settle delay after the gesture: wait until `camera.movement` deltas are zero or a fixed timeout (PROPOSED: 500 ms) before recording the final state. Final values are post-settle.
+All tolerances in this section are **PROVISIONAL internal thresholds** (N5, M4). They have no documented basis in the acceptance criteria and must not be treated as validated standards until justified empirically or approved by the Project Owner.
+
+All scenarios include a settle delay after the gesture: wait until `camera.movement` deltas are zero or a fixed timeout (PROPOSED: 500 ms, to be determined by Probe P4) before recording the final state. Final values are post-settle.
 
 ### S-01 Baseline camera state
 - Action: Load scene, record camera state, screenshot.
@@ -127,6 +129,7 @@ All scenarios include a settle delay after the gesture: wait until `camera.movem
 - Action: Zoom in (wheel up — direction to be verified against Babylon default; PROPOSED: wheel up zooms in).
 - Expected: `radius` decreases; `target` unchanged.
 - PASS: Δradius < −0.1; |Δtarget| ≤ 1e-6.
+- Fallback (N6): if Probe P3 shows wheel up zooms out, swap S-06/S-07 expected signs and re-label screenshots accordingly.
 
 ### S-07 Zoom out
 - Action: Zoom out (wheel down).
@@ -148,6 +151,16 @@ All scenarios include a settle delay after the gesture: wait until `camera.movem
 - Expected: gizmo drag works; camera does not orbit during the drag; transform changes; camera state unchanged during drag.
 - PASS: transform changes (gizmo drag succeeded); camera state unchanged within 1e-6 during drag; no console errors.
 - FAIL condition: if gizmo drag fails or camera orbits during gizmo drag, SP-06 FAILS.
+
+### S-10a Camera state before gizmo drag (N1)
+- Action: Record full camera state (alpha, beta, radius, target) immediately before initiating a gizmo drag.
+- Expected: baseline camera state is stable and finite.
+- PASS: all values finite; state recorded with timestamp.
+
+### S-10b Camera state after gizmo drag (N1)
+- Action: Record full camera state after the gizmo drag completes and inertia settles.
+- Expected: camera state is unchanged from S-10a (gizmo drag does not disturb the camera).
+- PASS: |Δalpha|, |Δbeta|, |Δradius|, |Δtarget| ≤ 1e-6 vs. S-10a; no console errors.
 
 ### S-11 Edge cases
 - Orbit near beta = 0 and beta = π (pole behavior).
@@ -245,6 +258,17 @@ Reusable from SP-05 runner: browser launch, CDP connect, console capture, screen
 
 New components needed: camera state reader, input-map editor, gesture sequencer (orbit/pan/zoom), settle-delay logic, camera-specific assertions.
 
+## 12a. Ownership matrix (N3)
+
+| Responsibility | Owner | Action |
+| --- | --- | --- |
+| Approval of all PROPOSED decisions and Go/No-Go | Project Owner | Approve/reject each of the 9 decisions; authorize or decline execution |
+| Technical execution and evidence collection | OpenCode (technical operator) | Run probes and tests only after approval; collect evidence |
+| Technical review and recommendations | Technical Reviewer | Review results, classify findings, recommend next steps |
+| Visual review of screenshots | Human reviewer (Project Owner or delegate) | Complete review templates; set checklist statuses |
+
+No responsibility may be reassigned without documented reason.
+
 ## 12. Risks (Babylon 9.32.1)
 
 | Risk | Notes | Mitigation |
@@ -258,6 +282,39 @@ New components needed: camera state reader, input-map editor, gesture sequencer 
 | CDP trusted input vs. camera input handling | M6 | Empirical probe |
 | Browser/OS shortcut conflicts | M1 | Verify on target platform |
 | Wheel zoom direction | L4 | Verify against Babylon default |
+
+## 12b. Empirical probe design (N7, M6, M7, M8)
+
+Probes are read-only (no evidence files, no harness changes) and use the SP-05 trusted CDP pipeline. They must be designed and approved before execution. None has been run.
+
+### Probe P1 — CDP camera input (M6)
+- Launch Chrome on a dedicated port with a minimal scene containing an ArcRotateCamera.
+- Attach CDP, declare provenance.
+- Dispatch a trusted mouse drag (left button, no modifier) and record alpha/beta before/after.
+- PASS if alpha or beta changes; FAIL if no change or console error.
+
+### Probe P2 — Input-map removal and restoration (M7, M8)
+- Load scene; record default inputMap length and `getEntry("pointer","rotate")`.
+- Remove the plain-left-drag rotate entry (splice or equivalent).
+- Verify `getEntry("pointer","rotate")` returns null.
+- Plain left-drag must not change alpha/beta.
+- Call `resetInputMap()`; verify `getEntry("pointer","rotate")` returns the entry again.
+- Plain left-drag must orbit again.
+- Verify no legacy-flag write reverts the edit (write a legacy flag after edit and check the map).
+
+### Probe P3 — Wheel direction (L4)
+- Dispatch a wheel event; record radius before/after.
+- Determine sign of Δradius; update S-06/S-07 expected signs accordingly.
+
+### Probe P4 — Inertia settle timing (M2, L5)
+- Perform an orbit gesture; poll alpha/beta until change < 1e-6 between frames or timeout.
+- Record required settle duration; set settle delay accordingly.
+
+### Probe P5 — Gizmo drag survival (H1)
+- Attach camera with edited input map; drag a gizmo handle.
+- Verify transform changes, camera state unchanged, no console errors.
+
+All probes are PROPOSED and require owner approval of scope before execution.
 
 ## 13. Decisions requiring approval (all PROPOSED)
 
