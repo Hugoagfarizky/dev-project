@@ -48,18 +48,22 @@ PROPOSED (M7, M8): Removal of the plain-left-drag rotate entry will be done by d
 
 PROPOSED (L3): Legacy flags must not be written after the input-map edit; all legacy-flag configuration (if any) must precede the edit, or legacy flags must be avoided entirely.
 
-## 3. Proposed input map (PROPOSED)
+## 3. Approved final input map (owner decision 2026-11-03)
 
-Goal: left click is free for selection; orbit requires a modifier or right-drag.
+Final configuration (approved):
 
 | Source | Conditions | Interaction | Notes |
 | --- | --- | --- | --- |
-| `pointer` | `button: 0`, `ctrl` | `rotate` | Proposed: ctrl+left-drag orbits |
-| `pointer` | `button: 0`, `alt` | `pan` | Proposed: alt+left-drag pans |
-| `pointer` | `button: 2` | `pan` | Right-drag pans (default retained) |
-| `wheel` | any | `zoom` | Wheel zoom (default retained) |
+| `pointer` | `button: 0` (no modifier) | `rotate` | Plain left-drag orbits (retained default) |
+| `pointer` | `button: 0`, `ctrl` | `pan` | Ctrl+left-drag pans |
+| `pointer` | `button: 0`, `alt` | `rotate` (via wildcard) | Alt+left-drag orbits (no explicit entry) |
+| `pointer` | `button: 2` | `pan` | Right-drag pans |
+| `wheel` | any | `zoom` | Wheel zoom (up = in, down = out) |
 | `keyboard` | `+`/`-` | `zoom` | Default retained |
-| `pointer` | `button: 0` (no modifier) | **removed** | Left click free for selection |
+
+Note: The earlier proposed map (ctrl+left = orbit, alt+left = pan, plain left = removed) is superseded by the owner's decision to retain plain-left-drag orbit. A-06 remains testable as a capability (can the entry be removed cleanly) but removal is not part of the approved final configuration.
+
+PROPOSED (still): The exact modifier assignment could change if further probe data warrants it, but the approved default is as above.
 
 PROPOSED (M1): Modifier assignment is a product decision. Browser/OS shortcut conflicts must be verified on the target platform (Windows/Chrome): Alt+Left is back-navigation only for the arrow key (not mouse drag), but Alt+click and Alt+drag can interact with OS window management on some platforms; right-drag triggers the context menu unless `preventDefault` is handled (Babylon's `attachControl` handles `contextmenu`, but must be verified). Ctrl+click on a canvas is not a browser shortcut. These are MEDIUM risks to verify empirically.
 
@@ -396,6 +400,7 @@ See `SP-06_PROBE_EXECUTION_REPORT.md` for full details.
 - SP-05: **BLOCKED** (unchanged).
 - A-03 / A-04: **unverified** (unchanged).
 - SP-06: **NO-GO** (unchanged; this document is preparation only).
+- Decisions 1, 2, 3a, 4, 5, 6, 7, 8, 9 are **APPROVED** (updated 2026-11-03). Decision 3b (angle/radius/position tolerances) remains **PROVISIONAL**.
 - No harness, runner, or application code was created or modified.
 - No SP-06 test was executed.
-- All decisions remain PROPOSED.
+- All input-map and modifier decisions remain subject to probe validation where noted.
