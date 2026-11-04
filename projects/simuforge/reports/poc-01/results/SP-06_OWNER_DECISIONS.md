@@ -70,3 +70,11 @@ Decision 1 is now APPROVED as DEFAULT: keep default behavior (ctrl+left=pan, alt
 - **Decision 10 (new):** after the first official run failed only the written beta-sign check, the Project Owner amended S-03/A-05-P2 to the Babylon 9.32.1 convention — rightward drag increases `alpha`, downward drag **decreases** `beta`; the opposite sign remains FAIL and the quantitative inversion check is retained. No waiver was used.
 - Official re-run under the amended criterion: **PASS 159/159** (`sp06-official-2026-11-04T09-26-01-934Z-374471`). The first failed run is preserved.
 - SP-07/SP-08 remain unexecuted; POC-01 is not closed.
+
+## 8. Update 2026-11-04 (SP-08, appended)
+
+- SP-08 final spike decision: **GO**.
+- POC-01: **CLOSED**.
+- All A-01..A-08 PASS; all go/no-go criteria MET.
+- Residual risks R-1..R-6 documented in `SP-08_FINAL_SPIKE_DECISION_REPORT.md`; R-6 closed.
+- Next stage: Main Simulation Studio UI/UX Design. No UI implementation authorized by this record.

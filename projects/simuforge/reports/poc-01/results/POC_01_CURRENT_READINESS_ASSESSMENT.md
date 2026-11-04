@@ -1,8 +1,8 @@
 # POC-01 Current Readiness Assessment
 
-Date: 2026-11-04 (Revision 5)
-Scope: Consolidated readiness after the SP-05 acceptance, the owner-approved Option A tolerances, the official SP-06 execution and amendment, and the official SP-07 execution.
-Supersedes Revision 4 (2026-11-04, before SP-07 execution).
+Date: 2026-11-04 (Revision 6)
+Scope: Consolidated readiness after SP-05 acceptance, owner-approved Option A tolerances, official SP-06 execution and amendment, official SP-07 execution, and the SP-08 GO decision.
+Supersedes Revision 5 (2026-11-04, before SP-08).
 
 ## 1. SP-05 visual sign-off
 
@@ -60,18 +60,26 @@ The original procedure stated that **downward drag must increase `beta`**. Babyl
 
 The invariance bound and the gesture floors remain semantically separate. Full basis: `SP-06_TOLERANCE_BASIS_AND_DECISION.md`.
 
-## 5. POC-01 exit gates
+## 6. POC-01 exit gates
 
 | Gate | Status |
 | --- | --- |
 | SP-05 accepted (visual + automated evidence) | **MET** — accepted 2026-11-04 |
 | SP-06 camera navigation | **MET** — official re-run PASS 159/159 after the owner-decided sign amendment |
 | SP-07 quaternion / transform conversion | **MET** — official run PASS 87/87 (A-07, A-08 PASS) |
-| SP-08 final spike decision | **NOT EXECUTED** |
+| SP-08 final spike decision | **MET** — GO (SP-08 report) |
 | No unresolved console/render defect | MET for executed scopes (0 errors) |
-| POC-01 closure | **NOT COMPLETE** |
+| POC-01 closure | **COMPLETE** |
 
-## 6. Status
+## 7. SP-08 decision
+
+- **Decision: GO.** All eight acceptance criteria (A-01..A-08) PASS; all eight go/no-go criteria (Implementation Readiness sec 8.3) MET; evidence integrity verified for SP-05/SP-06/SP-07.
+- **POC-01: CLOSED.**
+- Full decision: `SP-08_FINAL_SPIKE_DECISION_REPORT.md`.
+- Closure record: `POC_01_FINAL_CLOSURE_RECORD.md`.
+- Residual risks R-1..R-6 carried forward (see SP-08 report sec 5); R-6 closed. None blocks POC-01 closure.
+
+## 8. Status
 
 - SP-05: **ACCEPTED**.
 - A-03: **PASS (visually verified)**.
@@ -82,13 +90,14 @@ The invariance bound and the gesture floors remain semantically separate. Full b
 - SP-07: **PASSED** — 87/87 official run; A-07 and A-08 PASS.
 - A-07: **PASS**.
 - A-08: **PASS**.
-- SP-08: **not executed**.
-- POC-01: **not closed.** Remaining blocker: the unexecuted SP-08.
+- SP-08: **GO** (final spike decision).
+- POC-01: **CLOSED.**
 - Main application: not modified.
 
-## 7. History
+## 9. History
 
 - Revision 2 (2026-11-04): SP-05 visual verification complete; SP-06 NO-GO pending tolerance and authorization decisions; official runner D12 not implemented.
 - Revision 3 (2026-11-04): owner acceptance and Option A recorded; D12 runner implemented; official S-01..S-12 executed once; one sign-convention criterion conflict identified. POC-01 remains open.
 - Revision 4 (2026-11-04): owner amended A-05-P2/S-03 to the Babylon beta convention (quantitative inversion check retained); official re-run PASS 159/159; A-05 and A-06 fully PASS. POC-01 remains open only on SP-07/SP-08.
 - Revision 5 (2026-11-04): SP-07 official run PASS 87/87; A-07 and A-08 PASS; supporting TRS composition and quaternion validity PASS. POC-01 remains open only on SP-08.
+- Revision 6 (2026-11-04): SP-08 GO; all A-01..A-08 PASS; all go/no-go criteria MET; evidence integrity verified. POC-01 CLOSED.

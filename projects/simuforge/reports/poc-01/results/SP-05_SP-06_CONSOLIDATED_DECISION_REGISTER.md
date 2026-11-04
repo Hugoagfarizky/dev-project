@@ -67,7 +67,16 @@ Scope: Consolidated register of all SP-05/SP-06 decisions. No acceptance criteri
 - SP-06: NO-GO (unchanged).
 - No acceptance criterion changed.
 
-## G. Update 2026-11-04 (appended; earlier rows retained)
+## H. Update 2026-11-04 (SP-08 GO, appended)
+
+- SP-05: **ACCEPTED**; A-03/A-04 **PASS (visually verified)**.
+- SP-06: **PASSED** (159/159).
+- SP-07: **PASSED** (87/87).
+- SP-08: **GO** — POC-01 **CLOSED**.
+- All A-01..A-08: **PASS**.
+- Evidence integrity verified for SP-05, SP-06, SP-07.
+- No acceptance criterion changed except D10 (owner-decided).
+- No main Simulation Studio source modified.
 
 | ID | Topic | Decision | Status |
 | --- | --- | --- | --- |
