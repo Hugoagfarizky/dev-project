@@ -55,3 +55,21 @@ This section is appended; it does not alter the 2026-11-03 record above.
 - Evidence: `SP-05_VISUAL_INSPECTION_REPORT.md`, `SP-05_VISUAL_INSPECTION_RESULTS.json`.
 - The conditions in §5(a) are now met at the evidence level.
 - **Formal Project Owner acceptance has not been recorded.** This update is not a signature and does not itself change the formal SP-05 status. The owner must sign the acceptance (or record a waiver) before SP-06 can open.
+
+## 8. Update 2026-11-04 — formal acceptance recorded
+
+This section is appended; it does not alter the earlier record.
+
+- On **2026-11-04** the Project Owner formally **ACCEPTED SP-05** after the completed visual inspection (10/10 screenshots PASS) and the separate automated evidence (256/256 assertions, 750/750 audit, 793/793 non-visual audit).
+- **A-03: PASS (visually verified).**
+- **A-04: PASS (visually verified).**
+- The acceptance was conveyed as an explicit owner decision in the execution session; no handwritten signature was produced, and none is fabricated here.
+- No waiver was used. The gate in §5 was satisfied by §5(a).
+
+| Item | Status after this record |
+| --- | --- |
+| SP-05 | **ACCEPTED** |
+| A-03 | **PASS (visually verified)** |
+| A-04 | **PASS (visually verified)** |
+| Visual review | 10/10 PASS (retained, unchanged) |
+| SP-06 gate | SP-05 acceptance satisfied on 2026-11-04 |

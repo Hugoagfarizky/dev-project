@@ -111,3 +111,22 @@ Project Owner, please choose one option for items 2–4:
 - **Option C:** specify alternative values.
 
 Until one option is recorded, SP-06 remains **NO-GO** regardless of harness readiness.
+
+## 8. Owner decision 2026-11-04 — Option A approved
+
+This section is appended and supersedes the "status after recommendation" column and the NO-GO sentence above.
+
+| # | Item | Approved value | Status |
+| --- | --- | --- | --- |
+| 1 | Settle delay | 2000 ms | APPROVED (unchanged; still mandatory before every recorded state) |
+| 2 | Invariance / equality bound | **1e-9** | **APPROVED (Option A)** |
+| 3 | Orbit/pan magnitude minimum | **0.05 rad / 0.05 world units** | **APPROVED (retained)** |
+| 4 | Zoom magnitude minimum | **0.1 radius units** | **APPROVED (retained)** |
+
+Notes:
+
+- The owner selected **Option A** (1e-9 invariance; 0.05 orbit/pan; 0.1 zoom) on 2026-11-04.
+- The invariance bound is used only for equality/invariance checks. The gesture minima remain separate magnitude floors and are not equality tolerances.
+- The 2000 ms settle delay is unchanged and still applies before every recorded post-gesture state.
+- Approved values are centralized in `harness/runner/sp06/config.js` (`TOLERANCES`).
+- **No acceptance criterion was changed.**

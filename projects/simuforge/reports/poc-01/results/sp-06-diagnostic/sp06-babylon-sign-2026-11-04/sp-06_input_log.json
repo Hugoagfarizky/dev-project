@@ -1,0 +1,6109 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "sp06-official-2026-11-04T09-10-12-634Z-82d94b",
+  "configVersion": "sp06-official-config-1",
+  "harnessSha256": "0e580f0f798cab3a389654c134d5ab4138abc899cf0a808528b52bddf8f86c7d",
+  "initial": {
+    "camera": {
+      "alpha": 0.7853981633974483,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "inputMap": [
+      {
+        "source": "pointer",
+        "button": 0,
+        "modifiers": {
+          "ctrl": true
+        },
+        "interaction": "pan",
+        "key": null
+      },
+      {
+        "source": "pointer",
+        "button": 0,
+        "modifiers": null,
+        "interaction": "rotate",
+        "key": null
+      },
+      {
+        "source": "pointer",
+        "button": 2,
+        "modifiers": null,
+        "interaction": "pan",
+        "key": null
+      },
+      {
+        "source": "wheel",
+        "modifiers": null,
+        "interaction": "zoom",
+        "key": null
+      },
+      {
+        "source": "keyboard",
+        "modifiers": null,
+        "interaction": "zoom",
+        "key": [
+          187,
+          107,
+          189,
+          109
+        ]
+      },
+      {
+        "source": "keyboard",
+        "modifiers": {
+          "ctrl": true
+        },
+        "interaction": "pan",
+        "key": null
+      },
+      {
+        "source": "keyboard",
+        "modifiers": {
+          "alt": true
+        },
+        "interaction": "zoom",
+        "key": null
+      },
+      {
+        "source": "keyboard",
+        "modifiers": null,
+        "interaction": "rotate",
+        "key": null
+      }
+    ],
+    "inputMapState": "default",
+    "timestamp": "2026-11-04T09:10:15.416Z"
+  },
+  "entries": [
+    {
+      "gesture": "baseline",
+      "inputMapState": "default",
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "pointer": null,
+      "settleMs": 0,
+      "timestamp": "2026-11-04T09:10:19.849Z",
+      "id": "S-01",
+      "scenarioResult": "PASS",
+      "consoleErrors": [],
+      "screenshot": {
+        "name": "sp-06_camera_baseline.png",
+        "officialName": "sp-06_camera_baseline.png",
+        "bytes": 88508,
+        "sha256": "d62c7ba48440587886a4195456ab323ae3cfa96094121788828f00b4f9db45d4"
+      }
+    },
+    {
+      "gesture": "orbit-horizontal",
+      "inputMapState": "default",
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 2.18632258953246,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 1.4009244261350116,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "pointer": {
+        "kind": "drag",
+        "method": "cdp_trusted_input",
+        "domain": "Input",
+        "from": {
+          "x": 127.28,
+          "y": 348.638
+        },
+        "to": {
+          "x": 267.28,
+          "y": 348.638
+        },
+        "button": "left",
+        "modifiers": 0,
+        "steps": 24,
+        "eventCount": 27,
+        "events": [
+          {
+            "index": 0,
+            "type": "mouseMoved",
+            "x": 127.28,
+            "y": 348.638,
+            "button": "none",
+            "buttons": 0,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.128Z",
+            "elapsedMs": 6
+          },
+          {
+            "index": 1,
+            "type": "mousePressed",
+            "x": 127.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.156Z",
+            "elapsedMs": 32
+          },
+          {
+            "index": 2,
+            "type": "mouseMoved",
+            "x": 133.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.193Z",
+            "elapsedMs": 73
+          },
+          {
+            "index": 3,
+            "type": "mouseMoved",
+            "x": 138.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.224Z",
+            "elapsedMs": 101
+          },
+          {
+            "index": 4,
+            "type": "mouseMoved",
+            "x": 144.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.256Z",
+            "elapsedMs": 136
+          },
+          {
+            "index": 5,
+            "type": "mouseMoved",
+            "x": 150.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.286Z",
+            "elapsedMs": 163
+          },
+          {
+            "index": 6,
+            "type": "mouseMoved",
+            "x": 156.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.305Z",
+            "elapsedMs": 185
+          },
+          {
+            "index": 7,
+            "type": "mouseMoved",
+            "x": 162.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.328Z",
+            "elapsedMs": 205
+          },
+          {
+            "index": 8,
+            "type": "mouseMoved",
+            "x": 168.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.346Z",
+            "elapsedMs": 226
+          },
+          {
+            "index": 9,
+            "type": "mouseMoved",
+            "x": 173.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.373Z",
+            "elapsedMs": 254
+          },
+          {
+            "index": 10,
+            "type": "mouseMoved",
+            "x": 179.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.401Z",
+            "elapsedMs": 282
+          },
+          {
+            "index": 11,
+            "type": "mouseMoved",
+            "x": 185.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.436Z",
+            "elapsedMs": 316
+          },
+          {
+            "index": 12,
+            "type": "mouseMoved",
+            "x": 191.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.470Z",
+            "elapsedMs": 351
+          },
+          {
+            "index": 13,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.505Z",
+            "elapsedMs": 385
+          },
+          {
+            "index": 14,
+            "type": "mouseMoved",
+            "x": 203.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.531Z",
+            "elapsedMs": 406
+          },
+          {
+            "index": 15,
+            "type": "mouseMoved",
+            "x": 208.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.554Z",
+            "elapsedMs": 435
+          },
+          {
+            "index": 16,
+            "type": "mouseMoved",
+            "x": 214.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.575Z",
+            "elapsedMs": 455
+          },
+          {
+            "index": 17,
+            "type": "mouseMoved",
+            "x": 220.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.596Z",
+            "elapsedMs": 476
+          },
+          {
+            "index": 18,
+            "type": "mouseMoved",
+            "x": 226.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.631Z",
+            "elapsedMs": 511
+          },
+          {
+            "index": 19,
+            "type": "mouseMoved",
+            "x": 232.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.662Z",
+            "elapsedMs": 538
+          },
+          {
+            "index": 20,
+            "type": "mouseMoved",
+            "x": 238.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.690Z",
+            "elapsedMs": 566
+          },
+          {
+            "index": 21,
+            "type": "mouseMoved",
+            "x": 243.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.708Z",
+            "elapsedMs": 587
+          },
+          {
+            "index": 22,
+            "type": "mouseMoved",
+            "x": 249.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.732Z",
+            "elapsedMs": 607
+          },
+          {
+            "index": 23,
+            "type": "mouseMoved",
+            "x": 255.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.748Z",
+            "elapsedMs": 629
+          },
+          {
+            "index": 24,
+            "type": "mouseMoved",
+            "x": 261.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.771Z",
+            "elapsedMs": 649
+          },
+          {
+            "index": 25,
+            "type": "mouseMoved",
+            "x": 267.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.790Z",
+            "elapsedMs": 671
+          },
+          {
+            "index": 26,
+            "type": "mouseReleased",
+            "x": 267.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 0,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:24.824Z",
+            "elapsedMs": 701
+          }
+        ],
+        "settleMs": 2000,
+        "startedAt": "2026-11-04T09:10:24.128Z",
+        "completedAt": "2026-11-04T09:10:26.841Z",
+        "durationMs": 2713
+      },
+      "settleMs": 2000,
+      "timestamp": "2026-11-04T09:10:27.024Z",
+      "id": "S-02",
+      "scenarioResult": "PASS",
+      "consoleErrors": [],
+      "screenshot": {
+        "name": "sp-06_orbit_horizontal.png",
+        "officialName": "sp-06_orbit_horizontal.png",
+        "bytes": 88968,
+        "sha256": "1c5942d850171264ddda4360322d48cfea013f67114f9bfd3fe45b2c9e4253b1"
+      }
+    },
+    {
+      "gesture": "orbit-vertical-down",
+      "inputMapState": "default",
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 0.01,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": -1.0371975511965976,
+        "radius": 0,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "pointer": {
+        "kind": "drag",
+        "method": "cdp_trusted_input",
+        "domain": "Input",
+        "from": {
+          "x": 197.28,
+          "y": 209.183
+        },
+        "to": {
+          "x": 197.28,
+          "y": 488.093
+        },
+        "button": "left",
+        "modifiers": 0,
+        "steps": 24,
+        "eventCount": 27,
+        "events": [
+          {
+            "index": 0,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 209.183,
+            "button": "none",
+            "buttons": 0,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.032Z",
+            "elapsedMs": 8
+          },
+          {
+            "index": 1,
+            "type": "mousePressed",
+            "x": 197.28,
+            "y": 209.183,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.069Z",
+            "elapsedMs": 41
+          },
+          {
+            "index": 2,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 220.804,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.111Z",
+            "elapsedMs": 87
+          },
+          {
+            "index": 3,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 232.425,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.145Z",
+            "elapsedMs": 121
+          },
+          {
+            "index": 4,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 244.046,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.172Z",
+            "elapsedMs": 142
+          },
+          {
+            "index": 5,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 255.668,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.187Z",
+            "elapsedMs": 163
+          },
+          {
+            "index": 6,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 267.289,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.213Z",
+            "elapsedMs": 184
+          },
+          {
+            "index": 7,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 278.91,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.237Z",
+            "elapsedMs": 211
+          },
+          {
+            "index": 8,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 290.531,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.269Z",
+            "elapsedMs": 247
+          },
+          {
+            "index": 9,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 302.153,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.310Z",
+            "elapsedMs": 287
+          },
+          {
+            "index": 10,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 313.774,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.333Z",
+            "elapsedMs": 307
+          },
+          {
+            "index": 11,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 325.395,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.354Z",
+            "elapsedMs": 329
+          },
+          {
+            "index": 12,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 337.016,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.376Z",
+            "elapsedMs": 350
+          },
+          {
+            "index": 13,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.395Z",
+            "elapsedMs": 371
+          },
+          {
+            "index": 14,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 360.259,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.436Z",
+            "elapsedMs": 413
+          },
+          {
+            "index": 15,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 371.88,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.472Z",
+            "elapsedMs": 447
+          },
+          {
+            "index": 16,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 383.501,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.503Z",
+            "elapsedMs": 474
+          },
+          {
+            "index": 17,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 395.123,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.521Z",
+            "elapsedMs": 496
+          },
+          {
+            "index": 18,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 406.744,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.556Z",
+            "elapsedMs": 531
+          },
+          {
+            "index": 19,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 418.365,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.590Z",
+            "elapsedMs": 565
+          },
+          {
+            "index": 20,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 429.986,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.609Z",
+            "elapsedMs": 586
+          },
+          {
+            "index": 21,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 441.608,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.651Z",
+            "elapsedMs": 628
+          },
+          {
+            "index": 22,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 453.229,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.679Z",
+            "elapsedMs": 656
+          },
+          {
+            "index": 23,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 464.85,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.702Z",
+            "elapsedMs": 676
+          },
+          {
+            "index": 24,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 476.471,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.734Z",
+            "elapsedMs": 711
+          },
+          {
+            "index": 25,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 488.093,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.759Z",
+            "elapsedMs": 732
+          },
+          {
+            "index": 26,
+            "type": "mouseReleased",
+            "x": 197.28,
+            "y": 488.093,
+            "button": "left",
+            "buttons": 0,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:32.777Z",
+            "elapsedMs": 748
+          }
+        ],
+        "settleMs": 2000,
+        "startedAt": "2026-11-04T09:10:32.032Z",
+        "completedAt": "2026-11-04T09:10:34.791Z",
+        "durationMs": 2759
+      },
+      "settleMs": 2000,
+      "signConvention": "babylon",
+      "timestamp": "2026-11-04T09:10:34.997Z",
+      "id": "S-03",
+      "scenarioResult": "PASS",
+      "consoleErrors": [],
+      "screenshot": {
+        "name": "sp-06_orbit_vertical.png",
+        "officialName": "sp-06_orbit_vertical.png",
+        "bytes": 87683,
+        "sha256": "c7dba69463243d03664e6e0290860bb8fe25fc8bea8bbf95a03b4de33ce10527"
+      }
+    },
+    {
+      "gesture": "pan-horizontal-right-drag",
+      "inputMapState": "default",
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          -0.9908634067767971,
+          0.5,
+          0.9908634067767971
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          -0.9908634067767971,
+          0,
+          0.9908634067767971
+        ]
+      },
+      "pointer": {
+        "kind": "drag",
+        "method": "cdp_trusted_input",
+        "domain": "Input",
+        "from": {
+          "x": 197.28,
+          "y": 348.638
+        },
+        "to": {
+          "x": 337.28,
+          "y": 348.638
+        },
+        "button": "right",
+        "modifiers": 0,
+        "steps": 24,
+        "eventCount": 27,
+        "events": [
+          {
+            "index": 0,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 348.638,
+            "button": "none",
+            "buttons": 0,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.317Z",
+            "elapsedMs": 10
+          },
+          {
+            "index": 1,
+            "type": "mousePressed",
+            "x": 197.28,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.352Z",
+            "elapsedMs": 40
+          },
+          {
+            "index": 2,
+            "type": "mouseMoved",
+            "x": 203.113,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.388Z",
+            "elapsedMs": 79
+          },
+          {
+            "index": 3,
+            "type": "mouseMoved",
+            "x": 208.947,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.412Z",
+            "elapsedMs": 99
+          },
+          {
+            "index": 4,
+            "type": "mouseMoved",
+            "x": 214.78,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.429Z",
+            "elapsedMs": 120
+          },
+          {
+            "index": 5,
+            "type": "mouseMoved",
+            "x": 220.613,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.455Z",
+            "elapsedMs": 141
+          },
+          {
+            "index": 6,
+            "type": "mouseMoved",
+            "x": 226.447,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.471Z",
+            "elapsedMs": 162
+          },
+          {
+            "index": 7,
+            "type": "mouseMoved",
+            "x": 232.28,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.506Z",
+            "elapsedMs": 196
+          },
+          {
+            "index": 8,
+            "type": "mouseMoved",
+            "x": 238.113,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.526Z",
+            "elapsedMs": 218
+          },
+          {
+            "index": 9,
+            "type": "mouseMoved",
+            "x": 243.947,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.547Z",
+            "elapsedMs": 238
+          },
+          {
+            "index": 10,
+            "type": "mouseMoved",
+            "x": 249.78,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.573Z",
+            "elapsedMs": 259
+          },
+          {
+            "index": 11,
+            "type": "mouseMoved",
+            "x": 255.613,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.588Z",
+            "elapsedMs": 280
+          },
+          {
+            "index": 12,
+            "type": "mouseMoved",
+            "x": 261.447,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.612Z",
+            "elapsedMs": 301
+          },
+          {
+            "index": 13,
+            "type": "mouseMoved",
+            "x": 267.28,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.630Z",
+            "elapsedMs": 322
+          },
+          {
+            "index": 14,
+            "type": "mouseMoved",
+            "x": 273.113,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.666Z",
+            "elapsedMs": 357
+          },
+          {
+            "index": 15,
+            "type": "mouseMoved",
+            "x": 278.947,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.690Z",
+            "elapsedMs": 384
+          },
+          {
+            "index": 16,
+            "type": "mouseMoved",
+            "x": 284.78,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.727Z",
+            "elapsedMs": 419
+          },
+          {
+            "index": 17,
+            "type": "mouseMoved",
+            "x": 290.613,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.755Z",
+            "elapsedMs": 447
+          },
+          {
+            "index": 18,
+            "type": "mouseMoved",
+            "x": 296.447,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.790Z",
+            "elapsedMs": 483
+          },
+          {
+            "index": 19,
+            "type": "mouseMoved",
+            "x": 302.28,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.831Z",
+            "elapsedMs": 524
+          },
+          {
+            "index": 20,
+            "type": "mouseMoved",
+            "x": 308.113,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.860Z",
+            "elapsedMs": 551
+          },
+          {
+            "index": 21,
+            "type": "mouseMoved",
+            "x": 313.947,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.890Z",
+            "elapsedMs": 579
+          },
+          {
+            "index": 22,
+            "type": "mouseMoved",
+            "x": 319.78,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.915Z",
+            "elapsedMs": 607
+          },
+          {
+            "index": 23,
+            "type": "mouseMoved",
+            "x": 325.613,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.949Z",
+            "elapsedMs": 641
+          },
+          {
+            "index": 24,
+            "type": "mouseMoved",
+            "x": 331.447,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.971Z",
+            "elapsedMs": 662
+          },
+          {
+            "index": 25,
+            "type": "mouseMoved",
+            "x": 337.28,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:56.991Z",
+            "elapsedMs": 683
+          },
+          {
+            "index": 26,
+            "type": "mouseReleased",
+            "x": 337.28,
+            "y": 348.638,
+            "button": "right",
+            "buttons": 0,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:10:57.012Z",
+            "elapsedMs": 700
+          }
+        ],
+        "settleMs": 2000,
+        "startedAt": "2026-11-04T09:10:56.317Z",
+        "completedAt": "2026-11-04T09:10:59.019Z",
+        "durationMs": 2702
+      },
+      "settleMs": 2000,
+      "timestamp": "2026-11-04T09:10:59.208Z",
+      "id": "S-04",
+      "scenarioResult": "PASS",
+      "consoleErrors": [],
+      "screenshot": {
+        "name": "sp-06_pan_horizontal.png",
+        "officialName": "sp-06_pan_horizontal.png",
+        "bytes": 92099,
+        "sha256": "fe4bb23151b555abe60508d8d21e049dc362793370b0c5156c3750d2016fda42"
+      }
+    },
+    {
+      "gesture": "pan-vertical-right-drag",
+      "inputMapState": "default",
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          -0.4954714387298519,
+          1.7136522895288973,
+          -0.4954714387298519
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          -0.4954714387298519,
+          1.2136522895288973,
+          -0.4954714387298519
+        ]
+      },
+      "pointer": {
+        "kind": "drag",
+        "method": "cdp_trusted_input",
+        "domain": "Input",
+        "from": {
+          "x": 197.28,
+          "y": 209.183
+        },
+        "to": {
+          "x": 197.28,
+          "y": 349.183
+        },
+        "button": "right",
+        "modifiers": 0,
+        "steps": 24,
+        "eventCount": 27,
+        "events": [
+          {
+            "index": 0,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 209.183,
+            "button": "none",
+            "buttons": 0,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.261Z",
+            "elapsedMs": 3
+          },
+          {
+            "index": 1,
+            "type": "mousePressed",
+            "x": 197.28,
+            "y": 209.183,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.286Z",
+            "elapsedMs": 27
+          },
+          {
+            "index": 2,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 215.016,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.331Z",
+            "elapsedMs": 79
+          },
+          {
+            "index": 3,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 220.849,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.362Z",
+            "elapsedMs": 107
+          },
+          {
+            "index": 4,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 226.683,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.394Z",
+            "elapsedMs": 142
+          },
+          {
+            "index": 5,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 232.516,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.416Z",
+            "elapsedMs": 162
+          },
+          {
+            "index": 6,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 238.349,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.446Z",
+            "elapsedMs": 189
+          },
+          {
+            "index": 7,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 244.183,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.464Z",
+            "elapsedMs": 211
+          },
+          {
+            "index": 8,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 250.016,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.489Z",
+            "elapsedMs": 232
+          },
+          {
+            "index": 9,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 255.849,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.505Z",
+            "elapsedMs": 252
+          },
+          {
+            "index": 10,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 261.683,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.528Z",
+            "elapsedMs": 273
+          },
+          {
+            "index": 11,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 267.516,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.560Z",
+            "elapsedMs": 308
+          },
+          {
+            "index": 12,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 273.349,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.589Z",
+            "elapsedMs": 336
+          },
+          {
+            "index": 13,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 279.183,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.622Z",
+            "elapsedMs": 363
+          },
+          {
+            "index": 14,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 285.016,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.637Z",
+            "elapsedMs": 384
+          },
+          {
+            "index": 15,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 290.849,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.656Z",
+            "elapsedMs": 398
+          },
+          {
+            "index": 16,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 296.683,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.679Z",
+            "elapsedMs": 426
+          },
+          {
+            "index": 17,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 302.516,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.712Z",
+            "elapsedMs": 461
+          },
+          {
+            "index": 18,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 308.349,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.741Z",
+            "elapsedMs": 488
+          },
+          {
+            "index": 19,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 314.183,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.774Z",
+            "elapsedMs": 516
+          },
+          {
+            "index": 20,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 320.016,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.789Z",
+            "elapsedMs": 537
+          },
+          {
+            "index": 21,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 325.849,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.815Z",
+            "elapsedMs": 558
+          },
+          {
+            "index": 22,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 331.683,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.831Z",
+            "elapsedMs": 579
+          },
+          {
+            "index": 23,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 337.516,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.861Z",
+            "elapsedMs": 606
+          },
+          {
+            "index": 24,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 343.349,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.892Z",
+            "elapsedMs": 634
+          },
+          {
+            "index": 25,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 349.183,
+            "button": "right",
+            "buttons": 2,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.915Z",
+            "elapsedMs": 662
+          },
+          {
+            "index": 26,
+            "type": "mouseReleased",
+            "x": 197.28,
+            "y": 349.183,
+            "button": "right",
+            "buttons": 0,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:04.949Z",
+            "elapsedMs": 691
+          }
+        ],
+        "settleMs": 2000,
+        "startedAt": "2026-11-04T09:11:04.261Z",
+        "completedAt": "2026-11-04T09:11:06.953Z",
+        "durationMs": 2692
+      },
+      "settleMs": 2000,
+      "timestamp": "2026-11-04T09:11:07.120Z",
+      "id": "S-05",
+      "scenarioResult": "PASS",
+      "consoleErrors": [],
+      "screenshot": {
+        "name": "sp-06_pan_vertical.png",
+        "officialName": "sp-06_pan_vertical.png",
+        "bytes": 91385,
+        "sha256": "ad0493eccae39b504286290c80e378da98f25519774d79aa0eb7bef52bde3804"
+      }
+    },
+    {
+      "gesture": "zoom-in-wheel-up",
+      "inputMapState": "default",
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": -2.027203351573133,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": 0,
+        "radius": -10.027203351573133,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "pointer": {
+        "kind": "wheel",
+        "method": "cdp_trusted_input",
+        "domain": "Input",
+        "x": 493,
+        "y": 348.5,
+        "deltaX": 0,
+        "deltaY": -120,
+        "settleMs": 2000,
+        "startedAt": "2026-11-04T09:11:08.581Z",
+        "completedAt": "2026-11-04T09:11:10.646Z"
+      },
+      "settleMs": 2000,
+      "projectedTarget": {
+        "x": 493,
+        "y": 348.50001525878906
+      },
+      "timestamp": "2026-11-04T09:11:10.817Z",
+      "id": "S-06",
+      "scenarioResult": "PASS",
+      "consoleErrors": [],
+      "screenshot": {
+        "name": "sp-06_zoom_in.png",
+        "officialName": "sp-06_zoom_in.png",
+        "bytes": 98202,
+        "sha256": "85a98b70726e1d6e3cb20cfaff017f220e5408d9006cbf9e85165d41ff3e38d1"
+      }
+    },
+    {
+      "gesture": "zoom-out-wheel-down",
+      "inputMapState": "default",
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 18.014332278073685,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": 0,
+        "radius": 10.014332278073685,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "pointer": {
+        "kind": "wheel",
+        "method": "cdp_trusted_input",
+        "domain": "Input",
+        "x": 493,
+        "y": 348.5,
+        "deltaX": 0,
+        "deltaY": 120,
+        "settleMs": 2000,
+        "startedAt": "2026-11-04T09:11:12.848Z",
+        "completedAt": "2026-11-04T09:11:14.908Z"
+      },
+      "settleMs": 2000,
+      "projectedTarget": {
+        "x": 493,
+        "y": 348.50001525878906
+      },
+      "timestamp": "2026-11-04T09:11:15.073Z",
+      "id": "S-07",
+      "scenarioResult": "PASS",
+      "consoleErrors": [],
+      "screenshot": {
+        "name": "sp-06_zoom_out.png",
+        "officialName": "sp-06_zoom_out.png",
+        "bytes": 90014,
+        "sha256": "512e82f7cbdc37c2a5d3df1666b626b59775fcdbb0462ab2eefbe14973d838bc"
+      }
+    },
+    {
+      "gesture": "plain-left-drag-after-edit",
+      "inputMapState": "edited",
+      "inputMapBefore": [
+        {
+          "source": "pointer",
+          "button": 0,
+          "interaction": "pan",
+          "modifiers": {
+            "ctrl": true
+          },
+          "key": null
+        },
+        {
+          "source": "pointer",
+          "button": 0,
+          "interaction": "rotate",
+          "modifiers": null,
+          "key": null
+        },
+        {
+          "source": "pointer",
+          "button": 2,
+          "interaction": "pan",
+          "modifiers": null,
+          "key": null
+        },
+        {
+          "source": "wheel",
+          "interaction": "zoom",
+          "modifiers": null,
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "zoom",
+          "modifiers": null,
+          "key": [
+            187,
+            107,
+            189,
+            109
+          ]
+        },
+        {
+          "source": "keyboard",
+          "interaction": "pan",
+          "modifiers": {
+            "ctrl": true
+          },
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "zoom",
+          "modifiers": {
+            "alt": true
+          },
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "rotate",
+          "modifiers": null,
+          "key": null
+        }
+      ],
+      "inputMapAfter": [
+        {
+          "source": "pointer",
+          "button": 0,
+          "interaction": "pan",
+          "modifiers": {
+            "ctrl": true
+          },
+          "key": null
+        },
+        {
+          "source": "pointer",
+          "button": 2,
+          "interaction": "pan",
+          "modifiers": null,
+          "key": null
+        },
+        {
+          "source": "wheel",
+          "interaction": "zoom",
+          "modifiers": null,
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "zoom",
+          "modifiers": null,
+          "key": [
+            187,
+            107,
+            189,
+            109
+          ]
+        },
+        {
+          "source": "keyboard",
+          "interaction": "pan",
+          "modifiers": {
+            "ctrl": true
+          },
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "zoom",
+          "modifiers": {
+            "alt": true
+          },
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "rotate",
+          "modifiers": null,
+          "key": null
+        }
+      ],
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "pointer": {
+        "kind": "drag",
+        "method": "cdp_trusted_input",
+        "domain": "Input",
+        "from": {
+          "x": 127.28,
+          "y": 348.638
+        },
+        "to": {
+          "x": 267.28,
+          "y": 348.638
+        },
+        "button": "left",
+        "modifiers": 0,
+        "steps": 24,
+        "eventCount": 27,
+        "events": [
+          {
+            "index": 0,
+            "type": "mouseMoved",
+            "x": 127.28,
+            "y": 348.638,
+            "button": "none",
+            "buttons": 0,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.108Z",
+            "elapsedMs": 2
+          },
+          {
+            "index": 1,
+            "type": "mousePressed",
+            "x": 127.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.136Z",
+            "elapsedMs": 33
+          },
+          {
+            "index": 2,
+            "type": "mouseMoved",
+            "x": 133.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.170Z",
+            "elapsedMs": 71
+          },
+          {
+            "index": 3,
+            "type": "mouseMoved",
+            "x": 138.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.193Z",
+            "elapsedMs": 92
+          },
+          {
+            "index": 4,
+            "type": "mouseMoved",
+            "x": 144.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.224Z",
+            "elapsedMs": 120
+          },
+          {
+            "index": 5,
+            "type": "mouseMoved",
+            "x": 150.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.241Z",
+            "elapsedMs": 141
+          },
+          {
+            "index": 6,
+            "type": "mouseMoved",
+            "x": 156.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.261Z",
+            "elapsedMs": 161
+          },
+          {
+            "index": 7,
+            "type": "mouseMoved",
+            "x": 162.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.295Z",
+            "elapsedMs": 189
+          },
+          {
+            "index": 8,
+            "type": "mouseMoved",
+            "x": 168.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.311Z",
+            "elapsedMs": 210
+          },
+          {
+            "index": 9,
+            "type": "mouseMoved",
+            "x": 173.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.329Z",
+            "elapsedMs": 224
+          },
+          {
+            "index": 10,
+            "type": "mouseMoved",
+            "x": 179.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.352Z",
+            "elapsedMs": 252
+          },
+          {
+            "index": 11,
+            "type": "mouseMoved",
+            "x": 185.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.380Z",
+            "elapsedMs": 280
+          },
+          {
+            "index": 12,
+            "type": "mouseMoved",
+            "x": 191.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.412Z",
+            "elapsedMs": 307
+          },
+          {
+            "index": 13,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.428Z",
+            "elapsedMs": 328
+          },
+          {
+            "index": 14,
+            "type": "mouseMoved",
+            "x": 203.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.461Z",
+            "elapsedMs": 356
+          },
+          {
+            "index": 15,
+            "type": "mouseMoved",
+            "x": 208.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.489Z",
+            "elapsedMs": 383
+          },
+          {
+            "index": 16,
+            "type": "mouseMoved",
+            "x": 214.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.518Z",
+            "elapsedMs": 419
+          },
+          {
+            "index": 17,
+            "type": "mouseMoved",
+            "x": 220.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.553Z",
+            "elapsedMs": 453
+          },
+          {
+            "index": 18,
+            "type": "mouseMoved",
+            "x": 226.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.575Z",
+            "elapsedMs": 474
+          },
+          {
+            "index": 19,
+            "type": "mouseMoved",
+            "x": 232.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.595Z",
+            "elapsedMs": 495
+          },
+          {
+            "index": 20,
+            "type": "mouseMoved",
+            "x": 238.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.615Z",
+            "elapsedMs": 515
+          },
+          {
+            "index": 21,
+            "type": "mouseMoved",
+            "x": 243.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.646Z",
+            "elapsedMs": 543
+          },
+          {
+            "index": 22,
+            "type": "mouseMoved",
+            "x": 249.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.664Z",
+            "elapsedMs": 564
+          },
+          {
+            "index": 23,
+            "type": "mouseMoved",
+            "x": 255.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.689Z",
+            "elapsedMs": 585
+          },
+          {
+            "index": 24,
+            "type": "mouseMoved",
+            "x": 261.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.706Z",
+            "elapsedMs": 606
+          },
+          {
+            "index": 25,
+            "type": "mouseMoved",
+            "x": 267.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.739Z",
+            "elapsedMs": 633
+          },
+          {
+            "index": 26,
+            "type": "mouseReleased",
+            "x": 267.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 0,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:11:18.755Z",
+            "elapsedMs": 650
+          }
+        ],
+        "settleMs": 2000,
+        "startedAt": "2026-11-04T09:11:18.108Z",
+        "completedAt": "2026-11-04T09:11:20.758Z",
+        "durationMs": 2650
+      },
+      "settleMs": 2000,
+      "timestamp": "2026-11-04T09:11:20.760Z",
+      "id": "S-08",
+      "scenarioResult": "PASS",
+      "consoleErrors": []
+    },
+    {
+      "gesture": "left-click-cube-after-edit",
+      "inputMapState": "edited",
+      "inputMapAfter": [
+        {
+          "source": "pointer",
+          "button": 0,
+          "interaction": "pan",
+          "modifiers": {
+            "ctrl": true
+          },
+          "key": null
+        },
+        {
+          "source": "pointer",
+          "button": 2,
+          "interaction": "pan",
+          "modifiers": null,
+          "key": null
+        },
+        {
+          "source": "wheel",
+          "interaction": "zoom",
+          "modifiers": null,
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "zoom",
+          "modifiers": null,
+          "key": [
+            187,
+            107,
+            189,
+            109
+          ]
+        },
+        {
+          "source": "keyboard",
+          "interaction": "pan",
+          "modifiers": {
+            "ctrl": true
+          },
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "zoom",
+          "modifiers": {
+            "alt": true
+          },
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "rotate",
+          "modifiers": null,
+          "key": null
+        }
+      ],
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "pointer": {
+        "kind": "click",
+        "method": "cdp_trusted_input",
+        "from": {
+          "x": 493.2,
+          "y": 348.638
+        },
+        "to": {
+          "x": 493.2,
+          "y": 348.638
+        },
+        "button": "left",
+        "events": [
+          {
+            "index": 0,
+            "type": "mouseMoved",
+            "x": 493.2,
+            "y": 348.638,
+            "button": "none",
+            "buttons": 0,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:23.675Z"
+          },
+          {
+            "index": 1,
+            "type": "mousePressed",
+            "x": 493.2,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 1,
+            "sentAt": "2026-11-04T09:11:23.723Z"
+          },
+          {
+            "index": 2,
+            "type": "mouseReleased",
+            "x": 493.2,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 0,
+            "clickCount": 1,
+            "sentAt": "2026-11-04T09:11:23.781Z"
+          }
+        ],
+        "settleMs": 2000,
+        "startedAt": "2026-11-04T09:11:23.670Z",
+        "completedAt": "2026-11-04T09:11:25.783Z"
+      },
+      "settleMs": 2000,
+      "pointerTrace": {
+        "dragCountBefore": 0,
+        "dragCountAfter": 1,
+        "lastDrag": {
+          "start": {
+            "x": 493.20001220703125,
+            "y": 348.63751220703125,
+            "t": "2026-11-04T09:11:23.721Z",
+            "isTrusted": true,
+            "pointerType": "mouse"
+          },
+          "end": {
+            "x": 493.20001220703125,
+            "y": 348.63751220703125,
+            "t": "2026-11-04T09:11:23.781Z",
+            "isTrusted": true,
+            "pointerType": "mouse"
+          },
+          "moveCount": 0,
+          "pointerType": "mouse",
+          "allTrusted": true,
+          "durationMs": 60,
+          "eventSequence": [
+            {
+              "type": "pointerdown",
+              "t": "2026-11-04T09:11:23.721Z",
+              "tms": 2954.7000000001863,
+              "x": 493.20001220703125,
+              "y": 348.63751220703125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": 0,
+              "buttons": 1,
+              "isTrusted": true
+            },
+            {
+              "type": "pointerup",
+              "t": "2026-11-04T09:11:23.781Z",
+              "tms": 3015.100000000093,
+              "x": 493.20001220703125,
+              "y": 348.63751220703125,
+              "pointerId": 1,
+              "pointerType": "mouse",
+              "button": 0,
+              "buttons": 0,
+              "isTrusted": true
+            }
+          ]
+        }
+      },
+      "cubeBefore": {
+        "name": "testCube",
+        "id": "testCube",
+        "position": [
+          0,
+          0.5,
+          0
+        ],
+        "quaternion": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "quaternionLength": 1
+      },
+      "cubeAfter": {
+        "name": "testCube",
+        "id": "testCube",
+        "position": [
+          0,
+          0.5,
+          0
+        ],
+        "quaternion": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "quaternionLength": 1
+      },
+      "scopeNote": "A-06-P5: camera non-capture only; full selection UI is out of SP-06 scope.",
+      "timestamp": "2026-11-04T09:11:25.970Z",
+      "id": "S-09",
+      "scenarioResult": "PASS",
+      "consoleErrors": [],
+      "screenshot": {
+        "name": "sp-06_left_click_no_orbit.png",
+        "officialName": "sp-06_left_click_no_orbit.png",
+        "bytes": 88917,
+        "sha256": "893f767ca7489c6eb875ec66c3826fe46978dfdf81b5686bf1fc32fa6c28ecee"
+      }
+    },
+    {
+      "gesture": "gizmo-drag-before-and-after-edit",
+      "inputMapState": "edited",
+      "inputMapAfter": [
+        {
+          "source": "pointer",
+          "button": 0,
+          "interaction": "pan",
+          "modifiers": {
+            "ctrl": true
+          },
+          "key": null
+        },
+        {
+          "source": "pointer",
+          "button": 2,
+          "interaction": "pan",
+          "modifiers": null,
+          "key": null
+        },
+        {
+          "source": "wheel",
+          "interaction": "zoom",
+          "modifiers": null,
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "zoom",
+          "modifiers": null,
+          "key": [
+            187,
+            107,
+            189,
+            109
+          ]
+        },
+        {
+          "source": "keyboard",
+          "interaction": "pan",
+          "modifiers": {
+            "ctrl": true
+          },
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "zoom",
+          "modifiers": {
+            "alt": true
+          },
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "interaction": "rotate",
+          "modifiers": null,
+          "key": null
+        }
+      ],
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 0,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "preEdit": {
+        "before": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "after": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "delta": {
+          "alpha": 0,
+          "beta": 0,
+          "radius": 0,
+          "target": [
+            0,
+            0,
+            0
+          ]
+        },
+        "transform": {
+          "before": {
+            "position": [
+              0,
+              0.5,
+              0
+            ],
+            "quaternion": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "after": {
+            "position": [
+              0.6165075302124023,
+              0.5,
+              0
+            ],
+            "quaternion": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "appliedTranslation": [
+            0.6165075302124023,
+            0,
+            0
+          ]
+        },
+        "pointer": {
+          "label": "S-10 pre-edit translate drag",
+          "target": {
+            "gizmo": "position",
+            "axis": "x",
+            "pickedAxis": "x",
+            "pickedMesh": "cylinder"
+          },
+          "from": {
+            "x": 555.0875,
+            "y": 379.5437
+          },
+          "to": {
+            "x": 608.7531,
+            "y": 406.3766
+          },
+          "distancePx": 60,
+          "steps": 24,
+          "stepDelayMs": 12,
+          "eventCount": 27,
+          "events": [
+            {
+              "index": 0,
+              "type": "mouseMoved",
+              "x": 555.0875,
+              "y": 379.5437,
+              "button": "none",
+              "buttons": 0,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.373Z",
+              "elapsedMs": 0
+            },
+            {
+              "index": 1,
+              "type": "mousePressed",
+              "x": 555.0875,
+              "y": 379.5437,
+              "button": "left",
+              "buttons": 1,
+              "clickCount": 1,
+              "sentAt": "2026-11-04T09:11:28.435Z",
+              "elapsedMs": 62
+            },
+            {
+              "index": 2,
+              "type": "mouseMoved",
+              "x": 557.3235,
+              "y": 380.6618,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.505Z",
+              "elapsedMs": 132
+            },
+            {
+              "index": 3,
+              "type": "mouseMoved",
+              "x": 559.5596,
+              "y": 381.7798,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.534Z",
+              "elapsedMs": 161
+            },
+            {
+              "index": 4,
+              "type": "mouseMoved",
+              "x": 561.7957,
+              "y": 382.8979,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.561Z",
+              "elapsedMs": 188
+            },
+            {
+              "index": 5,
+              "type": "mouseMoved",
+              "x": 564.0317,
+              "y": 384.0159,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.581Z",
+              "elapsedMs": 208
+            },
+            {
+              "index": 6,
+              "type": "mouseMoved",
+              "x": 566.2678,
+              "y": 385.1339,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.609Z",
+              "elapsedMs": 236
+            },
+            {
+              "index": 7,
+              "type": "mouseMoved",
+              "x": 568.5039,
+              "y": 386.252,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.640Z",
+              "elapsedMs": 267
+            },
+            {
+              "index": 8,
+              "type": "mouseMoved",
+              "x": 570.7399,
+              "y": 387.37,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.671Z",
+              "elapsedMs": 298
+            },
+            {
+              "index": 9,
+              "type": "mouseMoved",
+              "x": 572.976,
+              "y": 388.488,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.706Z",
+              "elapsedMs": 333
+            },
+            {
+              "index": 10,
+              "type": "mouseMoved",
+              "x": 575.2121,
+              "y": 389.6061,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.732Z",
+              "elapsedMs": 359
+            },
+            {
+              "index": 11,
+              "type": "mouseMoved",
+              "x": 577.4481,
+              "y": 390.7241,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.747Z",
+              "elapsedMs": 375
+            },
+            {
+              "index": 12,
+              "type": "mouseMoved",
+              "x": 579.6842,
+              "y": 391.8421,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.775Z",
+              "elapsedMs": 402
+            },
+            {
+              "index": 13,
+              "type": "mouseMoved",
+              "x": 581.9203,
+              "y": 392.9602,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.807Z",
+              "elapsedMs": 434
+            },
+            {
+              "index": 14,
+              "type": "mouseMoved",
+              "x": 584.1564,
+              "y": 394.0782,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.823Z",
+              "elapsedMs": 450
+            },
+            {
+              "index": 15,
+              "type": "mouseMoved",
+              "x": 586.3924,
+              "y": 395.1962,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.850Z",
+              "elapsedMs": 477
+            },
+            {
+              "index": 16,
+              "type": "mouseMoved",
+              "x": 588.6285,
+              "y": 396.3143,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.865Z",
+              "elapsedMs": 492
+            },
+            {
+              "index": 17,
+              "type": "mouseMoved",
+              "x": 590.8646,
+              "y": 397.4323,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.900Z",
+              "elapsedMs": 527
+            },
+            {
+              "index": 18,
+              "type": "mouseMoved",
+              "x": 593.1006,
+              "y": 398.5503,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.922Z",
+              "elapsedMs": 549
+            },
+            {
+              "index": 19,
+              "type": "mouseMoved",
+              "x": 595.3367,
+              "y": 399.6684,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.956Z",
+              "elapsedMs": 583
+            },
+            {
+              "index": 20,
+              "type": "mouseMoved",
+              "x": 597.5728,
+              "y": 400.7864,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.977Z",
+              "elapsedMs": 604
+            },
+            {
+              "index": 21,
+              "type": "mouseMoved",
+              "x": 599.8088,
+              "y": 401.9044,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:28.998Z",
+              "elapsedMs": 625
+            },
+            {
+              "index": 22,
+              "type": "mouseMoved",
+              "x": 602.0449,
+              "y": 403.0225,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:29.018Z",
+              "elapsedMs": 645
+            },
+            {
+              "index": 23,
+              "type": "mouseMoved",
+              "x": 604.281,
+              "y": 404.1405,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:29.033Z",
+              "elapsedMs": 660
+            },
+            {
+              "index": 24,
+              "type": "mouseMoved",
+              "x": 606.517,
+              "y": 405.2585,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:29.060Z",
+              "elapsedMs": 687
+            },
+            {
+              "index": 25,
+              "type": "mouseMoved",
+              "x": 608.7531,
+              "y": 406.3766,
+              "button": "none",
+              "buttons": 1,
+              "clickCount": 0,
+              "sentAt": "2026-11-04T09:11:29.090Z",
+              "elapsedMs": 717
+            },
+            {
+              "index": 26,
+              "type": "mouseReleased",
+              "x": 608.7531,
+              "y": 406.3766,
+              "button": "left",
+              "buttons": 0,
+              "clickCount": 1,
+              "sentAt": "2026-11-04T09:11:29.241Z",
+              "elapsedMs": 868
+            }
+          ],
+          "methods": {
+            "input": "cdp_trusted_input",
+            "domain": "Input",
+            "method": "Input.dispatchMouseEvent",
+            "pointerType": "mouse"
+          },
+          "startedAt": "2026-11-04T09:11:28.373Z",
+          "endedAt": "2026-11-04T09:11:29.330Z",
+          "wallClockMs": 957,
+          "monotonicMs": 957
+        }
+      },
+      "setupRotate": {
+        "before": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "after": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "delta": {
+          "alpha": 0,
+          "beta": 0,
+          "radius": 0,
+          "target": [
+            0,
+            0,
+            0
+          ]
+        },
+        "appliedRotation": {
+          "quaternion": [
+            0,
+            0.34923739201427134,
+            0,
+            0.9370342811333374
+          ],
+          "angleDeg": 40.88135540793271,
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "sinHalf": 0.34923739201427134
+        }
+      },
+      "pointer": {
+        "label": "S-10 gizmo drag",
+        "target": {
+          "gizmo": "scale",
+          "axis": "x",
+          "pickedAxis": "x",
+          "pickedMesh": "yPosMesh"
+        },
+        "from": {
+          "x": 575.7297,
+          "y": 351.4786
+        },
+        "to": {
+          "x": 635.6909,
+          "y": 353.6375
+        },
+        "distancePx": 60,
+        "steps": 24,
+        "stepDelayMs": 12,
+        "eventCount": 27,
+        "events": [
+          {
+            "index": 0,
+            "type": "mouseMoved",
+            "x": 575.7297,
+            "y": 351.4786,
+            "button": "none",
+            "buttons": 0,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.198Z",
+            "elapsedMs": 0
+          },
+          {
+            "index": 1,
+            "type": "mousePressed",
+            "x": 575.7297,
+            "y": 351.4786,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 1,
+            "sentAt": "2026-11-04T09:11:36.269Z",
+            "elapsedMs": 71
+          },
+          {
+            "index": 2,
+            "type": "mouseMoved",
+            "x": 578.2281,
+            "y": 351.5686,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.346Z",
+            "elapsedMs": 148
+          },
+          {
+            "index": 3,
+            "type": "mouseMoved",
+            "x": 580.7265,
+            "y": 351.6585,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.371Z",
+            "elapsedMs": 173
+          },
+          {
+            "index": 4,
+            "type": "mouseMoved",
+            "x": 583.2248,
+            "y": 351.7485,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.387Z",
+            "elapsedMs": 189
+          },
+          {
+            "index": 5,
+            "type": "mouseMoved",
+            "x": 585.7232,
+            "y": 351.8384,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.413Z",
+            "elapsedMs": 215
+          },
+          {
+            "index": 6,
+            "type": "mouseMoved",
+            "x": 588.2216,
+            "y": 351.9284,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.447Z",
+            "elapsedMs": 249
+          },
+          {
+            "index": 7,
+            "type": "mouseMoved",
+            "x": 590.72,
+            "y": 352.0183,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.472Z",
+            "elapsedMs": 274
+          },
+          {
+            "index": 8,
+            "type": "mouseMoved",
+            "x": 593.2184,
+            "y": 352.1083,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.505Z",
+            "elapsedMs": 307
+          },
+          {
+            "index": 9,
+            "type": "mouseMoved",
+            "x": 595.7168,
+            "y": 352.1982,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.533Z",
+            "elapsedMs": 335
+          },
+          {
+            "index": 10,
+            "type": "mouseMoved",
+            "x": 598.2151,
+            "y": 352.2882,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.554Z",
+            "elapsedMs": 356
+          },
+          {
+            "index": 11,
+            "type": "mouseMoved",
+            "x": 600.7135,
+            "y": 352.3781,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.588Z",
+            "elapsedMs": 390
+          },
+          {
+            "index": 12,
+            "type": "mouseMoved",
+            "x": 603.2119,
+            "y": 352.4681,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.620Z",
+            "elapsedMs": 422
+          },
+          {
+            "index": 13,
+            "type": "mouseMoved",
+            "x": 605.7103,
+            "y": 352.558,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.648Z",
+            "elapsedMs": 450
+          },
+          {
+            "index": 14,
+            "type": "mouseMoved",
+            "x": 608.2087,
+            "y": 352.648,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.664Z",
+            "elapsedMs": 466
+          },
+          {
+            "index": 15,
+            "type": "mouseMoved",
+            "x": 610.707,
+            "y": 352.7379,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.694Z",
+            "elapsedMs": 496
+          },
+          {
+            "index": 16,
+            "type": "mouseMoved",
+            "x": 613.2054,
+            "y": 352.8279,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.713Z",
+            "elapsedMs": 515
+          },
+          {
+            "index": 17,
+            "type": "mouseMoved",
+            "x": 615.7038,
+            "y": 352.9178,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.734Z",
+            "elapsedMs": 536
+          },
+          {
+            "index": 18,
+            "type": "mouseMoved",
+            "x": 618.2022,
+            "y": 353.0078,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.755Z",
+            "elapsedMs": 557
+          },
+          {
+            "index": 19,
+            "type": "mouseMoved",
+            "x": 620.7006,
+            "y": 353.0977,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.784Z",
+            "elapsedMs": 586
+          },
+          {
+            "index": 20,
+            "type": "mouseMoved",
+            "x": 623.1989,
+            "y": 353.1877,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.804Z",
+            "elapsedMs": 606
+          },
+          {
+            "index": 21,
+            "type": "mouseMoved",
+            "x": 625.6973,
+            "y": 353.2776,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.838Z",
+            "elapsedMs": 640
+          },
+          {
+            "index": 22,
+            "type": "mouseMoved",
+            "x": 628.1957,
+            "y": 353.3676,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.873Z",
+            "elapsedMs": 675
+          },
+          {
+            "index": 23,
+            "type": "mouseMoved",
+            "x": 630.6941,
+            "y": 353.4576,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.907Z",
+            "elapsedMs": 709
+          },
+          {
+            "index": 24,
+            "type": "mouseMoved",
+            "x": 633.1925,
+            "y": 353.5475,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.941Z",
+            "elapsedMs": 743
+          },
+          {
+            "index": 25,
+            "type": "mouseMoved",
+            "x": 635.6909,
+            "y": 353.6375,
+            "button": "none",
+            "buttons": 1,
+            "clickCount": 0,
+            "sentAt": "2026-11-04T09:11:36.967Z",
+            "elapsedMs": 769
+          },
+          {
+            "index": 26,
+            "type": "mouseReleased",
+            "x": 635.6909,
+            "y": 353.6375,
+            "button": "left",
+            "buttons": 0,
+            "clickCount": 1,
+            "sentAt": "2026-11-04T09:11:37.127Z",
+            "elapsedMs": 929
+          }
+        ],
+        "methods": {
+          "input": "cdp_trusted_input",
+          "domain": "Input",
+          "method": "Input.dispatchMouseEvent",
+          "pointerType": "mouse"
+        },
+        "startedAt": "2026-11-04T09:11:36.198Z",
+        "endedAt": "2026-11-04T09:11:37.210Z",
+        "wallClockMs": 1012,
+        "monotonicMs": 1012
+      },
+      "gizmo": {
+        "label": "S-10 gizmo drag",
+        "target": {
+          "gizmo": "scale",
+          "axis": "x",
+          "pickedAxis": "x",
+          "pickedMesh": "yPosMesh"
+        },
+        "before": {
+          "position": [
+            0,
+            0.5,
+            0
+          ],
+          "quaternion": [
+            0,
+            0.34923739201427134,
+            0,
+            0.9370342811333374
+          ],
+          "scale": [
+            0.9999997998853689,
+            1,
+            0.9999997998853689
+          ]
+        },
+        "after": {
+          "position": [
+            0,
+            0.5,
+            0
+          ],
+          "quaternion": [
+            0,
+            0.3492373640884733,
+            0,
+            0.9370342915414223
+          ],
+          "scale": [
+            1.1318743685780674,
+            1,
+            0.9999998059395139
+          ]
+        },
+        "lifecycle": {
+          "start": 1,
+          "drag": 24,
+          "end": 1,
+          "deltaSum": [
+            0.43370611721289337,
+            0,
+            -0.37544106516862624
+          ]
+        },
+        "reconciliation": {
+          "ok": true,
+          "issues": [],
+          "observedMoves": 24,
+          "dispatchedMoves": 25,
+          "extraObservedMoves": 0
+        }
+      },
+      "settleMs": 2000,
+      "timestamp": "2026-11-04T09:11:39.550Z",
+      "id": "S-10",
+      "scenarioResult": "PASS",
+      "consoleErrors": [],
+      "screenshot": {
+        "name": "sp-06_gizmo_interaction.png",
+        "officialName": "sp-06_gizmo_interaction.png",
+        "bytes": 82816,
+        "sha256": "c70f5e4a394cca0d3cf0c92b0c5c1e92e1f4983e4c99215191909aab1092e3c6"
+      }
+    },
+    {
+      "gesture": "edge-cases",
+      "inputMapState": "default",
+      "before": {
+        "lowerPole": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "upperPole": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "zoomIn": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "zoomOut": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "largePan": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        }
+      },
+      "after": {
+        "lowerPole": {
+          "alpha": 0.7853981633974483,
+          "beta": 0.01,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "upperPole": {
+          "alpha": 0.7853981633974483,
+          "beta": 3.1315926535897933,
+          "radius": 8,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "zoomIn": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": -21.976021174719165,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "zoomOut": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 38.02252206856503,
+          "target": [
+            0,
+            0.5,
+            0
+          ]
+        },
+        "largePan": {
+          "alpha": 0.7853981633974483,
+          "beta": 1.0471975511965976,
+          "radius": 8,
+          "target": [
+            -2.1218512395097058,
+            0.5,
+            2.1218512395097058
+          ]
+        }
+      },
+      "delta": {
+        "lowerPole": {
+          "alpha": 0,
+          "beta": -1.0371975511965976,
+          "radius": 0,
+          "target": [
+            0,
+            0,
+            0
+          ]
+        },
+        "upperPole": {
+          "alpha": 0,
+          "beta": 2.084395102393196,
+          "radius": 0,
+          "target": [
+            0,
+            0,
+            0
+          ]
+        },
+        "zoomIn": {
+          "alpha": 0,
+          "beta": 0,
+          "radius": -29.976021174719165,
+          "target": [
+            0,
+            0,
+            0
+          ]
+        },
+        "zoomOut": {
+          "alpha": 0,
+          "beta": 0,
+          "radius": 30.02252206856503,
+          "target": [
+            0,
+            0,
+            0
+          ]
+        },
+        "largePan": {
+          "alpha": 0,
+          "beta": 0,
+          "radius": 0,
+          "target": [
+            -2.1218512395097058,
+            0,
+            2.1218512395097058
+          ]
+        }
+      },
+      "clamp": {
+        "lowerBeta": 0.01,
+        "upperBeta": 3.1315926535897933,
+        "lowerRadiusLimit": null,
+        "upperRadiusLimit": null
+      },
+      "radiusExtremes": {
+        "repeatedZoomIn": -21.976021174719165,
+        "repeatedZoomOut": 38.02252206856503
+      },
+      "pointer": {
+        "lowerPole": [
+          {
+            "kind": "drag",
+            "method": "cdp_trusted_input",
+            "domain": "Input",
+            "from": {
+              "x": 197.28,
+              "y": 69.728
+            },
+            "to": {
+              "x": 197.28,
+              "y": 627.548
+            },
+            "button": "left",
+            "modifiers": 0,
+            "steps": 24,
+            "eventCount": 27,
+            "events": [
+              {
+                "index": 0,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 69.728,
+                "button": "none",
+                "buttons": 0,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:40.904Z",
+                "elapsedMs": 5
+              },
+              {
+                "index": 1,
+                "type": "mousePressed",
+                "x": 197.28,
+                "y": 69.728,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 1,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:40.938Z",
+                "elapsedMs": 36
+              },
+              {
+                "index": 2,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 92.97,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:40.976Z",
+                "elapsedMs": 81
+              },
+              {
+                "index": 3,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 116.213,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.010Z",
+                "elapsedMs": 109
+              },
+              {
+                "index": 4,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 139.455,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.033Z",
+                "elapsedMs": 138
+              },
+              {
+                "index": 5,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 162.698,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.067Z",
+                "elapsedMs": 172
+              },
+              {
+                "index": 6,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 185.94,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.094Z",
+                "elapsedMs": 192
+              },
+              {
+                "index": 7,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 209.183,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.109Z",
+                "elapsedMs": 214
+              },
+              {
+                "index": 8,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 232.425,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.135Z",
+                "elapsedMs": 241
+              },
+              {
+                "index": 9,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 255.668,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.170Z",
+                "elapsedMs": 276
+              },
+              {
+                "index": 10,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 278.91,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.191Z",
+                "elapsedMs": 297
+              },
+              {
+                "index": 11,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 302.153,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.228Z",
+                "elapsedMs": 332
+              },
+              {
+                "index": 12,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 325.395,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.259Z",
+                "elapsedMs": 359
+              },
+              {
+                "index": 13,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 348.638,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.276Z",
+                "elapsedMs": 380
+              },
+              {
+                "index": 14,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 371.88,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.312Z",
+                "elapsedMs": 414
+              },
+              {
+                "index": 15,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 395.123,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.340Z",
+                "elapsedMs": 442
+              },
+              {
+                "index": 16,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 418.365,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.371Z",
+                "elapsedMs": 470
+              },
+              {
+                "index": 17,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 441.608,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.386Z",
+                "elapsedMs": 491
+              },
+              {
+                "index": 18,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 464.85,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.412Z",
+                "elapsedMs": 512
+              },
+              {
+                "index": 19,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 488.093,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.428Z",
+                "elapsedMs": 533
+              },
+              {
+                "index": 20,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 511.335,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.454Z",
+                "elapsedMs": 553
+              },
+              {
+                "index": 21,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 534.578,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.470Z",
+                "elapsedMs": 575
+              },
+              {
+                "index": 22,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 557.82,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.513Z",
+                "elapsedMs": 616
+              },
+              {
+                "index": 23,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 581.063,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.540Z",
+                "elapsedMs": 644
+              },
+              {
+                "index": 24,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 604.305,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.574Z",
+                "elapsedMs": 679
+              },
+              {
+                "index": 25,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 627.548,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.603Z",
+                "elapsedMs": 706
+              },
+              {
+                "index": 26,
+                "type": "mouseReleased",
+                "x": 197.28,
+                "y": 627.548,
+                "button": "left",
+                "buttons": 0,
+                "clickCount": 1,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:41.630Z",
+                "elapsedMs": 730
+              }
+            ],
+            "settleMs": 2000,
+            "startedAt": "2026-11-04T09:11:40.904Z",
+            "completedAt": "2026-11-04T09:11:43.634Z",
+            "durationMs": 2730
+          },
+          {
+            "kind": "drag",
+            "method": "cdp_trusted_input",
+            "domain": "Input",
+            "from": {
+              "x": 197.28,
+              "y": 69.728
+            },
+            "to": {
+              "x": 197.28,
+              "y": 627.548
+            },
+            "button": "left",
+            "modifiers": 0,
+            "steps": 24,
+            "eventCount": 27,
+            "events": [
+              {
+                "index": 0,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 69.728,
+                "button": "none",
+                "buttons": 0,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.634Z",
+                "elapsedMs": 4
+              },
+              {
+                "index": 1,
+                "type": "mousePressed",
+                "x": 197.28,
+                "y": 69.728,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 1,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.666Z",
+                "elapsedMs": 34
+              },
+              {
+                "index": 2,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 92.97,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.715Z",
+                "elapsedMs": 87
+              },
+              {
+                "index": 3,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 116.213,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.734Z",
+                "elapsedMs": 108
+              },
+              {
+                "index": 4,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 139.455,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.765Z",
+                "elapsedMs": 136
+              },
+              {
+                "index": 5,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 162.698,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.799Z",
+                "elapsedMs": 170
+              },
+              {
+                "index": 6,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 185.94,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.830Z",
+                "elapsedMs": 206
+              },
+              {
+                "index": 7,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 209.183,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.864Z",
+                "elapsedMs": 233
+              },
+              {
+                "index": 8,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 232.425,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.880Z",
+                "elapsedMs": 255
+              },
+              {
+                "index": 9,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 255.668,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.901Z",
+                "elapsedMs": 275
+              },
+              {
+                "index": 10,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 278.91,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.934Z",
+                "elapsedMs": 302
+              },
+              {
+                "index": 11,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 302.153,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.951Z",
+                "elapsedMs": 323
+              },
+              {
+                "index": 12,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 325.395,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:43.970Z",
+                "elapsedMs": 345
+              },
+              {
+                "index": 13,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 348.638,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.000Z",
+                "elapsedMs": 372
+              },
+              {
+                "index": 14,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 371.88,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.019Z",
+                "elapsedMs": 393
+              },
+              {
+                "index": 15,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 395.123,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.047Z",
+                "elapsedMs": 421
+              },
+              {
+                "index": 16,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 418.365,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.079Z",
+                "elapsedMs": 448
+              },
+              {
+                "index": 17,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 441.608,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.096Z",
+                "elapsedMs": 470
+              },
+              {
+                "index": 18,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 464.85,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.118Z",
+                "elapsedMs": 490
+              },
+              {
+                "index": 19,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 488.093,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.137Z",
+                "elapsedMs": 511
+              },
+              {
+                "index": 20,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 511.335,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.171Z",
+                "elapsedMs": 546
+              },
+              {
+                "index": 21,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 534.578,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.192Z",
+                "elapsedMs": 567
+              },
+              {
+                "index": 22,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 557.82,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.224Z",
+                "elapsedMs": 595
+              },
+              {
+                "index": 23,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 581.063,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.243Z",
+                "elapsedMs": 615
+              },
+              {
+                "index": 24,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 604.305,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.262Z",
+                "elapsedMs": 636
+              },
+              {
+                "index": 25,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 627.548,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.295Z",
+                "elapsedMs": 664
+              },
+              {
+                "index": 26,
+                "type": "mouseReleased",
+                "x": 197.28,
+                "y": 627.548,
+                "button": "left",
+                "buttons": 0,
+                "clickCount": 1,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:44.312Z",
+                "elapsedMs": 680
+              }
+            ],
+            "settleMs": 2000,
+            "startedAt": "2026-11-04T09:11:43.634Z",
+            "completedAt": "2026-11-04T09:11:46.318Z",
+            "durationMs": 2684
+          }
+        ],
+        "upperPole": [
+          {
+            "kind": "drag",
+            "method": "cdp_trusted_input",
+            "domain": "Input",
+            "from": {
+              "x": 197.28,
+              "y": 627.548
+            },
+            "to": {
+              "x": 197.28,
+              "y": 69.728
+            },
+            "button": "left",
+            "modifiers": 0,
+            "steps": 24,
+            "eventCount": 27,
+            "events": [
+              {
+                "index": 0,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 627.548,
+                "button": "none",
+                "buttons": 0,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.676Z",
+                "elapsedMs": 4
+              },
+              {
+                "index": 1,
+                "type": "mousePressed",
+                "x": 197.28,
+                "y": 627.548,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 1,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.706Z",
+                "elapsedMs": 34
+              },
+              {
+                "index": 2,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 604.305,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.747Z",
+                "elapsedMs": 81
+              },
+              {
+                "index": 3,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 581.063,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.769Z",
+                "elapsedMs": 101
+              },
+              {
+                "index": 4,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 557.82,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.811Z",
+                "elapsedMs": 143
+              },
+              {
+                "index": 5,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 534.578,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.845Z",
+                "elapsedMs": 178
+              },
+              {
+                "index": 6,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 511.335,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.881Z",
+                "elapsedMs": 212
+              },
+              {
+                "index": 7,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 488.093,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.901Z",
+                "elapsedMs": 233
+              },
+              {
+                "index": 8,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 464.85,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.934Z",
+                "elapsedMs": 261
+              },
+              {
+                "index": 9,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 441.608,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.958Z",
+                "elapsedMs": 289
+              },
+              {
+                "index": 10,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 418.365,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:46.992Z",
+                "elapsedMs": 323
+              },
+              {
+                "index": 11,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 395.123,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.019Z",
+                "elapsedMs": 351
+              },
+              {
+                "index": 12,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 371.88,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.049Z",
+                "elapsedMs": 379
+              },
+              {
+                "index": 13,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 348.638,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.076Z",
+                "elapsedMs": 406
+              },
+              {
+                "index": 14,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 325.395,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.095Z",
+                "elapsedMs": 428
+              },
+              {
+                "index": 15,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 302.153,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.127Z",
+                "elapsedMs": 455
+              },
+              {
+                "index": 16,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 278.91,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.159Z",
+                "elapsedMs": 490
+              },
+              {
+                "index": 17,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 255.668,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.177Z",
+                "elapsedMs": 511
+              },
+              {
+                "index": 18,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 232.425,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.210Z",
+                "elapsedMs": 538
+              },
+              {
+                "index": 19,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 209.183,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.227Z",
+                "elapsedMs": 559
+              },
+              {
+                "index": 20,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 185.94,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.252Z",
+                "elapsedMs": 580
+              },
+              {
+                "index": 21,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 162.698,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.283Z",
+                "elapsedMs": 615
+              },
+              {
+                "index": 22,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 139.455,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.318Z",
+                "elapsedMs": 649
+              },
+              {
+                "index": 23,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 116.213,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.339Z",
+                "elapsedMs": 670
+              },
+              {
+                "index": 24,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 92.97,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.361Z",
+                "elapsedMs": 692
+              },
+              {
+                "index": 25,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 69.728,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.395Z",
+                "elapsedMs": 726
+              },
+              {
+                "index": 26,
+                "type": "mouseReleased",
+                "x": 197.28,
+                "y": 69.728,
+                "button": "left",
+                "buttons": 0,
+                "clickCount": 1,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:47.422Z",
+                "elapsedMs": 749
+              }
+            ],
+            "settleMs": 2000,
+            "startedAt": "2026-11-04T09:11:46.676Z",
+            "completedAt": "2026-11-04T09:11:49.428Z",
+            "durationMs": 2752
+          },
+          {
+            "kind": "drag",
+            "method": "cdp_trusted_input",
+            "domain": "Input",
+            "from": {
+              "x": 197.28,
+              "y": 627.548
+            },
+            "to": {
+              "x": 197.28,
+              "y": 69.728
+            },
+            "button": "left",
+            "modifiers": 0,
+            "steps": 24,
+            "eventCount": 27,
+            "events": [
+              {
+                "index": 0,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 627.548,
+                "button": "none",
+                "buttons": 0,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.429Z",
+                "elapsedMs": 7
+              },
+              {
+                "index": 1,
+                "type": "mousePressed",
+                "x": 197.28,
+                "y": 627.548,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 1,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.469Z",
+                "elapsedMs": 42
+              },
+              {
+                "index": 2,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 604.305,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.502Z",
+                "elapsedMs": 77
+              },
+              {
+                "index": 3,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 581.063,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.530Z",
+                "elapsedMs": 105
+              },
+              {
+                "index": 4,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 557.82,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.546Z",
+                "elapsedMs": 126
+              },
+              {
+                "index": 5,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 534.578,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.572Z",
+                "elapsedMs": 147
+              },
+              {
+                "index": 6,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 511.335,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.599Z",
+                "elapsedMs": 174
+              },
+              {
+                "index": 7,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 488.093,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.616Z",
+                "elapsedMs": 195
+              },
+              {
+                "index": 8,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 464.85,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.637Z",
+                "elapsedMs": 216
+              },
+              {
+                "index": 9,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 441.608,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.672Z",
+                "elapsedMs": 251
+              },
+              {
+                "index": 10,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 418.365,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.706Z",
+                "elapsedMs": 286
+              },
+              {
+                "index": 11,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 395.123,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.733Z",
+                "elapsedMs": 306
+              },
+              {
+                "index": 12,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 371.88,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.749Z",
+                "elapsedMs": 327
+              },
+              {
+                "index": 13,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 348.638,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.773Z",
+                "elapsedMs": 348
+              },
+              {
+                "index": 14,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 325.395,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.789Z",
+                "elapsedMs": 369
+              },
+              {
+                "index": 15,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 302.153,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.810Z",
+                "elapsedMs": 389
+              },
+              {
+                "index": 16,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 278.91,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.841Z",
+                "elapsedMs": 417
+              },
+              {
+                "index": 17,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 255.668,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.866Z",
+                "elapsedMs": 445
+              },
+              {
+                "index": 18,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 232.425,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.893Z",
+                "elapsedMs": 473
+              },
+              {
+                "index": 19,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 209.183,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.916Z",
+                "elapsedMs": 494
+              },
+              {
+                "index": 20,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 185.94,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.958Z",
+                "elapsedMs": 535
+              },
+              {
+                "index": 21,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 162.698,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:49.977Z",
+                "elapsedMs": 556
+              },
+              {
+                "index": 22,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 139.455,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:50.005Z",
+                "elapsedMs": 584
+              },
+              {
+                "index": 23,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 116.213,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:50.025Z",
+                "elapsedMs": 605
+              },
+              {
+                "index": 24,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 92.97,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:50.055Z",
+                "elapsedMs": 633
+              },
+              {
+                "index": 25,
+                "type": "mouseMoved",
+                "x": 197.28,
+                "y": 69.728,
+                "button": "left",
+                "buttons": 1,
+                "clickCount": 0,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:50.087Z",
+                "elapsedMs": 660
+              },
+              {
+                "index": 26,
+                "type": "mouseReleased",
+                "x": 197.28,
+                "y": 69.728,
+                "button": "left",
+                "buttons": 0,
+                "clickCount": 1,
+                "modifiers": 0,
+                "sentAt": "2026-11-04T09:11:50.103Z",
+                "elapsedMs": 676
+              }
+            ],
+            "settleMs": 2000,
+            "startedAt": "2026-11-04T09:11:49.429Z",
+            "completedAt": "2026-11-04T09:11:52.117Z",
+            "durationMs": 2688
+          }
+        ],
+        "zoomIn": [
+          {
+            "kind": "wheel",
+            "method": "cdp_trusted_input",
+            "domain": "Input",
+            "x": 493,
+            "y": 348.5,
+            "deltaX": 0,
+            "deltaY": -120,
+            "settleMs": 2000,
+            "startedAt": "2026-11-04T09:11:52.484Z",
+            "completedAt": "2026-11-04T09:11:54.542Z"
+          },
+          {
+            "kind": "wheel",
+            "method": "cdp_trusted_input",
+            "domain": "Input",
+            "x": 493,
+            "y": 348.5,
+            "deltaX": 0,
+            "deltaY": -120,
+            "settleMs": 2000,
+            "startedAt": "2026-11-04T09:11:54.542Z",
+            "completedAt": "2026-11-04T09:11:56.604Z"
+          },
+          {
+            "kind": "wheel",
+            "method": "cdp_trusted_input",
+            "domain": "Input",
+            "x": 493,
+            "y": 348.5,
+            "deltaX": 0,
+            "deltaY": -120,
+            "settleMs": 2000,
+            "startedAt": "2026-11-04T09:11:56.604Z",
+            "completedAt": "2026-11-04T09:11:58.679Z"
+          }
+        ],
+        "zoomOut": [
+          {
+            "kind": "wheel",
+            "method": "cdp_trusted_input",
+            "domain": "Input",
+            "x": 493,
+            "y": 348.5,
+            "deltaX": 0,
+            "deltaY": 120,
+            "settleMs": 2000,
+            "startedAt": "2026-11-04T09:11:59.037Z",
+            "completedAt": "2026-11-04T09:12:01.094Z"
+          },
+          {
+            "kind": "wheel",
+            "method": "cdp_trusted_input",
+            "domain": "Input",
+            "x": 493,
+            "y": 348.5,
+            "deltaX": 0,
+            "deltaY": 120,
+            "settleMs": 2000,
+            "startedAt": "2026-11-04T09:12:01.094Z",
+            "completedAt": "2026-11-04T09:12:03.159Z"
+          },
+          {
+            "kind": "wheel",
+            "method": "cdp_trusted_input",
+            "domain": "Input",
+            "x": 493,
+            "y": 348.5,
+            "deltaX": 0,
+            "deltaY": 120,
+            "settleMs": 2000,
+            "startedAt": "2026-11-04T09:12:03.159Z",
+            "completedAt": "2026-11-04T09:12:05.211Z"
+          }
+        ],
+        "largePan": {
+          "kind": "drag",
+          "method": "cdp_trusted_input",
+          "domain": "Input",
+          "from": {
+            "x": 197.28,
+            "y": 348.638
+          },
+          "to": {
+            "x": 497.28,
+            "y": 348.638
+          },
+          "button": "right",
+          "modifiers": 0,
+          "steps": 24,
+          "eventCount": 27,
+          "events": [
+            {
+              "index": 0,
+              "type": "mouseMoved",
+              "x": 197.28,
+              "y": 348.638,
+              "button": "none",
+              "buttons": 0,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.566Z",
+              "elapsedMs": 3
+            },
+            {
+              "index": 1,
+              "type": "mousePressed",
+              "x": 197.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 1,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.596Z",
+              "elapsedMs": 34
+            },
+            {
+              "index": 2,
+              "type": "mouseMoved",
+              "x": 209.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.631Z",
+              "elapsedMs": 72
+            },
+            {
+              "index": 3,
+              "type": "mouseMoved",
+              "x": 222.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.672Z",
+              "elapsedMs": 114
+            },
+            {
+              "index": 4,
+              "type": "mouseMoved",
+              "x": 234.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.692Z",
+              "elapsedMs": 135
+            },
+            {
+              "index": 5,
+              "type": "mouseMoved",
+              "x": 247.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.723Z",
+              "elapsedMs": 162
+            },
+            {
+              "index": 6,
+              "type": "mouseMoved",
+              "x": 259.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.755Z",
+              "elapsedMs": 197
+            },
+            {
+              "index": 7,
+              "type": "mouseMoved",
+              "x": 272.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.791Z",
+              "elapsedMs": 232
+            },
+            {
+              "index": 8,
+              "type": "mouseMoved",
+              "x": 284.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.817Z",
+              "elapsedMs": 260
+            },
+            {
+              "index": 9,
+              "type": "mouseMoved",
+              "x": 297.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.849Z",
+              "elapsedMs": 288
+            },
+            {
+              "index": 10,
+              "type": "mouseMoved",
+              "x": 309.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.882Z",
+              "elapsedMs": 323
+            },
+            {
+              "index": 11,
+              "type": "mouseMoved",
+              "x": 322.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.923Z",
+              "elapsedMs": 364
+            },
+            {
+              "index": 12,
+              "type": "mouseMoved",
+              "x": 334.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:05.956Z",
+              "elapsedMs": 399
+            },
+            {
+              "index": 13,
+              "type": "mouseMoved",
+              "x": 347.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.000Z",
+              "elapsedMs": 440
+            },
+            {
+              "index": 14,
+              "type": "mouseMoved",
+              "x": 359.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.033Z",
+              "elapsedMs": 475
+            },
+            {
+              "index": 15,
+              "type": "mouseMoved",
+              "x": 372.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.064Z",
+              "elapsedMs": 502
+            },
+            {
+              "index": 16,
+              "type": "mouseMoved",
+              "x": 384.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.092Z",
+              "elapsedMs": 530
+            },
+            {
+              "index": 17,
+              "type": "mouseMoved",
+              "x": 397.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.109Z",
+              "elapsedMs": 552
+            },
+            {
+              "index": 18,
+              "type": "mouseMoved",
+              "x": 409.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.144Z",
+              "elapsedMs": 586
+            },
+            {
+              "index": 19,
+              "type": "mouseMoved",
+              "x": 422.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.174Z",
+              "elapsedMs": 614
+            },
+            {
+              "index": 20,
+              "type": "mouseMoved",
+              "x": 434.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.192Z",
+              "elapsedMs": 635
+            },
+            {
+              "index": 21,
+              "type": "mouseMoved",
+              "x": 447.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.228Z",
+              "elapsedMs": 670
+            },
+            {
+              "index": 22,
+              "type": "mouseMoved",
+              "x": 459.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.248Z",
+              "elapsedMs": 691
+            },
+            {
+              "index": 23,
+              "type": "mouseMoved",
+              "x": 472.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.276Z",
+              "elapsedMs": 718
+            },
+            {
+              "index": 24,
+              "type": "mouseMoved",
+              "x": 484.78,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.313Z",
+              "elapsedMs": 752
+            },
+            {
+              "index": 25,
+              "type": "mouseMoved",
+              "x": 497.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 2,
+              "clickCount": 0,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.345Z",
+              "elapsedMs": 788
+            },
+            {
+              "index": 26,
+              "type": "mouseReleased",
+              "x": 497.28,
+              "y": 348.638,
+              "button": "right",
+              "buttons": 0,
+              "clickCount": 1,
+              "modifiers": 0,
+              "sentAt": "2026-11-04T09:12:06.376Z",
+              "elapsedMs": 812
+            }
+          ],
+          "settleMs": 2000,
+          "startedAt": "2026-11-04T09:12:05.566Z",
+          "completedAt": "2026-11-04T09:12:08.386Z",
+          "durationMs": 2820
+        }
+      },
+      "settleMs": 2000,
+      "timestamp": "2026-11-04T09:12:08.557Z",
+      "id": "S-11",
+      "scenarioResult": "PASS",
+      "consoleErrors": [],
+      "screenshot": {
+        "name": "sp-06_edge_cases.png",
+        "officialName": "sp-06_edge_cases.png",
+        "bytes": 93205,
+        "sha256": "f0006b23cd45d0ba3a3ec4952a32bea06519c3a21ecff53ded79116d18f81807"
+      }
+    },
+    {
+      "gesture": "reset-input-map-then-plain-left-drag",
+      "inputMapState": "reset",
+      "inputMapBefore": [
+        {
+          "source": "pointer",
+          "button": 0,
+          "modifiers": {
+            "ctrl": true
+          },
+          "interaction": "pan",
+          "key": null
+        },
+        {
+          "source": "pointer",
+          "button": 0,
+          "modifiers": null,
+          "interaction": "rotate",
+          "key": null
+        },
+        {
+          "source": "pointer",
+          "button": 2,
+          "modifiers": null,
+          "interaction": "pan",
+          "key": null
+        },
+        {
+          "source": "wheel",
+          "modifiers": null,
+          "interaction": "zoom",
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "modifiers": null,
+          "interaction": "zoom",
+          "key": [
+            187,
+            107,
+            189,
+            109
+          ]
+        },
+        {
+          "source": "keyboard",
+          "modifiers": {
+            "ctrl": true
+          },
+          "interaction": "pan",
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "modifiers": {
+            "alt": true
+          },
+          "interaction": "zoom",
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "modifiers": null,
+          "interaction": "rotate",
+          "key": null
+        }
+      ],
+      "inputMapAfter": [
+        {
+          "source": "pointer",
+          "button": 0,
+          "modifiers": {
+            "ctrl": true
+          },
+          "interaction": "pan",
+          "key": null
+        },
+        {
+          "source": "pointer",
+          "button": 0,
+          "modifiers": null,
+          "interaction": "rotate",
+          "key": null
+        },
+        {
+          "source": "pointer",
+          "button": 2,
+          "modifiers": null,
+          "interaction": "pan",
+          "key": null
+        },
+        {
+          "source": "wheel",
+          "modifiers": null,
+          "interaction": "zoom",
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "modifiers": null,
+          "interaction": "zoom",
+          "key": [
+            187,
+            107,
+            189,
+            109
+          ]
+        },
+        {
+          "source": "keyboard",
+          "modifiers": {
+            "ctrl": true
+          },
+          "interaction": "pan",
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "modifiers": {
+            "alt": true
+          },
+          "interaction": "zoom",
+          "key": null
+        },
+        {
+          "source": "keyboard",
+          "modifiers": null,
+          "interaction": "rotate",
+          "key": null
+        }
+      ],
+      "before": {
+        "alpha": 0.7853981633974483,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "after": {
+        "alpha": 2.1868720503072776,
+        "beta": 1.0471975511965976,
+        "radius": 8,
+        "target": [
+          0,
+          0.5,
+          0
+        ]
+      },
+      "delta": {
+        "alpha": 1.4014738869098293,
+        "beta": 0,
+        "radius": 0,
+        "target": [
+          0,
+          0,
+          0
+        ]
+      },
+      "pointer": {
+        "kind": "drag",
+        "method": "cdp_trusted_input",
+        "domain": "Input",
+        "from": {
+          "x": 127.28,
+          "y": 348.638
+        },
+        "to": {
+          "x": 267.28,
+          "y": 348.638
+        },
+        "button": "left",
+        "modifiers": 0,
+        "steps": 24,
+        "eventCount": 27,
+        "events": [
+          {
+            "index": 0,
+            "type": "mouseMoved",
+            "x": 127.28,
+            "y": 348.638,
+            "button": "none",
+            "buttons": 0,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.201Z",
+            "elapsedMs": 8
+          },
+          {
+            "index": 1,
+            "type": "mousePressed",
+            "x": 127.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.229Z",
+            "elapsedMs": 32
+          },
+          {
+            "index": 2,
+            "type": "mouseMoved",
+            "x": 133.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.272Z",
+            "elapsedMs": 77
+          },
+          {
+            "index": 3,
+            "type": "mouseMoved",
+            "x": 138.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.298Z",
+            "elapsedMs": 105
+          },
+          {
+            "index": 4,
+            "type": "mouseMoved",
+            "x": 144.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.330Z",
+            "elapsedMs": 139
+          },
+          {
+            "index": 5,
+            "type": "mouseMoved",
+            "x": 150.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.354Z",
+            "elapsedMs": 160
+          },
+          {
+            "index": 6,
+            "type": "mouseMoved",
+            "x": 156.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.373Z",
+            "elapsedMs": 181
+          },
+          {
+            "index": 7,
+            "type": "mouseMoved",
+            "x": 162.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.397Z",
+            "elapsedMs": 202
+          },
+          {
+            "index": 8,
+            "type": "mouseMoved",
+            "x": 168.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.417Z",
+            "elapsedMs": 222
+          },
+          {
+            "index": 9,
+            "type": "mouseMoved",
+            "x": 173.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.448Z",
+            "elapsedMs": 257
+          },
+          {
+            "index": 10,
+            "type": "mouseMoved",
+            "x": 179.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.477Z",
+            "elapsedMs": 285
+          },
+          {
+            "index": 11,
+            "type": "mouseMoved",
+            "x": 185.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.505Z",
+            "elapsedMs": 312
+          },
+          {
+            "index": 12,
+            "type": "mouseMoved",
+            "x": 191.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.531Z",
+            "elapsedMs": 333
+          },
+          {
+            "index": 13,
+            "type": "mouseMoved",
+            "x": 197.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.547Z",
+            "elapsedMs": 354
+          },
+          {
+            "index": 14,
+            "type": "mouseMoved",
+            "x": 203.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.569Z",
+            "elapsedMs": 374
+          },
+          {
+            "index": 15,
+            "type": "mouseMoved",
+            "x": 208.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.600Z",
+            "elapsedMs": 402
+          },
+          {
+            "index": 16,
+            "type": "mouseMoved",
+            "x": 214.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.616Z",
+            "elapsedMs": 423
+          },
+          {
+            "index": 17,
+            "type": "mouseMoved",
+            "x": 220.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.637Z",
+            "elapsedMs": 445
+          },
+          {
+            "index": 18,
+            "type": "mouseMoved",
+            "x": 226.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.673Z",
+            "elapsedMs": 479
+          },
+          {
+            "index": 19,
+            "type": "mouseMoved",
+            "x": 232.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.692Z",
+            "elapsedMs": 500
+          },
+          {
+            "index": 20,
+            "type": "mouseMoved",
+            "x": 238.113,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.727Z",
+            "elapsedMs": 535
+          },
+          {
+            "index": 21,
+            "type": "mouseMoved",
+            "x": 243.947,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.763Z",
+            "elapsedMs": 569
+          },
+          {
+            "index": 22,
+            "type": "mouseMoved",
+            "x": 249.78,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.783Z",
+            "elapsedMs": 590
+          },
+          {
+            "index": 23,
+            "type": "mouseMoved",
+            "x": 255.613,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.808Z",
+            "elapsedMs": 611
+          },
+          {
+            "index": 24,
+            "type": "mouseMoved",
+            "x": 261.447,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.832Z",
+            "elapsedMs": 639
+          },
+          {
+            "index": 25,
+            "type": "mouseMoved",
+            "x": 267.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 1,
+            "clickCount": 0,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.866Z",
+            "elapsedMs": 673
+          },
+          {
+            "index": 26,
+            "type": "mouseReleased",
+            "x": 267.28,
+            "y": 348.638,
+            "button": "left",
+            "buttons": 0,
+            "clickCount": 1,
+            "modifiers": 0,
+            "sentAt": "2026-11-04T09:12:10.891Z",
+            "elapsedMs": 692
+          }
+        ],
+        "settleMs": 2000,
+        "startedAt": "2026-11-04T09:12:10.201Z",
+        "completedAt": "2026-11-04T09:12:12.908Z",
+        "durationMs": 2707
+      },
+      "settleMs": 2000,
+      "timestamp": "2026-11-04T09:12:12.911Z",
+      "id": "S-12",
+      "scenarioResult": "PASS",
+      "consoleErrors": []
+    }
+  ],
+  "final": {
+    "camera": {
+      "alpha": 2.1868720503072776,
+      "beta": 1.0471975511965976,
+      "radius": 8,
+      "target": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    "inputMap": [
+      {
+        "source": "pointer",
+        "button": 0,
+        "modifiers": {
+          "ctrl": true
+        },
+        "interaction": "pan",
+        "key": null
+      },
+      {
+        "source": "pointer",
+        "button": 0,
+        "modifiers": null,
+        "interaction": "rotate",
+        "key": null
+      },
+      {
+        "source": "pointer",
+        "button": 2,
+        "modifiers": null,
+        "interaction": "pan",
+        "key": null
+      },
+      {
+        "source": "wheel",
+        "modifiers": null,
+        "interaction": "zoom",
+        "key": null
+      },
+      {
+        "source": "keyboard",
+        "modifiers": null,
+        "interaction": "zoom",
+        "key": [
+          187,
+          107,
+          189,
+          109
+        ]
+      },
+      {
+        "source": "keyboard",
+        "modifiers": {
+          "ctrl": true
+        },
+        "interaction": "pan",
+        "key": null
+      },
+      {
+        "source": "keyboard",
+        "modifiers": {
+          "alt": true
+        },
+        "interaction": "zoom",
+        "key": null
+      },
+      {
+        "source": "keyboard",
+        "modifiers": null,
+        "interaction": "rotate",
+        "key": null
+      }
+    ],
+    "inputMapState": "reset",
+    "timestamp": "2026-11-04T09:12:12.913Z"
+  }
+}

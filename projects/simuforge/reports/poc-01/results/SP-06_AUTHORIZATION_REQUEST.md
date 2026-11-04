@@ -8,7 +8,9 @@ HEAD at time of writing: `12a2d00ba9d8c43475689d8e36881706aeee48d7` (subsequent 
 
 ## 1. Purpose
 
-Request Project Owner authorization to execute the official SP-06 camera-navigation suite. No official execution has been performed. **SP-06 remains NO-GO until the decisions in §6 are recorded.**
+Request Project Owner authorization to execute the official SP-06 camera-navigation suite. No official execution has been performed at the time of writing. **SP-06 remains NO-GO until the decisions in §6 are recorded.**
+
+> **Update 2026-11-04:** all three decisions in §6 were recorded by the Project Owner (SP-05 ACCEPTED, Option A, SP-06 AUTHORIZED). Official execution has since been performed; see `SP-06_OFFICIAL_EXECUTION_REPORT.md`.
 
 ## 2. SP-05 gate status (changed since Revision 1)
 
@@ -83,21 +85,21 @@ Please mark one option per line.
 
 ```
 SP-05 formal acceptance
-  [ ] ACCEPTED  (visual verification complete; A-03/A-04 PASS)
+  [x] ACCEPTED  (visual verification complete; A-03/A-04 PASS)
   [ ] DEFERRED
   [ ] WAIVED    (explicit waiver of visual sign-off; specify reason)
 
 Numeric tolerances (decision 3b)
-  [ ] Option A  invariance 1e-9, orbit/pan 0.05, zoom 0.1   (recommended)
+  [x] Option A  invariance 1e-9, orbit/pan 0.05, zoom 0.1   (recommended)
   [ ] Option B  invariance 1e-6, orbit/pan 0.05, zoom 0.1   (minimal change)
   [ ] Option C  custom: invariance ____, orbit/pan ____, zoom ____
 
 SP-06 official execution
-  [ ] AUTHORIZED
+  [x] AUTHORIZED
   [ ] DEFERRED
   [ ] REJECTED
 
-Owner: ____________________   Date: ____________
+Owner: Project Owner (decision conveyed in-session)   Date: 2026-11-04
 ```
 
 ## 7. What happens after authorization
@@ -128,8 +130,9 @@ Owner: ____________________   Date: ____________
 
 ## 10. Status
 
-- SP-05: **AWAITING PROJECT OWNER ACCEPTANCE** (visual verification complete; 10/10 PASS).
+- SP-05: **ACCEPTED by the Project Owner on 2026-11-04** (visual verification complete; 10/10 PASS).
 - A-03: **PASS (visually verified)**.
 - A-04: **PASS (visually verified)**.
-- SP-06: **NO-GO** (tolerance decision + execution authorization outstanding).
+- Tolerances: **Option A APPROVED** on 2026-11-04 (1e-9 invariance; 0.05 orbit/pan; 0.1 zoom; 2000 ms settle).
+- SP-06: **EXECUTION AUTHORIZED on 2026-11-04.** Execution result is recorded in `SP-06_OFFICIAL_EXECUTION_REPORT.md`.
 - Main application: not modified.
