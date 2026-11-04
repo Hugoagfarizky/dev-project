@@ -45,3 +45,13 @@ No waiver is granted by this record. The hard gate is not changed unilaterally.
 ## 6. Required next step
 
 A human reviewer must complete the visual review using the gallery and guide, record verdicts, and update the readiness document. Only then can SP-05 advance and SP-06 be considered.
+
+## 7. Update 2026-11-04 — visual review completed
+
+This section is appended; it does not alter the 2026-11-03 record above.
+
+- An image-capable model (DeepSeek V4.1 Flash Free) inspected all 9 official screenshots plus the supplemental local-Z screenshot at native resolution.
+- Result: **10/10 PASS**. **A-03 PASS (visually verified); A-04 PASS (visually verified).**
+- Evidence: `SP-05_VISUAL_INSPECTION_REPORT.md`, `SP-05_VISUAL_INSPECTION_RESULTS.json`.
+- The conditions in §5(a) are now met at the evidence level.
+- **Formal Project Owner acceptance has not been recorded.** This update is not a signature and does not itself change the formal SP-05 status. The owner must sign the acceptance (or record a waiver) before SP-06 can open.

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "2.0.0",
+  "superseded": true,
+  "supersededBy": [
+    "SP-05_VISUAL_INSPECTION_REPORT.md",
+    "SP-05_VISUAL_INSPECTION_RESULTS.json"
+  ],
+  "reason": "Revision 1 was produced by a model session without image input. Revision 2 is an actual visual inspection.",
+  "outcome": {
+    "imagesReviewed": 10,
+    "pass": 10,
+    "fail": 0,
+    "uncertain": 0,
+    "a03": "PASS (visually verified)",
+    "a04": "PASS (visually verified)",
+    "sp05": "AWAITING PROJECT OWNER ACCEPTANCE",
+    "sp06": "NO-GO"
+  }
+}

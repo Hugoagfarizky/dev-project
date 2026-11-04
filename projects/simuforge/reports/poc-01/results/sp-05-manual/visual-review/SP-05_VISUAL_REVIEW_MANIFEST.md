@@ -7,7 +7,7 @@ Evidence inventory for human visual review of SP-05. The original screenshots ar
 - Contact sheet: `projects/simuforge/reports/poc-01/results/sp-05-manual/visual-review/sp-05_visual_review_contact_sheet.png`
 - Full-suite run: `2026-11-03T09-16-00-842Z-25efe7`
 - Supplemental local Z run: `targeted-localz-2026-11-03T09-26-28-166Z-914f38`
-- Visual status: **not reviewed, not verified.** This manifest prepares the review; it does not perform it.
+- Visual status (updated 2026-11-04): **reviewed — 10/10 PASS. A-03 and A-04 visually verified.** See `SP-05_VISUAL_INSPECTION_REPORT.md` and `SP-05_VISUAL_INSPECTION_RESULTS.json`. Formal Project Owner acceptance is still pending; this manifest remains the inventory and hash reference.
 
 ## 1. Official review set
 

@@ -1,113 +1,129 @@
 {
-  "generatedAt": "2026-11-03T00:00:00.000Z",
+  "schemaVersion": "2.0.0",
+  "generatedAt": "2026-11-04T00:00:00.000Z",
+  "revision": 2,
+  "supersedes": "Revision 1 (NOT REVIEWED, model had no image input)",
   "reviewer": {
-    "model": "Beam Free",
+    "model": "DeepSeek V4.1 Flash Free",
     "provider": "opencode",
-    "visualCapability": false,
-    "note": "Model does not support image input. No image was inspected. No visual verdict assigned."
+    "visualCapability": true,
+    "capabilityTest": "PNG opened with the read tool and described from rendered content before any sidecar was consulted.",
+    "method": "Native-resolution inspection of each PNG plus 3x nearest-neighbour crops of the viewport for gizmo-axis detail. No OCR. On-screen Inspector text read directly."
   },
-  "commit": "7788cef3e1dd4a624e8b06a597c5797f88bb4962",
+  "commit": "12a2d00ba9d8c43475689d8e36881706aeee48d7",
+  "branch": "main",
+  "evidenceIntegrity": {
+    "hashesChecked": 10,
+    "hashesMatched": 10,
+    "hashesMismatched": 0,
+    "screenshotsModified": false,
+    "harnessSha256": "0a05cda7c8407c747466fff21137820e551945de7b5e74c89a3d695807a1d222"
+  },
   "images": [
     {
       "screenshot": "sp-05_translate_x.png",
       "testId": "T-01",
       "sha256": "b8cca8eedd7a38df5d079d2ce610ecd2688397aa5a99c924f48bb378ef6cd54c",
-      "verdict": "NOT REVIEWED",
-      "observedVisualEvidence": "None (image not readable by model)",
+      "verdict": "PASS",
+      "observedVisualEvidence": "Translate mode. Cube rotated ~40.88 deg about Y (Quat Y 0.349237, W 0.937034). Position X 0.902087, Y 0.5, Z 0. Gizmo axes green-up, red-lower-right, blue-lower-left - identical to the unrotated translate baseline in sp-05_mode_switch.png, so the gizmo does not inherit the object rotation. Cube displaced along +X. No clipping or rendering artifact.",
       "acceptanceCriteria": "A-03",
-      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+      "reviewerNotes": "World-oriented position gizmo on a rotated object; world-X translation."
     },
     {
       "screenshot": "sp-05_translate_y.png",
       "testId": "T-01",
       "sha256": "bd74c1272ffdf7f56b932b12a77ed1bb316510a6418e57901be8f9fa78759eba",
-      "verdict": "NOT REVIEWED",
-      "observedVisualEvidence": "None (image not readable by model)",
+      "verdict": "PASS",
+      "observedVisualEvidence": "Position X unchanged at 0.902087, Y 1.317648, Z 0. Cube visibly higher in the viewport with unchanged orientation. Gizmo remains green-up, red-lower-right, blue-lower-left. No artifact.",
       "acceptanceCriteria": "A-03",
-      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+      "reviewerNotes": "Motion confined to world +Y; world-oriented axes retained."
     },
     {
       "screenshot": "sp-05_translate_z.png",
       "testId": "T-01",
       "sha256": "6c46052a6f591104a0de05aae4107fd60d1692e346863d4ae43a42bf916b293d",
-      "verdict": "NOT REVIEWED",
-      "observedVisualEvidence": "None (image not readable by model)",
+      "verdict": "PASS",
+      "observedVisualEvidence": "Position X 0.902087, Y 1.317648, Z 0.858875. Cube displaced with the perspective shift expected for world +Z; rotation and scale rows unchanged. Gizmo remains green-up, red-lower-right, blue-lower-left. No artifact.",
       "acceptanceCriteria": "A-03",
-      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+      "reviewerNotes": "Motion confined to world +Z; world-oriented axes retained."
     },
     {
       "screenshot": "sp-05_rotate_world_x.png",
       "testId": "T-02",
       "sha256": "ef5b636f27899ed389c1f597af1260d4efc154dedaff1acb3fd3cdf8db712dcb",
-      "verdict": "NOT REVIEWED",
-      "observedVisualEvidence": "None (image not readable by model)",
+      "verdict": "PASS",
+      "observedVisualEvidence": "Rotate mode. Position (0, 0.5, 0); compound rotation Euler X 0.552073, Y 0.876794, Z 0.562393; quaternion VALID. Rotation rings centered on the cube: green ring is a horizontally elongated ellipse (world horizontal plane); red and blue rings are tilted ellipses. Cube shows a compound orientation. No ring distortion, gap, or clipping.",
       "acceptanceCriteria": "A-03",
-      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+      "reviewerNotes": "Ring set is world-aligned and does not inherit the object's compound rotation. Drag path itself is not visible in a still frame; verdict rests on ring orientation plus post-state Inspector."
     },
     {
       "screenshot": "sp-05_scale_unrotated.png",
       "testId": "T-03",
       "sha256": "0204b96273fc38e02f8088755368a35fd723de945b8c4b074f0952fbfcc1b853",
-      "verdict": "NOT REVIEWED",
-      "observedVisualEvidence": "None (image not readable by model)",
+      "verdict": "PASS",
+      "observedVisualEvidence": "Scale mode, identity rotation, Scale X 1.214723, Y 1, Z 1. Scale gizmo coincides with world axes (green-up, red-lower-right, blue-lower-left). Cube silhouette slightly elongated along the red axis. No artifact.",
       "acceptanceCriteria": "A-04",
-      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+      "reviewerNotes": "Unrotated baseline: local equals world, as expected."
     },
     {
       "screenshot": "sp-05_scale_rotated_45.png",
       "testId": "T-04",
       "sha256": "8c6508e7be682b1bc9b4ac9f63e399ec7717c230441188cf98f7382394b9f134",
-      "verdict": "NOT REVIEWED",
-      "observedVisualEvidence": "None (image not readable by model)",
+      "verdict": "PASS",
+      "observedVisualEvidence": "Rotation ~40.88 deg about Y (Quat Y 0.349237, W 0.937034); Scale X 1.203411, Y 1, Z 1. Scale gizmo visibly rotates with the cube: red points almost horizontally right, blue almost straight down, green up. This differs clearly from the T-03 world baseline. Cube stretched along local X; no distortion of other axes.",
       "acceptanceCriteria": "A-04",
-      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+      "reviewerNotes": "Direct visual proof of local-oriented scaling on a rotated entity."
     },
     {
       "screenshot": "sp-05_scale_rotated_90.png",
       "testId": "T-04",
       "sha256": "9acf4d05b3d1162062409ab4578dc3ae4008c29deb45e1dd2e8c715f17fcaf3b",
-      "verdict": "NOT REVIEWED",
-      "observedVisualEvidence": "None (image not readable by model)",
+      "verdict": "PASS",
+      "observedVisualEvidence": "Rotation ~87.42 deg about Y (Quat Y 0.691189, W 0.722674; Euler Y 1.526265); Scale X 1.203411, Y 1.134295, Z 1. Gizmo red points upper-right, blue lower-right, green up - the expected screen swap of local axes near 90 deg. Coherent cube silhouette, no shear, inversion, collapse, or clipping.",
       "acceptanceCriteria": "A-04",
-      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+      "reviewerNotes": "Local-oriented behaviour remains consistent at a large rotation. Angle is ~87.42 deg, not exactly 90 deg; procedure allows approximately 90 deg."
     },
     {
       "screenshot": "sp-05_mode_switch.png",
       "testId": "T-05",
       "sha256": "02a08b060d12f276f4696944748ecd910fe34c16a634440ba820873d0d5d0008",
-      "verdict": "NOT REVIEWED",
-      "observedVisualEvidence": "None (image not readable by model)",
-      "acceptanceCriteria": "Mode-switch stability",
-      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+      "verdict": "PASS",
+      "observedVisualEvidence": "Status line reads 'T-05 comparison: STABLE'. Translate mode, identity transform (Position 0/0.5/0, identity quaternion, Scale 1/1/1). Quaternion and scale validation both VALID. Clean unrotated cube.",
+      "acceptanceCriteria": "T-05 mode-switch stability (supporting)",
+      "reviewerNotes": "Object state unchanged across mode switches."
     },
     {
       "screenshot": "sp-05_transform_integrity.png",
       "testId": "T-06",
       "sha256": "3a33572c99dcd8ca9a0707249e4f4fd8e42a4e0d6d7e9742d8f5378bb9e813af",
-      "verdict": "NOT REVIEWED",
-      "observedVisualEvidence": "None (image not readable by model)",
-      "acceptanceCriteria": "Transform integrity",
-      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+      "verdict": "PASS",
+      "observedVisualEvidence": "Status 'State captured.'. Scale mode; Position X 0.713283, Y 0.5, Z 0; rotation ~40.88 deg Y; Scale X 1.154594, Y 1, Z 1; quaternion VALID, scale VALID. Single coherent rotated box, straight edges, no shear, inversion, collapse, gap, or clipping.",
+      "acceptanceCriteria": "T-06 transform integrity (supporting)",
+      "reviewerNotes": "Final state is a valid non-uniformly scaled, rotated rigid body."
     },
     {
       "screenshot": "sp-05_scale_rotated_local_z.png",
       "testId": "T-04-Z (supplemental)",
       "sha256": "00077f6774d59619602521cc5eaf146e65e18b12d65dabd08ed76386987f8b56",
-      "verdict": "NOT REVIEWED",
-      "observedVisualEvidence": "None (image not readable by model)",
+      "verdict": "PASS",
+      "observedVisualEvidence": "Rotation ~40.88 deg Y; Scale X 1, Y 1, Z 1.304800. Local-oriented gizmo (red horizontal-right, blue straight-down, green up). Cube visibly elongated along the screen-vertical projection of local +Z, horizontal extent essentially unchanged.",
       "acceptanceCriteria": "A-04",
-      "reviewerNotes": "Model lacks image input capability. No visual inspection performed."
+      "reviewerNotes": "Supplemental targeted run; clearly labelled, does not replace T-01..T-06 artifacts."
     }
   ],
   "summary": {
     "totalImages": 10,
-    "reviewed": 0,
-    "notReviewed": 10,
-    "pass": 0,
+    "officialImages": 9,
+    "supplementalImages": 1,
+    "reviewed": 10,
+    "notReviewed": 0,
+    "pass": 10,
     "fail": 0,
     "uncertain": 0,
-    "a03Status": "unverified",
-    "a04Status": "unverified",
-    "sp05Status": "BLOCKED"
+    "a03Status": "PASS (visually verified)",
+    "a04Status": "PASS (visually verified)",
+    "sp05VisualStatus": "COMPLETE - recommended for formal owner acceptance",
+    "sp05FormalStatus": "AWAITING PROJECT OWNER ACCEPTANCE",
+    "sp06Status": "NO-GO (owner tolerance approval and execution authorization still required)"
   }
 }
