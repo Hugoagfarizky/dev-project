@@ -1,8 +1,8 @@
 # POC-01 Current Readiness Assessment
 
-Date: 2026-11-04 (Revision 4)
-Scope: Consolidated readiness after the SP-05 acceptance, the owner-approved Option A tolerances, the official SP-06 execution, the owner-decided sign amendment, and the passing official re-run.
-Supersedes Revision 3 (2026-11-04, before the sign amendment).
+Date: 2026-11-04 (Revision 5)
+Scope: Consolidated readiness after the SP-05 acceptance, the owner-approved Option A tolerances, the official SP-06 execution and amendment, and the official SP-07 execution.
+Supersedes Revision 4 (2026-11-04, before SP-07 execution).
 
 ## 1. SP-05 visual sign-off
 
@@ -35,7 +35,20 @@ The original procedure stated that **downward drag must increase `beta`**. Babyl
 - The diagnostic run (`results/sp-06-diagnostic/sp06-babylon-sign-2026-11-04/`) is historical and is not used as official evidence.
 - The amendment and the passing re-run are recorded in `SP-06_OFFICIAL_EXECUTION_REPORT.md` §11–§13.
 
-## 4. Tolerances (owner-approved)
+## 4. SP-07 execution
+
+- **Official runner (D12-style, dedicated):** implemented in `harness/runner/sp07/official.js` and `config.js` (runner 1.0.0, config `sp07-quaternion-config-1`).
+- **Official execution:** `sp07-2026-11-04T10-04-53-269Z-024c65`, completed 2026-11-04T10:04:57.733Z.
+- **Result:** **PASS — 87/87 checks.**
+- **Scenarios:** Q-01 (A-07) 5/5, Q-02 (A-08) 4/4, Q-03 21/21, Q-04 14/14, Q-05 8/8 (supporting), Q-06 35/35 (supporting).
+- **Acceptance:** **A-07 PASS; A-08 PASS.**
+- **Key measurements:** q = (0, 0.7071067811865475, 0, 0.7071067811865476); \|q\| = 1; q applied to +X = (2.22e-16, 0, -1); toEulerAngles = (0, pi/2, 0); round-trip max delta 1.11e-16 (non-singular) and 7.04e-6 (gimbal, within documented 1e-4 tolerance).
+- **Screenshots:** 1 supporting screenshot captured; SHA-256 verified.
+- **Console:** 0 errors, 0 warnings, 0 exceptions.
+- **Integrity:** VERIFIED (3 files, 0 mismatches; manifest SHA-256 `ce23bae143ff58104f6771608da1d5a631591ebd99f64e480743f8748397476e`).
+- **Full report:** `SP-07_OFFICIAL_EXECUTION_REPORT.md`.
+
+## 5. Tolerances (owner-approved / documented)
 
 | Quantity | Value | Status | Use |
 | --- | --- | --- | --- |
@@ -53,7 +66,7 @@ The invariance bound and the gesture floors remain semantically separate. Full b
 | --- | --- |
 | SP-05 accepted (visual + automated evidence) | **MET** — accepted 2026-11-04 |
 | SP-06 camera navigation | **MET** — official re-run PASS 159/159 after the owner-decided sign amendment |
-| SP-07 quaternion / transform conversion | **NOT EXECUTED** |
+| SP-07 quaternion / transform conversion | **MET** — official run PASS 87/87 (A-07, A-08 PASS) |
 | SP-08 final spike decision | **NOT EXECUTED** |
 | No unresolved console/render defect | MET for executed scopes (0 errors) |
 | POC-01 closure | **NOT COMPLETE** |
@@ -66,9 +79,11 @@ The invariance bound and the gesture floors remain semantically separate. Full b
 - SP-06: **PASSED** — 159/159 official re-run under the owner-amended A-05-P2 sign convention; A-05 and A-06 complete.
 - A-05: **PASS (all sub-criteria)**.
 - A-06: **PASS (all sub-criteria; camera non-capture scope)**.
-- SP-07: **not executed**.
+- SP-07: **PASSED** — 87/87 official run; A-07 and A-08 PASS.
+- A-07: **PASS**.
+- A-08: **PASS**.
 - SP-08: **not executed**.
-- POC-01: **not closed.** Remaining blockers: the unexecuted SP-07 and SP-08.
+- POC-01: **not closed.** Remaining blocker: the unexecuted SP-08.
 - Main application: not modified.
 
 ## 7. History
@@ -76,3 +91,4 @@ The invariance bound and the gesture floors remain semantically separate. Full b
 - Revision 2 (2026-11-04): SP-05 visual verification complete; SP-06 NO-GO pending tolerance and authorization decisions; official runner D12 not implemented.
 - Revision 3 (2026-11-04): owner acceptance and Option A recorded; D12 runner implemented; official S-01..S-12 executed once; one sign-convention criterion conflict identified. POC-01 remains open.
 - Revision 4 (2026-11-04): owner amended A-05-P2/S-03 to the Babylon beta convention (quantitative inversion check retained); official re-run PASS 159/159; A-05 and A-06 fully PASS. POC-01 remains open only on SP-07/SP-08.
+- Revision 5 (2026-11-04): SP-07 official run PASS 87/87; A-07 and A-08 PASS; supporting TRS composition and quaternion validity PASS. POC-01 remains open only on SP-08.

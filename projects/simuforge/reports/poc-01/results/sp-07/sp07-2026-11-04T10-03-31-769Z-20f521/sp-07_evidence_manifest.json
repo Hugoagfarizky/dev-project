@@ -1,0 +1,22 @@
+{
+  "runId": "sp07-2026-11-04T10-03-31-769Z-20f521",
+  "generatedAt": "2026-11-04T10:03:35.227Z",
+  "directory": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\results\\sp-07\\sp07-2026-11-04T10-03-31-769Z-20f521",
+  "files": [
+    {
+      "name": "sp-07_numeric_log.json",
+      "bytes": 16106,
+      "sha256": "86618b8f67398ba5e78166c9e02340d5629786f6f2754a3c039ad8981963fb0b"
+    },
+    {
+      "name": "sp-07_quaternion_rotation.png",
+      "bytes": 68409,
+      "sha256": "132e7be2106f3a2ec75a9e46bc236abf2aef2ddba07ac0b623bce63631f7528e"
+    },
+    {
+      "name": "sp-07_results.json",
+      "bytes": 34592,
+      "sha256": "10566ad07e5f672c14710dab41409b9067b5ad0a9f4d25c7783fd9db94c899df"
+    }
+  ]
+}

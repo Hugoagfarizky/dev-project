@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SimuForge POC-01 - SP-07 Quaternion / Transform Harness</title>
+  <style>
+    :root { --bg:#111; --panel:#1a1a1a; --fg:#e6e6e6; --accent:#4da3ff; --ok:#3dd68c; --warn:#ffb347; }
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; height:100%; background:var(--bg); color:var(--fg); font-family: system-ui, Segoe UI, sans-serif; }
+    body { display:grid; grid-template-columns: 1fr 420px; grid-template-rows: 1fr auto; height:100vh; }
+    #view { position:relative; background:#0b0b0d; }
+    canvas { width:100%; height:100%; display:block; }
+    #panel { background:var(--panel); padding:14px; overflow:auto; border-left:1px solid #333; }
+    #instructions { grid-column:1 / -1; background:#0f0f12; padding:10px 14px; border-top:1px solid #333; font-size:12px; }
+    h2 { margin:6px 0 8px; font-size:15px; color:var(--accent); }
+    h3 { margin:12px 0 4px; font-size:13px; }
+    .kv { display:grid; grid-template-columns: 150px 1fr; gap:3px 8px; font-size:12px; font-family:monospace; }
+    .kv span:first-child { color:#aaa; }
+    .status { font-size:12px; padding:7px; background:#111; border:1px solid #333; border-radius:4px; margin:8px 0; }
+    .ok { color:var(--ok); }
+    .warn { color:var(--warn); }
+    .legend { font-size:12px; line-height:1.6; }
+    .swatch { display:inline-block; width:10px; height:10px; margin-right:6px; border-radius:2px; }
+  </style>
+</head>
+<body>
+  <div id="view"><canvas id="renderCanvas"></canvas></div>
+  <div id="panel">
+    <h2>SP-07 Quaternion / Transform</h2>
+    <div class="status" id="status">Initializing...</div>
+
+    <h3>Environment</h3>
+    <div class="kv">
+      <span>Babylon.js</span><span id="version">-</span>
+      <span>Right-handed</span><span id="rh">-</span>
+      <span>Scene</span><span id="sceneName">-</span>
+    </div>
+
+    <h3>Primary measurement</h3>
+    <div class="kv">
+      <span>q (x,y,z,w)</span><span id="q">-</span>
+      <span>q applied to +X</span><span id="qx">-</span>
+      <span>toEulerAngles()</span><span id="euler">-</span>
+      <span>|q|</span><span id="qlen">-</span>
+    </div>
+
+    <h3>Legend (supporting visual)</h3>
+    <div class="legend">
+      <div><span class="swatch" style="background:#ff5c5c"></span>+X axis (red)</div>
+      <div><span class="swatch" style="background:#3dd68c"></span>+Y axis (green)</div>
+      <div><span class="swatch" style="background:#4da3ff"></span>-Z axis / forward (blue)</div>
+      <div><span class="swatch" style="background:#ffd24d"></span>q applied to +X (yellow; expected to overlap -Z)</div>
+    </div>
+    <p style="font-size:12px;color:#aaa">
+      This page is a measurement harness. The official S-07 runner evaluates the
+      quaternion and transform values through <code>window.__sp07Diagnostics</code>.
+      The page does not decide PASS/FAIL.
+    </p>
+  </div>
+  <div id="instructions">
+    <b>SP-07:</b> right-handed quaternion application, quaternion/Euler conversion,
+    round-trip equivalence, and gimbal-lock behaviour. Numeric evidence is the primary
+    artifact; the rendered scene is supporting visual context only.
+  </div>
+
+  <script>window.__sp07BootstrapErrors=[]; window.addEventListener('error', function(e){ window.__sp07BootstrapErrors.push(String((e && e.message) || (e && e.error) || 'resource error')); });</script>
+  <script src="https://cdn.babylonjs.com/v9.32.1/babylon.js"></script>
+  <script>
+    window.__sp07BootstrapErrors = window.__sp07BootstrapErrors || [];
+    try {
+    (function () {
+      "use strict";
+
+      var statusEl = document.getElementById("status");
+      function setStatus(text, cls) {
+        statusEl.textContent = text;
+        statusEl.className = "status" + (cls ? " " + cls : "");
+      }
+
+      var canvas = document.getElementById("renderCanvas");
+      var engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+      var scene = new BABYLON.Scene(engine);
+      // Right-handed mode must be set before content is created.
+      scene.useRightHandedSystem = true;
+      scene.clearColor = new BABYLON.Color4(0.08, 0.08, 0.1, 1);
+
+      var camera = new BABYLON.ArcRotateCamera("cam", Math.PI / 4, Math.PI / 3, 8, new BABYLON.Vector3(0, 0.5, 0), scene);
+      camera.attachControl(canvas, false);
+
+      var light = new BABYLON.HemisphericLight("ambient", new BABYLON.Vector3(0, 1, 0), scene);
+      light.intensity = 0.9;
+
+      // Editor-only grid (not a world entity).
+      var ground = BABYLON.MeshBuilder.CreateGround("editorGrid", { width: 10, height: 10, subdivisions: 10 }, scene);
+      var gridMat = new BABYLON.StandardMaterial("editorGridMat", scene);
+      gridMat.diffuseColor = new BABYLON.Color3(0.25, 0.25, 0.25);
+      gridMat.emissiveColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+      gridMat.disableLighting = true;
+      ground.material = gridMat;
+      ground.isPickable = false;
+
+      // Pure Babylon math helpers. Every value the runner records is produced
+      // by these functions inside the real engine context.
+      function toArray(q) { return [q.x, q.y, q.z, q.w]; }
+      function fromArray(a) { return new BABYLON.Quaternion(a[0], a[1], a[2], a[3]); }
+      function vecArray(v) { return [v.x, v.y, v.z]; }
+      function vec(a) { return new BABYLON.Vector3(a[0], a[1], a[2]); }
+
+      function quatAxisAngle(axis, angleRad) {
+        return toArray(BABYLON.Quaternion.RotationAxis(vec(axis), angleRad));
+      }
+      function quatYawPitchRoll(yaw, pitch, roll) {
+        return toArray(BABYLON.Quaternion.RotationYawPitchRoll(yaw, pitch, roll));
+      }
+      function quatToEuler(q) {
+        var e = fromArray(q).toEulerAngles();
+        return vecArray(e);
+      }
+      function quatRotateVector(q, v) {
+        // Use the engine's own quaternion->matrix path, which is what a
+        // renderer adapter would use to apply a stored rotation.
+        var m = new BABYLON.Matrix();
+        if (typeof BABYLON.Matrix.FromQuaternionToRef === "function") {
+          BABYLON.Matrix.FromQuaternionToRef(fromArray(q), m);
+        } else {
+          fromArray(q).toRotationMatrix(m);
+        }
+        var out = BABYLON.Vector3.TransformCoordinates(vec(v), m);
+        return vecArray(out);
+      }
+      function quatLength(q) {
+        return Math.hypot(q[0], q[1], q[2], q[3]);
+      }
+      function quatNormalize(q) {
+        var len = quatLength(q);
+        return [q[0] / len, q[1] / len, q[2] / len, q[3] / len];
+      }
+      function quatDot(a, b) {
+        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
+      }
+      // Angle between orientations, insensitive to quaternion sign.
+      function quatAngleDeg(a, b) {
+        var d = Math.abs(quatDot(quatNormalize(a), quatNormalize(b)));
+        d = Math.max(-1, Math.min(1, d));
+        return 2 * Math.acos(d) * 180 / Math.PI;
+      }
+      function quatSignInsensitiveDelta(a, b) {
+        var direct = [a[0] - b[0], a[1] - b[1], a[2] - b[2], a[3] - b[3]];
+        var negated = [a[0] + b[0], a[1] + b[1], a[2] + b[2], a[3] + b[3]];
+        function maxAbs(v) { return Math.max(Math.abs(v[0]), Math.abs(v[1]), Math.abs(v[2]), Math.abs(v[3])); }
+        return Math.min(maxAbs(direct), maxAbs(negated));
+      }
+      function composeTRS(position, rotation, scale, localPoint) {
+        var m = BABYLON.Matrix.Compose(vec(scale), fromArray(rotation), vec(position));
+        var out = BABYLON.Vector3.TransformCoordinates(vec(localPoint), m);
+        return vecArray(out);
+      }
+      function quatToMatrix(q) {
+        var m = new BABYLON.Matrix();
+        if (typeof BABYLON.Matrix.FromQuaternionToRef === "function") {
+          BABYLON.Matrix.FromQuaternionToRef(fromArray(q), m);
+        } else {
+          fromArray(q).toRotationMatrix(m);
+        }
+        return m.m.slice();
+      }
+
+      // Supporting visual scene: axes plus the rotated +X direction.
+      var qPrimary = quatAxisAngle([0, 1, 0], Math.PI / 2);
+      var rotatedX = quatRotateVector(qPrimary, [1, 0, 0]);
+
+      function axisLine(name, to, color) {
+        var line = BABYLON.MeshBuilder.CreateLines(name, {
+          points: [new BABYLON.Vector3(0, 0.02, 0), new BABYLON.Vector3(to[0], to[1], to[2])]
+        }, scene);
+        line.color = color;
+        line.isPickable = false;
+        return line;
+      }
+      axisLine("axisX", [1.6, 0.02, 0], new BABYLON.Color3(1, 0.36, 0.36));
+      axisLine("axisY", [0, 1.6, 0], new BABYLON.Color3(0.24, 0.84, 0.55));
+      axisLine("axisNegZ", [0, 0.02, -1.6], new BABYLON.Color3(0.30, 0.64, 1));
+      var rotatedLine = BABYLON.MeshBuilder.CreateLines("rotatedX", {
+        points: [new BABYLON.Vector3(0, 0.05, 0), new BABYLON.Vector3(rotatedX[0] * 1.6, 0.05, rotatedX[2] * 1.6)]
+      }, scene);
+      rotatedLine.color = new BABYLON.Color3(1, 0.82, 0.30);
+      rotatedLine.isPickable = false;
+
+      var cube = BABYLON.MeshBuilder.CreateBox("testCube", { width: 1, height: 1, depth: 1 }, scene);
+      cube.position = new BABYLON.Vector3(0, 0.5, 0);
+      cube.rotationQuaternion = fromArray(qPrimary);
+      var cubeMat = new BABYLON.StandardMaterial("testCubeMat", scene);
+      cubeMat.diffuseColor = new BABYLON.Color3(0.85, 0.55, 0.2);
+      cubeMat.emissiveColor = new BABYLON.Color3(0.35, 0.22, 0.08);
+      cubeMat.disableLighting = false;
+      cube.material = cubeMat;
+
+      engine.runRenderLoop(function () { scene.render(); });
+      window.addEventListener("resize", function () { engine.resize(); });
+
+      document.getElementById("version").textContent = BABYLON.Engine.Version;
+      document.getElementById("rh").textContent = String(scene.useRightHandedSystem);
+      document.getElementById("sceneName").textContent = scene.getEngine().description || "Babylon scene";
+      document.getElementById("q").textContent = JSON.stringify(qPrimary);
+      document.getElementById("qx").textContent = JSON.stringify(rotatedX);
+      document.getElementById("euler").textContent = JSON.stringify(quatToEuler(qPrimary));
+      document.getElementById("qlen").textContent = quatLength(qPrimary).toFixed(15);
+
+      window.__sp07Diagnostics = {
+        version: "sp07-quaternion-harness-1",
+        note: "Read-only quaternion/transform measurements. The harness does not decide PASS/FAIL.",
+        getEnvironment: function () {
+          return {
+            babylonVersion: BABYLON.Engine.Version,
+            useRightHandedSystem: scene.useRightHandedSystem,
+            engineWebGLVersion: engine.webGLVersion,
+            sceneMeshCount: scene.meshes.length,
+            canvas: (function () {
+              var rect = canvas.getBoundingClientRect();
+              return { cssWidth: rect.width, cssHeight: rect.height, dpr: window.devicePixelRatio || 1 };
+            })()
+          };
+        },
+        quatAxisAngle: quatAxisAngle,
+        quatYawPitchRoll: quatYawPitchRoll,
+        quatToEuler: quatToEuler,
+        quatRotateVector: quatRotateVector,
+        quatLength: quatLength,
+        quatNormalize: quatNormalize,
+        quatDot: quatDot,
+        quatAngleDeg: quatAngleDeg,
+        quatSignInsensitiveDelta: quatSignInsensitiveDelta,
+        composeTRS: composeTRS,
+        quatToMatrix: quatToMatrix
+      };
+
+      setStatus("SP-07 diagnostics ready", "ok");
+      window.__sp07Ready = true;
+    })(); } catch (e) { window.__sp07BootstrapErrors.push('IIFE: ' + ((e && e.stack) ? e.stack : e)); }
+  </script>
+</body>
+</html>

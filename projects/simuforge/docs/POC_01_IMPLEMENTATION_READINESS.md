@@ -4,9 +4,9 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 0.10 — Draft |
+| Version | 0.11 — Draft |
 | Date | 2026-11-04 |
-| Status | Research complete; technical spike in progress (SP-01 to SP-05 executed and accepted; SP-06 passed after the owner-decided sign amendment; SP-07 to SP-08 pending) |
+| Status | Research complete; technical spike in progress (SP-01 to SP-07 executed and accepted; SP-08 pending) |
 | Owner role | Technical Lead, SimuForge |
 | Project | simuforge |
 | Related specification | [POC-01 World Editor](POC_01_WORLD_EDITOR.md) |
@@ -26,6 +26,7 @@
 | 0.8 | 2026-11-03 | Executed the full SP-05 suite through the approved direct-CDP runner. T-01 through T-06 passed 256/256 assertions with 14 fully trusted drags, no retries, no synthetic input, and no console errors; an independent evidence audit passed 750/750 checks. Official evidence is archived under `results/sp-05-manual/evidence/`. SP-05 remains BLOCKED pending human review; A-03 and A-04 remain unverified. |
 | 0.9 | 2026-11-04 | SP-05 visual review completed 10/10 PASS and the Project Owner accepted SP-05 (A-03/A-04 PASS). Option A tolerances approved (1e-9 invariance; 0.05 orbit/pan; 0.1 zoom; 2000 ms settle). Implemented the official S-01..S-12 runner and executed it once: 158/159 checks passed; A-06 fully PASS; A-05-P1/P3/P4/P5/P6 PASS; **A-05-P2 FAIL** because Babylon 9.32.1 decreases `beta` on a downward drag while the written procedure expects an increase. SP-06 is not passed; SP-07/SP-08 remain unexecuted. |
 | 0.10 | 2026-11-04 | The Project Owner amended A-05-P2/S-03 to the Babylon beta convention (downward drag decreases `beta`; quantitative inversion check retained; no waiver). Runner updated to 1.1.0 / `sp06-official-config-2` with the superseded expectation kept only as non-default `legacy` mode. Official re-run `sp06-official-2026-11-04T09-26-01-934Z-374471` passed 159/159; A-05 and A-06 fully PASS. The first failed run remains preserved. SP-07/SP-08 remain unexecuted; POC-01 not closed. |
+| 0.11 | 2026-11-04 | SP-07 officially executed (`sp07-2026-11-04T10-04-53-269Z-024c65`): 87/87 checks PASS. A-07 PASS (q = (0, sin45, 0, cos45) rotates +X to -Z; \|q\| = 1). A-08 PASS (toEulerAngles returns x=pitch, y=yaw, z=roll; round-trip max delta 1.11e-16 for 10 orientations; gimbal lock measured and documented within 1e-4). Supporting TRS composition and quaternion validity PASS. SP-08 remains unexecuted; POC-01 not closed. |
 
 This document is research and planning only. It contains no application code, no installed dependencies, and no test results. Statements about browser or library behavior are separated into documented behavior and assumptions that still require the technical spike.
 
@@ -71,7 +72,7 @@ Supporting rules, recorded in full in the POC specification:
 
 ### 1.2 Readiness verdict
 
-**Conditionally ready for the spike; not ready for full POC implementation.** The spike must confirm right-handed picking, gizmos, camera remapping, and quaternion behavior, plus the hybrid transform policy in practice. SP-01 to SP-05 have been executed and accepted. SP-06 passed on an official re-run after the owner amended one written sign expectation to the Babylon convention; A-05 and A-06 are complete. SP-07 and SP-08 have not been executed. No POC-01 acceptance criterion may be marked PASS without the relevant evidence.
+**Conditionally ready for the spike; not ready for full POC implementation.** The spike must confirm right-handed picking, gizmos, camera remapping, and quaternion behavior, plus the hybrid transform policy in practice. SP-01 to SP-07 have been executed and accepted. SP-06 passed on an official re-run after the owner amended one written sign expectation to the Babylon convention; A-05 and A-06 are complete. SP-07 passed (87/87); A-07 and A-08 are complete. SP-08 has not been executed. No POC-01 acceptance criterion may be marked PASS without the relevant evidence.
 
 ## 2. Q-01 through Q-10 Status
 
@@ -239,8 +240,8 @@ Because POC-01 entities are unparented, Babylon's node-local `position` and `rot
 | A-04 | The local-oriented scale gizmo behaves correctly on rotated entities under the approved policy, including non-uniform scale | **PASS — visually verified 2026-11-04.** T-03/T-04 passed, including the rotated local X scale and the supplemental local Z run; the visual inspection confirmed all screenshots. | SP-05 |
 | A-05 | ArcRotateCamera orbit, pan, and zoom behave correctly in right-handed mode | **PASS — 2026-11-04 official re-run (`sp06-official-2026-11-04T09-26-01-934Z-374471`).** 159/159 checks. Orbit, pan, zoom, axis isolation, radius/target invariance, no-console-error, and S-11 edge cases all pass. A-05-P2 uses the owner-amended Babylon convention: rightward drag increases `alpha`, downward drag decreases `beta`; opposite signs still fail. The first run's conflict and the amendment are recorded in `SP-06_OFFICIAL_EXECUTION_REPORT.md`. | SP-06 |
 | A-06 | The default plain-left-drag camera rotate can be removed cleanly so left click is free for selection | **PASS (POC scope) — 2026-11-04 official run.** S-08 (plain left-drag no orbit), S-09 (left click camera non-capture), S-10 (gizmo hard gate before and after the edit), S-12 (reset restores orbit) all passed. Selection UI remains out of scope per approved A-06-P5. | SP-06 |
-| A-07 | A quaternion authored directly in the right-handed scene rotates +X to -Z for a positive 90° Y rotation | Quaternion math is documented, but handedness interpretation needs an empirical check | SP-07 |
-| A-08 | `quaternion.toEulerAngles()` returns x=pitch, y=yaw, z=roll consistent with YXZ display | Documented convention, but round-trip behavior at gimbal lock needs measurement | SP-07 |
+| A-07 | A quaternion authored directly in the right-handed scene rotates +X to -Z for a positive 90° Y rotation | **PASS — 2026-11-04 official run (`sp07-2026-11-04T10-04-53-269Z-024c65`).** q = (0, sin45, 0, cos45); \|q\| = 1; q applied to +X = (2.22e-16, 0, -1). Matches `RotationYawPitchRoll(pi/2, 0, 0)`. | SP-07 |
+| A-08 | `quaternion.toEulerAngles()` returns x=pitch, y=yaw, z=roll consistent with YXZ display | **PASS — 2026-11-04 official run.** toEulerAngles = (0, pi/2, 0). Round-trip max delta 1.11e-16 across 10 orientations; gimbal lock (pitch near +/-90 deg) measured and documented (orientation within 7.04e-6; Euler pitch +/-pi/2; split non-unique). | SP-07 |
 
 #### World-space scale constraint and approved policy
 
@@ -703,12 +704,14 @@ If a check fails:
 
 **Update 2026-11-04.** The SP-05 visual inspection completed 10/10 PASS and the Project Owner accepted SP-05; A-03 and A-04 are now PASS (visually verified). Option A tolerances were approved (1e-9 invariance; 0.05 orbit/pan; 0.1 zoom; 2000 ms settle). The official S-01..S-12 runner was implemented and executed (`sp06-official-2026-11-04T09-07-32-263Z-96430a`): 158/159 checks passed, all 10 screenshots were captured, the input log has 12 entries, and SHA-256 integrity is verified. S-01, S-02, S-04..S-12 passed, including the S-10 gizmo hard gate (52/52) and the full A-06 set. **S-03 failed only the written A-05-P2 sign check**: Babylon 9.32.1 decreases `beta` on a downward drag, while the written procedure expected an increase. The Project Owner then amended A-05-P2/S-03 to the Babylon convention (quantitative inversion check retained; no waiver). The official re-run (`sp06-official-2026-11-04T09-26-01-934Z-374471`) passed **159/159**, with A-05 and A-06 fully PASS and verified integrity. The first failed run is preserved separately. **SP-06 is passed**; SP-07 and SP-08 remain unexecuted. See `SP-06_OFFICIAL_EXECUTION_REPORT.md`.
 
+**Update 2026-11-04 (SP-07).** SP-07 was executed (`sp07-2026-11-04T10-04-53-269Z-024c65`): 87/87 checks PASS, 0 console errors, integrity VERIFIED. A-07 PASS (q = (0, sin45, 0, cos45) rotates +X to -Z; \|q\| = 1). A-08 PASS (toEulerAngles = (0, pi/2, 0); round-trip max delta 1.11e-16 across 10 orientations; gimbal lock measured and documented within 1e-4). Supporting TRS composition and quaternion validity PASS. **SP-07 is passed**; SP-08 remains unexecuted. See `SP-07_OFFICIAL_EXECUTION_REPORT.md`.
+
 ## 9. Remaining Blockers
 
 | ID | Blocker | Severity | Why it blocks | Resolution | Owner |
 | --- | --- | --- | --- | --- | --- |
 | B-01 | Scale-space transform policy — **resolved** | Resolved (was High) | Previously blocked the transform contract and acceptance test E-04 | Approved: world-space translate, world-space rotate, local-space scale. The hybrid policy is owned by the Editor/Transform Controller layer, and TRS remains the primary representation. This resolves the product decision, not Babylon's technical behavior. | User |
-| B-02 | Right-handed picking, gizmos, and camera behavior are not empirically verified | High | The architecture depends on them; documentation alone is not evidence | Execute SP-01 to SP-08. Picking, gizmos, and camera orbit/pan/zoom have now been executed and passed (SP-06 159/159 after the owner-decided sign amendment); SP-07/SP-08 are still outstanding. | Assistant, reviewed by user |
+| B-02 | Right-handed picking, gizmos, and camera behavior are not empirically verified | High | The architecture depends on them; documentation alone is not evidence | Execute SP-01 to SP-08. Picking, gizmos, camera orbit/pan/zoom, and quaternion/transform conversion have now been executed and passed (SP-06 159/159; SP-07 87/87); SP-08 is still outstanding. | Assistant, reviewed by user |
 | B-03 | TypeScript version for POC-01 | **Resolved — version approved** | Tooling compatibility could force a change | Approved: TypeScript 6.0.3 for POC-01. This is a POC-specific decision, not a permanent product-wide technology commitment. TypeScript 7.0.2 remains a future alternative subject to separate validation. | User |
 | B-04 | Chrome-only browser scope for POC-01 | **Resolved — Chrome-only scope approved** | Cross-browser compatibility is outside POC-01 scope; no Firefox installation or update is required | Google Chrome 156 is the primary and only browser used for POC-01. Firefox is explicitly excluded. No Firefox installation or update is required. Cross-browser compatibility is not validated by this POC. Chrome WebGL 2 support and hardware acceleration must still be verified before relevant rendering tests. The actual Chrome version from the audit (156.0.8078.76) is recorded as environment information, not as a permanent minimum version requirement. | User |
 | B-05 | The 1 MiB import limit is a provisional policy guardrail — **resolved** | Resolved (was Low) | The limit is not a measured result and may change after measurement | Approved as a provisional, configurable POC-01 guardrail; the final product limit remains deferred. Record measured parse and validation times during the POC. | User |
@@ -729,7 +732,7 @@ Audit note for B-04: Chrome 156.0.8078.76 is recorded in §6.1 as the captured e
 | ID | Condition | Status | Must be met before |
 | --- | --- | --- | --- |
 | C-01 | Approve local-space scale handles and amend the POC specification | **Met** — decision approved and POC specification amended to the hybrid policy | Implementing the transform system |
-| C-02 | Execute the spike and record results | Partial - SP-01..SP-06 executed and passed (SP-06 159/159 after the owner-decided sign amendment); SP-07/SP-08 outstanding | Implementing the full workspace |
+| C-02 | Execute the spike and record results | Partial - SP-01..SP-07 executed and passed (SP-06 159/159; SP-07 87/87); SP-08 outstanding | Implementing the full workspace |
 | C-03 | Confirm TypeScript 6.0.3 and the version combination | **Met** — TypeScript 6.0.3 approved for POC-01; React 19.3.1, Vite 8.3.5, Babylon 9.32.1 retained | Creating the project scaffold |
 | C-04 | Cross-browser testing | Not applicable — Chrome-only scope approved; cross-browser compatibility is outside POC-01 | Not required for POC-01 |
 | C-05 | Approve the 1 MiB provisional import limit and boundary tests | **Met** — approved as a provisional, configurable guardrail; below/at/above tests are defined as FS-02 to FS-04 | Implementing import |
@@ -749,12 +752,12 @@ Audit note for B-04: Chrome 156.0.8078.76 is recorded in §6.1 as the captured e
 
 ### 10.4 What is not ready
 
-- Empirical proof of right-handed picking, world translate/rotate gizmos, local scale on a rotated entity, and camera orbit/pan/zoom exists for SP-02..SP-06. All A-05 and A-06 criteria passed on the SP-06 official re-run (159/159) after the owner amended the A-05-P2 beta sign to the Babylon convention; SP-07 quaternion/transform conversion is not executed.
+- Empirical proof of right-handed picking, world translate/rotate gizmos, local scale on a rotated entity, camera orbit/pan/zoom, and quaternion/transform conversion exists for SP-02..SP-07. All A-05, A-06, A-07, and A-08 criteria passed (SP-06 159/159; SP-07 87/87). SP-08 remains unexecuted.
 - The approved hybrid transform policy is verified for the executed SP-05 scope; SP-07 quaternion/transform conversion is not executed.
 - Cross-browser compatibility is outside POC-01 scope; Google Chrome is the only supported and tested browser.
 - Evidence ownership is approved; execution proceeds sequentially with review before each spike.
 - No scaffold, dependency lockfile, or license inventory.
-- Automated evidence exists for SP-01..SP-06 (`results/`), with integrity manifests; the SP-06 official re-run is PASS 159/159.
+- Automated evidence exists for SP-01..SP-07 (`results/`), with integrity manifests; the SP-06 official re-run is PASS 159/159 and the SP-07 official run is PASS 87/87.
 - No performance baseline.
 
 ### 10.5 Next step

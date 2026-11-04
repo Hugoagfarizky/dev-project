@@ -234,7 +234,34 @@ Deviations resolved by decision on 2026-11-03: `sp-05_rotate_45.png` removed fro
 ### POC-04 OS click evidence
 An OS-level click was executed at screen coordinate `(188, 188)` on the SP-05 harness. Archived evidence includes the OS click JSON, before/after screenshots, and baseline/after-click transform JSON snapshots. Transform comparison is STABLE (all 11 components diff 0 within tolerance 1e-5). OS click POC-04 is PASS for transform stability. SP-05 overall remains BLOCKED.
 
-## SP-02 Preparation (not executed)
+## SP-07 — Quaternion / Transform Conversion (executed 2026-11-04)
+
+### Action
+Created a disposable measurement harness (`harness/sp07.html`) on Babylon.js 9.32.1 with `scene.useRightHandedSystem = true` set before content, exposing read-only quaternion/transform helpers. Executed the official runner `harness/runner/sp07/official.js` (run `sp07-2026-11-04T10-04-53-269Z-024c65`): 6 scenarios, 87/87 checks, 0 console errors, integrity VERIFIED.
+
+### Scenarios
+- Q-01 (A-07): q = (0, sin45, 0, cos45) applied to +X → (2.22e-16, 0, -1); \|q\| = 1; matches `RotationYawPitchRoll(pi/2, 0, 0)`.
+- Q-02 (A-08): `toEulerAngles()` = (0, pi/2, 0) — x = pitch, y = yaw, z = roll.
+- Q-03: 10-orientation round-trip; max component delta 1.11e-16.
+- Q-04: 6 gimbal-lock cases near +/-90 deg pitch; orientation round-trips within 7.04e-6 (gimbal tolerance 1e-4); pitch reports +/-pi/2; Euler split documented as non-unique.
+- Q-05 (supporting): 4 TRS + 3 vector paths; composeTRS matches manual scale->rotate->translate within 1e-6.
+- Q-06 (supporting): 12 quaternions, all finite and unit length within 1e-6.
+
+### Acceptance
+- A-07: **PASS** (5/5).
+- A-08: **PASS** (39/39).
+
+### Status
+PASS.
+
+### Evidence
+- Numeric log: `results/sp-07/sp07-2026-11-04T10-04-53-269Z-024c65/sp-07_numeric_log.json`
+- Results: `results/sp-07/sp07-2026-11-04T10-04-53-269Z-024c65/sp-07_results.json`
+- Screenshot: `results/sp-07/sp07-2026-11-04T10-04-53-269Z-024c65/sp-07_quaternion_rotation.png`
+- Manifest SHA-256: `ce23bae143ff58104f6771608da1d5a631591ebd99f64e480743f8748397476e`
+
+### Issue references
+- None new. R-04 (gimbal-lock ambiguity) measured and documented; quaternion remains the source of truth.
 
 Documented SP-02 procedure (from readiness §8.2): set `scene.useRightHandedSystem = true` immediately after scene creation and before any content; place an asymmetric marker on +X and another on -Z; expected observation: +X appears right, +Y appears up, forward direction is -Z from the default camera view. Evidence: screenshot from a known camera pose.
 

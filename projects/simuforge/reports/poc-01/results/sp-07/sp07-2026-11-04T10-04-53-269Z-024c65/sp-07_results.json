@@ -1,0 +1,1246 @@
+{
+  "schemaVersion": "1.0.0",
+  "caseId": "SP-07",
+  "runId": "sp07-2026-11-04T10-04-53-269Z-024c65",
+  "purpose": "Official SP-07 quaternion / transform conversion execution",
+  "status": "PASS",
+  "startedAt": "2026-11-04T10:04:53.270Z",
+  "completedAt": "2026-11-04T10:04:57.733Z",
+  "runner": {
+    "name": "simuforge-sp07-official",
+    "version": "1.0.0",
+    "configVersion": "sp07-quaternion-config-1",
+    "numericLogSchemaVersion": "1.0.0",
+    "resultsSchemaVersion": "1.0.0"
+  },
+  "harness": {
+    "path": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\poc-01\\harness\\sp07.html",
+    "sha256": "17da66ad1916855bed3416b20580087a351b06ba1242481d511e1765dda0d382"
+  },
+  "environment": {
+    "browser": "Chrome/156.0.8078.80",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "node": "v24.21.0",
+    "babylonVersion": "9.32.1",
+    "useRightHandedSystem": true,
+    "engineWebGLVersion": 2,
+    "canvas": {
+      "cssWidth": 966.4000244140625,
+      "cssHeight": 751.2999877929688,
+      "dpr": 1.25
+    },
+    "timestamp": "2026-11-04T10:04:57.556Z"
+  },
+  "config": {
+    "configVersion": "sp07-quaternion-config-1",
+    "tolerances": {
+      "quaternionComponent": 0.000001,
+      "vectorComponent": 0.000001,
+      "quaternionLength": 0.000001,
+      "angleDegrees": 0.0001,
+      "gimbalComponent": 0.0001,
+      "gimbalDegrees": 0.01,
+      "settleMs": 0
+    },
+    "toleranceBasis": "POC_01_WORLD_EDITOR.md E-12/E-15 (1e-6 per component; quaternion length within 1e-6 of 1).",
+    "screenshots": [
+      "sp-07_quaternion_rotation.png"
+    ]
+  },
+  "preflight": {
+    "caseId": "SP-07-PREFLIGHT",
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "result": "PASS",
+    "checks": [
+      {
+        "name": "PREFLIGHT: Babylon 9.32.1",
+        "status": "PASS",
+        "detail": "9.32.1",
+        "timestamp": "2026-11-04T10:04:57.556Z"
+      },
+      {
+        "name": "PREFLIGHT: right-handed system",
+        "status": "PASS",
+        "detail": true,
+        "timestamp": "2026-11-04T10:04:57.556Z"
+      },
+      {
+        "name": "PREFLIGHT: diagnostics ready",
+        "status": "PASS",
+        "detail": {
+          "babylonVersion": "9.32.1",
+          "useRightHandedSystem": true,
+          "engineWebGLVersion": 2,
+          "sceneMeshCount": 6,
+          "canvas": {
+            "cssWidth": 966.4000244140625,
+            "cssHeight": 751.2999877929688,
+            "dpr": 1.25
+          }
+        },
+        "timestamp": "2026-11-04T10:04:57.556Z"
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "Q-01",
+      "title": "Right-handed quaternion application (A-07)",
+      "status": "PASS",
+      "checks": {
+        "caseId": "SP-07-Q01",
+        "total": 5,
+        "passed": 5,
+        "failed": 0,
+        "result": "PASS",
+        "checks": [
+          {
+            "name": "Q-01: quaternion is finite",
+            "status": "PASS",
+            "detail": [
+              0,
+              0.7071067811865475,
+              0,
+              0.7071067811865476
+            ],
+            "timestamp": "2026-11-04T10:04:57.560Z"
+          },
+          {
+            "name": "Q-01: quaternion length within 1e-9 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 1e-9
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-01: quaternion matches 90 deg yaw about +Y",
+            "status": "PASS",
+            "detail": {
+              "delta": 0
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-01: q applied to +X equals -Z (A-07)",
+            "status": "PASS",
+            "detail": {
+              "actual": [
+                2.220446049250313e-16,
+                0,
+                -1
+              ],
+              "expected": [
+                0,
+                0,
+                -1
+              ],
+              "tolerance": 0.000001,
+              "deltas": [
+                2.220446049250313e-16,
+                0,
+                0
+              ],
+              "maxDelta": 2.220446049250313e-16,
+              "note": null
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-01: +X rotates to -Z, not +Z",
+            "status": "PASS",
+            "detail": [
+              2.220446049250313e-16,
+              0,
+              -1
+            ],
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          }
+        ]
+      },
+      "timestamp": "2026-11-04T10:04:57.561Z"
+    },
+    {
+      "id": "Q-02",
+      "title": "Euler extraction consistency (A-08)",
+      "status": "PASS",
+      "checks": {
+        "caseId": "SP-07-Q02",
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "result": "PASS",
+        "checks": [
+          {
+            "name": "Q-02: toEulerAngles x (pitch) is 0",
+            "status": "PASS",
+            "detail": {
+              "actual": [
+                0
+              ],
+              "expected": [
+                0
+              ],
+              "tolerance": 0.000001,
+              "deltas": [
+                0
+              ],
+              "maxDelta": 0,
+              "note": null
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-02: toEulerAngles y (yaw) is pi/2 (A-08)",
+            "status": "PASS",
+            "detail": {
+              "actual": [
+                1.5707963267948963
+              ],
+              "expected": [
+                1.5707963267948966
+              ],
+              "tolerance": 0.000001,
+              "deltas": [
+                2.220446049250313e-16
+              ],
+              "maxDelta": 2.220446049250313e-16,
+              "note": null
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-02: toEulerAngles z (roll) is 0",
+            "status": "PASS",
+            "detail": {
+              "actual": [
+                0
+              ],
+              "expected": [
+                0
+              ],
+              "tolerance": 0.000001,
+              "deltas": [
+                0
+              ],
+              "maxDelta": 0,
+              "note": null
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-02: Euler components are finite",
+            "status": "PASS",
+            "detail": [
+              0,
+              1.5707963267948963,
+              0
+            ],
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          }
+        ]
+      },
+      "timestamp": "2026-11-04T10:04:57.561Z"
+    },
+    {
+      "id": "Q-03",
+      "title": "Quaternion/Euler round-trip conversion",
+      "status": "PASS",
+      "checks": {
+        "caseId": "SP-07-Q03",
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "result": "PASS",
+        "checks": [
+          {
+            "name": "Q-03 round-trip: identity component delta <= 1e-6",
+            "status": "PASS",
+            "detail": {
+              "name": "identity",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: identity angle <= 1e-4 deg",
+            "status": "PASS",
+            "detail": {
+              "name": "identity",
+              "angleDeg": 0,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: yaw45 component delta <= 1e-6",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw45",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: yaw45 angle <= 1e-4 deg",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw45",
+              "angleDeg": 0,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: yaw90 component delta <= 1e-6",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw90",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: yaw90 angle <= 1e-4 deg",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw90",
+              "angleDeg": 0,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: pitch30 component delta <= 1e-6",
+            "status": "PASS",
+            "detail": {
+              "name": "pitch30",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: pitch30 angle <= 1e-4 deg",
+            "status": "PASS",
+            "detail": {
+              "name": "pitch30",
+              "angleDeg": 0,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: yaw45_pitch30 component delta <= 1e-6",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw45_pitch30",
+              "delta": 5.551115123125783e-17,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: yaw45_pitch30 angle <= 1e-4 deg",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw45_pitch30",
+              "angleDeg": 0,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: yaw20_pitch35_roll10 component delta <= 1e-6",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw20_pitch35_roll10",
+              "delta": 2.7755575615628914e-17,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: yaw20_pitch35_roll10 angle <= 1e-4 deg",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw20_pitch35_roll10",
+              "angleDeg": 0,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: yaw-60 component delta <= 1e-6",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw-60",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: yaw-60 angle <= 1e-4 deg",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw-60",
+              "angleDeg": 0,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: pitch-45 component delta <= 1e-6",
+            "status": "PASS",
+            "detail": {
+              "name": "pitch-45",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: pitch-45 angle <= 1e-4 deg",
+            "status": "PASS",
+            "detail": {
+              "name": "pitch-45",
+              "angleDeg": 0,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: roll80 component delta <= 1e-6",
+            "status": "PASS",
+            "detail": {
+              "name": "roll80",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: roll80 angle <= 1e-4 deg",
+            "status": "PASS",
+            "detail": {
+              "name": "roll80",
+              "angleDeg": 0,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: combined_12_-23_47 component delta <= 1e-6",
+            "status": "PASS",
+            "detail": {
+              "name": "combined_12_-23_47",
+              "delta": 1.1102230246251565e-16,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03 round-trip: combined_12_-23_47 angle <= 1e-4 deg",
+            "status": "PASS",
+            "detail": {
+              "name": "combined_12_-23_47",
+              "angleDeg": 0.0000024148365394514667,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-03: all round-trip cases pass",
+            "status": "PASS",
+            "detail": {
+              "count": 10
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          }
+        ]
+      },
+      "timestamp": "2026-11-04T10:04:57.561Z"
+    },
+    {
+      "id": "Q-04",
+      "title": "Gimbal-lock behaviour (pitch near +/-90 deg)",
+      "status": "PASS",
+      "checks": {
+        "caseId": "SP-07-Q04",
+        "total": 14,
+        "passed": 14,
+        "failed": 0,
+        "result": "PASS",
+        "checks": [
+          {
+            "name": "Q-04 gimbal: pitch 89.999 deg orientation round-trips",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": 89.999,
+              "yawDeg": 30,
+              "rollDeg": 20,
+              "delta": 0.000005776443401939169,
+              "angleDeg": 0.001056869702495248,
+              "euler": [
+                1.5707963267948966,
+                0.17453889452809154,
+                0
+              ],
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch 89.999 deg reports pitch magnitude pi/2",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": 89.999,
+              "eulerPitch": 1.5707963267948966,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch 90 deg orientation round-trips",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": 90,
+              "yawDeg": 30,
+              "rollDeg": 20,
+              "delta": 1.1102230246251565e-16,
+              "angleDeg": 0.0000017075472925031877,
+              "euler": [
+                1.5707963267948966,
+                0.17453292519943292,
+                0
+              ],
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch 90 deg reports pitch magnitude pi/2",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": 90,
+              "eulerPitch": 1.5707963267948966,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch -90 deg orientation round-trips",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": -90,
+              "yawDeg": 30,
+              "rollDeg": 20,
+              "delta": 5.551115123125783e-17,
+              "angleDeg": 0,
+              "euler": [
+                -1.5707963267948966,
+                0.8726646259971645,
+                0
+              ],
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch -90 deg reports pitch magnitude pi/2",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": -90,
+              "eulerPitch": -1.5707963267948966,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch -89.999 deg orientation round-trips",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": -89.999,
+              "yawDeg": 30,
+              "rollDeg": 20,
+              "delta": 0.000007039136891817677,
+              "angleDeg": 0.0010568683230822266,
+              "euler": [
+                -1.5707963267948966,
+                0.872658656668506,
+                0
+              ],
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch -89.999 deg reports pitch magnitude pi/2",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": -89.999,
+              "eulerPitch": -1.5707963267948966,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch 90 deg orientation round-trips",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": 90,
+              "yawDeg": 0,
+              "rollDeg": 0,
+              "delta": 0,
+              "angleDeg": 0,
+              "euler": [
+                1.5707963267948966,
+                0,
+                0
+              ],
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch 90 deg reports pitch magnitude pi/2",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": 90,
+              "eulerPitch": 1.5707963267948966,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch 89.9999 deg orientation round-trips",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": 89.9999,
+              "yawDeg": 45,
+              "rollDeg": -10,
+              "delta": 6.379850701065948e-7,
+              "angleDeg": 0.00010146624757481298,
+              "euler": [
+                1.5707963267948966,
+                0.9599307855238975,
+                0
+              ],
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04 gimbal: pitch 89.9999 deg reports pitch magnitude pi/2",
+            "status": "PASS",
+            "detail": {
+              "pitchDeg": 89.9999,
+              "eulerPitch": 1.5707963267948966,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04: pitch near +90 deg reports finite Euler",
+            "status": "PASS",
+            "detail": {
+              "count": 6
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-04: all gimbal cases round-trip within gimbal tolerance",
+            "status": "PASS",
+            "detail": {
+              "count": 6,
+              "tolerance": 0.0001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          }
+        ]
+      },
+      "timestamp": "2026-11-04T10:04:57.561Z"
+    },
+    {
+      "id": "Q-05",
+      "title": "TRS transform composition (supporting)",
+      "status": "PASS",
+      "checks": {
+        "caseId": "SP-07-Q05",
+        "total": 8,
+        "passed": 8,
+        "failed": 0,
+        "result": "PASS",
+        "checks": [
+          {
+            "name": "Q-05 transform: identity_point composeTRS matches manual TRS",
+            "status": "PASS",
+            "detail": {
+              "name": "identity_point",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-05 transform: yaw90_point composeTRS matches manual TRS",
+            "status": "PASS",
+            "detail": {
+              "name": "yaw90_point",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-05 transform: translated_scaled composeTRS matches manual TRS",
+            "status": "PASS",
+            "detail": {
+              "name": "translated_scaled",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-05 transform: roll_then_scale composeTRS matches manual TRS",
+            "status": "PASS",
+            "detail": {
+              "name": "roll_then_scale",
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-05 vector: matrix path matches manual quaternion rotation",
+            "status": "PASS",
+            "detail": {
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-05 vector: matrix path matches manual quaternion rotation",
+            "status": "PASS",
+            "detail": {
+              "delta": 4.29518729472278e-8,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-05 vector: matrix path matches manual quaternion rotation",
+            "status": "PASS",
+            "detail": {
+              "delta": 0,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-05: all transform composition cases pass",
+            "status": "PASS",
+            "detail": {
+              "transformCount": 4,
+              "vectorCount": 3
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          }
+        ]
+      },
+      "timestamp": "2026-11-04T10:04:57.561Z"
+    },
+    {
+      "id": "Q-06",
+      "title": "Quaternion validity (finite, unit length)",
+      "status": "PASS",
+      "checks": {
+        "caseId": "SP-07-Q06",
+        "total": 35,
+        "passed": 35,
+        "failed": 0,
+        "result": "PASS",
+        "checks": [
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0,
+                0.7071067811865475,
+                0,
+                0.7071067811865476
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0,
+                0.3826834323650898,
+                0,
+                0.9238795325112867
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0,
+                0.7071067811865475,
+                0,
+                0.7071067811865476
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0.25881904510252074,
+                0,
+                0,
+                0.9659258262890683
+              ],
+              "length": 0.9999999999999999,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 0.9999999999999999,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0.23911761839433449,
+                0.3696438106143861,
+                -0.09904576054128762,
+                0.8923991008325228
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0.30944447856295726,
+                0.1391709345620373,
+                0.029840788044220565,
+                0.9402048144042492
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0,
+                -0.49999999999999994,
+                0,
+                0.8660254037844387
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                -0.3826834323650898,
+                0,
+                0,
+                0.9238795325112867
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0,
+                0,
+                0.6427876096865393,
+                0.766044443118978
+              ],
+              "length": 0.9999999999999999,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 0.9999999999999999,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                -0.14098692140112495,
+                0.17299676603818082,
+                0.40771471368073725,
+                0.8854171441656178
+              ],
+              "length": 1.0000000000000002,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1.0000000000000002,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0.7044104338489869,
+                0.06163102455201773,
+                -0.061625808875727675,
+                0.7044216189028861
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0.7044160264027587,
+                0.06162841671621935,
+                -0.06162841671621931,
+                0.7044160264027588
+              ],
+              "length": 1.0000000000000002,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1.0000000000000002,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                -0.6408563820557885,
+                0.2988362387301198,
+                0.2988362387301198,
+                0.6408563820557887
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                -0.6408502348419043,
+                0.2988367765281332,
+                0.29883570090934874,
+                0.6408625292208688
+              ],
+              "length": 0.9999999999999999,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 0.9999999999999999,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0.7071067811865475,
+                0,
+                0,
+                0.7071067811865476
+              ],
+              "length": 1,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 1,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: finite components",
+            "status": "PASS",
+            "detail": {
+              "q": [
+                0.6272107866186821,
+                0.32650576117750063,
+                -0.3265053900662045,
+                0.6272119636333402
+              ],
+              "length": 0.9999999999999999,
+              "finite": true
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06 validity: length within 1e-6 of 1",
+            "status": "PASS",
+            "detail": {
+              "length": 0.9999999999999999,
+              "tolerance": 0.000001
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          },
+          {
+            "name": "Q-06: all quaternions valid",
+            "status": "PASS",
+            "detail": {
+              "count": 17
+            },
+            "timestamp": "2026-11-04T10:04:57.561Z"
+          }
+        ]
+      },
+      "timestamp": "2026-11-04T10:04:57.561Z"
+    }
+  ],
+  "acceptance": {
+    "A-07": {
+      "status": "PASS",
+      "evidence": [
+        "Q-01"
+      ],
+      "evidenceStatus": {
+        "Q-01": "PASS"
+      },
+      "checkCount": 5,
+      "failedChecks": [],
+      "note": "A quaternion authored directly in the right-handed scene rotates +X to -Z for a positive 90 deg Y rotation."
+    },
+    "A-08": {
+      "status": "PASS",
+      "evidence": [
+        "Q-02",
+        "Q-03",
+        "Q-04"
+      ],
+      "evidenceStatus": {
+        "Q-02": "PASS",
+        "Q-03": "PASS",
+        "Q-04": "PASS"
+      },
+      "checkCount": 39,
+      "failedChecks": [],
+      "note": "quaternion.toEulerAngles() returns x=pitch, y=yaw, z=roll consistent with YXZ display; round-trip within 1e-6; gimbal-lock behaviour measured and documented."
+    },
+    "SP-07-SUPPORTING": {
+      "status": "PASS",
+      "evidence": [
+        "Q-05",
+        "Q-06"
+      ],
+      "evidenceStatus": {
+        "Q-05": "PASS",
+        "Q-06": "PASS"
+      },
+      "checkCount": 43,
+      "failedChecks": [],
+      "note": "Supporting only: TRS composition consistency and quaternion validity. Not an A-07/A-08 criterion."
+    }
+  },
+  "console": {
+    "total": 1,
+    "warnings": [],
+    "errors": [],
+    "exceptions": [],
+    "logEntries": []
+  },
+  "completedChecks": 87
+}
