@@ -1,9 +1,9 @@
 # SP-06 Official Execution Report
 
 Date: 2026-11-04
-Scope: Official execution of the SP-06 camera-navigation suite (S-01..S-12), plus one clearly labelled diagnostic re-run.
-Status: **SP-06 NOT PASSED — one written criterion (A-05-P2 sign) conflicts with observed Babylon 9.32.1 behavior.**
-POC-01: **NOT closed** (see §9).
+Scope: Official execution of the SP-06 camera-navigation suite (S-01..S-12), the owner-decided sign amendment, and the official re-run.
+Status: **SP-06 PASSED** under the owner-amended A-05-P2 sign convention (re-run `sp06-official-2026-11-04T09-26-01-934Z-374471`, 159/159 checks). The first run (`…96430a`) remains preserved as FAIL against the superseded expectation.
+POC-01: **NOT closed** (SP-07/SP-08 not executed; see §13).
 
 ## 1. Authority and preconditions
 
@@ -43,7 +43,7 @@ node projects/simuforge/reports/poc-01/harness/runner/sp06/official.js \
 
 Exit codes: `0` = PASS, `1` = FAIL, `2` = BLOCKED/infrastructure.
 
-## 3. Official run
+## 3. First official run (preserved; superseded by the §11 amendment)
 
 | Item | Value |
 | --- | --- |
@@ -209,23 +209,93 @@ node projects/simuforge/reports/poc-01/harness/runner/sp06/official.js
 
 The runner refuses to write into a non-empty evidence directory, so previous runs cannot be silently overwritten.
 
-## 9. POC-01 impact
+## 9. POC-01 impact after the first run
 
 | Gate | Status |
 | --- | --- |
 | SP-05 | ACCEPTED (10/10 visual PASS; A-03/A-04 PASS) |
-| SP-06 | **NOT PASSED** — A-05-P2 sign conflict; all other scenarios and criteria PASS |
+| SP-06 | **NOT PASSED in the first run** — A-05-P2 sign conflict; all other scenarios and criteria PASS. Superseded by §12. |
 | SP-07 (quaternion / transform conversion) | Not executed |
 | SP-08 (final spike decision) | Not executed |
 | POC-01 closure | **NOT COMPLETE** |
 
-POC-01 is not declared complete. Two independent blockers remain:
+POC-01 is not declared complete. Two independent blockers remained after the first run:
 
 1. The S-03/A-05-P2 sign decision in §4.5.
 2. SP-07 and SP-08 are unexecuted, so the POC-01 readiness exit criteria cannot yet be evaluated.
 
-## 10. Verdict
+## 10. Verdict of the first run (superseded)
 
-**SP-06 official execution: FAIL — single criterion conflict, no harness or runner defect found.**
+**First official execution: FAIL — single criterion conflict, no harness or runner defect found.**
 
-Everything the suite was built to verify is green except the written beta-sign expectation. The next action is an explicit owner decision on that expectation; until then, no re-run can honestly produce a PASS under the procedure as written.
+Everything the suite was built to verify was green except the written beta-sign expectation. That expectation was decided by the Project Owner on 2026-11-04 (§11) and the suite was re-run (§12).
+
+## 11. Owner decision and amended criterion (2026-11-04)
+
+The Project Owner reviewed §4.5 and authorised **option 1: amend A-05-P2/S-03 to the Babylon convention**. Option 2 (product-level inversion) and option 3 (waiver) were not selected.
+
+| Item | Before | After (authoritative) |
+| --- | --- | --- |
+| Horizontal orbit sign | Rightward increases `alpha` | Unchanged |
+| Vertical orbit sign | Downward **increases** `beta` | Rightward drag increases `alpha`; **downward drag decreases `beta`** |
+| Inversion rule | Opposite sign = FAIL | Unchanged: opposite sign = FAIL |
+| Quantitative check | Required | **Retained** (no waiver) |
+
+Records updated:
+
+- `SP-06_TEST_PROCEDURE_DRAFT.md` — amendment banner, A-05-P2 text, S-03 pass line.
+- `harness/runner/sp06/config.js` — `SIGN_CONVENTION` block; official default `amended` (Babylon), sign `-1`.
+- `harness/runner/sp06/official.js` — default `amended`; `legacy` retained only to reproduce the superseded expectation; runner `1.1.0`, config `sp06-official-config-2`.
+- `SP-06_AUTHORIZATION_REQUEST.md`, `POC_01_CURRENT_READINESS_ASSESSMENT.md`, `docs/POC_01_IMPLEMENTATION_READINESS.md` — decision and result recorded.
+
+No failing evidence was deleted, and no other criterion or tolerance was changed.
+
+## 12. Official re-run under the amended criterion
+
+| Item | Value |
+| --- | --- |
+| Run ID | `sp06-official-2026-11-04T09-26-01-934Z-374471` |
+| Evidence directory | `results/sp-06-official/sp06-official-2026-11-04T09-26-01-934Z-374471/` |
+| Started | 2026-11-04T09:26:01.936Z |
+| Completed | 2026-11-04T09:28:24.728Z |
+| Sign convention | `amended` (downward decreases beta) |
+| Runner / config | 1.1.0 / `sp06-official-config-2` |
+| Result | **PASS — 159/159 checks** |
+| Scenarios | S-01..S-12 all PASS (S-10 hard gate 52/52) |
+| Acceptance | **A-05-P1..P6 PASS; A-06-P1..P5 PASS** |
+| Screenshots | 10/10 captured, hashes verified |
+| Console | 0 errors, 0 warnings, 0 exceptions |
+| Input log | 12 entries; initial 8 → final 8, state `reset` |
+| Criteria conflicts | 0 |
+| Integrity | **VERIFIED** (12 files, 0 mismatches, manifest SHA-256 `70a94a71bf1a7cc9a4028fbfbb99ea941fdb5ca87d1137171493ad1925eb2a93`) |
+
+S-03 delta in the re-run: `beta = -1.0371975511965976`; `alpha`, `radius`, and `target` exactly `0`. This is the same physical behavior as the first run, now evaluated against the correct written expectation. The diagnostic run remains historical and is not used as official evidence.
+
+### 12.1 Re-run screenshot hashes
+
+| Screenshot | Bytes | SHA-256 |
+| --- | --- | --- |
+| `sp-06_camera_baseline.png` | 88508 | `d62c7ba48440587886a4195456ab323ae3cfa96094121788828f00b4f9db45d4` |
+| `sp-06_orbit_horizontal.png` | 88982 | `ed74b780dc185de5dd17b7954f020ec083a119da8c6abb2a8708fda753ced0aa` |
+| `sp-06_orbit_vertical.png` | 87683 | `c7dba69463243d03664e6e0290860bb8fe25fc8bea8bbf95a03b4de33ce10527` |
+| `sp-06_pan_horizontal.png` | 92185 | `3b334209e18d1cf2b97b815debae1a55d8e24cc321ffe5d85e46c2076f6f6c68` |
+| `sp-06_pan_vertical.png` | 91438 | `6be8351a51455588c84d12d43dcc10aa3f9ea35f063058ac45342452381f5b2b` |
+| `sp-06_zoom_in.png` | 98285 | `de21cf7284b556d56e344d0c1d41a9313f71c820695cf2cff8efababc885fa5b` |
+| `sp-06_zoom_out.png` | 89922 | `1c325bd644c2d1f25bfad725d94cd007838e4802bb4766d6a7f6a9cf59d5af32` |
+| `sp-06_left_click_no_orbit.png` | 88917 | `893f767ca7489c6eb875ec66c3826fe46978dfdf81b5686bf1fc32fa6c28ecee` |
+| `sp-06_gizmo_interaction.png` | 82816 | `c70f5e4a394cca0d3cf0c92b0c5c1e92e1f4983e4c99215191909aab1092e3c6` |
+| `sp-06_edge_cases.png` | 93113 | `c01d602af65cbc0c9af8cc435789467830261298daa186c41ffad0c3d284d464` |
+
+## 13. Final verdict and POC-01 impact
+
+**SP-06: PASSED** under the owner-amended criterion, with full official evidence and verified integrity.
+
+| Gate | Status |
+| --- | --- |
+| SP-05 | ACCEPTED |
+| SP-06 | **PASSED** (159/159; A-05 and A-06 complete) |
+| SP-07 (quaternion / transform conversion) | **Not executed** |
+| SP-08 (final spike decision) | **Not executed** |
+| POC-01 closure | **NOT COMPLETE** |
+
+POC-01 is still not closed. The only remaining blockers are SP-07 and SP-08, which have not been executed. No criterion, tolerance, or evidence record was fabricated to reach this result; the amendment and both runs are recorded above.

@@ -10,7 +10,7 @@ HEAD at time of writing: `12a2d00ba9d8c43475689d8e36881706aeee48d7` (subsequent 
 
 Request Project Owner authorization to execute the official SP-06 camera-navigation suite. No official execution has been performed at the time of writing. **SP-06 remains NO-GO until the decisions in §6 are recorded.**
 
-> **Update 2026-11-04:** all three decisions in §6 were recorded by the Project Owner (SP-05 ACCEPTED, Option A, SP-06 AUTHORIZED). Official execution has since been performed; see `SP-06_OFFICIAL_EXECUTION_REPORT.md`.
+> **Update 2026-11-04:** all three decisions in §6 were recorded by the Project Owner (SP-05 ACCEPTED, Option A, SP-06 AUTHORIZED). Official execution was performed, one written sign expectation was amended by the owner, and the official re-run passed 159/159. See `SP-06_OFFICIAL_EXECUTION_REPORT.md` §11–§13.
 
 ## 2. SP-05 gate status (changed since Revision 1)
 
@@ -41,7 +41,7 @@ The visual review was performed on 2026-11-04 by an image-capable model (DeepSee
 | Settle delay | 2000 ms APPROVED (measured 113–1434 ms) |
 | Input provenance | `cdp_trusted_input` only; no synthetic input or programmatic transform |
 | Chrome cleanup | Verified, no leftover process |
-| **Official scenario runner (S-01..S-12, 10 screenshots, versioned input log)** | **NOT YET IMPLEMENTED (audit item D12; deliberately deferred until authorization)** |
+| **Official scenario runner (S-01..S-12, 10 screenshots, versioned input log)** | **IMPLEMENTED (D12) and executed; official re-run PASS 159/159** |
 
 ## 4. Owner decisions already recorded
 
@@ -56,6 +56,7 @@ The visual review was performed on 2026-11-04 by an image-capable model (DeepSee
 | 7 | Dedicated SP-06 harness | APPROVED |
 | 8 | A-06 scope: camera non-capture only | APPROVED |
 | 9 | S-10a/S-10b hard gate | APPROVED |
+| 10 | S-03/A-05-P2 beta sign amended to the Babylon convention (downward drag decreases `beta`); quantitative inversion check retained | APPROVED 2026-11-04 after the first official run; see `SP-06_OFFICIAL_EXECUTION_REPORT.md` §11 |
 
 ## 5. Remaining decisions
 
@@ -134,5 +135,5 @@ Owner: Project Owner (decision conveyed in-session)   Date: 2026-11-04
 - A-03: **PASS (visually verified)**.
 - A-04: **PASS (visually verified)**.
 - Tolerances: **Option A APPROVED** on 2026-11-04 (1e-9 invariance; 0.05 orbit/pan; 0.1 zoom; 2000 ms settle).
-- SP-06: **EXECUTION AUTHORIZED on 2026-11-04.** Execution result is recorded in `SP-06_OFFICIAL_EXECUTION_REPORT.md`.
+- SP-06: **EXECUTION AUTHORIZED on 2026-11-04**, executed, sign expectation amended by the owner, and **re-run PASS (159/159)**. Full record: `SP-06_OFFICIAL_EXECUTION_REPORT.md`.
 - Main application: not modified.

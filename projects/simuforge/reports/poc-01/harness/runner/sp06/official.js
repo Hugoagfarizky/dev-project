@@ -10,15 +10,18 @@
 // Scope:
 //   - Dedicated SP-06 harness only (harness/sp06.html).
 //   - No main Simulation Studio source is touched.
-//   - No acceptance criterion is changed by this runner. The scenario checks
-//     encode the procedure's written criteria. Where empirical Babylon
-//     behaviour conflicts with a written expectation, the conflict is recorded
-//     as a diagnostic instead of being silently converted into a PASS.
+//   - No acceptance criterion is changed by this runner; the scenario checks
+//     encode the written criteria. One written expectation was amended by the
+//     Project Owner on 2026-11-04 (S-03/A-05-P2 beta sign, see config.js
+//     SIGN_CONVENTION). The superseded expectation is retained only as a
+//     non-default reproduction mode.
 //
 // Usage:
 //   node official.js [--port 9237] [--out <dir>] [--window-size 1400x1000]
-//                    [--sign-convention procedure|babylon]
+//                    [--sign-convention amended|legacy]
 //                    [--keep-browser] [--attach]
+//
+// `babylon` and `procedure` are accepted aliases for `amended` and `legacy`.
 //
 // Exit codes: 0 = PASS, 1 = FAIL, 2 = BLOCKED/infrastructure error.
 
@@ -35,7 +38,7 @@ const { EvidenceStore, sha256File } = require('../lib/evidence.js');
 const { Checks } = require('../lib/assert.js');
 const scenarioLib = require('../lib/scenario.js');
 
-const { TOLERANCES, EXPECTED_CAMERA, SCREENSHOTS, GESTURES, INPUT_MAP, RUNNER } = config;
+const { TOLERANCES, EXPECTED_CAMERA, SCREENSHOTS, GESTURES, INPUT_MAP, SIGN_CONVENTION, RUNNER } = config;
 
 const HARNESS = path.resolve(__dirname, '..', '..', 'sp06.html');
 const DEFAULT_PORT = 9237;
@@ -53,6 +56,15 @@ const INFRASTRUCTURE_PATTERNS = [
   /Failed to launch/i
 ];
 
+function resolveSignConvention(value) {
+  const canonical = SIGN_CONVENTION.aliases[value] || value;
+  const spec = SIGN_CONVENTION[canonical];
+  if (!spec || typeof spec !== 'object' || !spec.id) {
+    throw new Error('--sign-convention must be "amended" or "legacy" (aliases: "babylon", "procedure")');
+  }
+  return spec;
+}
+
 function parseArgs(argv) {
   const opts = {
     port: DEFAULT_PORT,
@@ -61,7 +73,7 @@ function parseArgs(argv) {
     windowHeight: 1000,
     keepBrowser: false,
     attach: false,
-    signConvention: 'procedure'
+    signConvention: SIGN_CONVENTION.default
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -77,11 +89,7 @@ function parseArgs(argv) {
       opts.windowWidth = w;
       opts.windowHeight = h;
     } else if (a === '--sign-convention') {
-      const value = next();
-      if (value !== 'procedure' && value !== 'babylon') {
-        throw new Error('--sign-convention must be "procedure" or "babylon"');
-      }
-      opts.signConvention = value;
+      opts.signConvention = resolveSignConvention(next()).id;
     } else if (a === '--keep-browser') opts.keepBrowser = true;
     else if (a === '--attach') opts.attach = true;
     else if (a === '--help' || a === '-h') {
@@ -89,7 +97,7 @@ function parseArgs(argv) {
       console.log('  --port <n>                         CDP port (default 9237)');
       console.log('  --out <dir>                        evidence directory');
       console.log('  --window-size WxH                  default 1400x1000');
-      console.log('  --sign-convention procedure|babylon');
+      console.log('  --sign-convention amended|legacy');
       console.log('  --keep-browser                     leave Chrome running');
       console.log('  --attach                           attach to an existing Chrome');
       process.exit(0);
@@ -431,6 +439,7 @@ async function main() {
     config: {
       configVersion: RUNNER.configVersion,
       signConvention: opts.signConvention,
+      signConventionDescription: resolveSignConvention(opts.signConvention).description,
       tolerances: { ...TOLERANCES },
       expectedCamera: {
         alpha: EXPECTED_CAMERA.alpha,
@@ -585,7 +594,7 @@ async function main() {
     console.log('  runId   :', runId);
     console.log('  out     :', outDir);
     console.log('  harness :', harnessInfo.path, '(' + harnessInfo.sha256.slice(0, 12) + ')');
-    console.log('  sign    :', opts.signConvention);
+    console.log('  sign    :', opts.signConvention, '-', resolveSignConvention(opts.signConvention).description);
 
     if (!opts.attach) {
       browser = await browserLib.launch({
@@ -729,34 +738,34 @@ async function main() {
 
       checks.ok('S-03: beta changes by more than 0.05 rad', Math.abs(delta.beta) > TOLERANCES.orbitMinimum, { delta: delta.beta, minimum: TOLERANCES.orbitMinimum });
 
-      const expectedSign = opts.signConvention === 'babylon' ? -1 : 1;
-      const expectedDescription = opts.signConvention === 'babylon'
-        ? 'downward drag decreases beta (Babylon 9.32.1 convention)'
-        : 'downward drag increases beta (written procedure)';
-      checks.ok('S-03: ' + expectedDescription, Math.sign(delta.beta) === expectedSign, {
+      const sign = resolveSignConvention(opts.signConvention);
+      checks.ok('S-03: ' + sign.description, Math.sign(delta.beta) === sign.expectedSign, {
         delta: delta.beta,
-        expectedSign,
+        expectedSign: sign.expectedSign,
         observedSign: Math.sign(delta.beta),
-        signConvention: opts.signConvention
+        signConvention: sign.id
       });
 
       unchanged(checks, 'S-03', delta, TOLERANCES.invariance, ['alpha', 'radius', 'target']);
       checks.ok('S-03: beta finite and within [0, pi]', finite(after.beta) && after.beta >= 0 && after.beta <= Math.PI, after.beta);
 
-      if (opts.signConvention === 'procedure' && delta.beta < 0) {
+      // `legacy` intentionally encodes the superseded expectation. If it fails,
+      // the failure is recorded as a reproduction note, never as an official
+      // conflict with the amended procedure.
+      if (sign.id === 'legacy' && delta.beta < 0) {
         const conflict = {
-          id: 'S-03-SIGN',
+          id: 'S-03-SIGN-LEGACY',
           scenario: 'S-03',
           criterion: 'A-05-P2',
-          expected: 'downward drag increases beta (procedure)',
+          expected: 'downward drag increases beta (superseded written expectation)',
           observed: 'downward drag decreases beta',
           observedDelta: delta.beta,
-          explanation: 'Babylon.js 9.32.1 maps downward pointer motion to decreasing beta. Alpha, radius, and target are unchanged, so this is a sign-convention conflict in the written expectation, not cross-axis coupling. It is recorded, not converted into a PASS.',
+          explanation: 'Legacy mode reproduces the pre-amendment expectation. The authoritative expectation was amended by the Project Owner on 2026-11-04 to the Babylon convention (downward decreases beta), so this is not an open conflict.',
           timestamp: nowIso()
         };
         results.criteriaConflicts.push(conflict);
         scenario.criteriaConflict = conflict;
-        addObservation(scenario, 'Procedure expected downward drag to increase beta; observed decrease. Recorded as a criterion conflict for owner decision.', { delta: delta.beta });
+        addObservation(scenario, 'Legacy sign expectation reproduced for reference; the authoritative procedure was amended on 2026-11-04.', { delta: delta.beta });
       }
 
       const shot = await store.screenshot(page, 'sp-06_orbit_vertical.png');
@@ -1291,7 +1300,7 @@ async function main() {
       'A-05-P2': {
         ids: ['S-02', 'S-03'],
         include: [/changes by more than 0.05 rad/, /rightward drag increases alpha/, /downward drag .* beta/, /unchanged/],
-        note: 'Horizontal changes alpha; vertical changes beta; written sign check applied. See criteriaConflicts.'
+        note: 'Horizontal changes alpha; vertical changes beta; owner-amended sign check applied (downward drag decreases beta).'
       },
       'A-05-P3': {
         ids: ['S-04', 'S-05'],

@@ -61,3 +61,12 @@ Decision 1 is now APPROVED as DEFAULT: keep default behavior (ctrl+left=pan, alt
 - SP-06: NO-GO (unchanged; probes are not full execution).
 - No acceptance criterion changed.
 - No harness, runner, or application source modified by this decision record.
+
+## 7. Update 2026-11-04 (appended; earlier record retained)
+
+- SP-05 formal acceptance: **ACCEPTED**; A-03/A-04 **PASS (visually verified)**.
+- Tolerances: **Option A APPROVED** — invariance 1e-9; orbit/pan 0.05; zoom 0.1; settle 2000 ms. The provisional `1e-6` reference in §5 is superseded.
+- SP-06 official execution: **AUTHORIZED** and performed.
+- **Decision 10 (new):** after the first official run failed only the written beta-sign check, the Project Owner amended S-03/A-05-P2 to the Babylon 9.32.1 convention — rightward drag increases `alpha`, downward drag **decreases** `beta`; the opposite sign remains FAIL and the quantitative inversion check is retained. No waiver was used.
+- Official re-run under the amended criterion: **PASS 159/159** (`sp06-official-2026-11-04T09-26-01-934Z-374471`). The first failed run is preserved.
+- SP-07/SP-08 remain unexecuted; POC-01 is not closed.

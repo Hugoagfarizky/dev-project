@@ -66,3 +66,18 @@ Scope: Consolidated register of all SP-05/SP-06 decisions. No acceptance criteri
 - A-03 / A-04: unverified (unchanged).
 - SP-06: NO-GO (unchanged).
 - No acceptance criterion changed.
+
+## G. Update 2026-11-04 (appended; earlier rows retained)
+
+| ID | Topic | Decision | Status |
+| --- | --- | --- | --- |
+| D3a | Settle delay | 2000 ms | APPROVED |
+| D3b | Numeric tolerances | Option A: invariance 1e-9; orbit/pan 0.05; zoom 0.1 | **APPROVED** |
+| D10 | S-03/A-05-P2 beta sign | Amend to the Babylon 9.32.1 convention: rightward increases `alpha`, downward **decreases** `beta`; opposite sign remains FAIL; quantitative check retained | **APPROVED** 2026-11-04 after the first official run |
+
+Status after the update:
+
+- SP-05: **ACCEPTED**; A-03/A-04 **PASS (visually verified)**.
+- SP-06: **PASSED** on the official re-run `sp06-official-2026-11-04T09-26-01-934Z-374471` (159/159); the first failed run is preserved.
+- SP-07/SP-08: not executed; POC-01 remains open.
+- The only criterion change in this cycle is D10, explicitly decided by the Project Owner. No tolerance was changed after seeing results.

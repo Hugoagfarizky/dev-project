@@ -1,13 +1,18 @@
 # SP-06 Test Procedure Draft (Revision 2) — Camera Navigation
 
-Status: **DRAFT — PROPOSED** (documentation only; not approved; SP-06 remains NO-GO)
+Status: **AMENDED 2026-11-04** — the procedure was executed under the owner-approved decisions; the S-03/A-05-P2 beta-sign expectation was amended by the Project Owner (see Amendment record). SP-06 passed on the official re-run.
 
-Date: 2026-11-03 (Revision 2)
+Date: 2026-11-03 (Revision 2; amended 2026-11-04)
 Scope: Design only. No harness, runner, or application code was created or modified. No SP-06 test was executed.
 
 Sources: `POC_01_IMPLEMENTATION_READINESS.md` (§6.3 A-05/A-06, §7.7, §8.1–§8.3), `SP-06_READINESS_REVIEW.md`, `SP-06_TECHNICAL_REVIEW.md`, Babylon.js documentation (Camera Movement and Input System, verified 2026-11-03).
 
 Revision 2 addresses all findings H1–H3, M1–M8, L1–L5 from `SP-06_TECHNICAL_REVIEW.md`.
+
+## Amendment record
+
+- **2026-11-04 — S-03/A-05-P2 beta sign (owner-decided).** The original text required a downward drag to increase `beta`. The official execution of 2026-11-04 (run `sp06-official-2026-11-04T09-07-32-263Z-96430a`) showed that Babylon.js 9.32.1 decreases `beta` on downward pointer motion, with `alpha`, `radius`, and `target` exactly unchanged. The Project Owner authorised amending the written expectation to the engine convention: **rightward drag increases `alpha`; downward drag decreases `beta`**. The opposite sign is still an axis-inversion FAIL. The superseded expectation is retained only as a reproduction mode and never produces official PASS evidence.
+- **2026-11-04 — approved numeric values.** The owner-approved Option A values supersede the provisional `1e-6` references in this draft: invariance/equality `1e-9`, orbit/pan minimum `0.05`, zoom minimum `0.1`, settle `2000 ms`. See `SP-06_TOLERANCE_BASIS_AND_DECISION.md` §8 and `harness/runner/sp06/config.js`.
 
 ## 1. Objective
 
@@ -74,7 +79,7 @@ PROPOSED: The key requirement is that plain left-drag no longer orbits.
 ### A-05 (camera navigation in right-handed mode)
 
 A-05-P1: Orbit changes `alpha` and/or `beta` by a non-zero amount when the orbit gesture is performed; `radius` and `target` are unchanged within tolerance.
-A-05-P2: Vertical orbit changes `beta`; horizontal orbit changes `alpha`; neither produces an axis inversion. **Quantitative check (M3):** rightward drag must increase `alpha`; downward drag must increase `beta`. If the sign is opposite, FAIL (axis inversion).
+A-05-P2: Vertical orbit changes `beta`; horizontal orbit changes `alpha`; neither produces an axis inversion. **Quantitative check (M3, amended 2026-11-04):** rightward drag must increase `alpha`; downward drag must **decrease** `beta` (Babylon 9.32.1 convention). If either sign is opposite, FAIL (axis inversion).
 A-05-P3: Pan changes `target.x/y/z`; `radius` is unchanged within tolerance.
 A-05-P4: Zoom changes `radius`; `target` is unchanged within tolerance.
 A-05-P5: Orbit, pan, and zoom all work after the input-map edit (left click no longer orbits).
@@ -152,7 +157,7 @@ All scenarios include a settle delay after the gesture: wait until `camera.movem
 ### S-03 Orbit vertical
 - Action: Orbit gesture vertically.
 - Expected: `beta` changes; `alpha`, `radius`, `target` unchanged within tolerance.
-- PASS: |Δbeta| > 0.05 rad with correct sign (downward drag increases beta); |Δalpha| ≤ 1e-6; |Δradius| ≤ 1e-6; |Δtarget| ≤ 1e-6.
+- PASS: |Δbeta| > 0.05 rad with correct sign (downward drag decreases beta, per the 2026-11-04 amendment); |Δalpha| ≤ 1e-9; |Δradius| ≤ 1e-9; |Δtarget| ≤ 1e-9.
 - Edge: beta must remain finite (no NaN); clamp range verified.
 
 ### S-04 Pan horizontal

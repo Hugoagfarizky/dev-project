@@ -85,10 +85,36 @@ const INPUT_MAP = Object.freeze({
   })
 });
 
+// Beta sign convention for S-03 / A-05-P2.
+//
+// The original written procedure expected a downward drag to increase beta.
+// The 2026-11-04 official run showed that Babylon.js 9.32.1 decreases beta on
+// downward pointer motion, and the Project Owner authorised amending the
+// written expectation to the engine convention. `amended` is therefore the
+// official default. `legacy` exists only to reproduce the pre-amendment
+// expectation; it never produces official PASS evidence.
+const SIGN_CONVENTION = Object.freeze({
+  default: 'amended',
+  amended: Object.freeze({
+    id: 'amended',
+    expectedSign: -1,
+    description: 'downward drag decreases beta (Babylon 9.32.1 convention; owner-amended 2026-11-04)'
+  }),
+  legacy: Object.freeze({
+    id: 'legacy',
+    expectedSign: 1,
+    description: 'downward drag increases beta (superseded written expectation)'
+  }),
+  aliases: Object.freeze({
+    babylon: 'amended',
+    procedure: 'legacy'
+  })
+});
+
 const RUNNER = Object.freeze({
   name: 'simuforge-sp06-official',
-  version: '1.0.0',
-  configVersion: 'sp06-official-config-1',
+  version: '1.1.0',
+  configVersion: 'sp06-official-config-2',
   inputLogSchemaVersion: '1.0.0',
   resultsSchemaVersion: '1.0.0'
 });
@@ -99,5 +125,6 @@ module.exports = {
   SCREENSHOTS,
   GESTURES,
   INPUT_MAP,
+  SIGN_CONVENTION,
   RUNNER
 };

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "sp06-official-2026-11-04T09-26-01-934Z-374471",
+  "checkedAt": "2026-11-04T09:28:25.466Z",
+  "manifest": "sp-06_evidence_manifest.json",
+  "manifestSha256": "70a94a71bf1a7cc9a4028fbfbb99ea941fdb5ca87d1137171493ad1925eb2a93",
+  "fileCount": 12,
+  "verified": true,
+  "mismatches": []
+}
