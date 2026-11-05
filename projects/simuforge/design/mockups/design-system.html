@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SimuForge — Design system reference</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-cube" viewBox="0 0 16 16"><path d="M8 1.7 13.3 4.6v6.8L8 14.3 2.7 11.4V4.6Z"/><path d="M8 1.7v6.6M2.7 4.6 8 8.3l5.3-3.7"/></symbol>
+  <symbol id="i-sphere" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.4"/><ellipse cx="8" cy="8" rx="2.4" ry="5.4"/><path d="M2.6 8h10.8"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 16 16"><path d="m2.2 11 5.8-6 5.8 3-5.8 6Z"/></symbol>
+  <symbol id="i-hierarchy" viewBox="0 0 16 16"><rect x="2" y="2" width="4" height="4" rx=".6"/><rect x="10" y="10" width="4" height="4" rx=".6"/><path d="M4 6v4h6"/></symbol>
+  <symbol id="i-assets" viewBox="0 0 16 16"><path d="M2 5.2 8 2l6 3.2L8 8.4Z"/><path d="M2 5.2v5.6L8 14l6-3.2V5.2M8 8.4V14"/></symbol>
+  <symbol id="i-inspector" viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M5.2 5h5.6M5.2 8h5.6M5.2 11h3.4"/></symbol>
+  <symbol id="i-logic" viewBox="0 0 16 16"><circle cx="4" cy="4" r="1.8"/><circle cx="12" cy="12" r="1.8"/><path d="M5.8 4H10v6h.2"/></symbol>
+  <symbol id="i-python" viewBox="0 0 16 16"><path d="M5.2 3.2 2.2 8l3 4.8M10.8 3.2l3 4.8-3 4.8M9.2 2.6 6.8 13.4"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="8.5" rx="1"/><path d="M5 14h6M4.2 8.2l2-2.2 2 2.8 2-3.6 1.6 2.4"/></symbol>
+  <symbol id="i-console" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="m4.3 6 2 2-2 2M8.4 10h3.2"/></symbol>
+  <symbol id="i-play" viewBox="0 0 16 16"><path d="M5 3.2 13 8l-8 4.8Z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 16 16"><path d="M5.2 3.4v9.2M10.8 3.4v9.2"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 16 16"><rect x="4" y="4" width="8" height="8" rx=".8"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 16 16"><path d="M13 8a5 5 0 1 1-1.4-3.5"/><path d="M11.4 2.4v2.4H9"/></symbol>
+  <symbol id="i-save" viewBox="0 0 16 16"><path d="M3 2.4h7.2L13.6 6v7.6H3Z"/><path d="M5.2 2.4v3.4h4.6V2.4M5.2 13.6V9.4h5.6v4.2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.2"/><path d="m10.2 10.2 3.2 3.2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 16 16"><path d="m6 4 4 4-4 4"/></symbol>
+  <symbol id="i-more" viewBox="0 0 16 16"><circle cx="3.4" cy="8" r=".9" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r=".9" fill="currentColor" stroke="none"/><circle cx="12.6" cy="8" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 16 16"><rect x="4" y="7" width="8" height="6.6" rx="1"/><path d="M5.6 7V5.2a2.4 2.4 0 0 1 4.8 0V7"/></symbol>
+  <symbol id="i-warning" viewBox="0 0 16 16"><path d="M8 2.4 14 13H2Z"/><path d="M8 6.2v3.1"/><circle cx="8" cy="11.2" r=".6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 7.2v4"/><circle cx="8" cy="4.8" r=".6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-error" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="m5.8 5.8 4.4 4.4M10.2 5.8l-4.4 4.4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="m3 8.4 3.4 3.2L13 4.4"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 16 16"><path d="M2.4 6h11.2M2.4 10h11.2M6 2.4v11.2M10 2.4v11.2"/></symbol>
+  <symbol id="i-frame" viewBox="0 0 16 16"><path d="M2.6 6V2.6H6M10 2.6h3.4V6M13.4 10v3.4H10M6 13.4H2.6V10"/></symbol>
+  <symbol id="i-move" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12M8 2 6.4 3.6M8 2l1.6 1.6M8 14l-1.6-1.6M8 14l1.6-1.6M2 8l1.6-1.6M2 8l1.6 1.6M14 8l-1.6-1.6M14 8l-1.6 1.6"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 16 16"><path d="M13.2 6.2A5.4 5.4 0 1 0 13.4 10"/><path d="M13.2 2.6v3.6H9.6"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 16 16"><path d="M3 13 13 3M9 3h4v4"/><rect x="3" y="10" width="3" height="3" rx=".4"/></symbol>
+  <symbol id="i-cursor" viewBox="0 0 16 16"><path d="m4 2 8 6-3.6.8L10 13l-2 .8-1.6-4.2L4 12Z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 16 16"><path d="M1.8 8s2.4-4 6.2-4 6.2 4 6.2 4-2.4 4-6.2 4-6.2-4-6.2-4Z"/><circle cx="8" cy="8" r="1.8"/></symbol>
+  <symbol id="i-package" viewBox="0 0 16 16"><path d="M2.4 5 8 2l5.6 3L8 8Z"/><path d="M2.4 5v6L8 14l5.6-3V5M8 8v6"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 16 16"><path d="M1.8 8h3l1.4-4 2.6 8 1.6-4h3.8"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.4V8l2.4 1.6"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 16 16"><path d="M2.4 12a6 6 0 1 1 11.2 0"/><path d="m8 9 3-3"/><circle cx="8" cy="9" r=".7" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 16 16"><path d="M5.4 2.4h5.2M6.4 2.4v3.8L4.2 9.4h7.6L9.6 6.2V2.4M8 9.4v4"/></symbol>
+  <symbol id="i-help" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M6.2 6.2A1.9 1.9 0 0 1 9.9 7c0 1.4-1.9 1.5-1.9 2.8"/><circle cx="8" cy="11.8" r=".55" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-maximize" viewBox="0 0 16 16"><path d="M6 2.6H2.6V6M10 2.6h3.4V6M13.4 10v3.4H10M6 13.4H2.6V10"/></symbol>
+  <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.4 9.6 9.6 6.4M5.2 11.6l-1 .9a2.5 2.5 0 0 1-3.5-3.5l2.2-2.2a2.5 2.5 0 0 1 3.5 0M10.8 4.4l1-.9a2.5 2.5 0 0 1 3.5 3.5l-2.2 2.2a2.5 2.5 0 0 1-3.5 0"/></symbol>
+  <symbol id="i-external" viewBox="0 0 16 16"><path d="M9 2.6h4.4V7M13.4 2.6 7.6 8.4"/><path d="M12 9.6v3.2a.6.6 0 0 1-.6.6H3.2a.6.6 0 0 1-.6-.6V4.6a.6.6 0 0 1 .6-.6h3.2"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.2"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2M3.8 3.8l1.4 1.4M10.8 10.8l1.4 1.4M12.2 3.8l-1.4 1.4M5.2 10.8l-1.4 1.4"/></symbol>
+  <symbol id="i-close" viewBox="0 0 16 16"><path d="m4 4 8 8M12 4l-8 8"/></symbol>
+  <symbol id="i-panel" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M9.4 3v10"/></symbol>
+</svg>
+
+<div class="page">
+  <div class="ds-page">
+    <div class="ds-hero">
+      <div>
+        <div class="mock-kicker"><span class="mock-chip">Static design mockup</span><span>Token reference</span></div>
+        <h1>Main Studio design system</h1>
+        <p>Dark-theme-first tokens and component states for the Studio. This page is a review artifact built from <code>tokens.css</code>; it is not a production component library.</p>
+      </div>
+      <div class="mock-links"><a href="index.html">All mockups</a><a href="build-populated.html">Build workspace</a></div>
+    </div>
+
+    <!-- Color -->
+    <section class="ds-section">
+      <h2>1. Color</h2>
+      <p class="intro">Primitive and semantic surfaces. Runtime colors are reserved for runtime state and must not be used for authored selection.</p>
+      <div class="swatches">
+        <div class="swatch"><div class="color" style="background:#0A0E14"></div><div class="meta"><span class="name">bg-app</span><span class="hex">#0A0E14</span></div></div>
+        <div class="swatch"><div class="color" style="background:#0E131B"></div><div class="meta"><span class="name">bg-canvas</span><span class="hex">#0E131B</span></div></div>
+        <div class="swatch"><div class="color" style="background:#121823"></div><div class="meta"><span class="name">bg-panel</span><span class="hex">#121823</span></div></div>
+        <div class="swatch"><div class="color" style="background:#151D2A"></div><div class="meta"><span class="name">bg-input</span><span class="hex">#151D2A</span></div></div>
+        <div class="swatch"><div class="color" style="background:#192231"></div><div class="meta"><span class="name">bg-raised</span><span class="hex">#192231</span></div></div>
+        <div class="swatch"><div class="color" style="background:#202B3D"></div><div class="meta"><span class="name">bg-hover</span><span class="hex">#202B3D</span></div></div>
+        <div class="swatch"><div class="color" style="background:#2A3648"></div><div class="meta"><span class="name">bg-active</span><span class="hex">#2A3648</span></div></div>
+        <div class="swatch"><div class="color" style="background:#243044"></div><div class="meta"><span class="name">border-subtle</span><span class="hex">#243044</span></div></div>
+        <div class="swatch"><div class="color" style="background:#334158"></div><div class="meta"><span class="name">border-strong</span><span class="hex">#334158</span></div></div>
+        <div class="swatch"><div class="color" style="background:#E8EEF7"></div><div class="meta"><span class="name">text-primary</span><span class="hex">#E8EEF7</span></div></div>
+        <div class="swatch"><div class="color" style="background:#A7B4C8"></div><div class="meta"><span class="name">text-secondary</span><span class="hex">#A7B4C8</span></div></div>
+        <div class="swatch"><div class="color" style="background:#78879E"></div><div class="meta"><span class="name">text-tertiary</span><span class="hex">#78879E</span></div></div>
+        <div class="swatch"><div class="color" style="background:#F08A4B"></div><div class="meta"><span class="name">accent</span><span class="hex">#F08A4B</span></div></div>
+        <div class="swatch"><div class="color" style="background:#56B4FF"></div><div class="meta"><span class="name">selection</span><span class="hex">#56B4FF</span></div></div>
+        <div class="swatch"><div class="color" style="background:#3DDC97"></div><div class="meta"><span class="name">success</span><span class="hex">#3DDC97</span></div></div>
+        <div class="swatch"><div class="color" style="background:#F2C14E"></div><div class="meta"><span class="name">warning</span><span class="hex">#F2C14E</span></div></div>
+        <div class="swatch"><div class="color" style="background:#FF6B6B"></div><div class="meta"><span class="name">danger</span><span class="hex">#FF6B6B</span></div></div>
+        <div class="swatch"><div class="color" style="background:#5B9DFF"></div><div class="meta"><span class="name">info / axis-z</span><span class="hex">#5B9DFF</span></div></div>
+      </div>
+      <p class="note">Axis colors: X <code>#FF6B6B</code>, Y <code>#78D96B</code>, Z <code>#5B9DFF</code>. Axis color is never the only selection cue.</p>
+    </section>
+
+    <!-- Runtime states -->
+    <section class="ds-section">
+      <h2>2. Runtime states</h2>
+      <p class="intro">State is communicated by a pill, the runtime bar, and the transport — never by color alone.</p>
+      <div class="state-card">
+        <div class="state-pill-row">
+          <span class="state-pill"><span class="dot"></span>Editing</span>
+          <span class="state-pill preparing"><span class="dot"></span>Preparing</span>
+          <span class="state-pill running live"><span class="dot"></span>Running</span>
+          <span class="state-pill paused"><span class="dot"></span>Paused</span>
+          <span class="state-pill stopped"><span class="dot"></span>Stopped</span>
+        </div>
+        <p class="note">Editing: authored state is writable. Preparing: lock begins. Running: live values. Paused: runtime frozen. Stopped: transient handoff back to Editing.</p>
+      </div>
+    </section>
+
+    <!-- Typography -->
+    <section class="ds-section">
+      <h2>3. Typography</h2>
+      <p class="intro">Inter for the interface, JetBrains Mono for values, code, and time. Numeric values use tabular figures.</p>
+      <div class="type-row"><div class="sample specimen-32">Build a world</div><div class="spec">32 / 40 · 600</div></div>
+      <div class="type-row"><div class="sample specimen-24">Simulation Monitor</div><div class="spec">24 / 32 · 600</div></div>
+      <div class="type-row"><div class="sample specimen-18">World Hierarchy</div><div class="spec">18 / 26 · 600</div></div>
+      <div class="type-row"><div class="sample specimen-15">Panel title · entity name</div><div class="spec">15 / 22 · 500</div></div>
+      <div class="type-row"><div class="sample specimen-13">Inspector section label and body copy</div><div class="spec">13 / 20 · 400</div></div>
+      <div class="type-row"><div class="sample specimen-12">Hierarchy row · menu item · button label</div><div class="spec">12 / 18 · 400–600</div></div>
+      <div class="type-row"><div class="sample specimen-11">Group label · status bar · metadata</div><div class="spec">11 / 16 · 600</div></div>
+      <div class="type-row"><div class="sample mono" style="font-size:11px">0.000  ·  3.8 m/s  ·  00:12.4</div><div class="spec">mono / 18 · 400</div></div>
+    </section>
+
+    <!-- Spacing and sizing -->
+    <section class="ds-section">
+      <h2>4. Spacing and sizing</h2>
+      <p class="intro">A 2 px base grid, with 4 px as the normal rhythm. Rows are compact because the Studio is a tool, not a marketing page.</p>
+      <div class="ds-grid two">
+        <div class="ds-card">
+          <h3>Spacing scale</h3>
+          <div class="spacing-strip">
+            <div class="spacing-item"><div class="spacing-bar" style="width:2px;height:2px"></div>2</div>
+            <div class="spacing-item"><div class="spacing-bar" style="width:4px;height:4px"></div>4</div>
+            <div class="spacing-item"><div class="spacing-bar" style="width:8px;height:8px"></div>8</div>
+            <div class="spacing-item"><div class="spacing-bar" style="width:12px;height:12px"></div>12</div>
+            <div class="spacing-item"><div class="spacing-bar" style="width:16px;height:16px"></div>16</div>
+            <div class="spacing-item"><div class="spacing-bar" style="width:24px;height:24px"></div>24</div>
+            <div class="spacing-item"><div class="spacing-bar" style="width:32px;height:32px"></div>32</div>
+            <div class="spacing-item"><div class="spacing-bar" style="width:48px;height:48px"></div>48</div>
+            <div class="spacing-item"><div class="spacing-bar" style="width:64px;height:64px"></div>64</div>
+          </div>
+          <p class="note">Panel padding 8–12 px. Section gaps 8–12 px. Overlay padding 16–18 px.</p>
+        </div>
+        <div class="ds-card">
+          <h3>Fixed heights</h3>
+          <table class="token-table">
+            <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+            <tbody>
+              <tr><td><code>top-bar</code></td><td>48 px</td><td>Global shell</td></tr>
+              <tr><td><code>runtime-bar</code></td><td>28 px</td><td>Runtime only</td></tr>
+              <tr><td><code>panel-header</code></td><td>32 px</td><td>All panels</td></tr>
+              <tr><td><code>console-collapsed</code></td><td>32 px</td><td>Drawer</td></tr>
+              <tr><td><code>console-open</code></td><td>200 px</td><td>Drawer</td></tr>
+              <tr><td><code>status-bar</code></td><td>24 px</td><td>Global shell</td></tr>
+              <tr><td><code>row-hierarchy</code></td><td>26 px</td><td>Tree row</td></tr>
+              <tr><td><code>row-list</code></td><td>28 px</td><td>List row</td></tr>
+              <tr><td><code>control-md</code></td><td>32 px</td><td>Default control</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Radius and elevation -->
+    <section class="ds-section">
+      <h2>5. Border, radius, elevation</h2>
+      <p class="intro">Radius communicates containment, not decoration. Elevation is reserved for overlays, popovers, and the empty-world card.</p>
+      <div class="swatches" style="grid-template-columns:repeat(4,1fr)">
+        <div class="state-card"><div style="height:46px;border:1px solid var(--sf-border-strong);border-radius:2px;background:var(--sf-bg-raised)"></div><p class="note">radius-xs · 2 px<br>chips, badges</p></div>
+        <div class="state-card"><div style="height:46px;border:1px solid var(--sf-border-strong);border-radius:4px;background:var(--sf-bg-raised)"></div><p class="note">radius-sm · 4 px<br>buttons, fields</p></div>
+        <div class="state-card"><div style="height:46px;border:1px solid var(--sf-border-strong);border-radius:6px;background:var(--sf-bg-raised)"></div><p class="note">radius-md · 6 px<br>panels, popovers</p></div>
+        <div class="state-card"><div style="height:46px;border:1px solid var(--sf-border-strong);border-radius:8px;background:var(--sf-bg-raised);box-shadow:0 16px 48px rgba(0,0,0,.55)"></div><p class="note">radius-lg · 8 px<br>overlays, elevation-3</p></div>
+      </div>
+      <p class="note">Elevation 1 is a 1 px separation for raised rows. Elevation 2 is menus and popovers. Elevation 3 is modal/overlay. No elevation on docked panels.</p>
+    </section>
+
+    <!-- Iconography -->
+    <section class="ds-section">
+      <h2>6. Iconography</h2>
+      <p class="intro">16 px stroke icons on a 1.5 px stroke, 24 px hit target. Icons are paired with text for any action that is not universally understood.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg class="icon"><use href="#i-cube"/></svg>Cube</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-sphere"/></svg>Sphere</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-plane"/></svg>Plane</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-hierarchy"/></svg>Hierarchy</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-assets"/></svg>Assets</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-inspector"/></svg>Inspector</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-logic"/></svg>Logic</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-python"/></svg>Python</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-monitor"/></svg>Monitor</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-console"/></svg>Console</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-play"/></svg>Run</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-pause"/></svg>Pause</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-stop"/></svg>Stop</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-reset"/></svg>Reset</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-save"/></svg>Save</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-search"/></svg>Search</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-move"/></svg>Move</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-rotate"/></svg>Rotate</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-scale"/></svg>Scale</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-grid"/></svg>Grid</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-frame"/></svg>Frame</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-lock"/></svg>Lock</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-warning"/></svg>Warning</div>
+        <div class="icon-cell"><svg class="icon"><use href="#i-error"/></svg>Error</div>
+      </div>
+    </section>
+
+    <!-- Buttons -->
+    <section class="ds-section">
+      <h2>7. Button hierarchy</h2>
+      <p class="intro">One primary action per surface. Run is the primary action in Editing; Pause is primary while Running; Stop is the explicit exit.</p>
+      <div class="ds-grid two">
+        <div class="ds-card">
+          <h3>Variants</h3>
+          <div class="button-row">
+            <button class="btn primary"><svg class="icon"><use href="#i-play"/></svg>Run</button>
+            <button class="btn">Secondary</button>
+            <button class="btn ghost">Ghost</button>
+            <button class="btn danger"><svg class="icon"><use href="#i-stop"/></svg>Stop</button>
+          </div>
+          <div class="button-row" style="margin-top:10px">
+            <button class="btn sm">Small</button>
+            <button class="btn sm" disabled>Disabled</button>
+            <button class="btn sm"><span class="spinner" style="width:11px;height:11px;border-width:1.5px"></span>Saving</button>
+          </div>
+          <p class="note">Loading buttons keep their width and label; the spinner replaces the leading icon. Destructive actions are never the default focus.</p>
+        </div>
+        <div class="ds-card">
+          <h3>Icon buttons and states</h3>
+          <div class="state-row">
+            <button class="icon-btn" aria-label="Default"><svg class="icon"><use href="#i-grid"/></svg></button>
+            <button class="icon-btn active" aria-label="Active"><svg class="icon"><use href="#i-grid"/></svg></button>
+            <button class="icon-btn" aria-label="Save"><svg class="icon"><use href="#i-save"/></svg></button>
+            <button class="icon-btn accent" aria-label="Accent"><svg class="icon"><use href="#i-plus"/></svg></button>
+            <button class="icon-btn danger" aria-label="Danger"><svg class="icon"><use href="#i-stop"/></svg></button>
+            <button class="icon-btn" disabled aria-label="Disabled"><svg class="icon"><use href="#i-pause"/></svg></button>
+          </div>
+          <div class="state-row">
+            <span class="state-label">Focus</span><span class="field focus" style="width:130px">0.000</span>
+            <span class="state-label">Read-only</span><span class="field readonly" style="width:130px">1.250</span>
+          </div>
+          <p class="note">Focus ring: 2 px selection-colored halo. Hover is surface-only; pressed adds the inset selection bar. Disabled is 38% opacity and non-interactive.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inputs -->
+    <section class="ds-section">
+      <h2>8. Inputs and controls</h2>
+      <p class="intro">Numeric fields commit on Enter or blur and revert on Esc. Inputs never change the world on each keystroke.</p>
+      <div class="ds-grid three">
+        <div class="ds-card">
+          <h3>Text and numeric</h3>
+          <div class="search" style="width:100%;margin-bottom:8px">Search objects…</div>
+          <div class="vector-row" style="grid-template-columns:18px 1fr">
+            <span class="axis-label axis-y">Y</span><div class="field">1.250</div>
+          </div>
+          <div class="vector-row" style="grid-template-columns:18px 1fr">
+            <span class="axis-label axis-y">Y</span><div class="field focus">1.250</div>
+          </div>
+          <div class="vector-row" style="grid-template-columns:18px 1fr">
+            <span class="axis-label axis-y">Y</span><div class="field readonly">1.250</div>
+          </div>
+          <div class="vector-row" style="grid-template-columns:18px 1fr">
+            <span class="axis-label axis-y">Y</span><div class="field" style="border-color:var(--sf-danger)">—</div>
+          </div>
+          <p class="note">Default · focus · read-only · invalid. Invalid shows a message, not only a red border.</p>
+        </div>
+        <div class="ds-card">
+          <h3>Selection controls</h3>
+          <div class="control-line"><span class="checkbox checked"><svg class="icon"><use href="#i-check"/></svg></span>Checked</div>
+          <div class="control-line"><span class="checkbox"></span>Unchecked</div>
+          <div class="control-line"><span class="switch on"></span>Enabled</div>
+          <div class="control-line"><span class="switch"></span>Disabled</div>
+          <div class="control-line"><span class="chip">Select</span><span class="chip planned">Planned</span><span class="chip runtime">Runtime</span></div>
+          <p class="note">Checkboxes and switches are 24 px hit targets even when visually smaller. A switch applies immediately and is undoable.</p>
+        </div>
+        <div class="ds-card">
+          <h3>Search and code</h3>
+          <div class="palette-search" style="width:100%">Search nodes…</div>
+          <div class="console-search" style="width:100%;margin-top:8px">Filter output…</div>
+          <div class="code" style="height:62px;margin-top:8px;border:1px solid var(--sf-border-subtle);border-radius:4px">
+            <div class="gutter" style="padding-top:4px">1<br>2</div>
+            <div class="code-lines" style="padding:4px 8px"><span class="kw">from</span> simuforge <span class="kw">import</span> world
+world.log(<span class="str">"ready"</span>)</div>
+          </div>
+          <p class="note">Search is incremental and local. Code uses the mono stack with 18 px line height.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panels and states -->
+    <section class="ds-section">
+      <h2>9. Panel states</h2>
+      <p class="intro">Panels have expanded, collapsed, loading, empty, error, and locked states. A collapsed panel keeps its header and a live summary.</p>
+      <div class="ds-grid three">
+        <div class="ds-card">
+          <h3>Expanded</h3>
+          <div class="panel-demo">
+            <div class="panel" style="height:100%">
+              <div class="panel-header"><div class="panel-title"><svg class="icon"><use href="#i-hierarchy"/></svg>World Hierarchy<span class="count-badge">3</span></div><div class="panel-actions"><button class="icon-btn" aria-label="Add"><svg class="icon"><use href="#i-plus"/></svg></button></div></div>
+              <div class="panel-body"><div class="tree"><div class="tree-row selected"><span class="type"><svg class="icon icon-sm"><use href="#i-sphere"/></svg></span><span class="name">Ball</span></div><div class="tree-row"><span class="type"><svg class="icon icon-sm"><use href="#i-cube"/></svg></span><span class="name">Launch Button</span></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ds-card">
+          <h3>Collapsed with summary</h3>
+          <div class="panel-demo" style="height:auto">
+            <div class="console-collapsed"><span class="console-title"><svg class="icon"><use href="#i-console"/></svg>Console</span><span class="latest">1 warning · 0 errors</span><span class="spacer"></span><button class="icon-btn" aria-label="Expand"><svg class="icon icon-sm"><use href="#i-chevron-down"/></svg></button></div>
+          </div>
+          <div class="panel-demo" style="height:auto;margin-top:8px">
+            <div class="program-collapsed"><svg class="icon"><use href="#i-logic"/></svg><span>Program</span><span class="summary">3 nodes · valid</span><span class="spacer"></span><button class="icon-btn" aria-label="Expand"><svg class="icon icon-sm"><use href="#i-chevron-down"/></svg></button></div>
+          </div>
+          <p class="note">Collapsed headers preserve awareness without stealing viewport space.</p>
+        </div>
+        <div class="ds-card">
+          <h3>Loading</h3>
+          <div class="panel-demo" style="height:auto;padding:14px">
+            <div class="control-line"><span class="spinner"></span>Preparing simulation…</div>
+            <div class="skeleton" style="margin-bottom:8px"></div>
+            <div class="skeleton short"></div>
+          </div>
+          <p class="note">Loading is indeterminate only when progress is unknown. Preparing shows the runtime bar, not a blocking spinner over the viewport.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feedback states -->
+    <section class="ds-section">
+      <h2>10. Empty, error, success</h2>
+      <p class="intro">Every state explains what happened, what it affects, and the next action. Error copy never blames the user.</p>
+      <div class="ds-grid two">
+        <div class="ds-card">
+          <h3>Empty</h3>
+          <div class="empty-demo empty">
+            <div class="empty-icon"><svg class="icon"><use href="#i-cube"/></svg></div>
+            <h3>No objects yet</h3>
+            <p>Add a primitive to start building your world.</p>
+            <div class="empty-actions"><button class="btn primary sm"><svg class="icon"><use href="#i-plus"/></svg>Add Cube</button><button class="btn sm">Sphere</button></div>
+          </div>
+        </div>
+        <div class="ds-card">
+          <h3>Error and success</h3>
+          <div class="banner error"><svg class="icon"><use href="#i-error"/></svg><div><strong>Graph could not run</strong>Node “Apply Force” has no target. Select a target entity, then run again. <a href="program-logic.html">Show node</a></div></div>
+          <div class="banner success" style="margin-top:8px"><svg class="icon"><use href="#i-check"/></svg><div><strong>Project saved</strong>Authored world and graph saved to this browser profile.</div></div>
+          <div class="banner warning" style="margin-top:8px"><svg class="icon"><use href="#i-warning"/></svg><div><strong>Runtime warning</strong>Frame time exceeded 16.6 ms once. Simulation continued.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data display -->
+    <section class="ds-section">
+      <h2>11. Data display</h2>
+      <p class="intro">Authored values, runtime values, and gated capabilities use different visual grammars.</p>
+      <div class="ds-grid three">
+        <div class="ds-card">
+          <h3>Chips</h3>
+          <div class="state-pill-row">
+            <span class="chip world">World</span>
+            <span class="chip local">Local</span>
+            <span class="chip runtime">Live</span>
+            <span class="chip lock">Locked</span>
+            <span class="chip planned">Planned</span>
+            <span class="chip">Default</span>
+          </div>
+          <p class="note">Planned uses a dashed border; it is never clickable as if implemented.</p>
+        </div>
+        <div class="ds-card">
+          <h3>Badges</h3>
+          <div class="control-line"><span class="count-badge">3</span><span class="mini-badge">P</span><span class="mini-badge logic">L</span><span class="mini-badge warn">!</span></div>
+          <p class="note">P = primitive, R = rigid body, L = has logic. Badges are secondary to the object name.</p>
+        </div>
+        <div class="ds-card">
+          <h3>Metrics</h3>
+          <div class="monitor-summary" style="margin:0">
+            <div class="metric green"><div class="label">Sim time</div><div class="value">12.4<span class="suffix">s</span></div></div>
+            <div class="metric"><div class="label">Frame rate</div><div class="value">60<span class="suffix">fps</span></div></div>
+          </div>
+          <p class="note">Metric values use tabular figures. Runtime metrics are not editable fields.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Motion and accessibility -->
+    <section class="ds-section">
+      <h2>12. Motion and accessibility</h2>
+      <div class="ds-grid two">
+        <div class="ds-card">
+          <h3>Motion</h3>
+          <table class="token-table">
+            <tbody>
+              <tr><td><code>instant</code></td><td>0 ms</td><td>Selection, typing</td></tr>
+              <tr><td><code>fast</code></td><td>120 ms</td><td>Hover, focus</td></tr>
+              <tr><td><code>base</code></td><td>180 ms</td><td>Panel expand</td></tr>
+              <tr><td><code>slow</code></td><td>240 ms</td><td>Drawer, overlay</td></tr>
+            </tbody>
+          </table>
+          <p class="note">Respect <code>prefers-reduced-motion</code>: replace panel and drawer transitions with instant state changes; keep the runtime pulse optional.</p>
+        </div>
+        <div class="ds-card">
+          <h3>Accessibility rules</h3>
+          <div class="control-line"><svg class="icon" style="color:var(--sf-success)"><use href="#i-check"/></svg>Visible focus on every interactive element.</div>
+          <div class="control-line"><svg class="icon" style="color:var(--sf-success)"><use href="#i-check"/></svg>State conveyed by text, shape, and color.</div>
+          <div class="control-line"><svg class="icon" style="color:var(--sf-success)"><use href="#i-check"/></svg>Minimum 24 px hit target; 28 px preferred.</div>
+          <div class="control-line"><svg class="icon" style="color:var(--sf-success)"><use href="#i-check"/></svg>No color-only selection or error cue.</div>
+          <div class="control-line"><svg class="icon" style="color:var(--sf-success)"><use href="#i-check"/></svg>Runtime changes announced, not focus-stealing.</div>
+          <p class="note">Contrast targets: body text 4.5:1, large text 3:1, non-text UI 3:1. Disabled text is exempt but must remain legible.</p>
+        </div>
+      </div>
+    </section>
+
+    <p class="note" style="margin-top:28px">Token source: <code>tokens.css</code>. Component rules: <code>../DESIGN_SYSTEM_SPECIFICATION.md</code>. This page is a static reference and does not ship with the product.</p>
+  </div>
+</div>
+</body>
+</html>

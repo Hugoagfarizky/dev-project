@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SimuForge — Build workspace (empty world)</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-cube" viewBox="0 0 16 16"><path d="M8 1.7 13.3 4.6v6.8L8 14.3 2.7 11.4V4.6Z"/><path d="M8 1.7v6.6M2.7 4.6 8 8.3l5.3-3.7"/></symbol>
+  <symbol id="i-sphere" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.4"/><ellipse cx="8" cy="8" rx="2.4" ry="5.4"/><path d="M2.6 8h10.8"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 16 16"><path d="m2.2 11 5.8-6 5.8 3-5.8 6Z"/></symbol>
+  <symbol id="i-hierarchy" viewBox="0 0 16 16"><rect x="2" y="2" width="4" height="4" rx=".6"/><rect x="10" y="10" width="4" height="4" rx=".6"/><path d="M4 6v4h6"/></symbol>
+  <symbol id="i-assets" viewBox="0 0 16 16"><path d="M2 5.2 8 2l6 3.2L8 8.4Z"/><path d="M2 5.2v5.6L8 14l6-3.2V5.2M8 8.4V14"/></symbol>
+  <symbol id="i-inspector" viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M5.2 5h5.6M5.2 8h5.6M5.2 11h3.4"/></symbol>
+  <symbol id="i-logic" viewBox="0 0 16 16"><circle cx="4" cy="4" r="1.8"/><circle cx="12" cy="12" r="1.8"/><path d="M5.8 4H10v6h.2"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="8.5" rx="1"/><path d="M5 14h6M4.2 8.2l2-2.2 2 2.8 2-3.6 1.6 2.4"/></symbol>
+  <symbol id="i-console" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="m4.3 6 2 2-2 2M8.4 10h3.2"/></symbol>
+  <symbol id="i-play" viewBox="0 0 16 16"><path d="M5 3.2 13 8l-8 4.8Z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 16 16"><path d="M5.2 3.4v9.2M10.8 3.4v9.2"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 16 16"><rect x="4" y="4" width="8" height="8" rx=".8"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 16 16"><path d="M13 8a5 5 0 1 1-1.4-3.5"/><path d="M11.4 2.4v2.4H9"/></symbol>
+  <symbol id="i-save" viewBox="0 0 16 16"><path d="M3 2.4h7.2L13.6 6v7.6H3Z"/><path d="M5.2 2.4v3.4h4.6V2.4M5.2 13.6V9.4h5.6v4.2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.2"/><path d="m10.2 10.2 3.2 3.2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4"/></symbol>
+  <symbol id="i-more" viewBox="0 0 16 16"><circle cx="3.4" cy="8" r=".9" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r=".9" fill="currentColor" stroke="none"/><circle cx="12.6" cy="8" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 16 16"><path d="M2.4 6h11.2M2.4 10h11.2M6 2.4v11.2M10 2.4v11.2"/></symbol>
+  <symbol id="i-frame" viewBox="0 0 16 16"><path d="M2.6 6V2.6H6M10 2.6h3.4V6M13.4 10v3.4H10M6 13.4H2.6V10"/></symbol>
+  <symbol id="i-move" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12M8 2 6.4 3.6M8 2l1.6 1.6M8 14l-1.6-1.6M8 14l1.6-1.6M2 8l1.6-1.6M2 8l1.6 1.6M14 8l-1.6-1.6M14 8l-1.6 1.6"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 16 16"><path d="M13.2 6.2A5.4 5.4 0 1 0 13.4 10"/><path d="M13.2 2.6v3.6H9.6"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 16 16"><path d="M3 13 13 3M9 3h4v4"/><rect x="3" y="10" width="3" height="3" rx=".4"/></symbol>
+  <symbol id="i-cursor" viewBox="0 0 16 16"><path d="m4 2 8 6-3.6.8L10 13l-2 .8-1.6-4.2L4 12Z"/></symbol>
+  <symbol id="i-help" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M6.2 6.2A1.9 1.9 0 0 1 9.9 7c0 1.4-1.9 1.5-1.9 2.8"/><circle cx="8" cy="11.8" r=".55" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 16 16"><path d="M1.8 8s2.4-4 6.2-4 6.2 4 6.2 4-2.4 4-6.2 4-6.2-4-6.2-4Z"/><circle cx="8" cy="8" r="1.8"/></symbol>
+  <symbol id="i-info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 7.2v4"/><circle cx="8" cy="4.8" r=".6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="m3 8.4 3.4 3.2L13 4.4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.4V8l2.4 1.6"/></symbol>
+</svg>
+
+<div class="page">
+  <div class="mock-head">
+    <div>
+      <div class="mock-kicker"><span class="mock-chip">Static design mockup</span><span>Not production UI</span></div>
+      <h1 class="mock-title">Build workspace — empty world</h1>
+      <p class="mock-sub">A new world is empty by design. The viewport overlay is an editor affordance, not a world entity, and disappears after the first object is added.</p>
+    </div>
+    <div class="mock-links"><a href="index.html">All mockups</a><a href="build-populated.html">Populated world</a><a href="program-logic.html">Program</a></div>
+  </div>
+
+  <div class="stage">
+    <div class="app">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark"><svg class="icon"><use href="#i-cube"/></svg></div>
+          <div><span class="brand-name">SimuForge</span><span class="brand-tag">Build. Program. Simulate.</span></div>
+        </div>
+        <nav class="menu" aria-label="Main menu">
+          <button class="menu-item">File</button>
+          <button class="menu-item">Edit</button>
+          <button class="menu-item">View</button>
+          <button class="menu-item">Simulation</button>
+          <button class="menu-item">Help</button>
+        </nav>
+        <div class="divider-v"></div>
+        <div class="project">
+          <span class="dirty-dot" title="Unsaved changes"></span>
+          <span class="project-name">Untitled World</span>
+          <span class="save-state">Unsaved</span>
+          <svg class="icon icon-sm muted"><use href="#i-chevron-down"/></svg>
+        </div>
+        <div class="top-center">
+          <div class="preset" role="tablist" aria-label="Workspace preset">
+            <button class="preset-btn active"><svg class="icon"><use href="#i-hierarchy"/></svg>Build</button>
+            <button class="preset-btn"><svg class="icon"><use href="#i-logic"/></svg>Program</button>
+            <button class="preset-btn"><svg class="icon"><use href="#i-monitor"/></svg>Simulate</button>
+          </div>
+        </div>
+        <div class="top-right">
+          <span class="state-pill"><span class="dot"></span>Editing</span>
+          <div class="transport">
+            <button class="btn primary run" disabled title="Add an object before running"><svg class="icon"><use href="#i-play"/></svg>Run</button>
+            <button class="icon-btn" disabled aria-label="Pause"><svg class="icon"><use href="#i-pause"/></svg></button>
+            <button class="icon-btn" disabled aria-label="Stop"><svg class="icon"><use href="#i-stop"/></svg></button>
+            <button class="icon-btn" disabled aria-label="Reset"><svg class="icon"><use href="#i-reset"/></svg></button>
+          </div>
+          <div class="divider-v"></div>
+          <button class="icon-btn" aria-label="Save"><svg class="icon"><use href="#i-save"/></svg></button>
+          <button class="icon-btn" aria-label="Help"><svg class="icon"><use href="#i-help"/></svg></button>
+        </div>
+      </header>
+
+      <main class="main">
+        <!-- Left dock -->
+        <aside class="left-dock">
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><svg class="icon"><use href="#i-hierarchy"/></svg>World Hierarchy<span class="count-badge">0</span></div>
+              <div class="panel-actions">
+                <button class="icon-btn" aria-label="Add object"><svg class="icon"><use href="#i-plus"/></svg></button>
+                <button class="icon-btn" aria-label="More"><svg class="icon"><use href="#i-more"/></svg></button>
+              </div>
+            </div>
+            <div class="hier-toolbar">
+              <div class="search"><svg class="icon icon-sm"><use href="#i-search"/></svg>Search objects…</div>
+              <button class="icon-btn" disabled aria-label="Filter"><svg class="icon icon-sm"><use href="#i-grid"/></svg></button>
+            </div>
+            <div class="panel-body">
+              <div class="empty">
+                <div class="empty-icon"><svg class="icon"><use href="#i-cube"/></svg></div>
+                <h3>No objects yet</h3>
+                <p>Add a primitive to start building your world. Every object appears here.</p>
+                <div class="empty-actions">
+                  <button class="btn primary sm"><svg class="icon"><use href="#i-plus"/></svg>Add Cube</button>
+                  <button class="btn sm">Sphere</button>
+                  <button class="btn sm">Plane</button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="splitter"></div>
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><svg class="icon"><use href="#i-assets"/></svg>Asset Library</div>
+              <div class="panel-actions">
+                <button class="icon-btn" aria-label="Search assets"><svg class="icon"><use href="#i-search"/></svg></button>
+                <button class="icon-btn" aria-label="More"><svg class="icon"><use href="#i-more"/></svg></button>
+              </div>
+            </div>
+            <div class="panel-body asset-body">
+              <div class="asset-cats">
+                <button class="asset-cat active">Primitives</button>
+                <button class="asset-cat">Project</button>
+                <button class="asset-cat">Materials</button>
+              </div>
+              <div class="asset-grid">
+                <div class="asset-card"><div class="asset-preview"><svg class="icon"><use href="#i-cube"/></svg></div><div class="asset-label">Cube</div></div>
+                <div class="asset-card"><div class="asset-preview"><svg class="icon"><use href="#i-sphere"/></svg></div><div class="asset-label">Sphere</div></div>
+                <div class="asset-card"><div class="asset-preview"><svg class="icon"><use href="#i-plane"/></svg></div><div class="asset-label">Plane</div></div>
+              </div>
+              <p class="note">Drag a primitive into the viewport, or select it to add it at the origin.</p>
+            </div>
+          </section>
+        </aside>
+
+        <div class="splitter"></div>
+
+        <!-- Center -->
+        <div class="center program-strip">
+          <section class="viewport">
+            <svg class="viewport-canvas" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <radialGradient id="emptyBg" cx="52%" cy="42%" r="70%">
+                  <stop offset="0" stop-color="#182232"/><stop offset=".55" stop-color="#0E131B"/><stop offset="1" stop-color="#080C12"/>
+                </radialGradient>
+              </defs>
+              <rect width="900" height="700" fill="url(#emptyBg)"/>
+              <polygon points="70,486 450,350 830,486 450,622" fill="#141D2B" stroke="#2B3A50" stroke-width="1"/>
+              <g stroke="#2B3A50" stroke-width="1" opacity=".7">
+                <path d="M106 476 420 372M142 496 464 386M178 516 508 400M214 536 552 414M250 556 596 428M286 576 640 442M322 596 684 456"/>
+                <path d="M794 476 480 372M758 496 436 386M722 516 392 400M686 536 348 414M650 556 304 428M614 576 260 442M578 596 216 456"/>
+                <path d="M70 486 450 622 830 486M450 350v272"/>
+              </g>
+              <g stroke-width="1.5" opacity=".45">
+                <path d="M450 350 450 622" stroke="#5B9DFF"/>
+                <path d="M70 486 450 350" stroke="#FF6B6B"/>
+                <path d="M450 350 830 486" stroke="#78D96B"/>
+              </g>
+            </svg>
+
+            <div class="viewport-toolbar">
+              <div class="vt-group">
+                <button class="vt-btn" aria-label="Select"><svg class="icon"><use href="#i-cursor"/></svg></button>
+                <button class="vt-btn" aria-label="Move" disabled><svg class="icon"><use href="#i-move"/></svg></button>
+                <button class="vt-btn" aria-label="Rotate" disabled><svg class="icon"><use href="#i-rotate"/></svg></button>
+                <button class="vt-btn" aria-label="Scale" disabled><svg class="icon"><use href="#i-scale"/></svg></button>
+              </div>
+              <div class="vt-sep"></div>
+              <span class="vt-label">Space <span class="chip world">World</span></span>
+              <div class="vt-sep"></div>
+              <button class="vt-btn active"><svg class="icon"><use href="#i-grid"/></svg>Grid</button>
+              <button class="vt-btn" disabled><svg class="icon"><use href="#i-frame"/></svg>Frame</button>
+              <div class="vt-spacer"></div>
+              <span class="vt-label">Perspective <svg class="icon icon-sm"><use href="#i-chevron-down"/></svg></span>
+            </div>
+
+            <div class="empty-world-card">
+              <div class="kicker"><svg class="icon icon-sm"><use href="#i-info"/></svg>Empty world</div>
+              <h2>Start with one object</h2>
+              <p>Your world has no entities yet. Add a primitive, then select it to edit its transform in the Inspector.</p>
+              <div class="empty-actions">
+                <button class="btn primary"><svg class="icon"><use href="#i-plus"/></svg>Add Cube</button>
+                <button class="btn">Add Sphere</button>
+                <button class="btn">Add Plane</button>
+              </div>
+              <p class="note">Cube is the default first object. It is placed at the origin on the ground plane.</p>
+            </div>
+
+            <svg class="axis-helper" viewBox="0 0 56 56" aria-hidden="true">
+              <circle cx="28" cy="28" r="22" fill="rgba(10,14,20,.45)" stroke="rgba(51,65,88,.6)"/>
+              <g stroke-width="1.6" stroke-linecap="round">
+                <path d="M28 28 44 34" stroke="#FF6B6B"/><path d="m40 31 4 3-5 1" fill="#FF6B6B" stroke="none"/>
+                <path d="M28 28 28 10" stroke="#78D96B"/><path d="m25 14 3-4 3 4" fill="#78D96B" stroke="none"/>
+                <path d="M28 28 14 38" stroke="#5B9DFF"/><path d="m16 33-2 5 5-1" fill="#5B9DFF" stroke="none"/>
+              </g>
+              <g font-family="JetBrains Mono, Consolas, monospace" font-size="6" font-weight="600">
+                <text x="46" y="37" fill="#FF6B6B">X</text><text x="25" y="8" fill="#78D96B">Y</text><text x="9" y="42" fill="#5B9DFF">Z</text>
+              </g>
+            </svg>
+            <div class="nav-hint"><kbd>Alt</kbd> + drag orbit · <kbd>RMB</kbd> pan · wheel zoom · <kbd>F</kbd> frame</div>
+          </section>
+
+          <div class="splitter"></div>
+
+          <div class="program-collapsed">
+            <svg class="icon"><use href="#i-logic"/></svg>
+            <span>Program</span>
+            <span class="summary">No behavior yet · add an object to begin</span>
+            <span class="spacer"></span>
+            <button class="icon-btn" aria-label="Expand program dock"><svg class="icon icon-sm"><use href="#i-chevron-down"/></svg></button>
+          </div>
+        </div>
+
+        <div class="splitter"></div>
+
+        <!-- Right dock -->
+        <aside class="right-dock">
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><svg class="icon"><use href="#i-inspector"/></svg>Inspector</div>
+              <div class="panel-actions">
+                <button class="icon-btn" disabled aria-label="More"><svg class="icon"><use href="#i-more"/></svg></button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="empty">
+                <div class="empty-icon"><svg class="icon"><use href="#i-inspector"/></svg></div>
+                <h3>Nothing selected</h3>
+                <p>Select an object in the viewport or World Hierarchy to inspect its transform and components.</p>
+                <div class="empty-actions">
+                  <button class="btn sm"><svg class="icon"><use href="#i-cube"/></svg>Add Cube</button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="splitter"></div>
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><svg class="icon"><use href="#i-monitor"/></svg>Simulation Monitor</div>
+              <div class="panel-actions">
+                <span class="panel-sub">No active simulation</span>
+                <button class="icon-btn" aria-label="Expand monitor"><svg class="icon icon-sm"><use href="#i-chevron-down"/></svg></button>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </main>
+
+      <!-- Console -->
+      <section class="console-drawer">
+        <div class="console-collapsed">
+          <span class="console-title"><svg class="icon"><use href="#i-console"/></svg>Console</span>
+          <span class="latest">No output yet</span>
+          <span class="spacer"></span>
+          <button class="icon-btn" aria-label="Expand console"><svg class="icon icon-sm"><use href="#i-chevron-down"/></svg></button>
+        </div>
+      </section>
+
+      <footer class="statusbar">
+        <span class="item">Empty world</span>
+        <span class="item">0 entities</span>
+        <span class="item">Select tool</span>
+        <span class="item">Grid on</span>
+        <span class="spacer"></span>
+        <span class="item">No selection</span>
+        <span class="item">WebGL 2</span>
+        <span class="item">Ready</span>
+        <span class="item warn">Unsaved</span>
+      </footer>
+    </div>
+  </div>
+</div>
+</body>
+</html>

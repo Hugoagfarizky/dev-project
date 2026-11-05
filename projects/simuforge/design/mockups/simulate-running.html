@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SimuForge — Simulate workspace (running)</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-cube" viewBox="0 0 16 16"><path d="M8 1.7 13.3 4.6v6.8L8 14.3 2.7 11.4V4.6Z"/><path d="M8 1.7v6.6M2.7 4.6 8 8.3l5.3-3.7"/></symbol>
+  <symbol id="i-sphere" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.4"/><ellipse cx="8" cy="8" rx="2.4" ry="5.4"/><path d="M2.6 8h10.8"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 16 16"><path d="m2.2 11 5.8-6 5.8 3-5.8 6Z"/></symbol>
+  <symbol id="i-hierarchy" viewBox="0 0 16 16"><rect x="2" y="2" width="4" height="4" rx=".6"/><rect x="10" y="10" width="4" height="4" rx=".6"/><path d="M4 6v4h6"/></symbol>
+  <symbol id="i-assets" viewBox="0 0 16 16"><path d="M2 5.2 8 2l6 3.2L8 8.4Z"/><path d="M2 5.2v5.6L8 14l6-3.2V5.2M8 8.4V14"/></symbol>
+  <symbol id="i-inspector" viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M5.2 5h5.6M5.2 8h5.6M5.2 11h3.4"/></symbol>
+  <symbol id="i-logic" viewBox="0 0 16 16"><circle cx="4" cy="4" r="1.8"/><circle cx="12" cy="12" r="1.8"/><path d="M5.8 4H10v6h.2"/></symbol>
+  <symbol id="i-python" viewBox="0 0 16 16"><path d="M5.2 3.2 2.2 8l3 4.8M10.8 3.2l3 4.8-3 4.8M9.2 2.6 6.8 13.4"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="8.5" rx="1"/><path d="M5 14h6M4.2 8.2l2-2.2 2 2.8 2-3.6 1.6 2.4"/></symbol>
+  <symbol id="i-console" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="m4.3 6 2 2-2 2M8.4 10h3.2"/></symbol>
+  <symbol id="i-play" viewBox="0 0 16 16"><path d="M5 3.2 13 8l-8 4.8Z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 16 16"><path d="M5.2 3.4v9.2M10.8 3.4v9.2"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 16 16"><rect x="4" y="4" width="8" height="8" rx=".8"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 16 16"><path d="M13 8a5 5 0 1 1-1.4-3.5"/><path d="M11.4 2.4v2.4H9"/></symbol>
+  <symbol id="i-save" viewBox="0 0 16 16"><path d="M3 2.4h7.2L13.6 6v7.6H3Z"/><path d="M5.2 2.4v3.4h4.6V2.4M5.2 13.6V9.4h5.6v4.2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.2"/><path d="m10.2 10.2 3.2 3.2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 16 16"><path d="m6 4 4 4-4 4"/></symbol>
+  <symbol id="i-more" viewBox="0 0 16 16"><circle cx="3.4" cy="8" r=".9" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r=".9" fill="currentColor" stroke="none"/><circle cx="12.6" cy="8" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 16 16"><path d="M2.4 6h11.2M2.4 10h11.2M6 2.4v11.2M10 2.4v11.2"/></symbol>
+  <symbol id="i-frame" viewBox="0 0 16 16"><path d="M2.6 6V2.6H6M10 2.6h3.4V6M13.4 10v3.4H10M6 13.4H2.6V10"/></symbol>
+  <symbol id="i-move" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12M8 2 6.4 3.6M8 2l1.6 1.6M8 14l-1.6-1.6M8 14l1.6-1.6M2 8l1.6-1.6M2 8l1.6 1.6M14 8l-1.6-1.6M14 8l-1.6 1.6"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 16 16"><path d="M13.2 6.2A5.4 5.4 0 1 0 13.4 10"/><path d="M13.2 2.6v3.6H9.6"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 16 16"><path d="M3 13 13 3M9 3h4v4"/><rect x="3" y="10" width="3" height="3" rx=".4"/></symbol>
+  <symbol id="i-cursor" viewBox="0 0 16 16"><path d="m4 2 8 6-3.6.8L10 13l-2 .8-1.6-4.2L4 12Z"/></symbol>
+  <symbol id="i-help" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M6.2 6.2A1.9 1.9 0 0 1 9.9 7c0 1.4-1.9 1.5-1.9 2.8"/><circle cx="8" cy="11.8" r=".55" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 16 16"><path d="M1.8 8s2.4-4 6.2-4 6.2 4 6.2 4-2.4 4-6.2 4-6.2-4-6.2-4Z"/><circle cx="8" cy="8" r="1.8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="m3 8.4 3.4 3.2L13 4.4"/></symbol>
+  <symbol id="i-warning" viewBox="0 0 16 16"><path d="M8 2.4 14 13H2Z"/><path d="M8 6.2v3.1"/><circle cx="8" cy="11.2" r=".6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-error" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="m5.8 5.8 4.4 4.4M10.2 5.8l-4.4 4.4"/></symbol>
+  <symbol id="i-info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 7.2v4"/><circle cx="8" cy="4.8" r=".6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 16 16"><rect x="4" y="7" width="8" height="6.6" rx="1"/><path d="M5.6 7V5.2a2.4 2.4 0 0 1 4.8 0V7"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.4V8l2.4 1.6"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 16 16"><path d="M1.8 8h3l1.4-4 2.6 8 1.6-4h3.8"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 16 16"><path d="M2.4 12a6 6 0 1 1 11.2 0"/><path d="m8 9 3-3"/><circle cx="8" cy="9" r=".7" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-package" viewBox="0 0 16 16"><path d="M2.4 5 8 2l5.6 3L8 8Z"/><path d="M2.4 5v6L8 14l5.6-3V5M8 8v6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 16 16"><path d="M5.4 2.4h5.2M6.4 2.4v3.8L4.2 9.4h7.6L9.6 6.2V2.4M8 9.4v4"/></symbol>
+  <symbol id="i-external" viewBox="0 0 16 16"><path d="M9 2.6h4.4V7M13.4 2.6 7.6 8.4"/><path d="M12 9.6v3.2a.6.6 0 0 1-.6.6H3.2a.6.6 0 0 1-.6-.6V4.6a.6.6 0 0 1 .6-.6h3.2"/></symbol>
+  <symbol id="i-maximize" viewBox="0 0 16 16"><path d="M6 2.6H2.6V6M10 2.6h3.4V6M13.4 10v3.4H10M6 13.4H2.6V10"/></symbol>
+</svg>
+
+<div class="page">
+  <div class="mock-head">
+    <div>
+      <div class="mock-kicker"><span class="mock-chip">Static design mockup</span><span>Runtime state: Running</span></div>
+      <h1 class="mock-title">Simulate workspace — running</h1>
+      <p class="mock-sub">The Simulate preset promotes the Monitor and expands the Console. Authored values are read-only; runtime values are labelled and never overwrite the authored world.</p>
+    </div>
+    <div class="mock-links"><a href="index.html">All mockups</a><a href="build-populated.html">Build</a><a href="program-logic.html">Program</a></div>
+  </div>
+
+  <div class="stage">
+    <div class="app has-runtime console-open">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark"><svg class="icon"><use href="#i-cube"/></svg></div>
+          <div><span class="brand-name">SimuForge</span><span class="brand-tag">Build. Program. Simulate.</span></div>
+        </div>
+        <nav class="menu" aria-label="Main menu">
+          <button class="menu-item">File</button>
+          <button class="menu-item">Edit</button>
+          <button class="menu-item">View</button>
+          <button class="menu-item">Simulation</button>
+          <button class="menu-item">Help</button>
+        </nav>
+        <div class="divider-v"></div>
+        <div class="project">
+          <span class="project-name">Button &amp; Ball</span>
+          <span class="save-state"><svg class="icon icon-sm"><use href="#i-check"/></svg>Saved</span>
+          <svg class="icon icon-sm muted"><use href="#i-chevron-down"/></svg>
+        </div>
+        <div class="top-center">
+          <div class="preset" role="tablist" aria-label="Workspace preset">
+            <button class="preset-btn"><svg class="icon"><use href="#i-hierarchy"/></svg>Build</button>
+            <button class="preset-btn"><svg class="icon"><use href="#i-logic"/></svg>Program</button>
+            <button class="preset-btn active"><svg class="icon"><use href="#i-monitor"/></svg>Simulate</button>
+          </div>
+        </div>
+        <div class="top-right">
+          <span class="state-pill running live"><span class="dot"></span>Running</span>
+          <div class="transport">
+            <button class="icon-btn" disabled aria-label="Run"><svg class="icon"><use href="#i-play"/></svg></button>
+            <button class="btn primary run" aria-label="Pause"><svg class="icon"><use href="#i-pause"/></svg>Pause</button>
+            <button class="icon-btn danger" aria-label="Stop"><svg class="icon"><use href="#i-stop"/></svg></button>
+            <button class="icon-btn" aria-label="Reset"><svg class="icon"><use href="#i-reset"/></svg></button>
+          </div>
+          <div class="divider-v"></div>
+          <button class="icon-btn" aria-label="Save authored state"><svg class="icon"><use href="#i-save"/></svg></button>
+          <button class="icon-btn" aria-label="Help"><svg class="icon"><use href="#i-help"/></svg></button>
+        </div>
+      </header>
+
+      <!-- Runtime bar -->
+      <div class="runtime-bar">
+        <svg class="icon icon-sm lock"><use href="#i-lock"/></svg>
+        <strong>Running</strong>
+        <span>Structural editing is locked. Stop to return to the authored world.</span>
+        <span class="spacer"></span>
+        <span class="mono">00:12.4</span>
+        <span>·</span>
+        <span>Physics 60 Hz</span>
+        <span>·</span>
+        <span>Fixed step 16.67 ms</span>
+        <a class="link" href="#monitor">Open Monitor</a>
+      </div>
+
+      <main class="main">
+        <!-- Left dock -->
+        <aside class="left-dock assets-collapsed">
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><svg class="icon"><use href="#i-hierarchy"/></svg>World Hierarchy<span class="count-badge">3</span></div>
+              <div class="panel-actions">
+                <button class="icon-btn" disabled aria-label="Add object"><svg class="icon"><use href="#i-plus"/></svg></button>
+                <button class="icon-btn" aria-label="More"><svg class="icon"><use href="#i-more"/></svg></button>
+              </div>
+            </div>
+            <div class="hier-toolbar">
+              <div class="search"><svg class="icon icon-sm"><use href="#i-search"/></svg>Search objects…</div>
+              <span class="chip lock"><svg class="icon" style="width:10px;height:10px"><use href="#i-lock"/></svg>Locked</span>
+            </div>
+            <div class="panel-body">
+              <div class="tree">
+                <div class="tree-row"><span class="type"><svg class="icon icon-sm"><use href="#i-plane"/></svg></span><span class="name">Floor</span><span class="badges"><span class="mini-badge">P</span></span></div>
+                <div class="tree-row selected"><span class="type"><svg class="icon icon-sm"><use href="#i-sphere"/></svg></span><span class="name">Ball</span><span class="badges"><span class="mini-badge">R</span><span class="mini-badge logic">L</span></span></div>
+                <div class="tree-row"><span class="type"><svg class="icon icon-sm"><use href="#i-cube"/></svg></span><span class="name">Launch Button</span><span class="badges"><span class="mini-badge logic">L</span></span></div>
+              </div>
+            </div>
+          </section>
+          <div class="splitter"></div>
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><svg class="icon"><use href="#i-assets"/></svg>Asset Library</div>
+              <div class="panel-actions">
+                <span class="chip lock">Locked</span>
+                <button class="icon-btn" aria-label="Expand assets"><svg class="icon icon-sm"><use href="#i-chevron-right"/></svg></button>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <div class="splitter"></div>
+
+        <!-- Center -->
+        <div class="center program-strip">
+          <section class="viewport">
+            <svg class="viewport-canvas" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#1C2738"/><stop offset="1" stop-color="#121A26"/>
+                </linearGradient>
+                <radialGradient id="ballGrad" cx="35%" cy="28%" r="72%">
+                  <stop offset="0" stop-color="#9BC7FF"/><stop offset=".35" stop-color="#5B96E8"/><stop offset="1" stop-color="#1E3E70"/>
+                </radialGradient>
+                <linearGradient id="cubeTop" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#EE9A61"/><stop offset="1" stop-color="#C56B37"/>
+                </linearGradient>
+                <linearGradient id="cubeLeft" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#B85F31"/><stop offset="1" stop-color="#8F4526"/>
+                </linearGradient>
+                <linearGradient id="cubeRight" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#D77A43"/><stop offset="1" stop-color="#A34F2A"/>
+                </linearGradient>
+                <marker id="velArrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M0 0 8 4 0 8Z" fill="#3DDC97"/>
+                </marker>
+              </defs>
+              <polygon points="50,514 450,360 850,514 450,668" fill="url(#floorGrad)" stroke="#2B3A50" stroke-width="1"/>
+              <g stroke="#2B3A50" stroke-width="1" opacity=".75">
+                <path d="M90 500 410 384M130 522 450 396M170 544 490 408M210 566 530 420M250 588 570 432M290 610 610 444M330 632 650 456"/>
+                <path d="M810 500 490 384M770 522 450 396M730 544 410 408M690 566 370 420M650 588 330 432M610 610 290 444M570 632 250 456"/>
+                <path d="M50 514 450 668 850 514M450 360v308"/>
+              </g>
+              <g stroke-width="1.5" opacity=".55">
+                <path d="M450 360 450 668" stroke="#5B9DFF"/>
+                <path d="M50 514 450 360" stroke="#FF6B6B"/>
+                <path d="M450 360 850 514" stroke="#78D96B"/>
+              </g>
+
+              <!-- Launch button -->
+              <g transform="translate(228 462)">
+                <path d="M0 0 26-14 52 0 26 14Z" fill="url(#cubeTop)" opacity=".92"/>
+                <path d="M0 0v22l26 14V14Z" fill="url(#cubeLeft)" opacity=".92"/>
+                <path d="M52 0v22L26 36V14Z" fill="url(#cubeRight)" opacity=".92"/>
+              </g>
+
+              <!-- Authored ghost position -->
+              <g opacity=".30">
+                <ellipse cx="450" cy="510" rx="58" ry="14" fill="#05080D"/>
+                <circle cx="450" cy="452" r="52" fill="none" stroke="#A7B4C8" stroke-width="1.4" stroke-dasharray="5 5"/>
+                <text x="450" y="536" text-anchor="middle" fill="#A7B4C8" font-family="JetBrains Mono, Consolas, monospace" font-size="9">AUTHORED</text>
+              </g>
+              <path d="M450 452 Q466 384 500 330" fill="none" stroke="#3DDC97" stroke-width="1.4" stroke-dasharray="4 4" opacity=".55"/>
+
+              <!-- Runtime ball -->
+              <g transform="translate(500 330)">
+                <ellipse cx="0" cy="190" rx="52" ry="12" fill="#05080D" opacity=".35"/>
+                <circle cx="0" cy="0" r="52" fill="url(#ballGrad)" stroke="#8FBEFF" stroke-width="1.2"/>
+                <ellipse cx="0" cy="0" rx="24" ry="52" fill="none" stroke="#BBD9FF" stroke-opacity=".25"/>
+                <ellipse cx="0" cy="0" rx="52" ry="18" fill="none" stroke="#BBD9FF" stroke-opacity=".18"/>
+                <circle cx="0" cy="0" r="58" fill="none" stroke="#3DDC97" stroke-width="2" opacity=".9"/>
+                <path d="M58-6 104-44" stroke="#3DDC97" stroke-width="1.6" marker-end="url(#velArrow)" opacity=".9"/>
+                <text x="76" y="-54" fill="#3DDC97" font-family="JetBrains Mono, Consolas, monospace" font-size="9" font-weight="600">v 3.8 m/s</text>
+              </g>
+
+              <!-- Cube -->
+              <g transform="translate(620 402)">
+                <ellipse cx="34" cy="94" rx="52" ry="13" fill="#05080D" opacity=".40"/>
+                <path d="M0 30 34 12 68 30 34 48Z" fill="url(#cubeTop)"/>
+                <path d="M0 30v46l34 18V48Z" fill="url(#cubeLeft)"/>
+                <path d="M68 30v46L34 94V48Z" fill="url(#cubeRight)"/>
+              </g>
+
+              <g font-family="JetBrains Mono, Consolas, monospace" font-size="10" font-weight="600">
+                <text x="500" y="270" text-anchor="middle" fill="#3DDC97">RUNTIME</text>
+              </g>
+            </svg>
+
+            <div class="viewport-toolbar">
+              <div class="vt-group">
+                <button class="vt-btn" aria-label="Select"><svg class="icon"><use href="#i-cursor"/></svg></button>
+                <button class="vt-btn" disabled aria-label="Move"><svg class="icon"><use href="#i-move"/></svg></button>
+                <button class="vt-btn" disabled aria-label="Rotate"><svg class="icon"><use href="#i-rotate"/></svg></button>
+                <button class="vt-btn" disabled aria-label="Scale"><svg class="icon"><use href="#i-scale"/></svg></button>
+              </div>
+              <div class="vt-sep"></div>
+              <span class="chip lock"><svg class="icon" style="width:10px;height:10px"><use href="#i-lock"/></svg>Editing locked</span>
+              <div class="vt-sep"></div>
+              <button class="vt-btn"><svg class="icon"><use href="#i-grid"/></svg>Grid</button>
+              <button class="vt-btn"><svg class="icon"><use href="#i-frame"/></svg>Frame</button>
+              <div class="vt-spacer"></div>
+              <span class="vt-label">Perspective <svg class="icon icon-sm"><use href="#i-chevron-down"/></svg></span>
+            </div>
+
+            <div class="runtime-badge"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>Running · live</div>
+
+            <svg class="axis-helper" viewBox="0 0 56 56" aria-hidden="true">
+              <circle cx="28" cy="28" r="22" fill="rgba(10,14,20,.45)" stroke="rgba(51,65,88,.6)"/>
+              <g stroke-width="1.6" stroke-linecap="round">
+                <path d="M28 28 44 34" stroke="#FF6B6B"/><path d="m40 31 4 3-5 1" fill="#FF6B6B" stroke="none"/>
+                <path d="M28 28 28 10" stroke="#78D96B"/><path d="m25 14 3-4 3 4" fill="#78D96B" stroke="none"/>
+                <path d="M28 28 14 38" stroke="#5B9DFF"/><path d="m16 33-2 5 5-1" fill="#5B9DFF" stroke="none"/>
+              </g>
+              <g font-family="JetBrains Mono, Consolas, monospace" font-size="6" font-weight="600">
+                <text x="46" y="37" fill="#FF6B6B">X</text><text x="25" y="8" fill="#78D96B">Y</text><text x="9" y="42" fill="#5B9DFF">Z</text>
+              </g>
+            </svg>
+            <div class="nav-hint"><kbd>Alt</kbd> + drag orbit · <kbd>RMB</kbd> pan · wheel zoom · <kbd>F</kbd> frame</div>
+          </section>
+
+          <div class="splitter"></div>
+
+          <div class="program-collapsed">
+            <svg class="icon"><use href="#i-logic"/></svg>
+            <span>Program</span>
+            <span class="chip">Visual Logic</span>
+            <span class="summary">Button Pressed → Apply Force → Play Sound</span>
+            <span class="spacer"></span>
+            <span class="chip lock">Read-only while running</span>
+            <button class="icon-btn" aria-label="Expand program dock"><svg class="icon icon-sm"><use href="#i-chevron-down"/></svg></button>
+          </div>
+        </div>
+
+        <div class="splitter"></div>
+
+        <!-- Right dock -->
+        <aside class="right-dock simulate">
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><svg class="icon"><use href="#i-inspector"/></svg>Inspector</div>
+              <div class="panel-actions">
+                <span class="chip runtime">Runtime view</span>
+                <button class="icon-btn" aria-label="More"><svg class="icon"><use href="#i-more"/></svg></button>
+              </div>
+            </div>
+            <div class="panel-body panel-scroll">
+              <div class="inspector-body">
+                <div class="entity-head">
+                  <div class="entity-icon"><svg class="icon"><use href="#i-sphere"/></svg></div>
+                  <div><div class="entity-name">Ball</div><div class="entity-type">Sphere · runtime instance</div></div>
+                  <button class="icon-btn" aria-label="Entity actions"><svg class="icon"><use href="#i-more"/></svg></button>
+                </div>
+
+                <div class="section">
+                  <div class="section-head">
+                    <span class="section-title">Authored transform</span>
+                    <div class="section-actions"><span class="chip lock">Read-only</span></div>
+                  </div>
+                  <div class="space-row"><span class="chip world">World</span><span>position · rotation</span><span class="spacer"></span><span class="chip local">Local</span><span>scale</span></div>
+                  <div class="vector-row">
+                    <span class="axis-label axis-x">X</span><div class="field readonly">0.000</div>
+                    <span class="axis-label axis-y">Y</span><div class="field readonly">1.250</div>
+                    <span class="axis-label axis-z">Z</span><div class="field readonly">0.000</div>
+                  </div>
+                  <div class="vector-row">
+                    <span class="axis-label axis-x">X</span><div class="field readonly">0.0<span class="unit">°</span></div>
+                    <span class="axis-label axis-y">Y</span><div class="field readonly">0.0<span class="unit">°</span></div>
+                    <span class="axis-label axis-z">Z</span><div class="field readonly">0.0<span class="unit">°</span></div>
+                  </div>
+                  <div class="vector-row">
+                    <span class="axis-label axis-x">X</span><div class="field readonly">1.000</div>
+                    <span class="axis-label axis-y">Y</span><div class="field readonly">1.000</div>
+                    <span class="axis-label axis-z">Z</span><div class="field readonly">1.000</div>
+                  </div>
+                  <p class="note">Authored values do not change during a run. Stop discards runtime state and restores this view.</p>
+                </div>
+
+                <div class="runtime-section">
+                  <div class="section-head">
+                    <span class="section-title"><svg class="icon icon-sm" style="color:var(--sf-runtime-running)"><use href="#i-activity"/></svg>Runtime state</span>
+                    <div class="section-actions"><span class="chip runtime">Live</span></div>
+                  </div>
+                  <div class="runtime-grid">
+                    <div class="runtime-metric"><div class="label">Position</div><div class="value">0.0, 3.2, 0.0</div></div>
+                    <div class="runtime-metric"><div class="label">Velocity</div><div class="value">0.0, 3.8, 0.0</div></div>
+                    <div class="runtime-metric"><div class="label">Speed</div><div class="value">3.80 m/s</div></div>
+                    <div class="runtime-metric"><div class="label">Awake</div><div class="value">Yes</div></div>
+                  </div>
+                </div>
+
+                <div class="section">
+                  <div class="section-head"><span class="section-title">Components</span></div>
+                  <div class="component-card">
+                    <div class="component-head">
+                      <svg class="icon"><use href="#i-package"/></svg>
+                      <span class="component-name">Rigid Body</span>
+                      <span class="toggle" title="Enabled"></span>
+                    </div>
+                    <div class="component-body">
+                      <div class="kv-row"><span>Mass</span><span class="value">1.00 kg</span></div>
+                      <div class="kv-row"><span>Use gravity</span><span class="value">On</span></div>
+                      <div class="kv-row"><span>Contacts</span><span class="value">0</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="splitter"></div>
+
+          <section class="panel" id="monitor">
+            <div class="panel-header">
+              <div class="panel-title"><svg class="icon"><use href="#i-monitor"/></svg>Simulation Monitor</div>
+              <div class="panel-actions">
+                <span class="panel-sub">Live · 12.4 s</span>
+                <button class="icon-btn" aria-label="Open in focus mode"><svg class="icon icon-sm"><use href="#i-maximize"/></svg></button>
+                <button class="icon-btn" aria-label="Collapse monitor"><svg class="icon icon-sm"><use href="#i-chevron-down"/></svg></button>
+              </div>
+            </div>
+            <div class="panel-body panel-scroll">
+              <div class="monitor-body">
+                <div class="monitor-summary">
+                  <div class="metric green"><div class="label">Sim time</div><div class="value">12.4<span class="suffix">s</span></div></div>
+                  <div class="metric"><div class="label">Frame rate</div><div class="value">60<span class="suffix">fps</span></div></div>
+                  <div class="metric"><div class="label">Entities</div><div class="value">3</div></div>
+                  <div class="metric"><div class="label">Contacts</div><div class="value">1</div></div>
+                </div>
+
+                <div class="monitor-subhead"><span>Frame time</span><span class="spacer"></span><span>16.6 ms avg</span></div>
+                <div class="sparkline">
+                  <svg viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true">
+                    <polyline points="0,24 12,22 24,25 36,20 48,23 60,21 72,26 84,19 96,22 108,24 120,20 132,23 144,21 156,25 168,19 180,22 192,24 204,21 216,23 228,20 240,25 252,22 264,21 276,24 288,20 300,23" fill="none" stroke="#3DDC97" stroke-width="1.6"/>
+                    <line x1="0" y1="16.6" x2="300" y2="16.6" stroke="#334158" stroke-width="1" stroke-dasharray="3 4"/>
+                  </svg>
+                </div>
+
+                <div class="watch-card">
+                  <div class="watch-head"><svg class="icon icon-sm"><use href="#i-pin"/></svg>Ball<span class="pin">Pinned</span></div>
+                  <div class="watch-grid">
+                    <div class="kv"><span>Position</span><b>0.0, 3.2, 0.0</b></div>
+                    <div class="kv"><span>Velocity</span><b>0.0, 3.8, 0.0</b></div>
+                    <div class="kv"><span>Speed</span><b>3.80 m/s</b></div>
+                    <div class="kv"><span>Mass</span><b>1.00 kg</b></div>
+                  </div>
+                </div>
+
+                <div class="monitor-subhead"><span>Runtime events</span><span class="spacer"></span><span>Last 12 s</span></div>
+                <div class="event-list">
+                  <div class="event-row"><span class="time">00:00.0</span><svg class="icon"><use href="#i-play"/></svg>Simulation started</div>
+                  <div class="event-row"><span class="time">00:01.3</span><svg class="icon"><use href="#i-cursor"/></svg>Launch Button pressed</div>
+                  <div class="event-row"><span class="time">00:01.3</span><svg class="icon"><use href="#i-activity"/></svg>Apply Force → Ball · 4.0 N</div>
+                  <div class="event-row"><span class="time">00:01.3</span><svg class="icon"><use href="#i-info"/></svg>Playing launch.wav</div>
+                  <div class="event-row"><span class="time">00:02.1</span><svg class="icon"><use href="#i-gauge"/></svg>Ball left the ground plane</div>
+                </div>
+
+                <p class="note">Monitor metrics are runtime observations. They are cleared on Stop and are never written into authored state.</p>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </main>
+
+      <!-- Console -->
+      <section class="console-drawer">
+        <div class="console-head">
+          <span class="console-title"><svg class="icon"><use href="#i-console"/></svg>Console</span>
+          <span class="summary">Runtime · 12.4 s · no errors</span>
+          <span class="spacer"></span>
+          <div class="sev-filter" role="group" aria-label="Filter by severity">
+            <button class="sev-btn active">All<span class="count">7</span></button>
+            <button class="sev-btn">Info<span class="count">6</span></button>
+            <button class="sev-btn">Warn<span class="count">1</span></button>
+            <button class="sev-btn">Error<span class="count">0</span></button>
+          </div>
+          <div class="console-search"><svg class="icon icon-sm"><use href="#i-search"/></svg>Filter output…</div>
+          <button class="icon-btn" aria-label="Clear console"><svg class="icon icon-sm"><use href="#i-error"/></svg></button>
+          <button class="icon-btn" aria-label="Collapse console"><svg class="icon icon-sm"><use href="#i-chevron-down"/></svg></button>
+        </div>
+        <div class="logs">
+          <div class="log-row info"><span class="time">12:04:11.002</span><svg class="icon"><use href="#i-info"/></svg><span class="source">SIM</span><span class="msg">Simulation started · 3 entities · fixed step 16.67 ms</span><span class="ref">run-04</span></div>
+          <div class="log-row info"><span class="time">12:04:11.004</span><svg class="icon"><use href="#i-info"/></svg><span class="source">PHYS</span><span class="msg">Physics world initialized · gravity 0, −9.81, 0</span></div>
+          <div class="log-row info"><span class="time">12:04:12.318</span><svg class="icon"><use href="#i-info"/></svg><span class="source">LOGIC</span><span class="msg">Launch Button pressed · event dispatched</span><span class="ref">graph:1</span></div>
+          <div class="log-row info"><span class="time">12:04:12.319</span><svg class="icon"><use href="#i-info"/></svg><span class="source">LOGIC</span><span class="msg">Apply Force → Ball · (0.0, 4.0, 0.0)</span><span class="ref">graph:2</span></div>
+          <div class="log-row info"><span class="time">12:04:12.321</span><svg class="icon"><use href="#i-info"/></svg><span class="source">AUDIO</span><span class="msg">Playing launch.wav · 0.42 s</span></div>
+          <div class="log-row warn"><span class="time">12:04:13.102</span><svg class="icon"><use href="#i-warning"/></svg><span class="source">PHYS</span><span class="msg">Frame time exceeded 16.6 ms once · 18.2 ms · recovered</span></div>
+          <div class="log-row info"><span class="time">12:04:14.902</span><svg class="icon"><use href="#i-info"/></svg><span class="source">SIM</span><span class="msg">Frame budget healthy · 60 fps · no dropped steps</span></div>
+        </div>
+      </section>
+
+      <footer class="statusbar">
+        <span class="item ok">Running</span>
+        <span class="item">Ball · Sphere</span>
+        <span class="item">Runtime 12.4 s</span>
+        <span class="item">60 fps</span>
+        <span class="item warn">Editing locked</span>
+        <span class="spacer"></span>
+        <span class="item">Authored state saved</span>
+        <span class="item">WebGL 2</span>
+        <span class="item">Stop to edit</span>
+      </footer>
+    </div>
+  </div>
+</div>
+</body>
+</html>
