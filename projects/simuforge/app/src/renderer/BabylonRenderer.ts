@@ -309,6 +309,7 @@ export class BabylonRenderer implements RendererPort {
     };
   }
 
+
   private handlePointerDown = (event: PointerEvent): void => {
     this.pointerDown = { x: event.clientX, y: event.clientY };
     this.pointerMoved = false;

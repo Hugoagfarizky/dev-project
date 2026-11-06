@@ -15,6 +15,7 @@ export function ViewportHost({ store, rendererFactory }: ViewportHostProps) {
   const rendererRef = useRef<RendererPort | null>(null);
   const [diagnostics, setDiagnostics] = useState<{ webGlVersion: number; meshCount: number; entityCount: number; contextLost: boolean } | null>(null);
   const [error, setError] = useState<{ code: string; message: string } | null>(null);
+  const [contextLost, setContextLost] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -23,6 +24,10 @@ export function ViewportHost({ store, rendererFactory }: ViewportHostProps) {
 
     const renderer = rendererFactory ? rendererFactory() : new BabylonRenderer();
     rendererRef.current = renderer;
+
+    if (import.meta.env.DEV) {
+      (window as unknown as { __simuforgeRenderer?: RendererPort }).__simuforgeRenderer = renderer;
+    }
 
     let unsubscribeStore: (() => void) | undefined;
     let resizeObserver: ResizeObserver | undefined;
@@ -36,9 +41,37 @@ export function ViewportHost({ store, rendererFactory }: ViewportHostProps) {
           entityCount: result.entityCount,
           contextLost: result.contextLost
         });
+        setContextLost(result.contextLost);
 
         if (store) {
-          unsubscribeStore = connectRendererToStore(store, renderer);
+          const storeUnsubscribe = store.subscribe(() => {
+            const next = renderer.getDiagnostics();
+            setDiagnostics({
+              webGlVersion: next.webGlVersion,
+              meshCount: next.meshCount,
+              entityCount: next.entityCount,
+              contextLost: next.contextLost
+            });
+            setContextLost(next.contextLost);
+          });
+          const wiringUnsubscribe = connectRendererToStore(store, renderer, {
+            onError(error) {
+              if (error.code === 'RENDER_CONTEXT_LOST') setContextLost(true);
+              if (error.code === 'RENDER_CONTEXT_RESTORED') setContextLost(false);
+            }
+          });
+          unsubscribeStore = () => {
+            storeUnsubscribe();
+            wiringUnsubscribe();
+          };
+          const initial = renderer.getDiagnostics();
+          setDiagnostics({
+            webGlVersion: initial.webGlVersion,
+            meshCount: initial.meshCount,
+            entityCount: initial.entityCount,
+            contextLost: initial.contextLost
+          });
+          setContextLost(initial.contextLost);
         }
 
         resizeObserver = new ResizeObserver((entries) => {
@@ -60,12 +93,12 @@ export function ViewportHost({ store, rendererFactory }: ViewportHostProps) {
     };
   }, [store, rendererFactory]);
 
-  if (error) {
+  if (error || contextLost) {
     return (
       <div className="sf-webgl-fallback" role="alert">
         <h2>3D viewport unavailable</h2>
         <p>SimuForge needs WebGL 2 and hardware acceleration.</p>
-        <p>{error.code}: {error.message}</p>
+        {error ? <p>{error.code}: {error.message}</p> : <p>WebGL context was lost.</p>}
       </div>
     );
   }

@@ -2,7 +2,11 @@ import type { StudioStore } from '../editor/store.js';
 import type { RendererPort } from '../renderer/RendererPort.js';
 import type { StudioState } from '../editor/state.js';
 
-export function connectRendererToStore(store: StudioStore, renderer: RendererPort): () => void {
+export function connectRendererToStore(
+  store: StudioStore,
+  renderer: RendererPort,
+  options?: { onError?: (error: { code: string; message: string }) => void }
+): () => void {
   renderer.setEventSink({
     onPick(entityId) {
       store.dispatch({ type: 'selection/set', id: entityId });
@@ -17,8 +21,7 @@ export function connectRendererToStore(store: StudioStore, renderer: RendererPor
       store.dispatch({ type: 'camera/set', pose });
     },
     onError(error) {
-      // The viewport surface owns fallback presentation; diagnostics remain available.
-      void error;
+      options?.onError?.(error);
     }
   });
 
