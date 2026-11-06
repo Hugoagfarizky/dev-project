@@ -3,14 +3,17 @@ import { TopBar } from './TopBar';
 import { StatusBar } from './StatusBar';
 import { Splitter } from './Splitter';
 import { Panel } from './Panel';
-import { computeLayout, type StudioPreset } from './computeLayout';
+import { computeLayout, resolveCollapsedPanels, type StudioPreset } from './computeLayout';
 import '../../styles/shell.css';
 
-const initialCollapsed = {
-  assets: false,
-  monitor: true,
-  program: true,
-  console: true
+type PanelKey = 'assets' | 'monitor' | 'program' | 'console';
+type UserOverride = boolean | null;
+
+const initialUserOverrides: Record<PanelKey, UserOverride> = {
+  assets: null,
+  monitor: null,
+  program: null,
+  console: null
 };
 
 export function StudioShell() {
@@ -19,7 +22,7 @@ export function StudioShell() {
     height: typeof window === 'undefined' ? 900 : window.innerHeight
   }));
   const [preset, setPreset] = useState<StudioPreset>('build');
-  const [userCollapsed, setUserCollapsed] = useState(initialCollapsed);
+  const [userOverrides, setUserOverrides] = useState<Record<PanelKey, UserOverride>>(initialUserOverrides);
 
   useEffect(() => {
     function updateViewport() {
@@ -29,23 +32,35 @@ export function StudioShell() {
     return () => window.removeEventListener('resize', updateViewport);
   }, []);
 
-  const layout = computeLayout({ width: viewport.width, height: viewport.height, preset });
+  const layout = computeLayout({
+    width: viewport.width,
+    height: viewport.height,
+    preset,
+    userOverrides
+  });
 
-  const collapsed = {
-    assets: userCollapsed.assets || layout.collapsed.assets,
-    monitor: userCollapsed.monitor || layout.collapsed.monitor,
-    program: userCollapsed.program || layout.collapsed.program,
-    console: userCollapsed.console || layout.collapsed.console
-  };
+  const collapsed = resolveCollapsedPanels({
+    presetCollapsed: layout.presetCollapsed,
+    responsiveCollapsed: layout.responsiveCollapsed,
+    userOverrides
+  });
 
-  function togglePanel(panel: keyof typeof userCollapsed) {
-    setUserCollapsed((previous) => ({ ...previous, [panel]: !previous[panel] }));
+  function togglePanel(panel: PanelKey) {
+    setUserOverrides((previous) => ({
+      ...previous,
+      [panel]: !collapsed[panel]
+    }));
+  }
+
+  function handlePresetChange(nextPreset: StudioPreset) {
+    setPreset(nextPreset);
+    setUserOverrides({ ...initialUserOverrides });
   }
 
   if (layout.tooSmall) {
     return (
       <div className="sf-shell sf-shell-too-small">
-        <TopBar compact={true} preset={preset} onPresetChange={setPreset} />
+        <TopBar compact={true} preset={preset} onPresetChange={handlePresetChange} />
         <div className="sf-window-too-small" role="status">
           <h1>Window too small</h1>
           <p>SimuForge requires a viewport of at least 1024 × 640.</p>
@@ -62,7 +77,7 @@ export function StudioShell() {
         gridTemplateRows: `48px 1fr ${collapsed.console ? 32 : layout.consoleHeight}px 24px`
       }}
     >
-      <TopBar compact={layout.compact} preset={preset} onPresetChange={setPreset} />
+      <TopBar compact={layout.compact} preset={preset} onPresetChange={handlePresetChange} />
 
       <div
         className="sf-main"
