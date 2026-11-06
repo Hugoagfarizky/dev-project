@@ -3,7 +3,9 @@ import { TopBar } from './TopBar';
 import { StatusBar } from './StatusBar';
 import { Splitter } from './Splitter';
 import { Panel } from './Panel';
+import { ViewportHost } from '../viewport/ViewportHost.js';
 import { computeLayout, resolveCollapsedPanels, type StudioPreset } from './computeLayout';
+import type { StudioStore } from '../../editor/store.js';
 import '../../styles/shell.css';
 
 type PanelKey = 'assets' | 'monitor' | 'program' | 'console';
@@ -16,7 +18,11 @@ const initialUserOverrides: Record<PanelKey, UserOverride> = {
   console: null
 };
 
-export function StudioShell() {
+interface StudioShellProps {
+  store?: StudioStore;
+}
+
+export function StudioShell({ store }: StudioShellProps = {}) {
   const [viewport, setViewport] = useState(() => ({
     width: typeof window === 'undefined' ? 1440 : window.innerWidth,
     height: typeof window === 'undefined' ? 900 : window.innerHeight
@@ -111,7 +117,7 @@ export function StudioShell() {
           }}
         >
           <section className="sf-viewport" aria-label="Viewport">
-            <div className="sf-viewport-placeholder">Viewport</div>
+            <ViewportHost store={store} />
           </section>
           <Splitter orientation="horizontal" />
           <Panel
