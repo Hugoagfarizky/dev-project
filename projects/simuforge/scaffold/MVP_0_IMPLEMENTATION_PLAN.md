@@ -4,14 +4,15 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.0 - Proposed for approval |
-| Date | 2026-11-05 |
-| Status | Proposed; not started |
+| Version | 2.0 - Approved plan; implementation not authorized |
+| Date | 2026-11-06 |
+| Status | Approved; not started; implementation NOT AUTHORIZED |
 | Owner role | Engineering Lead, SimuForge |
 | Project | simuforge |
 | Applies to | [MVP-0 Scaffold Specification](MVP_0_SCAFFOLD_SPECIFICATION.md) |
 | Architecture | [MVP-0 Architecture Proposal](MVP_0_ARCHITECTURE_PROPOSAL.md) |
 | Dependencies | [MVP-0 Dependency and License Inventory](MVP_0_DEPENDENCY_AND_LICENSE_INVENTORY.md) |
+| Related ADRs | [ADR 0002](../../../docs/decisions/0002-mvp-0-technology-stack.md), [ADR 0003](../../../docs/decisions/0003-mvp-0-persistence-and-project-format.md) |
 | Design baseline | `e722c03b1049b9fd34bad15c22693e9865761235` |
 | Language | English |
 
@@ -19,15 +20,21 @@
 
 This plan breaks the MVP-0 scaffold into independently reviewable increments. It does not authorize the first increment.
 
-Implementation may start only when:
+The decision prerequisites are satisfied:
 
-1. The Product Owner approves [MVP_0_OWNER_DECISION_REQUEST.md](MVP_0_OWNER_DECISION_REQUEST.md), including OD-01 through OD-07.
-2. C-01 through C-07 are accepted by their named owners.
+1. The Product Owner approved OD-01 through OD-07 on 2026-11-06.
+2. C-01 through C-07 are accepted by their named owners; test-dependent conditions remain pending verification.
 3. The scaffold specification is approved as the scope baseline.
-4. The dependency and license inventory is accepted.
-5. The repository is clean and the design baseline commit is unchanged.
+4. The dependency and license inventory is approved through OD-05 and ADR 0002.
+5. ADR 0002 (technology stack) and ADR 0003 (persistence and project format) are accepted.
 
-If any of these is false, the plan stays a plan.
+Implementation may start only when **all** of the following are true:
+
+1. The Project Owner gives explicit implementation authorization for I-01.
+2. The repository is clean and the design baseline commit is unchanged.
+3. No condition in the [MVP_0_OWNER_DECISION_REQUEST.md](MVP_0_OWNER_DECISION_REQUEST.md) stop rule is active.
+
+If any of these is false, the plan stays a plan. **MVP-0 implementation is NOT AUTHORIZED.**
 
 ## 2. Working Rules
 
@@ -64,11 +71,10 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 
 **Work:**
 
-- Create `projects/simuforge/app/` with `package.json`, exact pins, `engines`, and `.node-version`.
-- Record ADR 0002 (stack selection) before the first dependency install.
+- Create `projects/simuforge/app/` with `package.json`, exact pins, `engines`, and `.node-version` in accordance with [ADR 0002](../../../docs/decisions/0002-mvp-0-technology-stack.md) (accepted 2026-11-06).
 - Add `tsconfig.json` with `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`, `exactOptionalPropertyTypes`, and `noUnusedLocals`.
 - Add `vite.config.ts`, `index.html`, and a minimal `src/main.tsx` that renders a static placeholder.
-- Add `src/styles/tokens.css` copied from the approved design tokens, plus `reset.css`. Resolve the known 4.38:1 tertiary-on-raised pair by adjusting the token or restricting its use on raised surfaces, and record the measured ratio.
+- Add `src/styles/tokens.css` copied from the approved design tokens, plus `reset.css`. Resolve the known 4.38:1 tertiary-on-raised pair by adjusting the token or restricting its use on raised surfaces, and record the measured ratio (ACG-02).
 - Add `scripts/check-boundaries.mjs` using the TypeScript compiler API.
 - Add `scripts/check-tokens.mjs` to recompute contrast ratios from token values and fail below 4.5:1 for normal text.
 - Add the license notices generation step and commit `THIRD_PARTY_NOTICES.md`.
@@ -124,6 +130,7 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 - No page-level scrollbar at either reference size.
 - Focus order matches visual order.
 - Full-size and compact screenshots are recorded.
+- ACG-01 passes: the 1024 x 640 layout is visually inspected in Chrome 156 and the screenshots are recorded, not only computed.
 
 **Risks:** CSS grid track math; fixed mockup assumptions leaking into the shell; height competition at 640 px.
 
@@ -246,7 +253,7 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 - Implement W/E/R, F, Shift+F, G, and the documented shortcut set.
 - Implement frame selection and frame world.
 - Ensure mode switches dispatch no transform command.
-- Add the shortcut conflict audit in Chrome 156 on Windows.
+- Add the shortcut conflict audit in Chrome 156 on Windows (ACG-03).
 - Record any browser/OS conflict and remap or mark it optional.
 
 **Tests:**
@@ -264,7 +271,7 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 **Exit criteria:**
 
 - M0-AC-08, M0-AC-09, M0-AC-10, and M0-AC-21 pass.
-- The shortcut audit is recorded with the tested Chrome and OS versions.
+- ACG-03 passes: the shortcut conflict audit is recorded with the tested Chrome and OS versions.
 - No local/world toggle exists.
 
 **Risks:** numeric parsing and locale; per-frame React churn; gimbal-lock display; keyboard conflicts.
@@ -275,7 +282,7 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 
 **Work:**
 
-- Record ADR 0003 (local project persistence and file format) before the first persistence code.
+- Follow [ADR 0003](../../../docs/decisions/0003-mvp-0-persistence-and-project-format.md) (accepted 2026-11-06) for the persistence contract.
 - Implement `ProjectRepository`, `IndexedDbProjectRepository`, `MemoryProjectRepository`, and `LayoutStorage`.
 - Implement the `simuforge` database, `projects` store, and `updatedAt` index.
 - Implement layout persistence and last-project persistence as best effort.
@@ -321,11 +328,11 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 - Implement first-error auto-expand without focus theft.
 - Implement clear, severity filter, and search.
 - Implement status bar: selection, entity count, active tool, WebGL status, save state.
-- Implement Program and Monitor `Planned` strips with no fabricated values.
+- Implement Program and Monitor `Planned` strips with no fabricated values (ACG-04).
 - Remove or hide Run, Pause, Stop, Reset, Components, Behavior, Runtime, and Python authoring.
 - Ensure hidden surfaces are absent from the DOM and the tab order.
 - Implement the status-bar engine indicator from real diagnostics only.
-- Do not display a frame-rate value unless it comes from the measurement harness.
+- Do not display a frame-rate value unless it comes from the measurement harness (ACG-04).
 
 **Tests:**
 
@@ -342,6 +349,7 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 - M0-AC-18, M0-AC-19, and M0-AC-20 pass.
 - A DOM audit finds no hidden but focusable MVP-1+ control.
 - No `60 fps` literal exists in production UI text.
+- ACG-04 passes: no fabricated frame rate or functional-looking Visual Logic summary is present.
 
 **Risks:** log flood; focus theft; accidental enablement of a gated control; test hooks leaking into production.
 
@@ -352,13 +360,16 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 **Work:**
 
 - Complete the keyboard-only pass and focus-order audit.
-- Verify the tertiary-on-raised contrast resolution from I-01 and record the final measured ratio; adjust again if the token or its usage changed.
+- Verify the tertiary-on-raised contrast resolution from I-01 and record the final measured ratio; adjust again if the token or its usage changed (ACG-02).
 - Verify dialogs trap focus, close on Esc, and restore focus.
 - Verify reduced-motion behavior.
 - Implement the performance sampler and the S0/S3/S4/S5 scenes.
 - Run the full acceptance suite at 1024 x 640 and 1440 x 900.
+- Perform the final visual inspection of all three presets at 1024 x 640 and record the screenshots (ACG-01).
+- Re-run the shortcut conflict audit against the final shortcut map (ACG-03).
+- Audit the production DOM and text for fabricated frame rates and Visual Logic summaries (ACG-04).
 - Record screenshots, metrics, hardware, Chrome version, and commit.
-- Update the risk register with R-1..R-5 status.
+- Update the risk register with R-1..R-5 status and verification point.
 - Write the MVP-0 acceptance report under `projects/simuforge/reports/mvp-0/`.
 
 **Tests:**
@@ -368,10 +379,12 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 - Keyboard smoke test without a pointer.
 - Performance measurement at 0, 10, 50, and 100 entities.
 - Final DOM and network audit: no external request, no gated surface, no test hook in production.
+- Gate evidence for ACG-01, ACG-02, ACG-03, and ACG-04 is present and reproducible.
 
 **Exit criteria:**
 
 - All M0-AC criteria pass or have an owner-approved exception.
+- ACG-01 through ACG-04 pass and their evidence is recorded.
 - Evidence is committed.
 - The working tree contains no out-of-scope change.
 - The Product Owner accepts the increment.
@@ -408,6 +421,19 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 | M0-AC-24 | I-03 | Round-trip unit suite |
 | M0-AC-25 | I-09 | Console-clean load check |
 | M0-AC-26 | I-09 | Performance report |
+
+### 5.1 Acceptance gate mapping
+
+The four gates accepted by the Project Owner on 2026-11-06 are mapped here. They are additional requirements; the M0-AC mapping above does not replace them.
+
+| Gate | Acceptance criterion | Validation method | Implementing stage | Final evidence |
+| --- | --- | --- | --- | --- |
+| ACG-01 | At 1024 x 640 in Chrome 156, all three presets are visually usable: no overlap, no page scroll, viewport at least 300 px, documented auto-collapse result | Visual inspection and screenshots at 1024 x 640; CDP bounds assertions as supporting evidence | I-02 | I-09 `layout/1024x640-*.png` |
+| ACG-02 | Normal text using the tertiary token on raised surfaces measures at least 4.5:1 | Compute effective colors; measure the ratio; run `check-tokens`; record the fix | I-01 | I-09 accessibility evidence |
+| ACG-03 | Keyboard and pointer shortcuts have no unrecorded conflict in Chrome 156 on Windows | Enumerate and exercise the shortcut map; probe reserved combinations; record conflicts and remaps | I-06 | I-09 `shortcuts/audit.md` |
+| ACG-04 | No `60 fps` literal or functional-looking Visual Logic summary appears in the MVP-0 production UI | Search source and production bundle; audit rendered DOM and screenshots | I-08 | I-09 final DOM audit |
+
+A gate is PASS only when its evidence is committed. A gate that was not exercised is reported as not run.
 
 ## 6. Verification Commands
 
@@ -463,6 +489,20 @@ Evidence records the commit, Node, npm, Chrome, OS, display scale, and hardware.
 
 Rollback is per increment. Each increment is a separate commit and can be reverted without affecting earlier increments, except where a later increment depends on its interfaces.
 
+### 8.1 POC-01 residual risks (C-03)
+
+These risks are carried forward from POC-01. C-03 is owner-accepted, but the risks are not closed. Each row names an owner role, the mitigation already required by the plan, and the verification point that must be recorded before the risk can be marked closed.
+
+| Risk | Owner role | Mitigation | Verification point | Status |
+| --- | --- | --- | --- | --- |
+| R-1 Euler display ambiguity at gimbal lock | Engineering - renderer/Inspector | Quaternion is the source of truth; YXZ Euler is display-only; boundary tests near +/-90 degrees; no local/world toggle | I-06 transform tests and Inspector review; I-09 risk register | Open |
+| R-2 Serialization round-trip not validated | Engineering - world/project | Pure validator and serializer; envelope tests; file round-trip tests | I-03 unit round-trip; I-07 save/open round-trip; I-09 risk register | Open |
+| R-3 No performance baseline | Engineering - app | Measure S0/S3/S4/S5 at 0/10/50/100 entities; report p50 and p95; no target claimed before measurement | I-09 performance report; I-09 risk register | Open |
+| R-4 Chrome-only scope | Product Owner | Record Chrome 156 as the acceptance target; make no cross-browser claim; state the limitation in the acceptance report | I-09 acceptance report and risk register | Accepted limitation |
+| R-5 Negative or invalid zoom radius | Engineering - renderer | Clamp radius to 0.5-500 in the camera controller; unit and browser tests | I-04 camera test; I-09 risk register | Open |
+
+A risk is closed only when its verification point has recorded evidence. Owner acceptance of C-03 does not close R-1 through R-5.
+
 ## 9. Definition of Done for the Plan
 
 The plan is complete when all nine increments pass their exit criteria, the acceptance report is committed, and the Product Owner accepts MVP-0. The plan itself is done when approved; it is not evidence that implementation has started.
@@ -473,17 +513,21 @@ The plan is complete when all nine increments pass their exit criteria, the acce
 | --- | --- |
 | Increment order and scope | MVP-0 Scaffold Specification §2, §11 |
 | Architecture seams | MVP-0 Architecture Proposal §4-§8 |
-| Dependency pins | MVP-0 Dependency and License Inventory §4 |
+| Dependency pins | ADR 0002; MVP-0 Dependency and License Inventory §4 |
+| Persistence and project format | ADR 0003; MVP-0 Scaffold Specification §7 |
 | Layout rules | Workspace Layout Specification §3, §7 |
 | Transform and camera policy | POC-01 World Editor §6.7, §9 |
-| Storage contract | MVP-0 Scaffold Specification §7 |
+| Storage contract | ADR 0003; MVP-0 Scaffold Specification §7 |
 | Phase gating | UI Component Inventory §14; Design Readiness D-12 |
-| Residual risks | SP-08 §5 (R-1..R-5) |
+| Residual risks | SP-08 §5 (R-1..R-5); Architecture Proposal §14.1 |
+| Acceptance gates | MVP-0 Scaffold Specification §11.1; MVP-0 Owner Decision Request §4.2 |
 | Testing rules | Engineering Standards, Testing |
 
 ## 11. Approval
 
+The Project Owner approved this plan on 2026-11-06. Approval is not implementation authorization; see §1.
+
 | Role | Decision | Date |
 | --- | --- | --- |
-| Product Owner | Pending | - |
-| Engineering reviewer | Pending | - |
+| Product Owner | **Approved; implementation not authorized** | 2026-11-06 |
+| Engineering reviewer | Reviewed for documentation consistency | 2026-11-06 |

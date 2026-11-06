@@ -4,19 +4,20 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.0 - Proposed for approval |
-| Date | 2026-11-05 |
-| Status | Proposed; no package has been installed |
+| Version | 2.0 - Approved |
+| Date | 2026-11-06 |
+| Status | Approved through OD-05 and ADR 0002; no package has been installed |
 | Owner role | Engineering Lead, SimuForge |
 | Project | simuforge |
 | Applies to | [MVP-0 Scaffold Specification](MVP_0_SCAFFOLD_SPECIFICATION.md) |
+| Decision | [ADR 0002](../../../docs/decisions/0002-mvp-0-technology-stack.md) (accepted 2026-11-06) |
 | Design baseline | `e722c03b1049b9fd34bad15c22693e9865761235` |
 | Registry snapshot | npm registry queried 2026-11-05 |
 | Language | English |
 
 ## 1. Decision Summary
 
-MVP-0 proposes **nine direct dependencies**: three runtime packages and six development packages. They are pinned to exact versions. All other packages in this document are transitive and are controlled by the lockfile.
+MVP-0 defines **nine direct dependencies**: three runtime packages and six development packages. They are pinned to exact versions. All other packages in this document are transitive and are controlled by the lockfile.
 
 | Class | Packages |
 | --- | --- |
@@ -25,7 +26,7 @@ MVP-0 proposes **nine direct dependencies**: three runtime packages and six deve
 
 Dependency type is shown by section: every package in §4 is **direct**, and every package in §5 is **transitive**. No row mixes the two.
 
-No package is installed by this document. No `package.json`, lockfile, `node_modules`, or build output exists in `projects/simuforge/scaffold/`. Installation is an implementation increment that starts only after the Product Owner approves [MVP_0_OWNER_DECISION_REQUEST.md](MVP_0_OWNER_DECISION_REQUEST.md).
+No package is installed by this document. No `package.json`, lockfile, `node_modules`, or build output exists in `projects/simuforge/scaffold/`. The Project Owner approved this inventory through OD-05 on 2026-11-06 and it is recorded in [ADR 0002](../../../docs/decisions/0002-mvp-0-technology-stack.md). Installation is an implementation increment that remains unauthorized until the Project Owner explicitly authorizes I-01.
 
 The version set is the POC-01 field-tested set, not the newest available set. Every direct package is pinned exactly; no caret or tilde range is used for a direct dependency.
 
@@ -136,7 +137,7 @@ No install was performed, so no measured size is claimed. The expected shape is:
 | Apache-2.0 | typescript, @babylonjs/core, detect-libc | Include the license, retain `NOTICE` if present, state modified files | Covered by the notices file; no modification planned |
 | MPL-2.0 | lightningcss, lightningcss-win32-x64-msvc | File-level copyleft. Distributing modified MPL files requires their source. Unmodified use requires the license notice and source availability | Build-time only, unmodified, not shipped in the app bundle. Record the version and upstream source URL in the notices file. |
 
-No GPL, AGPL, SSPL, or unknown license is present in the proposed closure.
+No GPL, AGPL, SSPL, or unknown license is present in the approved closure.
 
 The notices file is a build artifact requirement, not a product feature. It is produced in implementation increment I-01 and reviewed before the first release build.
 
@@ -222,20 +223,20 @@ The increment must record:
 
 | Claim | Source |
 | --- | --- |
-| Approved POC versions | POC-01 Implementation Readiness §3 |
-| React store approach | POC-01 World Editor §10.3; A-19 |
-| Renderer choice | POC-01 World Editor §4.2; SP-08 §3 |
+| Approved POC versions | POC-01 Implementation Readiness §3; ADR 0002 |
+| React store approach | POC-01 World Editor §10.3; A-19; ADR 0002 |
+| Renderer choice | POC-01 World Editor §4.2; SP-08 §3; ADR 0002 |
 | Browser scope | SP-08 §3 and R-4 |
 | No-dependency rule | Engineering Standards, Design |
-| Lockfile and reproducibility | Engineering Standards, Language and tooling |
+| Lockfile and reproducibility | Engineering Standards, Language and tooling; ADR 0002 |
 | License obligations | Package metadata from the npm registry, 2026-11-05 |
-| Storage without a wrapper | MVP-0 Scaffold Specification §7 |
+| Storage without a wrapper | ADR 0003 |
 
 ## 13. Approval
 
-This inventory is a proposal. It does not authorize installation.
+The Project Owner approved this inventory through OD-05 on 2026-11-06. It does not authorize installation; ADR 0002 records the decision, and I-01 remains unauthorized.
 
 | Role | Decision | Date |
 | --- | --- | --- |
-| Product Owner | Pending (OD-05) | - |
-| Engineering reviewer | Pending | - |
+| Product Owner | **Approved through OD-05** | 2026-11-06 |
+| Engineering reviewer | Reviewed for documentation consistency | 2026-11-06 |

@@ -4,19 +4,22 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.0 - Proposed for approval |
-| Date | 2026-11-05 |
-| Status | Proposed; not an implementation authorization |
+| Version | 2.0 - Approved |
+| Date | 2026-11-06 |
+| Status | Approved by the Project Owner on 2026-11-06; not an implementation authorization |
 | Owner role | Product Owner, SimuForge |
 | Project | simuforge |
-| Supersedes | None |
+| Supersedes | Version 1.0 (2026-11-05) |
 | Design baseline | `e722c03b1049b9fd34bad15c22693e9865761235` |
 | POC baseline | POC-01 CLOSED (GO) |
+| Related ADRs | [ADR 0002](../../../docs/decisions/0002-mvp-0-technology-stack.md), [ADR 0003](../../../docs/decisions/0003-mvp-0-persistence-and-project-format.md) |
 | Language | English |
 
 ## 1. Purpose and Authorization
 
-This document defines the **MVP-0 scaffold** that may be created after the Product Owner approves [MVP_0_OWNER_DECISION_REQUEST.md](MVP_0_OWNER_DECISION_REQUEST.md). It is a specification, not code.
+This document defines the **MVP-0 scaffold**. The Project Owner approved it on 2026-11-06 together with [MVP_0_OWNER_DECISION_REQUEST.md](MVP_0_OWNER_DECISION_REQUEST.md). It is a specification, not code.
+
+Approval of this specification is **not** implementation authorization. The first code change requires a separate, explicit Project Owner decision. Until then, MVP-0 implementation is **NOT AUTHORIZED**.
 
 MVP-0 is the **Studio and World Foundation** increment from the [Product Specification](../docs/PRODUCT_SPECIFICATION.md) §7.2. It proves that a user can open the Studio, create an empty world, add primitives, select and transform them, and save and reopen the authored project.
 
@@ -180,6 +183,7 @@ No templates, marketplace, cloud, account, or sample scene is shown.
 4. Camera pose is not restored in MVP-0.
 5. An invalid project shows an error and leaves the current project intact.
 6. Opening with unsaved changes asks Save / Discard / Cancel first.
+7. Opening a file whose project ID already exists asks Replace or Import as New; it never overwrites silently.
 
 ### 4.5 Project file
 
@@ -453,9 +457,24 @@ No error is swallowed. No empty `catch` block is permitted. Unexpected errors ar
 - Dialogs trap focus, close on `Esc`, and restore focus to the opener.
 - The viewport is not screen-reader operable; the Hierarchy and Inspector provide the keyboard-accessible path.
 - `prefers-reduced-motion` disables non-essential transitions.
-- Tertiary text on raised surfaces must be re-measured; the current token is 4.38:1. Either adjust the token or do not use it for normal text on raised surfaces.
+- Tertiary text on raised surfaces must meet WCAG 2.2 AA for normal text: at least 4.5:1. The current token measures 4.38:1, so either the token is adjusted or it is not used for normal text on raised surfaces. The measured ratio is recorded. See ACG-02.
 
 ## 11. Acceptance Criteria
+
+### 11.1 Additional acceptance gates
+
+The Project Owner accepted four additional gates on 2026-11-06. They are requirements, not evidence. None is PASS until the stated validation is performed and recorded.
+
+| ID | Requirement | Acceptance criterion | Validation method | Implementing stage |
+| --- | --- | --- | --- | --- |
+| ACG-01 | Visual layout validation | At 1024 x 640 in Chrome 156, Build, Program, and Simulate show no overlap, no page-level scroll, a viewport of at least 300 px, and the documented auto-collapse result. The result is confirmed by visual inspection, not only by dimension calculation. | Set the Chrome viewport to 1024 x 640; inspect each preset; capture screenshots; record the result with the browser version and commit. CDP bounds assertions are supporting evidence, not a substitute for visual inspection. | I-02 implementation; I-09 final evidence |
+| ACG-02 | Accessibility contrast | Every normal text use of the tertiary token on a raised background measures at least 4.5:1. | Compute the effective foreground and background colors; measure the contrast ratio; run `check-tokens`; record the ratio and the chosen fix. | I-01 fix; I-09 re-verification |
+| ACG-03 | Input conflict audit | Keyboard shortcuts and pointer interactions used by MVP-0 are checked against Chrome 156 on Windows. Every browser or OS conflict is recorded and either remapped or marked optional; no shortcut silently collides. | Enumerate the shortcut map; exercise each shortcut in the target Chrome and Windows build; probe browser and OS reserved combinations; record conflicts, decisions, and versions. | I-06 |
+| ACG-04 | Target-state accuracy | No `60 fps` literal and no Visual Logic summary that looks functional appear in the MVP-0 production UI. Any frame-time value is measured, and any unavailable surface is clearly `Planned`. | Search the production source and bundle for the literal and for fabricated summary values; audit the rendered DOM and take screenshots; record the result. | I-08; I-09 final audit |
+
+Gate evidence belongs with the acceptance evidence in `projects/simuforge/reports/mvp-0/`. A gate that cannot be validated is reported as not run, not as PASS.
+
+### 11.2 MVP-0 acceptance criteria
 
 | ID | Criterion |
 | --- | --- |
@@ -491,13 +510,15 @@ No error is swallowed. No empty `catch` block is permitted. Unexpected errors ar
 MVP-0 is done when:
 
 1. M0-AC-01 through M0-AC-26 pass with recorded evidence.
-2. The project can be created, saved, reopened, and edited without data loss in the tested scenario.
-3. No MVP-1+ surface is enabled or implied.
-4. The dependency lockfile and license inventory are generated and reviewed.
-5. No page-level scroll appears at 1024 x 640 or 1440 x 900.
-6. The shortcut audit is recorded.
-7. The residual risks R-1..R-5 have owners and status.
-8. The Product Owner accepts the increment.
+2. ACG-01 through ACG-04 pass with recorded evidence.
+3. The project can be created, saved, reopened, and edited without data loss in the tested scenario.
+4. No MVP-1+ surface is enabled or implied.
+5. The dependency lockfile and license inventory are generated and reviewed and match ADR 0002.
+6. No page-level scroll appears at 1024 x 640 or 1440 x 900, and the 1024 x 640 visual inspection is recorded.
+7. The shortcut audit is recorded with the Chrome and Windows versions.
+8. The tertiary-on-raised contrast ratio is measured and meets 4.5:1.
+9. The residual risks R-1..R-5 have owners and status.
+10. The Product Owner accepts the increment.
 
 ## 13. Traceability
 
@@ -512,14 +533,17 @@ MVP-0 is done when:
 | Transform policy | POC-01 World Editor §9; Design Readiness D-10 |
 | Camera policy | Interaction Specification §5; Design Readiness D-11 |
 | Phase gating | Design Readiness D-12; UI Component Inventory §14 |
-| Storage gap decision | POC-01 World Editor §11.6; this document §7 |
+| Storage gap decision | POC-01 World Editor §11.6; ADR 0003; this document §7 |
+| Project format and persistence | ADR 0003 |
+| Technology stack | ADR 0002 |
+| Acceptance gates | ACG-01..ACG-04; this document §11.1 |
 | Undo deferral | Design Readiness A-13; this document §2.2 |
 
 ## 14. Approval
 
-This specification is not active until the Product Owner approves the decisions in [MVP_0_OWNER_DECISION_REQUEST.md](MVP_0_OWNER_DECISION_REQUEST.md).
+The Project Owner approved this specification on 2026-11-06. Approval is not implementation authorization; see §1.
 
 | Role | Decision | Date |
 | --- | --- | --- |
-| Product Owner | Pending | - |
-| Engineering reviewer | Pending | - |
+| Product Owner | **Approved; implementation not authorized** | 2026-11-06 |
+| Engineering reviewer | Reviewed for documentation consistency | 2026-11-06 |

@@ -58,6 +58,8 @@ What becomes easier, what becomes harder, and what must now be maintained.
 | ADR | Title | Status |
 | --- | --- | --- |
 | [0001](0001-proposed-architecture-direction.md) | Proposed architecture direction for SimuForge | proposed |
+| [0002](0002-mvp-0-technology-stack.md) | MVP-0 technology stack | accepted |
+| [0003](0003-mvp-0-persistence-and-project-format.md) | MVP-0 local persistence and project file format | accepted |
 
 ## Guardrail
 

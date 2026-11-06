@@ -4,9 +4,9 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.0 - Review baseline |
-| Date | 2026-11-05 |
-| Status | Review complete; owner decisions pending |
+| Version | 1.1 - Review baseline with owner outcome |
+| Date | 2026-11-06 |
+| Status | Review complete; owner decisions recorded; implementation not authorized |
 | Owner role | Product Owner, SimuForge |
 | Project | simuforge |
 | Design baseline | `e722c03b1049b9fd34bad15c22693e9865761235` |
@@ -78,7 +78,7 @@ This review focuses on scaffold consequences, not document mechanics.
 
 The design is internally coherent and sufficient to describe the MVP-0 Studio. The viewport remains the dominant surface, the three layout presets preserve one shell, and the authored-versus-runtime boundary is legible. The transform and camera policies match POC-01.
 
-The scaffold is not ready to start until the Product Owner records seven decisions:
+At the time of this review, the scaffold was not ready to start until the Product Owner recorded seven decisions:
 
 1. Project persistence model (OD-01).
 2. Project file format (OD-02).
@@ -89,6 +89,17 @@ The scaffold is not ready to start until the Product Owner records seven decisio
 7. Project Hub inclusion in MVP-0 (OD-07).
 
 These are decisions, not visual defects. They are recorded in [MVP_0_OWNER_DECISION_REQUEST.md](MVP_0_OWNER_DECISION_REQUEST.md).
+
+### 3.1 Owner outcome (2026-11-06)
+
+The Project Owner approved OD-01 through OD-07 and accepted ACG-01 through ACG-04 on 2026-11-06. The review verdict remains **PASS WITH CONDITIONS** until the four gates and the implementation-dependent conditions are verified:
+
+- OD-01..OD-07: approved. The acceptance record is in [MVP_0_OWNER_DECISION_REQUEST.md](MVP_0_OWNER_DECISION_REQUEST.md) §6 and §7.
+- ADR 0002 (technology stack) and ADR 0003 (persistence and project format): accepted on 2026-11-06.
+- ACG-01 visual layout, ACG-02 contrast, ACG-03 input conflicts, and ACG-04 target-state accuracy: accepted as requirements; **not PASS**.
+- C-01, C-02, C-05, C-06, and C-07: owner-accepted. C-03: owner-accepted with an open risk register. C-04: owner-accepted as a requirement; verification is pending until I-06.
+
+Owner approval is not implementation authorization. **MVP-0 implementation is NOT AUTHORIZED.**
 
 ## 4. Review Results by Area
 
@@ -219,15 +230,17 @@ The following are accepted for scaffold planning without further design work:
 - Do not add drag-to-dock, floating panels, multi-select, hybrid 2D, or a light theme.
 - Do not add a state-management, persistence, or UI-component dependency without a recorded justification.
 
-## 10. Decisions That Need the Project Owner
+## 10. Decisions Recorded with the Project Owner
 
-| ID | Decision | Why it cannot be inferred |
+All seven decisions were approved on 2026-11-06; see §3.1 and [MVP_0_OWNER_DECISION_REQUEST.md](MVP_0_OWNER_DECISION_REQUEST.md) §6. The table preserves why each decision could not be inferred from the design alone.
+
+| ID | Decision | Why it could not be inferred |
 | --- | --- | --- |
 | OD-01 | Persistence model: IndexedDB project records plus a versioned project envelope. | POC-01 only defines file export/import; the design requires recent projects. |
 | OD-02 | Project file format and recovery export. | The POC world document and a project record are not the same document. |
 | OD-03 | MVP-0 gating matrix and explicit hidden surfaces. | Mockups show later-phase features; scope must be written down. |
 | OD-04 | Undo/redo is deferred from MVP-0; delete requires confirmation. | Design A-13 and product MVP-0 do not agree. |
-| OD-05 | Pinned stack and license acceptance. | ADR 0001 is proposed, not accepted; the POC stack is POC-specific. |
+| OD-05 | Pinned stack and license acceptance. | ADR 0001 remains proposed and does not select libraries; the MVP-0 stack is recorded in ADR 0002. |
 | OD-06 | 1024 x 640 layout policy, including the auto-collapse order and the deferred focus mode. | The mockups cannot prove it; the height budget is tight. |
 | OD-07 | Project Hub is in MVP-0. | The product MVP-0 list does not name it; design assumption A-01 does. |
 
@@ -260,9 +273,9 @@ The full options and recommendations are in [MVP_0_OWNER_DECISION_REQUEST.md](MV
 
 ## 13. Sign-off
 
-This review recommends proceeding to **scaffold preparation**, not to implementation. The Product Owner must approve the decision request before the scaffold task starts.
+This review recommends proceeding to **scaffold preparation**, not to implementation. The Project Owner approved the decision request and the four acceptance gates on 2026-11-06. The design review remains PASS WITH CONDITIONS until the gates and implementation-dependent conditions are verified.
 
 | Role | Decision | Date |
 | --- | --- | --- |
-| Product Owner | Pending | - |
-| Engineering reviewer | Pending | - |
+| Product Owner | **Approved OD-01..OD-07 and ACG-01..ACG-04; implementation not authorized** | 2026-11-06 |
+| Engineering reviewer | Reviewed for documentation consistency | 2026-11-06 |

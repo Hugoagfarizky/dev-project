@@ -4,20 +4,22 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.0 - Proposed for approval |
-| Date | 2026-11-05 |
-| Status | Proposed; no code exists |
+| Version | 2.0 - Approved architecture |
+| Date | 2026-11-06 |
+| Status | Approved for planning; no code exists; implementation not authorized |
 | Owner role | Engineering Lead, SimuForge |
 | Project | simuforge |
 | Applies to | [MVP-0 Scaffold Specification](MVP_0_SCAFFOLD_SPECIFICATION.md) |
 | Design baseline | `e722c03b1049b9fd34bad15c22693e9865761235` |
 | POC baseline | POC-01 CLOSED (GO) |
-| Related ADRs | [ADR 0001](../../../docs/decisions/0001-proposed-architecture-direction.md), status `proposed` |
+| Related ADRs | [ADR 0001](../../../docs/decisions/0001-proposed-architecture-direction.md) (proposed), [ADR 0002](../../../docs/decisions/0002-mvp-0-technology-stack.md) (accepted), [ADR 0003](../../../docs/decisions/0003-mvp-0-persistence-and-project-format.md) (accepted) |
 | Language | English |
 
 ## 1. Purpose and Status
 
-This document proposes the internal architecture of the MVP-0 Studio. It is a design artifact. It does not authorize implementation, and it does not claim that any module exists.
+This document defines the internal architecture of the MVP-0 Studio. It is a design artifact. It does not authorize implementation, and it does not claim that any module exists.
+
+The architecture was approved with the scaffold specification and the two accepted ADRs on 2026-11-06. Approval does not start implementation. The first code change requires a separate explicit authorization.
 
 The architecture must satisfy four inputs:
 
@@ -656,14 +658,16 @@ Reuse the POC-01 scene ladder: S0 empty, S3 10 primitives, S4 50 primitives, S5 
 
 `node --test` with TypeScript requires a decision at I-01: Node 24 type stripping handles erasable syntax, or tests are compiled with `tsc` into a temporary directory. The plan prefers native type stripping and falls back to compilation only if a test needs unsupported syntax.
 
-## 13. Decisions That Need an ADR
+## 13. Architecture Decision Records
 
-| ADR | Title | Why it is expensive to reverse |
-| --- | --- | --- |
-| ADR 0002 | MVP-0 stack selection: React, TypeScript, Vite, Babylon.js, custom store | Touches every module and the test strategy |
-| ADR 0003 | Local project persistence and `.simuforge.json` format | Defines durable user data and a public file contract |
+Both decisions were accepted on 2026-11-06. They are binding for MVP-0 and do not accept ADR 0001 retroactively; they record the MVP-0 choices inside its modular-monolith direction.
 
-ADR 0001 remains `proposed`. These ADRs do not accept it retroactively; they record the MVP-0 choices inside its modular-monolith direction.
+| ADR | Title | Status | Why it is expensive to reverse |
+| --- | --- | --- | --- |
+| [ADR 0002](../../../docs/decisions/0002-mvp-0-technology-stack.md) | MVP-0 technology stack | **accepted** | Touches every module, the build, and the test strategy |
+| [ADR 0003](../../../docs/decisions/0003-mvp-0-persistence-and-project-format.md) | MVP-0 local persistence and project file format | **accepted** | Defines durable user data and a public file contract |
+
+A change to either decision requires a new ADR and Project Owner approval. It is not made inside an increment.
 
 ## 14. Risks
 
@@ -679,13 +683,15 @@ ADR 0001 remains `proposed`. These ADRs do not accept it retroactively; they rec
 
 ### 14.1 POC-01 residual risks carried forward (C-03)
 
-| Risk | MVP-0 owner | MVP-0 treatment |
-| --- | --- | --- |
-| R-1 Euler display ambiguity at gimbal lock | Engineering (renderer/Inspector) | Quaternion source of truth; YXZ label; boundary tests near +/-90 degrees |
-| R-2 Serialization round-trip not validated | Engineering (world/project) | Automated round-trip tests in I-03 and I-07 |
-| R-3 No performance baseline | Engineering (app) | Measure S0/S3/S4/S5 in I-08 and record evidence |
-| R-4 Chrome-only scope | Product Owner | Recorded as an accepted limitation; no cross-browser claim |
-| R-5 Negative zoom radius | Engineering (renderer) | Radius clamps in the camera controller and a camera test |
+| Risk | MVP-0 owner | MVP-0 treatment | Verification point |
+| --- | --- | --- | --- |
+| R-1 Euler display ambiguity at gimbal lock | Engineering (renderer/Inspector) | Quaternion source of truth; YXZ label; boundary tests near +/-90 degrees | I-06 transform tests; I-09 risk register |
+| R-2 Serialization round-trip not validated | Engineering (world/project) | Automated round-trip tests in I-03 and I-07 | I-03 unit suite; I-07 save/open round-trip |
+| R-3 No performance baseline | Engineering (app) | Measure S0/S3/S4/S5 in I-09 and record evidence | I-09 performance report |
+| R-4 Chrome-only scope | Product Owner | Recorded as an accepted limitation; no cross-browser claim | I-09 acceptance report |
+| R-5 Negative zoom radius | Engineering (renderer) | Radius clamps in the camera controller and a camera test | I-04 camera test; I-09 risk register |
+
+Owner acceptance of C-03 does not close R-1 through R-5. Each risk is closed only when its verification point records evidence.
 
 ## 15. Traceability
 
@@ -698,17 +704,19 @@ ADR 0001 remains `proposed`. These ADRs do not accept it retroactively; they rec
 | Transform policy | POC-01 World Editor §9 |
 | Camera policy | POC-01 World Editor §6.7; Interaction Specification §5 |
 | World schema | POC-01 World Editor §11 |
-| Project envelope | MVP-0 Scaffold Specification §4.5 |
-| Storage model | MVP-0 Scaffold Specification §7 |
+| Project envelope | ADR 0003; MVP-0 Scaffold Specification §4.5 |
+| Storage model | ADR 0003; MVP-0 Scaffold Specification §7 |
+| Technology stack | ADR 0002 |
+| Acceptance gates | ACG-01..ACG-04; MVP-0 Scaffold Specification §11.1 |
 | Phase gating | Design Readiness D-12; UI Component Inventory §14 |
 | Error handling rules | Engineering Standards, Correctness |
 | Performance scenarios | POC-01 World Editor §12.2 |
 
 ## 16. Approval
 
-This architecture is a proposal. It is not active until the Product Owner approves the scaffold decisions and the stack.
+The Project Owner approved this architecture on 2026-11-06. It is not implementation authorization.
 
 | Role | Decision | Date |
 | --- | --- | --- |
-| Product Owner | Pending (OD-01, OD-02, OD-05) | - |
-| Engineering reviewer | Pending | - |
+| Product Owner | **Approved; implementation not authorized** | 2026-11-06 |
+| Engineering reviewer | Reviewed for documentation consistency | 2026-11-06 |
