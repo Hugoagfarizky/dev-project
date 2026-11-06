@@ -1,0 +1,41 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--sf-font-ui);
+  background-color: var(--sf-bg-app);
+  color: var(--sf-text-primary);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.sf-empty-app {
+  display: grid;
+  place-content: center;
+  gap: var(--sf-space-2);
+  height: 100%;
+  padding: var(--sf-space-6);
+  text-align: center;
+}
+
+.sf-empty-app h1 {
+  margin: 0;
+  font-size: var(--sf-text-xl);
+  font-weight: 600;
+}
+
+.sf-empty-app p {
+  margin: 0;
+  color: var(--sf-text-secondary);
+  font-size: var(--sf-text-sm);
+}

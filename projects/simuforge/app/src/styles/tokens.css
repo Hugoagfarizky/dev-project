@@ -1,0 +1,117 @@
+/* SimuForge design tokens - application stylesheet foundation.
+   Source: projects/simuforge/design/mockups/tokens.css.
+   ACG-02 adjustment: tertiary text is #7F8EA5 so normal text on
+   --sf-bg-raised (#192231) measures 4.80:1, above WCAG 2.2 AA 4.5:1. */
+
+:root {
+  --sf-bg-app: #0A0E14;
+  --sf-bg-canvas: #0E131B;
+  --sf-bg-panel: #121823;
+  --sf-bg-input: #151D2A;
+  --sf-bg-raised: #192231;
+  --sf-bg-hover: #202B3D;
+  --sf-bg-active: #2A3648;
+  --sf-bg-selection: rgba(86, 180, 255, 0.14);
+  --sf-bg-overlay: rgba(7, 10, 15, 0.72);
+
+  --sf-border-subtle: #243044;
+  --sf-border-strong: #334158;
+  --sf-border-focus: #56B4FF;
+
+  --sf-text-primary: #E8EEF7;
+  --sf-text-secondary: #A7B4C8;
+  --sf-text-tertiary: #7F8EA5;
+  --sf-text-disabled: #4F5C70;
+  --sf-text-inverse: #1A0F08;
+  --sf-text-link: #56B4FF;
+
+  --sf-accent: #F08A4B;
+  --sf-accent-hover: #FF9D62;
+  --sf-accent-pressed: #D97438;
+  --sf-on-accent: #1A0F08;
+  --sf-selection: #56B4FF;
+  --sf-selection-muted: rgba(86, 180, 255, 0.14);
+  --sf-success: #3DDC97;
+  --sf-warning: #F2C14E;
+  --sf-danger: #FF6B6B;
+  --sf-info: #56B4FF;
+
+  --sf-runtime-editing: #A7B4C8;
+  --sf-runtime-preparing: #F2C14E;
+  --sf-runtime-running: #3DDC97;
+  --sf-runtime-paused: #F2C14E;
+  --sf-runtime-stopped: #78879E;
+
+  --sf-axis-x: #FF6B6B;
+  --sf-axis-y: #78D96B;
+  --sf-axis-z: #5B9DFF;
+  --sf-grid-minor: rgba(167, 180, 200, 0.09);
+  --sf-grid-major: rgba(167, 180, 200, 0.18);
+  --sf-grid-axis-x: rgba(255, 107, 107, 0.55);
+  --sf-grid-axis-y: rgba(120, 217, 107, 0.55);
+  --sf-grid-axis-z: rgba(91, 157, 255, 0.55);
+
+  --sf-font-ui: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --sf-font-mono: "JetBrains Mono", "Cascadia Code", "Consolas", "SFMono-Regular", monospace;
+
+  --sf-text-2xs: 11px;
+  --sf-text-xs: 11px;
+  --sf-text-sm: 12px;
+  --sf-text-md: 13px;
+  --sf-text-lg: 15px;
+  --sf-text-xl: 18px;
+  --sf-text-2xl: 24px;
+  --sf-text-3xl: 32px;
+
+  --sf-space-0: 0;
+  --sf-space-0-5: 2px;
+  --sf-space-1: 4px;
+  --sf-space-1-5: 6px;
+  --sf-space-2: 8px;
+  --sf-space-3: 12px;
+  --sf-space-4: 16px;
+  --sf-space-5: 20px;
+  --sf-space-6: 24px;
+  --sf-space-8: 32px;
+  --sf-space-10: 40px;
+  --sf-space-12: 48px;
+  --sf-space-16: 64px;
+
+  --sf-control-xs: 24px;
+  --sf-control-sm: 28px;
+  --sf-control-md: 32px;
+  --sf-row-hierarchy: 26px;
+  --sf-row-list: 28px;
+  --sf-row-console: 22px;
+  --sf-icon-xs: 12px;
+  --sf-icon-sm: 14px;
+  --sf-icon-md: 16px;
+  --sf-icon-lg: 20px;
+  --sf-icon-xl: 24px;
+  --sf-hit-min: 24px;
+
+  --sf-radius-none: 0;
+  --sf-radius-xs: 2px;
+  --sf-radius-sm: 4px;
+  --sf-radius-md: 6px;
+  --sf-radius-lg: 8px;
+  --sf-radius-pill: 999px;
+
+  --sf-elevation-0: none;
+  --sf-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --sf-elevation-2: 0 8px 24px rgba(0, 0, 0, 0.42);
+  --sf-elevation-3: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --sf-elevation-4: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+  --sf-duration-instant: 0ms;
+  --sf-duration-fast: 120ms;
+  --sf-duration-base: 180ms;
+  --sf-duration-slow: 240ms;
+  --sf-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --sf-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --sf-pulse-duration: 1600ms;
+
+  /* Primitive alias used by the design system. Keep in sync with
+     --sf-text-tertiary. */
+  --sf-slate-500: #7F8EA5;
+}

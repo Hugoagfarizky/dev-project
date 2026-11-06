@@ -100,6 +100,67 @@ Sizes are relative review effort, not calendar estimates. I-03, I-04, I-06, and 
 
 **Risks:** Vite 8 native binaries; Node version drift; TypeScript test execution strategy.
 
+### I-01 implementation evidence (2026-11-06)
+
+Status: **COMPLETE for the authorized I-01 scope.** C-05 technical completion is satisfied by the committed lockfile and generated notices; C-02, C-03, C-04, C-06, and C-07 remain pending their own increments and are not marked complete.
+
+Files created:
+
+- `projects/simuforge/app/.gitignore`
+- `projects/simuforge/app/.node-version`
+- `projects/simuforge/app/THIRD_PARTY_NOTICES.md`
+- `projects/simuforge/app/index.html`
+- `projects/simuforge/app/package.json`
+- `projects/simuforge/app/package-lock.json`
+- `projects/simuforge/app/tsconfig.json`
+- `projects/simuforge/app/vite.config.ts`
+- `projects/simuforge/app/scripts/check-boundaries.mjs`
+- `projects/simuforge/app/scripts/check-node.mjs`
+- `projects/simuforge/app/scripts/check-tokens.mjs`
+- `projects/simuforge/app/scripts/generate-notices.mjs`
+- `projects/simuforge/app/src/App.tsx`
+- `projects/simuforge/app/src/main.tsx`
+- `projects/simuforge/app/src/styles/reset.css`
+- `projects/simuforge/app/src/styles/tokens.css`
+- `projects/simuforge/app/src/vite-env.d.ts`
+- `projects/simuforge/app/test/smoke.test.mjs`
+
+Runtime and toolchain:
+
+- Node.js: `v24.22.2` from `D:\Programs\node-v24.22.2-win-x64\node.exe`
+- npm: `11.19.1` from `D:\Programs\node-v24.22.2-win-x64\npm.cmd`
+- Lockfile: version 3, SHA-256 `D137DA46DE39F56184E5AE6BA13E3CF397B94C336342BDA33F18356910DE8146`
+- Installed package count: 26, including 9 direct dependencies and 17 transitive runtime/build packages
+- `npm audit`: 0 vulnerabilities
+
+Validation results:
+
+- `npm ci`: PASS (26 packages added, audited 27 packages)
+- `npm run check:node`: PASS (`Node version OK: v24.22.2`)
+- `npm run typecheck`: PASS (`tsc --noEmit`)
+- `npm run check:boundaries`: PASS (no `src/world` files present in I-01; script rejects forbidden imports in a temporary fixture)
+- `npm run check:tokens`: PASS (tertiary on raised measured `4.80:1`)
+- `npm test`: PASS (1 test passed)
+- `npm run build`: PASS (Vite production bundle; 17 modules transformed)
+- Dev server: PASS (`http://localhost:5173/` returned HTTP 200)
+- Chrome 156.0.8078.80 headless render: PASS (React root rendered `<main class="sf-empty-app">`; no application console errors; only Chrome GPU cache errors caused by the local C: disk condition)
+- `git diff --check`: PASS
+
+ACG-02 I-01 evidence:
+
+- Known defect: tertiary text on `--sf-bg-raised` originally measured `4.38:1`.
+- Fix applied in `projects/simuforge/app/src/styles/tokens.css`: `--sf-text-tertiary` changed from `#78879E` to `#7F8EA5`; `--sf-slate-500` changed to the same value.
+- Measured result: `4.80:1` on `--sf-bg-raised` (`#192231`), `5.35:1` on `--sf-bg-panel`, and `5.60:1` on `--sf-bg-canvas`.
+- `check-tokens` fails on a deliberately lowered tertiary value and passes on the committed value.
+- Final ACG-02 verification remains scheduled for I-09.
+
+Deferred work and limitations:
+
+- No Studio Shell, Project Hub, viewport, renderer initialization, persistence, state store, command system, or future increment work was implemented.
+- No `src/world` module exists yet; the boundary checker is present and will enforce the rule when I-03 creates that module.
+- Chrome runtime evidence was collected with headless Chrome 156.0.8078.80; interactive CDP layout and accessibility checks remain I-02 and I-09 work.
+- The C: drive has zero free space, so Chrome's GPU cache emitted disk-full errors unrelated to the application. The application bundle and React root rendered successfully.
+
 ### I-02 - Studio shell and layout contract
 
 **Goal:** the fixed shell, panel geometry, collapse behavior, and responsive rules, with static content only.

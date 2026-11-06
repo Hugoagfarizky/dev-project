@@ -208,6 +208,24 @@ The increment must record:
 - any `npm audit` output and its triage,
 - the Chrome and OS versions used for the smoke tests.
 
+## 10.1 I-01 installation evidence (2026-11-06)
+
+Installation was performed only after Node.js 24.22.2 and npm 11.19.1 were available from `D:\Programs\node-v24.22.2-win-x64`.
+
+| Check | Result |
+| --- | --- |
+| `npm ci` | PASS: 26 packages added, 27 audited |
+| Lockfile version | 3 |
+| Lockfile SHA-256 | `D137DA46DE39F56184E5AE6BA13E3CF397B94C336342BDA33F18356910DE8146` |
+| Direct dependency versions | All match ADR 0002 exactly |
+| Transitive versions | Match the inventory, including `rolldown@1.2.16`, `lightningcss@1.33.0`, and `lightningcss-win32-x64-msvc@1.33.0` |
+| `npm audit` | 0 vulnerabilities |
+| Installed package count | 26 total: 9 direct and 17 transitive packages for the Windows x64 target |
+| License notices | `THIRD_PARTY_NOTICES.md` generated from the installed dependency tree |
+| MPL-2.0 packages | `lightningcss@1.33.0` and `lightningcss-win32-x64-msvc@1.33.0`, build-time only, unmodified, with upstream source recorded |
+
+The lockfile records optional platform-specific packages that are not installed on Windows x64. The installed tree and notices file describe the Windows x64 target actually used for validation.
+
 ## 11. Risks
 
 | ID | Risk | Impact | Mitigation |
