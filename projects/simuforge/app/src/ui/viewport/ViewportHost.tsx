@@ -93,22 +93,19 @@ export function ViewportHost({ store, rendererFactory }: ViewportHostProps) {
     };
   }, [store, rendererFactory]);
 
-  if (error || contextLost) {
-    return (
-      <div className="sf-webgl-fallback" role="alert">
-        <h2>3D viewport unavailable</h2>
-        <p>SimuForge needs WebGL 2 and hardware acceleration.</p>
-        {error ? <p>{error.code}: {error.message}</p> : <p>WebGL context was lost.</p>}
-      </div>
-    );
-  }
-
   return (
     <div className="sf-viewport-host" ref={containerRef}>
       <canvas ref={canvasRef} className="sf-viewport-canvas" />
-      {diagnostics ? (
+      {diagnostics && !contextLost && !error ? (
         <div className="sf-viewport-diagnostics" aria-live="polite">
           WebGL {diagnostics.webGlVersion} · {diagnostics.meshCount}/{diagnostics.entityCount} meshes
+        </div>
+      ) : null}
+      {error || contextLost ? (
+        <div className="sf-webgl-fallback" role="alert">
+          <h2>3D viewport unavailable</h2>
+          <p>SimuForge needs WebGL 2 and hardware acceleration.</p>
+          {error ? <p>{error.code}: {error.message}</p> : <p>WebGL context was lost.</p>}
         </div>
       ) : null}
     </div>

@@ -381,6 +381,9 @@
 }
 
 .sf-webgl-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   display: grid;
   place-content: center;
   gap: var(--sf-space-2);

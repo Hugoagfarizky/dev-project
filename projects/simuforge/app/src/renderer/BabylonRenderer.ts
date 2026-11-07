@@ -10,6 +10,7 @@ import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { HighlightLayer } from '@babylonjs/core/Layers/highlightLayer';
 import { GizmoManager } from '@babylonjs/core/Gizmos/gizmoManager';
+import '@babylonjs/core/Culling/ray';
 import type { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh';
 import type { WorldDocument, WorldEntity, Transform } from '../world/types.js';
 import type { RendererPort, RendererDiagnostics, RendererEventSink, GizmoMode } from './RendererPort.js';
