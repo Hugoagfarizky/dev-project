@@ -16,6 +16,12 @@ import type { WorldDocument, WorldEntity, Transform } from '../world/types.js';
 import type { RendererPort, RendererDiagnostics, RendererEventSink, GizmoMode } from './RendererPort.js';
 
 const CLICK_THRESHOLD_PX = 5;
+const GRID_EXTENT = 50;
+const GRID_FILL_Y = -0.003;
+const GRID_LINE_Y = -0.002;
+const GRID_LINE_COLOR = new Color3(0.34, 0.42, 0.54);
+const GRID_FILL_COLOR = new Color3(0.09, 0.12, 0.17);
+const PRIMITIVE_COLOR = new Color3(0.52, 0.58, 0.68);
 
 export class BabylonRenderer implements RendererPort {
   private canvas: HTMLCanvasElement | null = null;
@@ -25,6 +31,7 @@ export class BabylonRenderer implements RendererPort {
   private highlight: HighlightLayer | null = null;
   private gizmoManager: GizmoManager | null = null;
   private grid: AbstractMesh | null = null;
+  private gridLines: AbstractMesh | null = null;
   private meshes = new Map<string, AbstractMesh>();
   private selectedEntityId: string | null = null;
   private gizmoMode: GizmoMode = 'translate';
@@ -69,11 +76,20 @@ export class BabylonRenderer implements RendererPort {
       this.camera.lowerBetaLimit = 0.01;
       this.camera.upperBetaLimit = Math.PI - 0.01;
 
-      this.grid = MeshBuilder.CreateGround('grid', { width: 100, height: 100, subdivisions: 100 }, this.scene);
+      this.grid = MeshBuilder.CreateGround(
+        'grid',
+        { width: GRID_EXTENT * 2, height: GRID_EXTENT * 2, subdivisions: 1 },
+        this.scene
+      );
+      this.grid.position.y = GRID_FILL_Y;
+      this.grid.isPickable = false;
       const gridMaterial = new StandardMaterial('grid-material', this.scene);
-      gridMaterial.diffuseColor = new Color3(0.16, 0.22, 0.31);
-      gridMaterial.alpha = 0.45;
+      gridMaterial.diffuseColor = GRID_FILL_COLOR;
+      gridMaterial.emissiveColor = GRID_FILL_COLOR;
+      gridMaterial.disableLighting = true;
+      gridMaterial.backFaceCulling = false;
       this.grid.material = gridMaterial;
+      this.gridLines = createGridLines(this.scene);
 
       this.highlight = new HighlightLayer('selection-highlight', this.scene);
       this.gizmoManager = new GizmoManager(this.scene);
@@ -146,19 +162,23 @@ export class BabylonRenderer implements RendererPort {
     }
 
     for (const mesh of this.meshes.values()) {
-      mesh.dispose();
+      disposeMesh(mesh);
     }
     this.meshes.clear();
 
     this.gizmoManager?.dispose();
     this.highlight?.dispose();
-    this.grid?.dispose();
+    this.gridLines?.dispose();
+    if (this.grid) {
+      disposeMesh(this.grid);
+    }
     this.camera?.dispose();
     this.scene?.dispose();
     this.engine?.dispose();
 
     this.gizmoManager = null;
     this.highlight = null;
+    this.gridLines = null;
     this.grid = null;
     this.camera = null;
     this.scene = null;
@@ -191,7 +211,7 @@ export class BabylonRenderer implements RendererPort {
 
     for (const [id, mesh] of this.meshes) {
       if (!worldIds.has(id)) {
-        mesh.dispose();
+        disposeMesh(mesh);
         this.meshes.delete(id);
       }
     }
@@ -281,6 +301,9 @@ export class BabylonRenderer implements RendererPort {
     if (this.grid) {
       this.grid.isVisible = visible;
     }
+    if (this.gridLines) {
+      this.gridLines.isVisible = visible;
+    }
   }
 
   setEventSink(sink: RendererEventSink): void {
@@ -365,7 +388,9 @@ function createMesh(entity: WorldEntity, scene: Scene): AbstractMesh {
       mesh = MeshBuilder.CreateSphere(entity.id, { diameter: 1 }, scene);
       break;
     case 'plane':
-      mesh = MeshBuilder.CreatePlane(entity.id, { size: 1 }, scene);
+      // POC-01: plane lives on the XZ ground plane with a +Y normal and is
+      // rendered double-sided so it is visible from above and below.
+      mesh = MeshBuilder.CreateGround(entity.id, { width: 1, height: 1 }, scene);
       break;
     default:
       mesh = MeshBuilder.CreateBox(entity.id, { size: 1 }, scene);
@@ -374,7 +399,12 @@ function createMesh(entity: WorldEntity, scene: Scene): AbstractMesh {
 
   mesh.metadata = { entityId: entity.id };
   const material = new StandardMaterial(`${entity.id}-material`, scene);
-  material.diffuseColor = new Color3(0.72, 0.76, 0.82);
+  // POC-01: editor primitives are unlit so they are visible without a world
+  // light. Lighting is not part of the world simulation.
+  material.diffuseColor = Color3.Black();
+  material.emissiveColor = PRIMITIVE_COLOR;
+  material.disableLighting = true;
+  material.backFaceCulling = entity.type !== 'plane';
   mesh.material = material;
   mesh.rotationQuaternion = new Quaternion(
     entity.transform.rotation.x,
@@ -384,6 +414,34 @@ function createMesh(entity: WorldEntity, scene: Scene): AbstractMesh {
   );
 
   return mesh;
+}
+
+function createGridLines(scene: Scene): AbstractMesh {
+  const lines: Vector3[][] = [];
+
+  for (let offset = -GRID_EXTENT; offset <= GRID_EXTENT; offset += 1) {
+    lines.push([
+      new Vector3(offset, GRID_LINE_Y, -GRID_EXTENT),
+      new Vector3(offset, GRID_LINE_Y, GRID_EXTENT)
+    ]);
+    lines.push([
+      new Vector3(-GRID_EXTENT, GRID_LINE_Y, offset),
+      new Vector3(GRID_EXTENT, GRID_LINE_Y, offset)
+    ]);
+  }
+
+  const gridLines = MeshBuilder.CreateLineSystem('grid-lines', { lines }, scene);
+  gridLines.color = GRID_LINE_COLOR;
+  gridLines.isPickable = false;
+  return gridLines;
+}
+
+function disposeMesh(mesh: AbstractMesh): void {
+  const material = mesh.material;
+  mesh.dispose();
+  if (material && !Array.isArray(material)) {
+    material.dispose();
+  }
 }
 
 function readTransform(mesh: AbstractMesh): Transform {
