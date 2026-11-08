@@ -69,6 +69,25 @@ test('reports nested world failure path', () => {
   if (!result.ok) assert.match(result.error.path ?? '', /world\.entities\[0\]\.id/);
 });
 
+test('rejects updatedAt before createdAt', () => {
+  const json = JSON.stringify({
+    format: 'simuforge.project',
+    schemaVersion: 1,
+    project: { id: '11111111-1111-4111-8111-111111111111', name: 'Test', createdAt: '2026-11-06T01:00:00.000Z', updatedAt: '2026-11-06T00:00:00.000Z' },
+    world: { format: 'simuforge.world', schemaVersion: 1, entities: [] }
+  });
+  const result = parseProjectDocument(json);
+  assert.equal(result.ok, false);
+  if (!result.ok) assert.equal(result.error.code, 'INVALID_PROJECT_TIMESTAMP');
+});
+
+test('rejects oversized file', () => {
+  const big = 'x'.repeat(1024 * 1024 + 10);
+  const result = parseProjectDocument(big);
+  assert.equal(result.ok, false);
+  if (!result.ok) assert.equal(result.error.code, 'FILE_TOO_LARGE');
+});
+
 test('round-trips a project document', () => {
   const world = createEmptyWorld();
   const project = {

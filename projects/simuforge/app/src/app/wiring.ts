@@ -33,6 +33,9 @@ export function connectRendererToStore(
     renderer.applySelection(state.editor.selectedEntityId);
     renderer.applyGizmoMode(state.editor.gizmoMode);
     renderer.applyGridVisible(state.editor.gridVisible);
+    if (state.editor.camera === null) {
+      renderer.resetCamera();
+    }
   });
 
   const state = store.getSnapshot();

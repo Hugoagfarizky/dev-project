@@ -15,6 +15,9 @@ interface StudioShortcutOptions {
   onFrameWorld: () => void;
   onToggleGrid: (visible: boolean) => void;
   onClearSelection: () => void;
+  onSave?: () => void;
+  onOpen?: () => void;
+  onNewProject?: () => void;
 }
 
 function isEditableTarget(target: EventTarget | null): boolean {
@@ -111,6 +114,25 @@ export function useStudioShortcuts(options: StudioShortcutOptions): void {
       if (event.key === 'Delete' && current.selectedEntityId) {
         event.preventDefault();
         current.onDeleteRequest(current.selectedEntityId);
+        return;
+      }
+
+      // I-07 shortcuts (Ctrl+S / Ctrl+O / Ctrl+Alt+N).
+      if (event.ctrlKey && !event.shiftKey && (event.key === 's' || event.key === 'S')) {
+        if (isEditableTarget(event.target)) return;
+        event.preventDefault();
+        current.onSave?.();
+        return;
+      }
+      if (event.ctrlKey && !event.shiftKey && (event.key === 'o' || event.key === 'O')) {
+        if (isEditableTarget(event.target)) return;
+        event.preventDefault();
+        current.onOpen?.();
+        return;
+      }
+      if (event.ctrlKey && event.altKey && (event.key === 'n' || event.key === 'N')) {
+        event.preventDefault();
+        current.onNewProject?.();
         return;
       }
     }

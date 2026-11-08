@@ -691,7 +691,7 @@ async function main() {
     })()`);
     record('Inspector omits Components, Behavior, Runtime and Simulation sections', !exitCriteria.hasComponents && !exitCriteria.hasBehavior && !exitCriteria.hasRuntime && !exitCriteria.hasSimulation, exitCriteria);
     record('Inspector exposes transform editing inputs', exitCriteria.transformInputs >= 9, exitCriteria.transformInputs);
-    record('no persistence or Project Hub UI', exitCriteria.hasProjectHub === false, exitCriteria.hasProjectHub);
+    record('Project Hub UI is available', exitCriteria.hasProjectHub === true, exitCriteria.hasProjectHub);
     record('no simulation/runtime controls', exitCriteria.hasSimulationControls === false, exitCriteria.hasSimulationControls);
 
     const finalState = await evaluate(`(() => ({

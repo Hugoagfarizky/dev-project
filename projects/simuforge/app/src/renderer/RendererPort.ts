@@ -36,6 +36,7 @@ export interface RendererPort {
   setEventSink(sink: RendererEventSink): void;
   frameSelection(entityId: string | null): void;
   frameWorld(): void;
+  resetCamera(): void;
   getDiagnostics(): RendererDiagnostics;
   getIsDragging(): boolean;
   cancelGizmoDrag(): void;

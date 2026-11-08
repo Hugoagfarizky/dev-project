@@ -48,6 +48,14 @@ Shortcuts are suppressed when focus is inside `INPUT`, `TEXTAREA`, or a `content
 
 No implemented I-06 shortcut collides with a reserved browser/OS combination. All implemented combinations were exercised in Chrome 156 on Windows 11 at 1440×900 and 1024×640. See `evidence/i06-result.json` and `I-06_BROWSER_VERIFICATION.md`.
 
+## I-07 shortcuts
+
+| Combination | Intended action | Actual behavior | Result |
+| --- | --- | --- | --- |
+| Ctrl+S | Save Project | Saves current project to IndexedDB | Implemented |
+| Ctrl+O | Open Project | Opens Project Hub | Implemented |
+| Ctrl+Alt+N | New Project | Creates a new project | Implemented |
+
 ## ACG-03 verdict
 
-ACG-03: PASS for the I-06 shortcut subset. Full M0-AC-21 remains split (I-07 subset deferred).
+ACG-03: PASS for the I-06 shortcut subset plus I-07 shortcuts. Full M0-AC-21 now complete (all subsets implemented).

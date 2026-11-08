@@ -385,6 +385,14 @@ export class BabylonRenderer {
     this.camera.radius = Math.min(Math.max(radius, this.camera.lowerRadiusLimit ?? 0.5), this.camera.upperRadiusLimit ?? 500);
   }
 
+  resetCamera(): void {
+    if (!this.camera) return;
+    this.camera.alpha = Math.PI / 2;
+    this.camera.beta = Math.PI / 3;
+    this.camera.radius = 10;
+    this.camera.setTarget(Vector3.Zero());
+  }
+
   frameWorld(): void {
     if (!this.camera) return;
     if (this.meshes.size === 0) {

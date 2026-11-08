@@ -4,13 +4,19 @@ import { StatusBar } from './StatusBar';
 import { Splitter } from './Splitter';
 import { Panel } from './Panel';
 import { ViewportHost } from '../viewport/ViewportHost.js';
+import { ProjectHub } from '../hub/ProjectHub.js';
+import { IndexedDbProjectRepository } from '../../storage/IndexedDbProjectRepository.js';
+import { LayoutStorage } from '../../storage/LayoutStorage.js';
 import { WorldHierarchy } from '../panels/WorldHierarchy.js';
 import { AssetLibrary } from '../panels/AssetLibrary.js';
 import { Inspector } from '../panels/Inspector.js';
 import { Dialog } from '../common/Dialog';
+import { Button } from '../common/Button';
 import { useStudioStore } from '../hooks/useStore.js';
 import { useStudioShortcuts } from '../hooks/useStudioShortcuts.js';
 import { selectEntities, selectSelectedEntityId, selectGridVisible } from '../../editor/selectors.js';
+import { serializeProjectDocument } from '../../project/serialization.js';
+import type { ProjectDocument } from '../../project/types.js';
 import { computeLayout, resolveCollapsedPanels, type StudioPreset } from './computeLayout';
 import type { StudioStore } from '../../editor/store.js';
 import '../../styles/shell.css';
@@ -38,6 +44,9 @@ export function StudioShell({ store }: StudioShellProps) {
   const [userOverrides, setUserOverrides] = useState<Record<PanelKey, UserOverride>>(initialUserOverrides);
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [showHub, setShowHub] = useState<boolean>(false);
+  const repositoryRef = useRef<IndexedDbProjectRepository>(new IndexedDbProjectRepository());
+  const layoutStorageRef = useRef<LayoutStorage>(new LayoutStorage());
 
   const entities = useStudioStore(store, selectEntities);
   const selectedId = useStudioStore(store, selectSelectedEntityId);
@@ -100,8 +109,92 @@ export function StudioShell({ store }: StudioShellProps) {
     },
     onClearSelection() {
       store.dispatch({ type: 'selection/set', id: null });
+    },
+    onSave() {
+      void handleSave();
+    },
+    onOpen() {
+      setShowHub(true);
+    },
+    onNewProject() {
+      void handleNewProject('Untitled Simulation');
     }
   });
+
+  async function handleNewProject(name: string) {
+    store.dispatch({ type: 'project/new', name });
+    const state = store.getSnapshot();
+    const project = state.project;
+    try {
+      if (repositoryRef.current.isAvailable()) {
+        await repositoryRef.current.save(project);
+        layoutStorageRef.current.saveLastProjectId(project.project.id);
+      }
+    } catch (e) {
+      console.error('save failed', e);
+    }
+    setShowHub(false);
+  }
+
+  async function handleOpenProject(project: ProjectDocument) {
+    // cancel any active gizmo drag
+    rendererRef.current?.cancelGizmoDrag?.();
+    store.dispatch({ type: 'project/open', document: project as never });
+    layoutStorageRef.current.saveLastProjectId(project.project.id);
+    setShowHub(false);
+  }
+
+  async function handleImportFile(file: File): Promise<string | null> {
+    try {
+      const text = await file.text();
+      const sizeError = (await import('../../project/validation.js')).checkProjectSize(new TextEncoder().encode(text).length);
+      if (sizeError) return sizeError.message;
+      const { parseProjectDocument } = await import('../../project/serialization.js');
+      const result = parseProjectDocument(text);
+      if (!result.ok) return result.error.message;
+      rendererRef.current?.cancelGizmoDrag?.();
+      store.dispatch({ type: 'project/open', document: result.value });
+      if (repositoryRef.current.isAvailable()) {
+        await repositoryRef.current.save(result.value);
+        layoutStorageRef.current.saveLastProjectId(result.value.project.id);
+      }
+      setShowHub(false);
+      return null;
+    } catch (e) {
+      return String((e as { message?: string })?.message ?? e);
+    }
+  }
+
+  async function handleSave() {
+    const state = store.getSnapshot();
+    const project = state.project;
+    const now = new Date().toISOString();
+    const toSave = { ...project, project: { ...project.project, updatedAt: now } };
+    store.dispatch({ type: 'project/save-started' });
+    try {
+      if (!repositoryRef.current.isAvailable()) {
+        store.dispatch({ type: 'project/save-failed', error: { code: 'STORAGE_UNAVAILABLE', message: 'Storage unavailable' } });
+        return;
+      }
+      await repositoryRef.current.save(toSave);
+      store.dispatch({ type: 'project/save-succeeded', at: now, revision: state.persistence.revision });
+      layoutStorageRef.current.saveLastProjectId(toSave.project.id);
+    } catch (e) {
+      store.dispatch({ type: 'project/save-failed', error: { code: 'STORAGE_WRITE_FAILED', message: String((e as { message?: string })?.message ?? e) } });
+    }
+  }
+
+  function handleExport() {
+    const state = store.getSnapshot();
+    const json = serializeProjectDocument(state.project);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${state.project.project.name}.simuforge.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
   const layout = computeLayout({
     width: viewport.width,
@@ -139,6 +232,20 @@ export function StudioShell({ store }: StudioShellProps) {
     setDeleteTargetId(null);
   }
 
+  if (showHub) {
+    return (
+      <div className="sf-shell">
+        <ProjectHub
+          repository={repositoryRef.current}
+          storageAvailable={repositoryRef.current.isAvailable()}
+          onOpen={handleOpenProject}
+          onNew={handleNewProject}
+          onImport={handleImportFile}
+        />
+      </div>
+    );
+  }
+
   if (layout.tooSmall) {
     return (
       <div className="sf-shell sf-shell-too-small">
@@ -160,6 +267,12 @@ export function StudioShell({ store }: StudioShellProps) {
       }}
     >
       <TopBar compact={layout.compact} preset={preset} onPresetChange={handlePresetChange} />
+
+      <div className="sf-project-actions" style={{ position: 'absolute', top: 52, right: 8, display: 'flex', gap: 6, zIndex: 10 }}>
+        <Button variant="secondary" size="sm" onClick={() => setShowHub(true)}>Project Hub</Button>
+        <Button variant="secondary" size="sm" onClick={handleSave}>Save</Button>
+        <Button variant="secondary" size="sm" onClick={handleExport}>Export</Button>
+      </div>
 
       <div
         className="sf-main"

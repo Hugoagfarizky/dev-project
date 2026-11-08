@@ -1,6 +1,6 @@
 import { serializeWorldDocument } from '../world/serialization.ts';
 import { PROJECT_FORMAT, PROJECT_SCHEMA_VERSION } from './types.ts';
-import { validateProjectDocument } from './validation.ts';
+import { validateProjectDocument, checkProjectSize } from './validation.ts';
 import type { ProjectDocument } from './types.ts';
 
 export function serializeProjectDocument(project: ProjectDocument): string {
@@ -18,6 +18,10 @@ export function serializeProjectDocument(project: ProjectDocument): string {
 }
 
 export function parseProjectDocument(json: string): ReturnType<typeof validateProjectDocument> {
+  const sizeError = checkProjectSize(new TextEncoder().encode(json).length);
+  if (sizeError) {
+    return { ok: false, error: sizeError };
+  }
   let parsed: unknown;
   try {
     parsed = JSON.parse(json);
