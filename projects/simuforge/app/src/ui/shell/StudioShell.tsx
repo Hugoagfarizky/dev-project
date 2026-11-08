@@ -5,6 +5,7 @@ import { Splitter } from './Splitter';
 import { Panel } from './Panel';
 import { ViewportHost } from '../viewport/ViewportHost.js';
 import { ProjectHub } from '../hub/ProjectHub.js';
+import { ConsoleDrawer } from '../console/ConsoleDrawer.js';
 import { IndexedDbProjectRepository } from '../../storage/IndexedDbProjectRepository.js';
 import { LayoutStorage } from '../../storage/LayoutStorage.js';
 import { WorldHierarchy } from '../panels/WorldHierarchy.js';
@@ -14,7 +15,7 @@ import { Dialog } from '../common/Dialog';
 import { Button } from '../common/Button';
 import { useStudioStore } from '../hooks/useStore.js';
 import { useStudioShortcuts } from '../hooks/useStudioShortcuts.js';
-import { selectEntities, selectSelectedEntityId, selectGridVisible } from '../../editor/selectors.js';
+import { selectEntities, selectSelectedEntityId, selectGridVisible, selectLogs } from '../../editor/selectors.js';
 import { serializeProjectDocument } from '../../project/serialization.js';
 import type { ProjectDocument } from '../../project/types.js';
 import { computeLayout, resolveCollapsedPanels, type StudioPreset } from './computeLayout';
@@ -51,6 +52,8 @@ export function StudioShell({ store }: StudioShellProps) {
   const entities = useStudioStore(store, selectEntities);
   const selectedId = useStudioStore(store, selectSelectedEntityId);
   const gridVisible = useStudioStore(store, selectGridVisible);
+  const logs = useStudioStore(store, selectLogs);
+  const autoExpandedRef = useRef(false);
   const rendererRef = useRef<import('../../renderer/RendererPort.js').RendererPort | null>(null);
   const selectedEntity = selectedId === null
     ? null
@@ -65,6 +68,10 @@ export function StudioShell({ store }: StudioShellProps) {
     }
     window.addEventListener('resize', updateViewport);
     return () => window.removeEventListener('resize', updateViewport);
+  }, []);
+
+  useEffect(() => {
+    store.dispatch({ type: 'log/append', entry: { id: crypto.randomUUID(), timestamp: new Date().toISOString(), severity: 'info', source: 'APP', code: 'APP_STARTED', message: 'SimuForge Studio started' } });
   }, []);
 
   useEffect(() => {
@@ -151,7 +158,10 @@ export function StudioShell({ store }: StudioShellProps) {
       if (sizeError) return sizeError.message;
       const { parseProjectDocument } = await import('../../project/serialization.js');
       const result = parseProjectDocument(text);
-      if (!result.ok) return result.error.message;
+      if (!result.ok) {
+        store.dispatch({ type: 'log/append', entry: { id: crypto.randomUUID(), timestamp: new Date().toISOString(), severity: 'error', source: 'IMPORT', code: result.error.code ?? 'IMPORT_FAILED', message: result.error.message } });
+        return result.error.message;
+      }
       rendererRef.current?.cancelGizmoDrag?.();
       store.dispatch({ type: 'project/open', document: result.value });
       if (repositoryRef.current.isAvailable()) {
@@ -161,7 +171,9 @@ export function StudioShell({ store }: StudioShellProps) {
       setShowHub(false);
       return null;
     } catch (e) {
-      return String((e as { message?: string })?.message ?? e);
+      const msg = String((e as { message?: string })?.message ?? e);
+      store.dispatch({ type: 'log/append', entry: { id: crypto.randomUUID(), timestamp: new Date().toISOString(), severity: 'error', source: 'IMPORT', code: 'IMPORT_FAILED', message: msg } });
+      return msg;
     }
   }
 
@@ -174,13 +186,16 @@ export function StudioShell({ store }: StudioShellProps) {
     try {
       if (!repositoryRef.current.isAvailable()) {
         store.dispatch({ type: 'project/save-failed', error: { code: 'STORAGE_UNAVAILABLE', message: 'Storage unavailable' } });
+        store.dispatch({ type: 'log/append', entry: { id: crypto.randomUUID(), timestamp: new Date().toISOString(), severity: 'error', source: 'APP', code: 'STORAGE_UNAVAILABLE', message: 'Storage unavailable' } });
         return;
       }
       await repositoryRef.current.save(toSave);
       store.dispatch({ type: 'project/save-succeeded', at: now, revision: state.persistence.revision });
       layoutStorageRef.current.saveLastProjectId(toSave.project.id);
     } catch (e) {
-      store.dispatch({ type: 'project/save-failed', error: { code: 'STORAGE_WRITE_FAILED', message: String((e as { message?: string })?.message ?? e) } });
+      const msg = String((e as { message?: string })?.message ?? e);
+      store.dispatch({ type: 'project/save-failed', error: { code: 'STORAGE_WRITE_FAILED', message: msg } });
+      store.dispatch({ type: 'log/append', entry: { id: crypto.randomUUID(), timestamp: new Date().toISOString(), severity: 'error', source: 'APP', code: 'STORAGE_WRITE_FAILED', message: msg } });
     }
   }
 
@@ -208,6 +223,15 @@ export function StudioShell({ store }: StudioShellProps) {
     responsiveCollapsed: layout.responsiveCollapsed,
     userOverrides
   });
+
+  useEffect(() => {
+    if (autoExpandedRef.current) return;
+    const hasError = logs.some((entry) => entry.severity === 'error');
+    if (hasError && collapsed.console) {
+      autoExpandedRef.current = true;
+      togglePanel('console');
+    }
+  }, [logs, collapsed.console]);
 
   function togglePanel(panel: PanelKey) {
     setUserOverrides((previous) => ({
@@ -254,7 +278,7 @@ export function StudioShell({ store }: StudioShellProps) {
           <h1>Window too small</h1>
           <p>SimuForge requires a viewport of at least 1024 × 640.</p>
         </div>
-        <StatusBar />
+        <StatusBar store={store} rendererRef={rendererRef} />
       </div>
     );
   }
@@ -352,11 +376,11 @@ export function StudioShell({ store }: StudioShellProps) {
         </div>
       </div>
 
-      <Panel title="Console" collapsed={collapsed.console} onToggle={() => togglePanel('console')} summary="No output">
-        <div className="sf-panel-empty">No output yet</div>
+      <Panel title="Console" collapsed={collapsed.console} onToggle={() => togglePanel('console')} summary="Console">
+        <ConsoleDrawer store={store} expanded={!collapsed.console} onToggle={() => togglePanel('console')} />
       </Panel>
 
-      <StatusBar />
+      <StatusBar store={store} rendererRef={rendererRef} />
 
       <Dialog
         open={deleteTarget !== null}

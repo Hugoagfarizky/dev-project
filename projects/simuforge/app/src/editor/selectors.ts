@@ -48,3 +48,7 @@ export function selectIsDirty(state: StudioState): boolean {
 export function selectSaveStatus(state: StudioState): StudioState['persistence']['status'] {
   return state.persistence.status;
 }
+
+export function selectLogs(state: StudioState): StudioState['logs'] {
+  return state.logs;
+}
