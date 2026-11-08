@@ -1,0 +1,97 @@
+{
+  "r1": [
+    {
+      "preset": "build",
+      "active": [
+        "B"
+      ],
+      "dims": {
+        "w": 1024,
+        "h": 640,
+        "sw": 1024,
+        "sh": 640
+      },
+      "file": "i09-1024x640-build.png",
+      "hash": "e7cf11c9027b1601ca4c41ae66cf8a52976808837264fb5f06dd4db6b1ebe065",
+      "bytes": 76199
+    },
+    {
+      "preset": "program",
+      "active": [
+        "P"
+      ],
+      "dims": {
+        "w": 1024,
+        "h": 640,
+        "sw": 1024,
+        "sh": 640
+      },
+      "file": "i09-1024x640-program.png",
+      "hash": "d24d38d7514729299770fd8aa0d84aeb7a4bb1342b6c3c1e013f832e46d3fe6f",
+      "bytes": 75015
+    },
+    {
+      "preset": "simulate",
+      "active": [
+        "S"
+      ],
+      "dims": {
+        "w": 1024,
+        "h": 640,
+        "sw": 1024,
+        "sh": 640
+      },
+      "file": "i09-1024x640-simulate.png",
+      "hash": "1f4ae22a90da7408c2df679fa23a1d386d9663e8be5529db67e1dcdc24d2b457",
+      "bytes": 80169
+    }
+  ],
+  "r2": [
+    {
+      "preset": "build",
+      "active": [
+        "Build"
+      ],
+      "dims": {
+        "w": 1440,
+        "h": 900,
+        "sw": 1440,
+        "sh": 900
+      },
+      "file": "i09-1440x900-build.png",
+      "hash": "1b578dc0b27d9741114960f5eab008aefead4ca9ea3b2284014055b79ae3a77c",
+      "bytes": 109032
+    },
+    {
+      "preset": "program",
+      "active": [
+        "Program"
+      ],
+      "dims": {
+        "w": 1440,
+        "h": 900,
+        "sw": 1440,
+        "sh": 900
+      },
+      "file": "i09-1440x900-program.png",
+      "hash": "2651198020c9df055b73c9156effbcf1b24022b367e97730f81367e167e1a755",
+      "bytes": 109539
+    },
+    {
+      "preset": "simulate",
+      "active": [
+        "Simulate"
+      ],
+      "dims": {
+        "w": 1440,
+        "h": 900,
+        "sw": 1440,
+        "sh": 900
+      },
+      "file": "i09-1440x900-simulate.png",
+      "hash": "d60a17dd0be844114c2c026a7ddd5cab3fc7a103abdc196de34122cb5c1eec93",
+      "bytes": 113853
+    }
+  ],
+  "timestamp": "2026-11-08T11:24:51.240Z"
+}
