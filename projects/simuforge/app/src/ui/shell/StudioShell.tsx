@@ -4,6 +4,13 @@ import { StatusBar } from './StatusBar';
 import { Splitter } from './Splitter';
 import { Panel } from './Panel';
 import { ViewportHost } from '../viewport/ViewportHost.js';
+import { WorldHierarchy } from '../panels/WorldHierarchy.js';
+import { AssetLibrary } from '../panels/AssetLibrary.js';
+import { Inspector } from '../panels/Inspector.js';
+import { Dialog } from '../common/Dialog';
+import { useStudioStore } from '../hooks/useStore.js';
+import { useStudioShortcuts } from '../hooks/useStudioShortcuts.js';
+import { selectEntities, selectSelectedEntityId } from '../../editor/selectors.js';
 import { computeLayout, resolveCollapsedPanels, type StudioPreset } from './computeLayout';
 import type { StudioStore } from '../../editor/store.js';
 import '../../styles/shell.css';
@@ -19,16 +26,27 @@ const initialUserOverrides: Record<PanelKey, UserOverride> = {
 };
 
 interface StudioShellProps {
-  store?: StudioStore;
+  store: StudioStore;
 }
 
-export function StudioShell({ store }: StudioShellProps = {}) {
+export function StudioShell({ store }: StudioShellProps) {
   const [viewport, setViewport] = useState(() => ({
     width: typeof window === 'undefined' ? 1440 : window.innerWidth,
     height: typeof window === 'undefined' ? 900 : window.innerHeight
   }));
   const [preset, setPreset] = useState<StudioPreset>('build');
   const [userOverrides, setUserOverrides] = useState<Record<PanelKey, UserOverride>>(initialUserOverrides);
+  const [renamingId, setRenamingId] = useState<string | null>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+
+  const entities = useStudioStore(store, selectEntities);
+  const selectedId = useStudioStore(store, selectSelectedEntityId);
+  const selectedEntity = selectedId === null
+    ? null
+    : entities.find((entity) => entity.id === selectedId) ?? null;
+  const deleteTarget = deleteTargetId === null
+    ? null
+    : entities.find((entity) => entity.id === deleteTargetId) ?? null;
 
   useEffect(() => {
     function updateViewport() {
@@ -37,6 +55,33 @@ export function StudioShell({ store }: StudioShellProps = {}) {
     window.addEventListener('resize', updateViewport);
     return () => window.removeEventListener('resize', updateViewport);
   }, []);
+
+  useEffect(() => {
+    if (renamingId !== null && !entities.some((entity) => entity.id === renamingId)) {
+      setRenamingId(null);
+    }
+  }, [entities, renamingId]);
+
+  useEffect(() => {
+    if (deleteTargetId !== null && !entities.some((entity) => entity.id === deleteTargetId)) {
+      setDeleteTargetId(null);
+    }
+  }, [entities, deleteTargetId]);
+
+  useStudioShortcuts({
+    selectedEntityId: selectedId,
+    isRenaming: renamingId !== null,
+    isDialogOpen: deleteTargetId !== null,
+    onRename(id) {
+      setRenamingId(id);
+    },
+    onDeleteRequest(id) {
+      setDeleteTargetId(id);
+    },
+    onCancelDialog() {
+      setDeleteTargetId(null);
+    }
+  });
 
   const layout = computeLayout({
     width: viewport.width,
@@ -61,6 +106,17 @@ export function StudioShell({ store }: StudioShellProps = {}) {
   function handlePresetChange(nextPreset: StudioPreset) {
     setPreset(nextPreset);
     setUserOverrides({ ...initialUserOverrides });
+  }
+
+  function confirmDelete() {
+    if (deleteTargetId === null) {
+      return;
+    }
+    store.dispatch({ type: 'entity/delete', id: deleteTargetId });
+    if (renamingId === deleteTargetId) {
+      setRenamingId(null);
+    }
+    setDeleteTargetId(null);
   }
 
   if (layout.tooSmall) {
@@ -97,12 +153,22 @@ export function StudioShell({ store }: StudioShellProps = {}) {
             gridTemplateRows: collapsed.assets ? '1fr 1px 32px' : '1fr 1px 220px'
           }}
         >
-          <Panel title="World Hierarchy" summary="0 objects">
-            <div className="sf-panel-empty">No objects yet</div>
+          <Panel
+            title="World Hierarchy"
+            summary={`${entities.length} ${entities.length === 1 ? 'object' : 'objects'}`}
+            className="sf-hierarchy-panel"
+          >
+            <WorldHierarchy
+              store={store}
+              renamingId={renamingId}
+              onStartRename={setRenamingId}
+              onFinishRename={() => setRenamingId(null)}
+              onRequestDelete={setDeleteTargetId}
+            />
           </Panel>
           <Splitter orientation="horizontal" />
           <Panel title="Asset Library" collapsed={collapsed.assets} onToggle={() => togglePanel('assets')} summary="3 primitives">
-            <div className="sf-panel-empty">Cube, Sphere, Plane</div>
+            <AssetLibrary store={store} />
           </Panel>
         </div>
 
@@ -139,8 +205,12 @@ export function StudioShell({ store }: StudioShellProps = {}) {
             gridTemplateRows: collapsed.monitor ? '1fr 1px 32px' : '1fr 1px 260px'
           }}
         >
-          <Panel title="Inspector" summary="No selection">
-            <div className="sf-panel-empty">Nothing selected</div>
+          <Panel
+            title="Inspector"
+            summary={selectedEntity ? selectedEntity.name : 'No selection'}
+            className="sf-inspector-panel"
+          >
+            <Inspector store={store} />
           </Panel>
           <Splitter orientation="horizontal" />
           <Panel title="Monitor" collapsed={collapsed.monitor} onToggle={() => togglePanel('monitor')} summary="Planned">
@@ -154,6 +224,21 @@ export function StudioShell({ store }: StudioShellProps = {}) {
       </Panel>
 
       <StatusBar />
+
+      <Dialog
+        open={deleteTarget !== null}
+        title="Delete entity"
+        tone="danger"
+        confirmLabel="Delete"
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTargetId(null)}
+      >
+        {deleteTarget ? (
+          <p>
+            Delete <strong>{deleteTarget.name}</strong>? This cannot be undone.
+          </p>
+        ) : null}
+      </Dialog>
     </div>
   );
 }
