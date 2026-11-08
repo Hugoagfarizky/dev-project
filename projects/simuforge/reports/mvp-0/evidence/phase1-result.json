@@ -1,0 +1,655 @@
+{
+  "results": [
+    {
+      "name": "POC-01 scene has no world light",
+      "pass": true,
+      "detail": {
+        "lights": 0,
+        "meshCount": 0,
+        "entityCount": 0,
+        "gridVisible": true,
+        "gridPickable": false,
+        "gridLinesVisible": true,
+        "gridLinesPickable": false,
+        "gridMaterial": {
+          "type": "StandardMaterial",
+          "disableLighting": true,
+          "emissive": [
+            0.09,
+            0.12,
+            0.17
+          ]
+        }
+      }
+    },
+    {
+      "name": "grid fill + line grid exist, visible and not pickable",
+      "pass": true,
+      "detail": {
+        "lights": 0,
+        "meshCount": 0,
+        "entityCount": 0,
+        "gridVisible": true,
+        "gridPickable": false,
+        "gridLinesVisible": true,
+        "gridLinesPickable": false,
+        "gridMaterial": {
+          "type": "StandardMaterial",
+          "disableLighting": true,
+          "emissive": [
+            0.09,
+            0.12,
+            0.17
+          ]
+        }
+      }
+    },
+    {
+      "name": "grid material is unlit",
+      "pass": true,
+      "detail": {
+        "type": "StandardMaterial",
+        "disableLighting": true,
+        "emissive": [
+          0.09,
+          0.12,
+          0.17
+        ]
+      }
+    },
+    {
+      "name": "cube default position (0, 0.5, 0)",
+      "pass": true,
+      "detail": {
+        "type": "cube",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0.5,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "sphere default position (0, 0.5, 0)",
+      "pass": true,
+      "detail": {
+        "type": "sphere",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0.5,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "plane default position (0, 0, 0)",
+      "pass": true,
+      "detail": {
+        "type": "plane",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "all primitives use unlit emissive materials",
+      "pass": true,
+      "detail": {
+        "5dc5bae6-8ca2-427d-8206-1aceeb04b722": {
+          "type": "cube",
+          "materialType": "StandardMaterial",
+          "disableLighting": true,
+          "backFaceCulling": true,
+          "emissive": [
+            0.52,
+            0.58,
+            0.68
+          ],
+          "position": [
+            0,
+            0.5,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "scaling": [
+            1,
+            1,
+            1
+          ]
+        },
+        "1c721938-0813-4dac-9ecf-f098b68b7de8": {
+          "type": "sphere",
+          "materialType": "StandardMaterial",
+          "disableLighting": true,
+          "backFaceCulling": true,
+          "emissive": [
+            0.52,
+            0.58,
+            0.68
+          ],
+          "position": [
+            2,
+            0.5,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "scaling": [
+            1,
+            1,
+            1
+          ]
+        },
+        "9415891d-56c8-4996-a7fd-342ac7ce66a3": {
+          "type": "plane",
+          "materialType": "StandardMaterial",
+          "disableLighting": true,
+          "backFaceCulling": false,
+          "emissive": [
+            0.52,
+            0.58,
+            0.68
+          ],
+          "position": [
+            -2,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "scaling": [
+            1,
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "plane is double-sided",
+      "pass": true,
+      "detail": {
+        "type": "plane",
+        "materialType": "StandardMaterial",
+        "disableLighting": true,
+        "backFaceCulling": false,
+        "emissive": [
+          0.52,
+          0.58,
+          0.68
+        ],
+        "position": [
+          -2,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scaling": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "name": "plane geometry lies on XZ with +Y normal",
+      "pass": true,
+      "detail": {
+        "normals": [
+          1
+        ],
+        "bbox": {
+          "min": [
+            -2.5,
+            0,
+            -0.5
+          ],
+          "max": [
+            -1.5,
+            0,
+            0.5
+          ]
+        }
+      }
+    },
+    {
+      "name": "cube and sphere remain single-sided (unchanged I-04 behavior)",
+      "pass": true,
+      "detail": {
+        "5dc5bae6-8ca2-427d-8206-1aceeb04b722": {
+          "type": "cube",
+          "materialType": "StandardMaterial",
+          "disableLighting": true,
+          "backFaceCulling": true,
+          "emissive": [
+            0.52,
+            0.58,
+            0.68
+          ],
+          "position": [
+            0,
+            0.5,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "scaling": [
+            1,
+            1,
+            1
+          ]
+        },
+        "1c721938-0813-4dac-9ecf-f098b68b7de8": {
+          "type": "sphere",
+          "materialType": "StandardMaterial",
+          "disableLighting": true,
+          "backFaceCulling": true,
+          "emissive": [
+            0.52,
+            0.58,
+            0.68
+          ],
+          "position": [
+            2,
+            0.5,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "scaling": [
+            1,
+            1,
+            1
+          ]
+        },
+        "9415891d-56c8-4996-a7fd-342ac7ce66a3": {
+          "type": "plane",
+          "materialType": "StandardMaterial",
+          "disableLighting": true,
+          "backFaceCulling": false,
+          "emissive": [
+            0.52,
+            0.58,
+            0.68
+          ],
+          "position": [
+            -2,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "scaling": [
+            1,
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "plane is pickable and rendered from below",
+      "pass": true,
+      "detail": {
+        "beta": 2.891592653589793,
+        "pick": "9415891d-56c8-4996-a7fd-342ac7ce66a3",
+        "expected": "9415891d-56c8-4996-a7fd-342ac7ce66a3",
+        "gridRestored": true
+      }
+    },
+    {
+      "name": "plane contributes visible pixels from below (double-sided render)",
+      "pass": true,
+      "detail": {
+        "changed": 16140
+      }
+    },
+    {
+      "name": "primitives visibly change the viewport",
+      "pass": true,
+      "detail": {
+        "width": 684,
+        "height": 651,
+        "changed": 98317,
+        "bright": 18302
+      }
+    },
+    {
+      "name": "mesh reconciliation disposes only the deleted entity",
+      "pass": true,
+      "detail": {
+        "diag": {
+          "engineVersion": "WebGL 2",
+          "webGlVersion": 2,
+          "meshCount": 2,
+          "entityCount": 2,
+          "contextLost": false
+        },
+        "sceneMeshes": [
+          "grid",
+          "grid-lines",
+          "Sphere",
+          "Plane"
+        ],
+        "grid": true,
+        "gridLines": true
+      }
+    }
+  ],
+  "empty": {
+    "lights": 0,
+    "meshCount": 0,
+    "entityCount": 0,
+    "gridVisible": true,
+    "gridPickable": false,
+    "gridLinesVisible": true,
+    "gridLinesPickable": false,
+    "gridMaterial": {
+      "type": "StandardMaterial",
+      "disableLighting": true,
+      "emissive": [
+        0.09,
+        0.12,
+        0.17
+      ]
+    }
+  },
+  "conformance": {
+    "entities": [
+      {
+        "id": "5dc5bae6-8ca2-427d-8206-1aceeb04b722",
+        "name": "Cube",
+        "type": "cube",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0.5,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      },
+      {
+        "id": "1c721938-0813-4dac-9ecf-f098b68b7de8",
+        "name": "Sphere",
+        "type": "sphere",
+        "transform": {
+          "position": {
+            "x": 2,
+            "y": 0.5,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      },
+      {
+        "id": "9415891d-56c8-4996-a7fd-342ac7ce66a3",
+        "name": "Plane",
+        "type": "plane",
+        "transform": {
+          "position": {
+            "x": -2,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      }
+    ],
+    "meshes": {
+      "5dc5bae6-8ca2-427d-8206-1aceeb04b722": {
+        "type": "cube",
+        "materialType": "StandardMaterial",
+        "disableLighting": true,
+        "backFaceCulling": true,
+        "emissive": [
+          0.52,
+          0.58,
+          0.68
+        ],
+        "position": [
+          0,
+          0.5,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scaling": [
+          1,
+          1,
+          1
+        ]
+      },
+      "1c721938-0813-4dac-9ecf-f098b68b7de8": {
+        "type": "sphere",
+        "materialType": "StandardMaterial",
+        "disableLighting": true,
+        "backFaceCulling": true,
+        "emissive": [
+          0.52,
+          0.58,
+          0.68
+        ],
+        "position": [
+          2,
+          0.5,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scaling": [
+          1,
+          1,
+          1
+        ]
+      },
+      "9415891d-56c8-4996-a7fd-342ac7ce66a3": {
+        "type": "plane",
+        "materialType": "StandardMaterial",
+        "disableLighting": true,
+        "backFaceCulling": false,
+        "emissive": [
+          0.52,
+          0.58,
+          0.68
+        ],
+        "position": [
+          -2,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scaling": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "planeNormals": [
+      1
+    ],
+    "planeBBox": {
+      "min": [
+        -2.5,
+        0,
+        -0.5
+      ],
+      "max": [
+        -1.5,
+        0,
+        0.5
+      ]
+    },
+    "lights": 0,
+    "sceneMeshes": [
+      "grid",
+      "grid-lines",
+      "Cube",
+      "Sphere",
+      "Plane"
+    ]
+  },
+  "visualStats": {
+    "width": 684,
+    "height": 651,
+    "changed": 98317,
+    "bright": 18302
+  },
+  "afterDelete": {
+    "diag": {
+      "engineVersion": "WebGL 2",
+      "webGlVersion": 2,
+      "meshCount": 2,
+      "entityCount": 2,
+      "contextLost": false
+    },
+    "sceneMeshes": [
+      "grid",
+      "grid-lines",
+      "Sphere",
+      "Plane"
+    ],
+    "grid": true,
+    "gridLines": true
+  },
+  "logs": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "log",
+      "text": "BJS - [12:45:32]: Babylon.js v9.32.1 - WebGL2 - Parallel shader compilation"
+    }
+  ],
+  "errors": [
+    {
+      "kind": "log",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    }
+  ],
+  "chrome": "Chrome/156.0.8078.81"
+}
