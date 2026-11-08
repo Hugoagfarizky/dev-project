@@ -10,6 +10,11 @@ and the raw result data captured in Chrome.
 | --- | --- | --- |
 | `I-04_CLOSURE_RECORD.md` | Renderer adapter, viewport, picking, context recovery (baseline `cd33065`) | Accepted baseline |
 | `I-05_IMPLEMENTATION_REPORT.md` | Primitives, Hierarchy, Inspector identity, selection, rename/delete | Complete |
+| `I-06_IMPLEMENTATION_REPORT.md` | Transform editing, gizmos, keyboard floor, camera mapping | Complete |
+| `I-07_IMPLEMENTATION_REPORT.md` | Persistence, Project Hub, save/open, import/export | Complete |
+| `I-08_IMPLEMENTATION_REPORT.md` | Console, status bar, planned surfaces | Complete |
+| `I-09_IMPLEMENTATION_REPORT.md` | Accessibility, performance, acceptance evidence | Complete |
+| `MVP_0_ACCEPTANCE_REPORT.md` | MVP-0 final acceptance | Not accepted (ACG-01 pending) |
 | `I-05_ACCEPTANCE_MATRIX.md` | M0-AC-05, M0-AC-06, M0-AC-07, M0-AC-12 and I-05 exit criteria | Pass |
 | `I-05_BROWSER_VERIFICATION.md` | Chrome 156 browser results, console, context loss, layout sizes | Pass 51/51 |
 | `I-05_ENVIRONMENT.md` | Toolchain, browser, display and command conditions | Reference |

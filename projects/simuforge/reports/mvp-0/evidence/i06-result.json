@@ -97,9 +97,9 @@
           "beta": 1.0471975511965976,
           "radius": 10,
           "target": [
-            -0.55290460863401,
-            0.31921961890160244,
-            -0.18430153621133666
+            -0.5550650485438912,
+            0.3204669494427531,
+            -0.1850216828479637
           ]
         }
       }
@@ -110,7 +110,7 @@
       "detail": {
         "clicked": true,
         "entity": {
-          "id": "04d7810b-f2b4-4845-991a-acc90f14c844",
+          "id": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
           "name": "Cube",
           "type": "cube",
           "transform": {
@@ -132,7 +132,7 @@
             }
           }
         },
-        "selected": "04d7810b-f2b4-4845-991a-acc90f14c844",
+        "selected": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
         "overlay": {
           "present": false,
           "title": null,
@@ -140,7 +140,7 @@
           "pointerEvents": null
         },
         "mesh": {
-          "name": "04d7810b-f2b4-4845-991a-acc90f14c844",
+          "name": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
           "position": {
             "x": 0,
             "y": 0.5,
@@ -221,9 +221,9 @@
       "name": "all primitive UUIDs are unique",
       "pass": true,
       "detail": [
-        "04d7810b-f2b4-4845-991a-acc90f14c844",
-        "524b5992-c4f6-4147-8a6f-347fac949c59",
-        "ec1f0528-7df2-46ad-a68c-4e3650be966e"
+        "da7be8ea-0d0b-4393-95ae-1b737e88521d",
+        "ed69f0cd-c5e7-4171-b8f7-3931c429d412",
+        "e1ec1a86-dee0-495d-bdde-b54c00698982"
       ]
     },
     {
@@ -290,7 +290,7 @@
       "name": "created entities are visible and mesh count matches",
       "pass": true,
       "detail": {
-        "04d7810b-f2b4-4845-991a-acc90f14c844": {
+        "da7be8ea-0d0b-4393-95ae-1b737e88521d": {
           "name": "Cube",
           "position": {
             "x": 0,
@@ -309,7 +309,7 @@
             "z": 1
           }
         },
-        "524b5992-c4f6-4147-8a6f-347fac949c59": {
+        "ed69f0cd-c5e7-4171-b8f7-3931c429d412": {
           "name": "Sphere",
           "position": {
             "x": 0,
@@ -328,8 +328,8 @@
             "z": 1
           }
         },
-        "ec1f0528-7df2-46ad-a68c-4e3650be966e": {
-          "name": "ec1f0528-7df2-46ad-a68c-4e3650be966e",
+        "e1ec1a86-dee0-495d-bdde-b54c00698982": {
+          "name": "e1ec1a86-dee0-495d-bdde-b54c00698982",
           "position": {
             "x": 0,
             "y": 0,
@@ -353,15 +353,15 @@
       "name": "creation auto-selects the newest Plane across surfaces",
       "pass": true,
       "detail": {
-        "selected": "ec1f0528-7df2-46ad-a68c-4e3650be966e",
+        "selected": "e1ec1a86-dee0-495d-bdde-b54c00698982",
         "selectedRow": "Plane",
         "inspector": {
-          "text": "Inspector▾IdentityNamePlaneTypePlaneIDec1f0528-7df2-46ad-a68c-4e3650be966eTransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "text": "Inspector▾IdentityNamePlaneTypePlaneIDe1ec1a86-dee0-495d-bdde-b54c00698982TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
           "values": [
             "Plane",
             "Plane"
           ],
-          "id": "ec1f0528-7df2-46ad-a68c-4e3650be966e",
+          "id": "e1ec1a86-dee0-495d-bdde-b54c00698982",
           "empty": false,
           "inputCount": 9
         }
@@ -373,7 +373,7 @@
       "detail": {
         "width": 858,
         "height": 763,
-        "mean": 51.84277547121584,
+        "mean": 51.846121768140115,
         "nonDark": 654654
       }
     },
@@ -382,25 +382,25 @@
       "pass": true,
       "detail": {
         "cubePoint": {
-          "x": 545.6319969517268,
-          "y": 437.3005011807383
+          "x": 545.3756442808668,
+          "y": 437.1516393740293
         },
         "spherePoint": {
-          "x": 694.4901734310015,
-          "y": 432.4794399455273
+          "x": 694.2373117118092,
+          "y": 432.31167615497196
         },
         "planePoint": {
-          "x": 836.9340564662918,
-          "y": 466.62916285971596
+          "x": 836.6797188877885,
+          "y": 466.4426513185185
         },
         "emptyPoint": {
           "x": 295.32,
           "y": 109.03999999999999
         },
         "prePick": {
-          "cube": "04d7810b-f2b4-4845-991a-acc90f14c844",
-          "sphere": "524b5992-c4f6-4147-8a6f-347fac949c59",
-          "plane": "ec1f0528-7df2-46ad-a68c-4e3650be966e",
+          "cube": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
+          "sphere": "ed69f0cd-c5e7-4171-b8f7-3931c429d412",
+          "plane": "e1ec1a86-dee0-495d-bdde-b54c00698982",
           "empty": null
         }
       }
@@ -409,22 +409,22 @@
       "name": "viewport click selects the Cube across store, Hierarchy, Inspector and highlight",
       "pass": true,
       "detail": {
-        "selected": "04d7810b-f2b4-4845-991a-acc90f14c844",
+        "selected": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
         "row": "Cube",
         "inspector": {
-          "text": "Inspector▾IdentityNameCubeTypeCubeID04d7810b-f2b4-4845-991a-acc90f14c844TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "text": "Inspector▾IdentityNameCubeTypeCubeIDda7be8ea-0d0b-4393-95ae-1b737e88521dTransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
           "values": [
             "Cube",
             "Cube"
           ],
-          "id": "04d7810b-f2b4-4845-991a-acc90f14c844",
+          "id": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
           "empty": false,
           "inputCount": 9
         },
         "highlight": {
-          "04d7810b-f2b4-4845-991a-acc90f14c844": true,
-          "524b5992-c4f6-4147-8a6f-347fac949c59": false,
-          "ec1f0528-7df2-46ad-a68c-4e3650be966e": false
+          "da7be8ea-0d0b-4393-95ae-1b737e88521d": true,
+          "ed69f0cd-c5e7-4171-b8f7-3931c429d412": false,
+          "e1ec1a86-dee0-495d-bdde-b54c00698982": false
         }
       }
     },
@@ -441,9 +441,9 @@
           "inputCount": 0
         },
         "highlight": {
-          "04d7810b-f2b4-4845-991a-acc90f14c844": false,
-          "524b5992-c4f6-4147-8a6f-347fac949c59": false,
-          "ec1f0528-7df2-46ad-a68c-4e3650be966e": false
+          "da7be8ea-0d0b-4393-95ae-1b737e88521d": false,
+          "ed69f0cd-c5e7-4171-b8f7-3931c429d412": false,
+          "e1ec1a86-dee0-495d-bdde-b54c00698982": false
         }
       }
     },
@@ -451,22 +451,22 @@
       "name": "Hierarchy click selects the Sphere across store, Inspector and highlight",
       "pass": true,
       "detail": {
-        "selected": "524b5992-c4f6-4147-8a6f-347fac949c59",
+        "selected": "ed69f0cd-c5e7-4171-b8f7-3931c429d412",
         "row": "Sphere",
         "inspector": {
-          "text": "Inspector▾IdentityNameSphereTypeSphereID524b5992-c4f6-4147-8a6f-347fac949c59TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "text": "Inspector▾IdentityNameSphereTypeSphereIDed69f0cd-c5e7-4171-b8f7-3931c429d412TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
           "values": [
             "Sphere",
             "Sphere"
           ],
-          "id": "524b5992-c4f6-4147-8a6f-347fac949c59",
+          "id": "ed69f0cd-c5e7-4171-b8f7-3931c429d412",
           "empty": false,
           "inputCount": 9
         },
         "highlight": {
-          "04d7810b-f2b4-4845-991a-acc90f14c844": false,
-          "524b5992-c4f6-4147-8a6f-347fac949c59": true,
-          "ec1f0528-7df2-46ad-a68c-4e3650be966e": false
+          "da7be8ea-0d0b-4393-95ae-1b737e88521d": false,
+          "ed69f0cd-c5e7-4171-b8f7-3931c429d412": true,
+          "e1ec1a86-dee0-495d-bdde-b54c00698982": false
         }
       }
     },
@@ -474,22 +474,22 @@
       "name": "programmatic selection updates all surfaces",
       "pass": true,
       "detail": {
-        "selected": "ec1f0528-7df2-46ad-a68c-4e3650be966e",
+        "selected": "e1ec1a86-dee0-495d-bdde-b54c00698982",
         "row": "Plane",
         "inspector": {
-          "text": "Inspector▾IdentityNamePlaneTypePlaneIDec1f0528-7df2-46ad-a68c-4e3650be966eTransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "text": "Inspector▾IdentityNamePlaneTypePlaneIDe1ec1a86-dee0-495d-bdde-b54c00698982TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
           "values": [
             "Plane",
             "Plane"
           ],
-          "id": "ec1f0528-7df2-46ad-a68c-4e3650be966e",
+          "id": "e1ec1a86-dee0-495d-bdde-b54c00698982",
           "empty": false,
           "inputCount": 9
         },
         "highlight": {
-          "04d7810b-f2b4-4845-991a-acc90f14c844": false,
-          "524b5992-c4f6-4147-8a6f-347fac949c59": false,
-          "ec1f0528-7df2-46ad-a68c-4e3650be966e": true
+          "da7be8ea-0d0b-4393-95ae-1b737e88521d": false,
+          "ed69f0cd-c5e7-4171-b8f7-3931c429d412": false,
+          "e1ec1a86-dee0-495d-bdde-b54c00698982": true
         }
       }
     },
@@ -528,7 +528,7 @@
       "pass": true,
       "detail": {
         "name": "Hero Cube",
-        "id": "04d7810b-f2b4-4845-991a-acc90f14c844",
+        "id": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
         "transform": {
           "position": {
             "x": -1.6,
@@ -553,12 +553,12 @@
           "Plane"
         ],
         "inspector": {
-          "text": "Inspector▾IdentityNameHero CubeTypeCubeID04d7810b-f2b4-4845-991a-acc90f14c844TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "text": "Inspector▾IdentityNameHero CubeTypeCubeIDda7be8ea-0d0b-4393-95ae-1b737e88521dTransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
           "values": [
             "Hero Cube",
             "Cube"
           ],
-          "id": "04d7810b-f2b4-4845-991a-acc90f14c844",
+          "id": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
           "empty": false,
           "inputCount": 9
         },
@@ -571,7 +571,7 @@
       "detail": {
         "before": {
           "name": "Cube",
-          "id": "04d7810b-f2b4-4845-991a-acc90f14c844",
+          "id": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
           "transform": {
             "position": {
               "x": -1.6,
@@ -593,7 +593,7 @@
         },
         "after": {
           "name": "Hero Cube",
-          "id": "04d7810b-f2b4-4845-991a-acc90f14c844",
+          "id": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
           "transform": {
             "position": {
               "x": -1.6,
@@ -618,12 +618,12 @@
             "Plane"
           ],
           "inspector": {
-            "text": "Inspector▾IdentityNameHero CubeTypeCubeID04d7810b-f2b4-4845-991a-acc90f14c844TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+            "text": "Inspector▾IdentityNameHero CubeTypeCubeIDda7be8ea-0d0b-4393-95ae-1b737e88521dTransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
             "values": [
               "Hero Cube",
               "Cube"
             ],
-            "id": "04d7810b-f2b4-4845-991a-acc90f14c844",
+            "id": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
             "empty": false,
             "inputCount": 9
           },
@@ -672,14 +672,14 @@
           "present": false
         },
         "exists": true,
-        "selected": "04d7810b-f2b4-4845-991a-acc90f14c844",
+        "selected": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
         "inspector": {
-          "text": "Inspector▾IdentityNameHero CubeTypeCubeID04d7810b-f2b4-4845-991a-acc90f14c844TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "text": "Inspector▾IdentityNameHero CubeTypeCubeIDda7be8ea-0d0b-4393-95ae-1b737e88521dTransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
           "values": [
             "Hero Cube",
             "Cube"
           ],
-          "id": "04d7810b-f2b4-4845-991a-acc90f14c844",
+          "id": "da7be8ea-0d0b-4393-95ae-1b737e88521d",
           "empty": false,
           "inputCount": 9
         }
@@ -693,7 +693,7 @@
           "present": false
         },
         "exists": true,
-        "selected": "04d7810b-f2b4-4845-991a-acc90f14c844"
+        "selected": "da7be8ea-0d0b-4393-95ae-1b737e88521d"
       }
     },
     {
@@ -714,8 +714,8 @@
           "Plane"
         ],
         "meshIds": [
-          "524b5992-c4f6-4147-8a6f-347fac949c59",
-          "ec1f0528-7df2-46ad-a68c-4e3650be966e"
+          "ed69f0cd-c5e7-4171-b8f7-3931c429d412",
+          "e1ec1a86-dee0-495d-bdde-b54c00698982"
         ],
         "diag": {
           "engineVersion": "WebGL 2",
@@ -733,17 +733,17 @@
       "name": "deleting a non-selected entity preserves the selection",
       "pass": true,
       "detail": {
-        "selected": "524b5992-c4f6-4147-8a6f-347fac949c59",
+        "selected": "ed69f0cd-c5e7-4171-b8f7-3931c429d412",
         "names": [
           "Sphere"
         ],
         "inspector": {
-          "text": "Inspector▾IdentityNameSphereTypeSphereID524b5992-c4f6-4147-8a6f-347fac949c59TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "text": "Inspector▾IdentityNameSphereTypeSphereIDed69f0cd-c5e7-4171-b8f7-3931c429d412TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
           "values": [
             "Sphere",
             "Sphere"
           ],
-          "id": "524b5992-c4f6-4147-8a6f-347fac949c59",
+          "id": "ed69f0cd-c5e7-4171-b8f7-3931c429d412",
           "empty": false,
           "inputCount": 9
         },
@@ -875,14 +875,14 @@
           },
           "canvasSame": true,
           "meshIds": [
-            "60d9233d-ff2c-4d75-8321-97668d8151f8",
-            "17302b55-51e7-4c4e-9925-326a1d018008",
-            "61f0f53a-ec8d-48b4-a244-5fdd2a9d8add"
+            "490b2df5-a6d5-47ff-9e06-5e64107b95c1",
+            "11b0af1e-c708-4064-83f0-5e43a2e34766",
+            "96ed93d4-ad86-4dff-b76d-6856ccf87270"
           ],
           "highlight": {
-            "60d9233d-ff2c-4d75-8321-97668d8151f8": false,
-            "17302b55-51e7-4c4e-9925-326a1d018008": false,
-            "61f0f53a-ec8d-48b4-a244-5fdd2a9d8add": true
+            "490b2df5-a6d5-47ff-9e06-5e64107b95c1": false,
+            "11b0af1e-c708-4064-83f0-5e43a2e34766": false,
+            "96ed93d4-ad86-4dff-b76d-6856ccf87270": true
           }
         },
         "afterRestore": {
@@ -897,9 +897,9 @@
           "engineSame": true,
           "sceneSame": true,
           "meshIds": [
-            "60d9233d-ff2c-4d75-8321-97668d8151f8",
-            "17302b55-51e7-4c4e-9925-326a1d018008",
-            "61f0f53a-ec8d-48b4-a244-5fdd2a9d8add"
+            "490b2df5-a6d5-47ff-9e06-5e64107b95c1",
+            "11b0af1e-c708-4064-83f0-5e43a2e34766",
+            "96ed93d4-ad86-4dff-b76d-6856ccf87270"
           ],
           "meshCount": 3,
           "layerMeshCount": 5
@@ -1049,7 +1049,7 @@
       "name": "Inspector omits Components, Behavior, Runtime and Simulation sections",
       "pass": true,
       "detail": {
-        "inspectorText": "Inspector▾IdentityNamePlaneTypePlaneID61f0f53a-ec8d-48b4-a244-5fdd2a9d8addTransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+        "inspectorText": "Inspector▾IdentityNamePlaneTypePlaneID96ed93d4-ad86-4dff-b76d-6856ccf87270TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
         "hasComponents": false,
         "hasBehavior": false,
         "hasRuntime": false,
@@ -1097,24 +1097,20 @@
         ],
         "logs": [
           {
-            "type": "debug",
-            "text": "[vite] connected."
-          },
-          {
             "type": "info",
             "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
           },
           {
             "type": "log",
-            "text": "BJS - [14:24:15]: Babylon.js v9.32.1 - WebGL2 - Parallel shader compilation"
+            "text": "BJS - [18:03:20]: Babylon.js v9.32.1 - WebGL2 - Parallel shader compilation"
           },
           {
             "type": "warning",
-            "text": "BJS - [14:24:27]: WebGL context lost."
+            "text": "BJS - [18:03:31]: WebGL context lost."
           },
           {
             "type": "warning",
-            "text": "BJS - [14:24:27]: WebGL context successfully restored."
+            "text": "BJS - [18:03:31]: WebGL context successfully restored."
           }
         ]
       }
@@ -1138,24 +1134,20 @@
   "console": {
     "logs": [
       {
-        "type": "debug",
-        "text": "[vite] connected."
-      },
-      {
         "type": "info",
         "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
       },
       {
         "type": "log",
-        "text": "BJS - [14:24:15]: Babylon.js v9.32.1 - WebGL2 - Parallel shader compilation"
+        "text": "BJS - [18:03:20]: Babylon.js v9.32.1 - WebGL2 - Parallel shader compilation"
       },
       {
         "type": "warning",
-        "text": "BJS - [14:24:27]: WebGL context lost."
+        "text": "BJS - [18:03:31]: WebGL context lost."
       },
       {
         "type": "warning",
-        "text": "BJS - [14:24:27]: WebGL context successfully restored."
+        "text": "BJS - [18:03:31]: WebGL context successfully restored."
       }
     ],
     "errors": [
@@ -1168,17 +1160,17 @@
   "finalState": {
     "entities": [
       {
-        "id": "60d9233d-ff2c-4d75-8321-97668d8151f8",
+        "id": "490b2df5-a6d5-47ff-9e06-5e64107b95c1",
         "name": "Cube",
         "type": "cube"
       },
       {
-        "id": "17302b55-51e7-4c4e-9925-326a1d018008",
+        "id": "11b0af1e-c708-4064-83f0-5e43a2e34766",
         "name": "Sphere",
         "type": "sphere"
       },
       {
-        "id": "61f0f53a-ec8d-48b4-a244-5fdd2a9d8add",
+        "id": "96ed93d4-ad86-4dff-b76d-6856ccf87270",
         "name": "Plane",
         "type": "plane"
       }
@@ -1195,7 +1187,7 @@
       "Sphere",
       "Plane"
     ],
-    "selected": "61f0f53a-ec8d-48b4-a244-5fdd2a9d8add",
+    "selected": "96ed93d4-ad86-4dff-b76d-6856ccf87270",
     "overlay": {
       "present": false,
       "title": null,
@@ -1203,12 +1195,12 @@
       "pointerEvents": null
     },
     "inspector": {
-      "text": "Inspector▾IdentityNamePlaneTypePlaneID61f0f53a-ec8d-48b4-a244-5fdd2a9d8addTransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+      "text": "Inspector▾IdentityNamePlaneTypePlaneID96ed93d4-ad86-4dff-b76d-6856ccf87270TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
       "values": [
         "Plane",
         "Plane"
       ],
-      "id": "61f0f53a-ec8d-48b4-a244-5fdd2a9d8add",
+      "id": "96ed93d4-ad86-4dff-b76d-6856ccf87270",
       "empty": false,
       "inputCount": 9
     },
