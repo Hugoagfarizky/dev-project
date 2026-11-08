@@ -922,3 +922,63 @@
     font-size: 10px;
   }
 }
+
+.sf-transform-group {
+  margin-bottom: 10px;
+}
+
+.sf-transform-group-label {
+  display: block;
+  font-size: 11px;
+  color: var(--sf-text-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sf-transform-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.sf-numeric-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sf-numeric-label {
+  font-size: 10px;
+  color: var(--sf-text-tertiary, var(--sf-text-secondary));
+}
+
+.sf-numeric-input {
+  width: 100%;
+  padding: 2px 4px;
+  font-size: 12px;
+  background: var(--sf-bg-panel, #1e1e1e);
+  color: var(--sf-text-primary);
+  border: 1px solid var(--sf-border-subtle);
+  border-radius: 3px;
+}
+
+.sf-numeric-input-error {
+  border-color: #e55;
+}
+
+.sf-numeric-error {
+  font-size: 10px;
+  color: #e55;
+}
+
+.sf-numeric-help {
+  font-size: 10px;
+  color: var(--sf-text-secondary);
+}
+
+.sf-transform-help {
+  font-size: 10px;
+  color: var(--sf-text-secondary);
+  margin: 4px 0 0;
+}

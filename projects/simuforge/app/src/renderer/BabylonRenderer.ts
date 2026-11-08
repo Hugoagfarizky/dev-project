@@ -10,20 +10,22 @@ import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { HighlightLayer } from '@babylonjs/core/Layers/highlightLayer';
 import { GizmoManager } from '@babylonjs/core/Gizmos/gizmoManager';
+import { GizmoCoordinatesMode } from '@babylonjs/core/Gizmos/gizmo';
 import '@babylonjs/core/Culling/ray';
 import type { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh';
 import type { WorldDocument, WorldEntity, Transform } from '../world/types.js';
-import type { RendererPort, RendererDiagnostics, RendererEventSink, GizmoMode } from './RendererPort.js';
+import type { RendererDiagnostics, RendererEventSink, GizmoMode } from './RendererPort.js';
+import { transformsEqual } from '../world/transform.js';
 
 const CLICK_THRESHOLD_PX = 5;
 const GRID_EXTENT = 50;
 const GRID_FILL_Y = -0.003;
 const GRID_LINE_Y = -0.002;
-const GRID_LINE_COLOR = new Color3(0.34, 0.42, 0.54);
-const GRID_FILL_COLOR = new Color3(0.09, 0.12, 0.17);
-const PRIMITIVE_COLOR = new Color3(0.52, 0.58, 0.68);
+const GRID_FILL_COLOR = new Color3(0.16, 0.18, 0.22);
+const GRID_LINE_COLOR = new Color3(0.26, 0.29, 0.34);
+const PRIMITIVE_COLOR = new Color3(0.55, 0.72, 0.95);
 
-export class BabylonRenderer implements RendererPort {
+export class BabylonRenderer {
   private canvas: HTMLCanvasElement | null = null;
   private engine: Engine | null = null;
   private scene: Scene | null = null;
@@ -43,6 +45,13 @@ export class BabylonRenderer implements RendererPort {
   private pointerMoved = false;
   private lastCameraSignature = '';
   private lastWorldSignature = '';
+  private committedTransform: Transform | null = null;
+  private pendingPreview = false;
+  private dragEnded = false;
+  // dragLockedSelection retained for future use (selection lock during drag)
+  private lastAppliedSelection: string | null = null;
+  private lastAppliedGizmoMode: GizmoMode | null = null;
+  private windowBlurHandler: (() => void) | null = null;
 
   async mount(canvas: HTMLCanvasElement): Promise<RendererDiagnostics> {
     this.canvas = canvas;
@@ -68,7 +77,20 @@ export class BabylonRenderer implements RendererPort {
 
       const pointersInput = this.camera.inputs.attached.pointers as { buttons?: number[] } | undefined;
       if (pointersInput) {
-        pointersInput.buttons = [1, 2];
+        pointersInput.buttons = [0, 1, 2];
+      }
+
+      // Explicit camera input mapping (OD-I06-02 / LIM-I05-01).
+      // Plain left drag must not orbit; Alt+left or middle drag orbits.
+      const movementInput = (this.camera as unknown as { movement?: { input?: { inputMap: unknown[] } } }).movement?.input;
+      if (movementInput) {
+        movementInput.inputMap = [
+          { source: 'pointer', button: 0, modifiers: { alt: true }, interaction: 'rotate' },
+          { source: 'pointer', button: 1, modifiers: { shift: true }, interaction: 'pan' },
+          { source: 'pointer', button: 1, interaction: 'rotate' },
+          { source: 'pointer', button: 2, interaction: 'pan' },
+          { source: 'wheel', interaction: 'zoom' }
+        ];
       }
 
       this.camera.lowerRadiusLimit = 0.5;
@@ -94,6 +116,19 @@ export class BabylonRenderer implements RendererPort {
       this.highlight = new HighlightLayer('selection-highlight', this.scene);
       this.gizmoManager = new GizmoManager(this.scene);
       this.gizmoManager.usePointerToAttachGizmos = false;
+      // Coordinate space policy (M0-AC-09): translate/rotate world, scale local.
+      if (this.gizmoManager.gizmos.positionGizmo) {
+        this.gizmoManager.gizmos.positionGizmo.coordinatesMode = GizmoCoordinatesMode.World;
+        this.gizmoManager.gizmos.positionGizmo.updateGizmoRotationToMatchAttachedMesh = false;
+      }
+      if (this.gizmoManager.gizmos.rotationGizmo) {
+        this.gizmoManager.gizmos.rotationGizmo.coordinatesMode = GizmoCoordinatesMode.World;
+        this.gizmoManager.gizmos.rotationGizmo.updateGizmoRotationToMatchAttachedMesh = false;
+      }
+      if (this.gizmoManager.gizmos.scaleGizmo) {
+        this.gizmoManager.gizmos.scaleGizmo.coordinatesMode = GizmoCoordinatesMode.Local;
+        this.gizmoManager.gizmos.scaleGizmo.updateGizmoRotationToMatchAttachedMesh = true;
+      }
       this.applyGizmoMode(this.gizmoMode);
 
       this.engine.onContextLostObservable.add(() => {
@@ -109,6 +144,12 @@ export class BabylonRenderer implements RendererPort {
       canvas.addEventListener('pointerdown', this.handlePointerDown);
       canvas.addEventListener('pointermove', this.handlePointerMove);
       canvas.addEventListener('pointerup', this.handlePointerUp);
+      canvas.addEventListener('pointercancel', this.handlePointerCancel);
+      canvas.addEventListener('lostpointercapture', this.handleLostPointerCapture);
+
+      const windowBlur = () => this.handleWindowBlur();
+      this.windowBlurHandler = windowBlur;
+      window.addEventListener('blur', windowBlur);
 
       const gizmos = [
         this.gizmoManager.gizmos.positionGizmo,
@@ -119,28 +160,35 @@ export class BabylonRenderer implements RendererPort {
       for (const gizmo of gizmos) {
         if (!gizmo) continue;
         gizmo.onDragStartObservable.add(() => {
+          if (this.isDragging) return;
           this.isDragging = true;
+          this.dragEnded = false;
+          const mesh = this.activeDragEntityId ? this.meshes.get(this.activeDragEntityId) : null;
+          if (mesh) {
+            this.committedTransform = readTransform(mesh);
+          }
         });
         gizmo.onDragObservable.add(() => {
           if (!this.activeDragEntityId) return;
-          const mesh = this.meshes.get(this.activeDragEntityId);
-          if (!mesh) return;
-          this.eventSink?.onTransformPreview(this.activeDragEntityId, readTransform(mesh));
+          this.pendingPreview = true;
         });
         gizmo.onDragEndObservable.add(() => {
-          if (!this.activeDragEntityId) return;
-          const mesh = this.meshes.get(this.activeDragEntityId);
-          if (mesh) {
-            this.eventSink?.onTransformCommit(this.activeDragEntityId, readTransform(mesh));
-          }
-          this.isDragging = false;
-          this.activeDragEntityId = null;
+          if (this.dragEnded) return;
+          this.dragEnded = true;
+          this.finalizeDrag();
         });
       }
 
       this.engine.runRenderLoop(() => {
         if (!this.scene || !this.camera) return;
         this.scene.render();
+        if (this.pendingPreview && this.isDragging && this.activeDragEntityId) {
+          const mesh = this.meshes.get(this.activeDragEntityId);
+          if (mesh) {
+            this.eventSink?.onTransformPreview(this.activeDragEntityId, readTransform(mesh));
+          }
+          this.pendingPreview = false;
+        }
         this.reportCameraChange();
       });
 
@@ -159,6 +207,12 @@ export class BabylonRenderer implements RendererPort {
       this.canvas.removeEventListener('pointerdown', this.handlePointerDown);
       this.canvas.removeEventListener('pointermove', this.handlePointerMove);
       this.canvas.removeEventListener('pointerup', this.handlePointerUp);
+      this.canvas.removeEventListener('pointercancel', this.handlePointerCancel);
+      this.canvas.removeEventListener('lostpointercapture', this.handleLostPointerCapture);
+    }
+    if (this.windowBlurHandler) {
+      window.removeEventListener('blur', this.windowBlurHandler);
+      this.windowBlurHandler = null;
     }
 
     for (const mesh of this.meshes.values()) {
@@ -186,6 +240,7 @@ export class BabylonRenderer implements RendererPort {
     this.canvas = null;
     this.activeDragEntityId = null;
     this.isDragging = false;
+    this.committedTransform = null;
   }
 
   resize(width: number, height: number): void {
@@ -248,17 +303,20 @@ export class BabylonRenderer implements RendererPort {
       mesh.scaling.set(entity.transform.scale.x, entity.transform.scale.y, entity.transform.scale.z);
     }
 
-    if (this.selectedEntityId) {
-      const selectedMesh = this.meshes.get(this.selectedEntityId) ?? null;
-      if (selectedMesh) {
-        this.gizmoManager?.attachToMesh(selectedMesh);
-      } else {
-        this.gizmoManager?.attachToMesh(null as unknown as AbstractMesh);
-      }
+    // Only reattach highlight/gizmo when selection actually changed.
+    if (this.selectedEntityId !== this.lastAppliedSelection) {
+      this.lastAppliedSelection = this.selectedEntityId;
     }
   }
 
   applySelection(entityId: string | null): void {
+    // Lock selection during an active gizmo drag.
+    if (this.isDragging) {
+      return;
+    }
+    if (entityId === this.selectedEntityId && this.lastAppliedSelection === entityId) {
+      // still update field
+    }
     this.selectedEntityId = entityId;
     this.activeDragEntityId = entityId;
 
@@ -273,7 +331,7 @@ export class BabylonRenderer implements RendererPort {
       if (mesh && this.highlight) {
         this.highlight.addMesh(mesh as never, new Color3(0.34, 0.71, 1));
       }
-      if (mesh && this.gizmoManager) {
+      if (mesh && this.gizmoManager && this.selectedEntityId === entityId) {
         this.gizmoManager.attachToMesh(mesh);
       }
     } else if (this.gizmoManager) {
@@ -282,7 +340,12 @@ export class BabylonRenderer implements RendererPort {
   }
 
   applyGizmoMode(mode: GizmoMode): void {
+    if (this.isDragging) return;
+    if (mode === this.gizmoMode && this.lastAppliedGizmoMode === mode) {
+      // still allow attach refresh
+    }
     this.gizmoMode = mode;
+    this.lastAppliedGizmoMode = mode;
     if (!this.gizmoManager) return;
 
     this.gizmoManager.positionGizmoEnabled = mode === 'translate';
@@ -314,13 +377,33 @@ export class BabylonRenderer implements RendererPort {
     if (!this.camera || !entityId) return;
     const mesh = this.meshes.get(entityId);
     if (!mesh) return;
-    this.camera.setTarget(mesh.position.clone());
+    const info = mesh.getBoundingInfo();
+    const center = info.boundingBox.centerWorld;
+    const extents = info.boundingBox.extendSizeWorld;
+    const radius = Math.max(extents.x, extents.y, extents.z) * 2 + 2;
+    this.camera.setTarget(center.clone());
+    this.camera.radius = Math.min(Math.max(radius, this.camera.lowerRadiusLimit ?? 0.5), this.camera.upperRadiusLimit ?? 500);
   }
 
   frameWorld(): void {
     if (!this.camera) return;
-    this.camera.setTarget(Vector3.Zero());
-    this.camera.radius = 10;
+    if (this.meshes.size === 0) {
+      this.camera.setTarget(Vector3.Zero());
+      this.camera.radius = 10;
+      return;
+    }
+    let min = new Vector3(Infinity, Infinity, Infinity);
+    let max = new Vector3(-Infinity, -Infinity, -Infinity);
+    for (const mesh of this.meshes.values()) {
+      const bb = mesh.getBoundingInfo().boundingBox;
+      min = Vector3.Minimize(min, bb.minimumWorld);
+      max = Vector3.Maximize(max, bb.maximumWorld);
+    }
+    const center = min.add(max).scale(0.5);
+    const extents = max.subtract(min).scale(0.5);
+    const radius = Math.max(extents.x, extents.y, extents.z) * 2 + 2;
+    this.camera.setTarget(center.clone());
+    this.camera.radius = Math.min(Math.max(radius, this.camera.lowerRadiusLimit ?? 0.5), this.camera.upperRadiusLimit ?? 500);
   }
 
   getDiagnostics(): RendererDiagnostics {
@@ -333,6 +416,15 @@ export class BabylonRenderer implements RendererPort {
     };
   }
 
+  getIsDragging(): boolean {
+    return this.isDragging;
+  }
+
+  cancelGizmoDrag(): void {
+    if (!this.isDragging) return;
+    this.restoreCommittedTransform();
+    this.cleanupDrag();
+  }
 
   private handlePointerDown = (event: PointerEvent): void => {
     this.pointerDown = { x: event.clientX, y: event.clientY };
@@ -361,6 +453,69 @@ export class BabylonRenderer implements RendererPort {
     this.eventSink.onPick(typeof entityId === 'string' ? entityId : null);
   };
 
+  private handlePointerCancel = (): void => {
+    if (!this.isDragging) return;
+    this.restoreCommittedTransform();
+    this.cleanupDrag();
+  };
+
+  private handleLostPointerCapture = (): void => {
+    if (!this.isDragging) return;
+    this.restoreCommittedTransform();
+    this.cleanupDrag();
+  };
+
+  private handleWindowBlur = (): void => {
+    if (!this.isDragging) return;
+    this.restoreCommittedTransform();
+    this.cleanupDrag();
+  };
+
+  private finalizeDrag(): void {
+    if (!this.activeDragEntityId) {
+      this.cleanupDrag();
+      return;
+    }
+    const entityStillExists = this.meshes.has(this.activeDragEntityId);
+    if (!entityStillExists) {
+      this.restoreCommittedTransform();
+      this.cleanupDrag();
+      return;
+    }
+    const mesh = this.meshes.get(this.activeDragEntityId);
+    if (mesh && this.committedTransform) {
+      const finalTransform = readTransform(mesh);
+      if (!transformsEqual(this.committedTransform, finalTransform)) {
+        this.eventSink?.onTransformCommit(this.activeDragEntityId, finalTransform);
+      }
+    }
+    this.cleanupDrag();
+  }
+
+  private restoreCommittedTransform(): void {
+    if (!this.activeDragEntityId || !this.committedTransform) return;
+    const mesh = this.meshes.get(this.activeDragEntityId);
+    if (!mesh) return;
+    mesh.position.set(this.committedTransform.position.x, this.committedTransform.position.y, this.committedTransform.position.z);
+    if (mesh.rotationQuaternion) {
+      mesh.rotationQuaternion.set(
+        this.committedTransform.rotation.x,
+        this.committedTransform.rotation.y,
+        this.committedTransform.rotation.z,
+        this.committedTransform.rotation.w
+      );
+    }
+    mesh.scaling.set(this.committedTransform.scale.x, this.committedTransform.scale.y, this.committedTransform.scale.z);
+  }
+
+  private cleanupDrag(): void {
+    this.isDragging = false;
+    this.pendingPreview = false;
+    this.dragEnded = false;
+    this.committedTransform = null;
+    this.activeDragEntityId = null;
+  }
+
   private reportCameraChange(): void {
     if (!this.camera || !this.eventSink) return;
     const signature = `${this.camera.alpha}:${this.camera.beta}:${this.camera.radius}:${this.camera.target.x}:${this.camera.target.y}:${this.camera.target.z}`;
@@ -382,14 +537,11 @@ export class BabylonRenderer implements RendererPort {
 
 function createMesh(entity: WorldEntity, scene: Scene): AbstractMesh {
   let mesh: AbstractMesh;
-
   switch (entity.type) {
     case 'sphere':
       mesh = MeshBuilder.CreateSphere(entity.id, { diameter: 1 }, scene);
       break;
     case 'plane':
-      // POC-01: plane lives on the XZ ground plane with a +Y normal and is
-      // rendered double-sided so it is visible from above and below.
       mesh = MeshBuilder.CreateGround(entity.id, { width: 1, height: 1 }, scene);
       break;
     default:
@@ -399,8 +551,6 @@ function createMesh(entity: WorldEntity, scene: Scene): AbstractMesh {
 
   mesh.metadata = { entityId: entity.id };
   const material = new StandardMaterial(`${entity.id}-material`, scene);
-  // POC-01: editor primitives are unlit so they are visible without a world
-  // light. Lighting is not part of the world simulation.
   material.diffuseColor = Color3.Black();
   material.emissiveColor = PRIMITIVE_COLOR;
   material.disableLighting = true;

@@ -11,8 +11,10 @@ export function connectRendererToStore(
     onPick(entityId) {
       store.dispatch({ type: 'selection/set', id: entityId });
     },
-    onTransformPreview(id, transform) {
-      store.dispatch({ type: 'transform/set', id, transform, source: 'gizmo' });
+    onTransformPreview(_id, _transform) {
+      // Preview is transient and must not mutate authoritative world state
+      // or dirty state (OD-I06-03). The viewport mesh already moves during
+      // the gizmo drag; world state updates only on commit.
     },
     onTransformCommit(id, transform) {
       store.dispatch({ type: 'transform/set', id, transform, source: 'gizmo' });

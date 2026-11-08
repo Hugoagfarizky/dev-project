@@ -1,5 +1,6 @@
 import { createWorldEntity } from '../world/defaults.ts';
 import { validateTransform } from '../world/validation.ts';
+import { transformsEqual } from '../world/transform.ts';
 import { createEmptyProject } from './state.ts';
 import type { StudioCommand } from './commands.ts';
 import type { CameraPose, StudioState } from './state.ts';
@@ -260,6 +261,9 @@ export function reduceStudioState(
       }
       const error = validateTransform(command.transform, `entities.${command.id}.transform`);
       if (error) {
+        return state;
+      }
+      if (transformsEqual(entity.transform, command.transform)) {
         return state;
       }
       return markDirty({

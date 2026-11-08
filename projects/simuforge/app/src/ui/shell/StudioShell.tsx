@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TopBar } from './TopBar';
 import { StatusBar } from './StatusBar';
 import { Splitter } from './Splitter';
@@ -10,7 +10,7 @@ import { Inspector } from '../panels/Inspector.js';
 import { Dialog } from '../common/Dialog';
 import { useStudioStore } from '../hooks/useStore.js';
 import { useStudioShortcuts } from '../hooks/useStudioShortcuts.js';
-import { selectEntities, selectSelectedEntityId } from '../../editor/selectors.js';
+import { selectEntities, selectSelectedEntityId, selectGridVisible } from '../../editor/selectors.js';
 import { computeLayout, resolveCollapsedPanels, type StudioPreset } from './computeLayout';
 import type { StudioStore } from '../../editor/store.js';
 import '../../styles/shell.css';
@@ -41,6 +41,8 @@ export function StudioShell({ store }: StudioShellProps) {
 
   const entities = useStudioStore(store, selectEntities);
   const selectedId = useStudioStore(store, selectSelectedEntityId);
+  const gridVisible = useStudioStore(store, selectGridVisible);
+  const rendererRef = useRef<import('../../renderer/RendererPort.js').RendererPort | null>(null);
   const selectedEntity = selectedId === null
     ? null
     : entities.find((entity) => entity.id === selectedId) ?? null;
@@ -72,6 +74,9 @@ export function StudioShell({ store }: StudioShellProps) {
     selectedEntityId: selectedId,
     isRenaming: renamingId !== null,
     isDialogOpen: deleteTargetId !== null,
+    isDragging: () => rendererRef.current?.getIsDragging() ?? false,
+    cancelDrag: () => rendererRef.current?.cancelGizmoDrag(),
+    gridVisible,
     onRename(id) {
       setRenamingId(id);
     },
@@ -80,6 +85,21 @@ export function StudioShell({ store }: StudioShellProps) {
     },
     onCancelDialog() {
       setDeleteTargetId(null);
+    },
+    onSetGizmoMode(mode) {
+      store.dispatch({ type: 'gizmo/set-mode', mode });
+    },
+    onFrameSelection() {
+      rendererRef.current?.frameSelection(selectedId);
+    },
+    onFrameWorld() {
+      rendererRef.current?.frameWorld();
+    },
+    onToggleGrid(visible) {
+      store.dispatch({ type: 'grid/set-visible', visible });
+    },
+    onClearSelection() {
+      store.dispatch({ type: 'selection/set', id: null });
     }
   });
 
@@ -183,7 +203,7 @@ export function StudioShell({ store }: StudioShellProps) {
           }}
         >
           <section className="sf-viewport" aria-label="Viewport">
-            <ViewportHost store={store} />
+            <ViewportHost store={store} rendererRef={rendererRef} />
           </section>
           <Splitter orientation="horizontal" />
           <Panel

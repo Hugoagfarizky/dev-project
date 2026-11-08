@@ -4,6 +4,7 @@ import type { StudioStore } from '../../editor/store.js';
 import type { EntityType } from '../../world/types.js';
 import { Button } from '../common/Button';
 import { createPrimitive } from './primitives.js';
+import { TransformSection } from './TransformSection.js';
 
 interface InspectorProps {
   store: StudioStore;
@@ -14,18 +15,6 @@ const TYPE_LABEL: Record<EntityType, string> = {
   sphere: 'Sphere',
   plane: 'Plane'
 };
-
-function formatNumber(value: number): string {
-  return Number.isFinite(value) ? value.toFixed(2) : '—';
-}
-
-function formatVec3(vector: { x: number; y: number; z: number }): string {
-  return `${formatNumber(vector.x)}, ${formatNumber(vector.y)}, ${formatNumber(vector.z)}`;
-}
-
-function formatQuaternion(quaternion: { x: number; y: number; z: number; w: number }): string {
-  return `${formatNumber(quaternion.x)}, ${formatNumber(quaternion.y)}, ${formatNumber(quaternion.z)}, ${formatNumber(quaternion.w)}`;
-}
 
 export function Inspector({ store }: InspectorProps) {
   const selected = useStudioStore(store, selectSelectedEntity);
@@ -60,24 +49,7 @@ export function Inspector({ store }: InspectorProps) {
         </div>
       </section>
 
-      <section className="sf-inspector-section" aria-labelledby="sf-inspector-transform">
-        <h3 className="sf-inspector-heading" id="sf-inspector-transform">Transform</h3>
-        <dl className="sf-inspector-values">
-          <div>
-            <dt>Position</dt>
-            <dd>{formatVec3(selected.transform.position)}</dd>
-          </div>
-          <div>
-            <dt>Rotation</dt>
-            <dd>{formatQuaternion(selected.transform.rotation)}</dd>
-          </div>
-          <div>
-            <dt>Scale</dt>
-            <dd>{formatVec3(selected.transform.scale)}</dd>
-          </div>
-        </dl>
-        <p className="sf-inspector-note">Read-only placeholder. Transform editing arrives in a later increment.</p>
-      </section>
+      <TransformSection entity={selected} store={store} />
     </div>
   );
 }

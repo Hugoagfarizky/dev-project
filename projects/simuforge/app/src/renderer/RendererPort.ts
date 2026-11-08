@@ -37,4 +37,6 @@ export interface RendererPort {
   frameSelection(entityId: string | null): void;
   frameWorld(): void;
   getDiagnostics(): RendererDiagnostics;
+  getIsDragging(): boolean;
+  cancelGizmoDrag(): void;
 }

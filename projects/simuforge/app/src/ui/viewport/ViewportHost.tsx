@@ -8,6 +8,7 @@ import { EmptyWorldOverlay } from './EmptyWorldOverlay.js';
 interface ViewportHostProps {
   store?: StudioStore | undefined;
   rendererFactory?: (() => RendererPort) | undefined;
+  rendererRef?: { current: RendererPort | null } | undefined;
 }
 
 interface ViewportDiagnostics {
@@ -26,10 +27,9 @@ function sameDiagnostics(a: ViewportDiagnostics | null, b: ViewportDiagnostics):
 }
 
 
-export function ViewportHost({ store, rendererFactory }: ViewportHostProps) {
+export function ViewportHost({ store, rendererFactory, rendererRef }: ViewportHostProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const rendererRef = useRef<RendererPort | null>(null);
   const [diagnostics, setDiagnostics] = useState<ViewportDiagnostics | null>(null);
   const [error, setError] = useState<{ code: string; message: string } | null>(null);
   const [contextLost, setContextLost] = useState(false);
@@ -40,7 +40,7 @@ export function ViewportHost({ store, rendererFactory }: ViewportHostProps) {
     if (!canvas || !container) return;
 
     const renderer = rendererFactory ? rendererFactory() : new BabylonRenderer();
-    rendererRef.current = renderer;
+    if (rendererRef) rendererRef.current = renderer;
 
     if (import.meta.env.DEV) {
       (window as unknown as { __simuforgeRenderer?: RendererPort }).__simuforgeRenderer = renderer;
@@ -108,7 +108,7 @@ export function ViewportHost({ store, rendererFactory }: ViewportHostProps) {
       resizeObserver?.disconnect();
       unsubscribeStore?.();
       renderer.dispose();
-      rendererRef.current = null;
+      if (rendererRef) rendererRef.current = null;
     };
   }, [store, rendererFactory]);
 

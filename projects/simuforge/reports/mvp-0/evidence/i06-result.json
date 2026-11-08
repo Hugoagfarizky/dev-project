@@ -1,0 +1,1221 @@
+{
+  "results": [
+    {
+      "name": "empty project has zero entities",
+      "pass": true,
+      "detail": {
+        "entities": 0,
+        "diag": {
+          "engineVersion": "WebGL 2",
+          "webGlVersion": 2,
+          "meshCount": 0,
+          "entityCount": 0,
+          "contextLost": false
+        }
+      }
+    },
+    {
+      "name": "empty Hierarchy shows the empty state",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "empty Inspector shows No selection",
+      "pass": true,
+      "detail": {
+        "text": "Inspector▾No selectionSelect an entity in the viewport or Hierarchy.Add Cube",
+        "values": [],
+        "id": null,
+        "empty": true,
+        "inputCount": 0
+      }
+    },
+    {
+      "name": "Empty World overlay lists all three primitives",
+      "pass": true,
+      "detail": {
+        "present": true,
+        "title": "Your world is empty",
+        "buttons": [
+          "Add Cube",
+          "Add Sphere",
+          "Add Plane"
+        ],
+        "pointerEvents": "none"
+      }
+    },
+    {
+      "name": "grid, grid lines, camera and WebGL 2 are available",
+      "pass": true,
+      "detail": {
+        "engineVersion": "WebGL 2",
+        "webGlVersion": 2,
+        "meshCount": 0,
+        "entityCount": 0,
+        "contextLost": false
+      }
+    },
+    {
+      "name": "1440x900 layout fits without overflow",
+      "pass": true,
+      "detail": {
+        "inner": {
+          "width": 1440,
+          "height": 900
+        },
+        "scroll": 1440,
+        "shell": {
+          "width": 1440,
+          "height": 900
+        },
+        "canvas": {
+          "width": 858,
+          "height": 763,
+          "clientWidth": 858,
+          "clientHeight": 763,
+          "left": 261,
+          "top": 48
+        }
+      }
+    },
+    {
+      "name": "overlay does not block camera pan interaction outside the card",
+      "pass": true,
+      "detail": {
+        "cameraBeforeEmptyDrag": {
+          "alpha": 1.5707963267948966,
+          "beta": 1.0471975511965976,
+          "radius": 10,
+          "target": [
+            0,
+            0,
+            0
+          ]
+        },
+        "cameraAfterEmptyDrag": {
+          "alpha": 1.5707963267948966,
+          "beta": 1.0471975511965976,
+          "radius": 10,
+          "target": [
+            -0.5515070502596552,
+            0.3184127382124427,
+            -0.18383568341988493
+          ]
+        }
+      }
+    },
+    {
+      "name": "Empty World Add Cube creates and selects a Cube",
+      "pass": true,
+      "detail": {
+        "clicked": true,
+        "entity": {
+          "id": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+          "name": "Cube",
+          "type": "cube",
+          "transform": {
+            "position": {
+              "x": 0,
+              "y": 0.5,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          }
+        },
+        "selected": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+        "overlay": {
+          "present": false,
+          "title": null,
+          "buttons": [],
+          "pointerEvents": null
+        },
+        "mesh": {
+          "name": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+          "position": {
+            "x": 0,
+            "y": 0.5,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scaling": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "diag": {
+          "engineVersion": "WebGL 2",
+          "webGlVersion": 2,
+          "meshCount": 1,
+          "entityCount": 1,
+          "contextLost": false
+        }
+      }
+    },
+    {
+      "name": "Cube uses its POC-01 default transform",
+      "pass": true,
+      "detail": {
+        "position": {
+          "x": 0,
+          "y": 0.5,
+          "z": 0
+        },
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      }
+    },
+    {
+      "name": "overlay disappears after the first entity is created",
+      "pass": true,
+      "detail": {
+        "present": false,
+        "title": null,
+        "buttons": [],
+        "pointerEvents": null
+      }
+    },
+    {
+      "name": "Sphere and Plane actions create their primitives",
+      "pass": true,
+      "detail": [
+        "cube",
+        "sphere",
+        "plane"
+      ]
+    },
+    {
+      "name": "default names follow POC-01",
+      "pass": true,
+      "detail": [
+        "Cube",
+        "Sphere",
+        "Plane"
+      ]
+    },
+    {
+      "name": "all primitive UUIDs are unique",
+      "pass": true,
+      "detail": [
+        "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+        "f2efe191-89dc-4fcc-825b-1a9638ae4c32",
+        "9826140a-07ae-44b9-99bc-bf77c63ad0dd"
+      ]
+    },
+    {
+      "name": "Sphere and Plane use their POC-01 default transforms",
+      "pass": true,
+      "detail": {
+        "cube": {
+          "position": {
+            "x": 0,
+            "y": 0.5,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "sphere": {
+          "position": {
+            "x": 0,
+            "y": 0.5,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "plane": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "created entities are visible and mesh count matches",
+      "pass": true,
+      "detail": {
+        "b2996a28-ad5d-4c2c-95dd-abe3db327d96": {
+          "name": "Cube",
+          "position": {
+            "x": 0,
+            "y": 0.5,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scaling": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "f2efe191-89dc-4fcc-825b-1a9638ae4c32": {
+          "name": "Sphere",
+          "position": {
+            "x": 0,
+            "y": 0.5,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scaling": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "9826140a-07ae-44b9-99bc-bf77c63ad0dd": {
+          "name": "9826140a-07ae-44b9-99bc-bf77c63ad0dd",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scaling": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "creation auto-selects the newest Plane across surfaces",
+      "pass": true,
+      "detail": {
+        "selected": "9826140a-07ae-44b9-99bc-bf77c63ad0dd",
+        "selectedRow": "Plane",
+        "inspector": {
+          "text": "Inspector▾IdentityNamePlaneTypePlaneID9826140a-07ae-44b9-99bc-bf77c63ad0ddTransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "values": [
+            "Plane",
+            "Plane"
+          ],
+          "id": "9826140a-07ae-44b9-99bc-bf77c63ad0dd",
+          "empty": false,
+          "inputCount": 9
+        }
+      }
+    },
+    {
+      "name": "viewport renders visible primitive pixels",
+      "pass": true,
+      "detail": {
+        "width": 858,
+        "height": 763,
+        "mean": 51.842185846773,
+        "nonDark": 654654
+      }
+    },
+    {
+      "name": "projected points resolve to the intended primitives",
+      "pass": true,
+      "detail": {
+        "cubePoint": {
+          "x": 545.7816316600034,
+          "y": 437.3873094107534
+        },
+        "spherePoint": {
+          "x": 694.6378728721775,
+          "y": 432.5785573055797
+        },
+        "planePoint": {
+          "x": 837.0834019717717,
+          "y": 466.7407623567169
+        },
+        "emptyPoint": {
+          "x": 295.32,
+          "y": 109.03999999999999
+        },
+        "prePick": {
+          "cube": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+          "sphere": "f2efe191-89dc-4fcc-825b-1a9638ae4c32",
+          "plane": "9826140a-07ae-44b9-99bc-bf77c63ad0dd",
+          "empty": null
+        }
+      }
+    },
+    {
+      "name": "viewport click selects the Cube across store, Hierarchy, Inspector and highlight",
+      "pass": true,
+      "detail": {
+        "selected": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+        "row": "Cube",
+        "inspector": {
+          "text": "Inspector▾IdentityNameCubeTypeCubeIDb2996a28-ad5d-4c2c-95dd-abe3db327d96TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "values": [
+            "Cube",
+            "Cube"
+          ],
+          "id": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+          "empty": false,
+          "inputCount": 9
+        },
+        "highlight": {
+          "b2996a28-ad5d-4c2c-95dd-abe3db327d96": true,
+          "f2efe191-89dc-4fcc-825b-1a9638ae4c32": false,
+          "9826140a-07ae-44b9-99bc-bf77c63ad0dd": false
+        }
+      }
+    },
+    {
+      "name": "empty-space click clears selection everywhere",
+      "pass": true,
+      "detail": {
+        "selected": null,
+        "inspector": {
+          "text": "Inspector▾No selectionSelect an entity in the viewport or Hierarchy.Add Cube",
+          "values": [],
+          "id": null,
+          "empty": true,
+          "inputCount": 0
+        },
+        "highlight": {
+          "b2996a28-ad5d-4c2c-95dd-abe3db327d96": false,
+          "f2efe191-89dc-4fcc-825b-1a9638ae4c32": false,
+          "9826140a-07ae-44b9-99bc-bf77c63ad0dd": false
+        }
+      }
+    },
+    {
+      "name": "Hierarchy click selects the Sphere across store, Inspector and highlight",
+      "pass": true,
+      "detail": {
+        "selected": "f2efe191-89dc-4fcc-825b-1a9638ae4c32",
+        "row": "Sphere",
+        "inspector": {
+          "text": "Inspector▾IdentityNameSphereTypeSphereIDf2efe191-89dc-4fcc-825b-1a9638ae4c32TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "values": [
+            "Sphere",
+            "Sphere"
+          ],
+          "id": "f2efe191-89dc-4fcc-825b-1a9638ae4c32",
+          "empty": false,
+          "inputCount": 9
+        },
+        "highlight": {
+          "b2996a28-ad5d-4c2c-95dd-abe3db327d96": false,
+          "f2efe191-89dc-4fcc-825b-1a9638ae4c32": true,
+          "9826140a-07ae-44b9-99bc-bf77c63ad0dd": false
+        }
+      }
+    },
+    {
+      "name": "programmatic selection updates all surfaces",
+      "pass": true,
+      "detail": {
+        "selected": "9826140a-07ae-44b9-99bc-bf77c63ad0dd",
+        "row": "Plane",
+        "inspector": {
+          "text": "Inspector▾IdentityNamePlaneTypePlaneID9826140a-07ae-44b9-99bc-bf77c63ad0ddTransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "values": [
+            "Plane",
+            "Plane"
+          ],
+          "id": "9826140a-07ae-44b9-99bc-bf77c63ad0dd",
+          "empty": false,
+          "inputCount": 9
+        },
+        "highlight": {
+          "b2996a28-ad5d-4c2c-95dd-abe3db327d96": false,
+          "f2efe191-89dc-4fcc-825b-1a9638ae4c32": false,
+          "9826140a-07ae-44b9-99bc-bf77c63ad0dd": true
+        }
+      }
+    },
+    {
+      "name": "camera-only updates do not mutate Hierarchy or Inspector",
+      "pass": true,
+      "detail": {
+        "cameraMutations": 0
+      }
+    },
+    {
+      "name": "F2 starts rename with a focused, selected input",
+      "pass": true,
+      "detail": {
+        "present": true,
+        "focused": true,
+        "value": "Cube",
+        "selection": [
+          0,
+          4
+        ]
+      }
+    },
+    {
+      "name": "Delete is ignored while the rename input is focused",
+      "pass": true,
+      "detail": {
+        "dialog": {
+          "present": false
+        },
+        "focused": "sf-inline-rename"
+      }
+    },
+    {
+      "name": "rename trims input and updates Hierarchy and Inspector",
+      "pass": true,
+      "detail": {
+        "name": "Hero Cube",
+        "id": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+        "transform": {
+          "position": {
+            "x": -1.6,
+            "y": 0.5,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "hierarchyNames": [
+          "Hero Cube",
+          "Sphere",
+          "Plane"
+        ],
+        "inspector": {
+          "text": "Inspector▾IdentityNameHero CubeTypeCubeIDb2996a28-ad5d-4c2c-95dd-abe3db327d96TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "values": [
+            "Hero Cube",
+            "Cube"
+          ],
+          "id": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+          "empty": false,
+          "inputCount": 9
+        },
+        "inputPresent": false
+      }
+    },
+    {
+      "name": "rename preserves entity ID and transform",
+      "pass": true,
+      "detail": {
+        "before": {
+          "name": "Cube",
+          "id": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+          "transform": {
+            "position": {
+              "x": -1.6,
+              "y": 0.5,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          }
+        },
+        "after": {
+          "name": "Hero Cube",
+          "id": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+          "transform": {
+            "position": {
+              "x": -1.6,
+              "y": 0.5,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          },
+          "hierarchyNames": [
+            "Hero Cube",
+            "Sphere",
+            "Plane"
+          ],
+          "inspector": {
+            "text": "Inspector▾IdentityNameHero CubeTypeCubeIDb2996a28-ad5d-4c2c-95dd-abe3db327d96TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+            "values": [
+              "Hero Cube",
+              "Cube"
+            ],
+            "id": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+            "empty": false,
+            "inputCount": 9
+          },
+          "inputPresent": false
+        }
+      }
+    },
+    {
+      "name": "Escape cancels inline rename",
+      "pass": true,
+      "detail": {
+        "name": "Hero Cube"
+      }
+    },
+    {
+      "name": "whitespace-only rename is rejected",
+      "pass": true,
+      "detail": {
+        "name": "Hero Cube"
+      }
+    },
+    {
+      "name": "Delete opens a confirmation dialog with the entity name",
+      "pass": true,
+      "detail": {
+        "present": true,
+        "title": "Delete entity",
+        "text": "Delete Hero Cube? This cannot be undone.",
+        "buttons": [
+          "Cancel",
+          "Delete"
+        ],
+        "focused": "Cancel"
+      }
+    },
+    {
+      "name": "destructive dialog initially focuses Cancel",
+      "pass": true,
+      "detail": "Cancel"
+    },
+    {
+      "name": "Cancel keeps the entity, selection and Inspector",
+      "pass": true,
+      "detail": {
+        "dialog": {
+          "present": false
+        },
+        "exists": true,
+        "selected": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+        "inspector": {
+          "text": "Inspector▾IdentityNameHero CubeTypeCubeIDb2996a28-ad5d-4c2c-95dd-abe3db327d96TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "values": [
+            "Hero Cube",
+            "Cube"
+          ],
+          "id": "b2996a28-ad5d-4c2c-95dd-abe3db327d96",
+          "empty": false,
+          "inputCount": 9
+        }
+      }
+    },
+    {
+      "name": "Escape dismisses the delete dialog without deleting",
+      "pass": true,
+      "detail": {
+        "dialog": {
+          "present": false
+        },
+        "exists": true,
+        "selected": "b2996a28-ad5d-4c2c-95dd-abe3db327d96"
+      }
+    },
+    {
+      "name": "confirm removes the entity, clears selection and resets Inspector",
+      "pass": true,
+      "detail": {
+        "exists": false,
+        "selected": null,
+        "inspector": {
+          "text": "Inspector▾No selectionSelect an entity in the viewport or Hierarchy.Add Cube",
+          "values": [],
+          "id": null,
+          "empty": true,
+          "inputCount": 0
+        },
+        "hierarchyNames": [
+          "Sphere",
+          "Plane"
+        ],
+        "meshIds": [
+          "f2efe191-89dc-4fcc-825b-1a9638ae4c32",
+          "9826140a-07ae-44b9-99bc-bf77c63ad0dd"
+        ],
+        "diag": {
+          "engineVersion": "WebGL 2",
+          "webGlVersion": 2,
+          "meshCount": 2,
+          "entityCount": 2,
+          "contextLost": false
+        },
+        "dialog": {
+          "present": false
+        }
+      }
+    },
+    {
+      "name": "deleting a non-selected entity preserves the selection",
+      "pass": true,
+      "detail": {
+        "selected": "f2efe191-89dc-4fcc-825b-1a9638ae4c32",
+        "names": [
+          "Sphere"
+        ],
+        "inspector": {
+          "text": "Inspector▾IdentityNameSphereTypeSphereIDf2efe191-89dc-4fcc-825b-1a9638ae4c32TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+          "values": [
+            "Sphere",
+            "Sphere"
+          ],
+          "id": "f2efe191-89dc-4fcc-825b-1a9638ae4c32",
+          "empty": false,
+          "inputCount": 9
+        },
+        "diag": {
+          "engineVersion": "WebGL 2",
+          "webGlVersion": 2,
+          "meshCount": 1,
+          "entityCount": 1,
+          "contextLost": false
+        }
+      }
+    },
+    {
+      "name": "Hierarchy shows exactly the world entities",
+      "pass": true,
+      "detail": {
+        "names": [
+          "Sphere"
+        ],
+        "rows": [
+          "Sphere"
+        ],
+        "matches": true
+      }
+    },
+    {
+      "name": "overlay returns after every entity is deleted",
+      "pass": true,
+      "detail": {
+        "entities": 0,
+        "diag": {
+          "engineVersion": "WebGL 2",
+          "webGlVersion": 2,
+          "meshCount": 0,
+          "entityCount": 0,
+          "contextLost": false
+        },
+        "overlay": {
+          "present": true,
+          "title": "Your world is empty",
+          "buttons": [
+            "Add Cube",
+            "Add Sphere",
+            "Add Plane"
+          ],
+          "pointerEvents": "none"
+        },
+        "hierarchyNames": [],
+        "inspector": {
+          "text": "Inspector▾No selectionSelect an entity in the viewport or Hierarchy.Add Cube",
+          "values": [],
+          "id": null,
+          "empty": true,
+          "inputCount": 0
+        },
+        "selected": null
+      }
+    },
+    {
+      "name": "empty world resets Hierarchy and Inspector",
+      "pass": true,
+      "detail": {
+        "entities": 0,
+        "diag": {
+          "engineVersion": "WebGL 2",
+          "webGlVersion": 2,
+          "meshCount": 0,
+          "entityCount": 0,
+          "contextLost": false
+        },
+        "overlay": {
+          "present": true,
+          "title": "Your world is empty",
+          "buttons": [
+            "Add Cube",
+            "Add Sphere",
+            "Add Plane"
+          ],
+          "pointerEvents": "none"
+        },
+        "hierarchyNames": [],
+        "inspector": {
+          "text": "Inspector▾No selectionSelect an entity in the viewport or Hierarchy.Add Cube",
+          "values": [],
+          "id": null,
+          "empty": true,
+          "inputCount": 0
+        },
+        "selected": null
+      }
+    },
+    {
+      "name": "context loss shows the fallback and suppresses the empty overlay",
+      "pass": true,
+      "detail": {
+        "lose": {
+          "ok": true,
+          "isLost": true
+        },
+        "afterLoss": {
+          "diag": {
+            "engineVersion": "WebGL 2",
+            "webGlVersion": 2,
+            "meshCount": 3,
+            "entityCount": 3,
+            "contextLost": true
+          },
+          "fallback": true,
+          "overlay": {
+            "present": false,
+            "title": null,
+            "buttons": [],
+            "pointerEvents": null
+          }
+        }
+      }
+    },
+    {
+      "name": "context restoration preserves the renderer instance and meshes",
+      "pass": true,
+      "detail": {
+        "beforeLoss": {
+          "diag": {
+            "engineVersion": "WebGL 2",
+            "webGlVersion": 2,
+            "meshCount": 3,
+            "entityCount": 3,
+            "contextLost": false
+          },
+          "canvasSame": true,
+          "meshIds": [
+            "41227f9c-6c66-480c-806b-648880f40b8e",
+            "c9805001-9fc4-4a3c-86aa-8e7f19e204b3",
+            "736fff59-129d-4a6e-ab12-b91acd79dcd7"
+          ],
+          "highlight": {
+            "41227f9c-6c66-480c-806b-648880f40b8e": false,
+            "c9805001-9fc4-4a3c-86aa-8e7f19e204b3": false,
+            "736fff59-129d-4a6e-ab12-b91acd79dcd7": true
+          }
+        },
+        "afterRestore": {
+          "diag": {
+            "engineVersion": "WebGL 2",
+            "webGlVersion": 2,
+            "meshCount": 3,
+            "entityCount": 3,
+            "contextLost": false
+          },
+          "canvasSame": true,
+          "engineSame": true,
+          "sceneSame": true,
+          "meshIds": [
+            "41227f9c-6c66-480c-806b-648880f40b8e",
+            "c9805001-9fc4-4a3c-86aa-8e7f19e204b3",
+            "736fff59-129d-4a6e-ab12-b91acd79dcd7"
+          ],
+          "meshCount": 3,
+          "layerMeshCount": 5
+        }
+      }
+    },
+    {
+      "name": "1024x640 layout renders without the too-small guard",
+      "pass": true,
+      "detail": {
+        "inner": {
+          "width": 1024,
+          "height": 640
+        },
+        "tooSmall": false,
+        "scrollWidth": 1024,
+        "scrollHeight": 640,
+        "shell": {
+          "width": 1024,
+          "height": 640
+        },
+        "canvas": {
+          "width": 522,
+          "height": 503,
+          "clientWidth": 522,
+          "clientHeight": 503
+        },
+        "hierarchyRows": 3,
+        "inspectorEmpty": false,
+        "diag": {
+          "engineVersion": "WebGL 2",
+          "webGlVersion": 2,
+          "meshCount": 3,
+          "entityCount": 3,
+          "contextLost": false
+        },
+        "badge": "WebGL 2 · 3/3 meshes",
+        "overlay": {
+          "present": false,
+          "title": null,
+          "buttons": [],
+          "pointerEvents": null
+        }
+      }
+    },
+    {
+      "name": "1024x640 keeps the viewport, Hierarchy and Inspector usable",
+      "pass": true,
+      "detail": {
+        "inner": {
+          "width": 1024,
+          "height": 640
+        },
+        "tooSmall": false,
+        "scrollWidth": 1024,
+        "scrollHeight": 640,
+        "shell": {
+          "width": 1024,
+          "height": 640
+        },
+        "canvas": {
+          "width": 522,
+          "height": 503,
+          "clientWidth": 522,
+          "clientHeight": 503
+        },
+        "hierarchyRows": 3,
+        "inspectorEmpty": false,
+        "diag": {
+          "engineVersion": "WebGL 2",
+          "webGlVersion": 2,
+          "meshCount": 3,
+          "entityCount": 3,
+          "contextLost": false
+        },
+        "badge": "WebGL 2 · 3/3 meshes",
+        "overlay": {
+          "present": false,
+          "title": null,
+          "buttons": [],
+          "pointerEvents": null
+        }
+      }
+    },
+    {
+      "name": "1024x640 keeps renderer diagnostics consistent",
+      "pass": true,
+      "detail": {
+        "engineVersion": "WebGL 2",
+        "webGlVersion": 2,
+        "meshCount": 3,
+        "entityCount": 3,
+        "contextLost": false
+      }
+    },
+    {
+      "name": "resizing preserves the canvas, engine, scene and meshes",
+      "pass": true,
+      "detail": {
+        "canvasSame": true,
+        "engineSame": true,
+        "sceneSame": true,
+        "canvasWidth": 858,
+        "diag": {
+          "engineVersion": "WebGL 2",
+          "webGlVersion": 2,
+          "meshCount": 3,
+          "entityCount": 3,
+          "contextLost": false
+        }
+      }
+    },
+    {
+      "name": "Build, Program and Simulate presets switch without changing world, selection or camera",
+      "pass": true,
+      "detail": {
+        "Program": {
+          "clicked": true,
+          "active": [
+            "Program"
+          ],
+          "worldSame": true,
+          "selectionSame": true,
+          "cameraSame": true
+        },
+        "Simulate": {
+          "clicked": true,
+          "active": [
+            "Simulate"
+          ],
+          "worldSame": true,
+          "selectionSame": true,
+          "cameraSame": true
+        },
+        "Build": {
+          "clicked": true,
+          "active": [
+            "Build"
+          ],
+          "worldSame": true,
+          "selectionSame": true,
+          "cameraSame": true
+        }
+      }
+    },
+    {
+      "name": "Inspector omits Components, Behavior, Runtime and Simulation sections",
+      "pass": true,
+      "detail": {
+        "inspectorText": "Inspector▾IdentityNamePlaneTypePlaneID736fff59-129d-4a6e-ab12-b91acd79dcd7TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+        "hasComponents": false,
+        "hasBehavior": false,
+        "hasRuntime": false,
+        "hasSimulation": false,
+        "transformInputs": 9,
+        "hasProjectHub": false,
+        "hasSimulationControls": false
+      }
+    },
+    {
+      "name": "Inspector exposes transform editing inputs",
+      "pass": true,
+      "detail": 9
+    },
+    {
+      "name": "no persistence or Project Hub UI",
+      "pass": true,
+      "detail": false
+    },
+    {
+      "name": "no simulation/runtime controls",
+      "pass": true,
+      "detail": false
+    },
+    {
+      "name": "final renderer mesh count equals entity count",
+      "pass": true,
+      "detail": {
+        "engineVersion": "WebGL 2",
+        "webGlVersion": 2,
+        "meshCount": 3,
+        "entityCount": 3,
+        "contextLost": false
+      }
+    },
+    {
+      "name": "no unexpected console errors or exceptions",
+      "pass": true,
+      "detail": {
+        "errors": [
+          {
+            "kind": "log",
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+          }
+        ],
+        "logs": [
+          {
+            "type": "debug",
+            "text": "[vite] connected."
+          },
+          {
+            "type": "info",
+            "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+          },
+          {
+            "type": "log",
+            "text": "BJS - [13:44:43]: Babylon.js v9.32.1 - WebGL2 - Parallel shader compilation"
+          },
+          {
+            "type": "warning",
+            "text": "BJS - [13:44:54]: WebGL context lost."
+          },
+          {
+            "type": "warning",
+            "text": "BJS - [13:44:55]: WebGL context successfully restored."
+          }
+        ]
+      }
+    }
+  ],
+  "browser": "Chrome/156.0.8078.81",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+  "environment": {
+    "inner": {
+      "width": 1440,
+      "height": 900
+    },
+    "devicePixelRatio": 1.0000000149011612
+  },
+  "screenshots": [
+    "i06-1440-empty.png",
+    "i06-1440-primitives.png",
+    "i06-1440-delete-dialog.png",
+    "i06-1024-primitives.png"
+  ],
+  "console": {
+    "logs": [
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+      },
+      {
+        "type": "log",
+        "text": "BJS - [13:44:43]: Babylon.js v9.32.1 - WebGL2 - Parallel shader compilation"
+      },
+      {
+        "type": "warning",
+        "text": "BJS - [13:44:54]: WebGL context lost."
+      },
+      {
+        "type": "warning",
+        "text": "BJS - [13:44:55]: WebGL context successfully restored."
+      }
+    ],
+    "errors": [
+      {
+        "kind": "log",
+        "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      }
+    ]
+  },
+  "finalState": {
+    "entities": [
+      {
+        "id": "41227f9c-6c66-480c-806b-648880f40b8e",
+        "name": "Cube",
+        "type": "cube"
+      },
+      {
+        "id": "c9805001-9fc4-4a3c-86aa-8e7f19e204b3",
+        "name": "Sphere",
+        "type": "sphere"
+      },
+      {
+        "id": "736fff59-129d-4a6e-ab12-b91acd79dcd7",
+        "name": "Plane",
+        "type": "plane"
+      }
+    ],
+    "diag": {
+      "engineVersion": "WebGL 2",
+      "webGlVersion": 2,
+      "meshCount": 3,
+      "entityCount": 3,
+      "contextLost": false
+    },
+    "hierarchyNames": [
+      "Cube",
+      "Sphere",
+      "Plane"
+    ],
+    "selected": "736fff59-129d-4a6e-ab12-b91acd79dcd7",
+    "overlay": {
+      "present": false,
+      "title": null,
+      "buttons": [],
+      "pointerEvents": null
+    },
+    "inspector": {
+      "text": "Inspector▾IdentityNamePlaneTypePlaneID736fff59-129d-4a6e-ab12-b91acd79dcd7TransformPositionXYZRotation (deg, YXZ)XPitchYYawZRollStored as quaternion; edited as Euler degrees in YXZ order.ScaleXYZ",
+      "values": [
+        "Plane",
+        "Plane"
+      ],
+      "id": "736fff59-129d-4a6e-ab12-b91acd79dcd7",
+      "empty": false,
+      "inputCount": 9
+    },
+    "scrollWidth": 1440,
+    "inner": {
+      "width": 1440,
+      "height": 900
+    }
+  }
+}
