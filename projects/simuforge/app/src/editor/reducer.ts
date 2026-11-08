@@ -2,7 +2,8 @@ import { createWorldEntity } from '../world/defaults.ts';
 import { validateTransform } from '../world/validation.ts';
 import { createEmptyProject } from './state.ts';
 import type { StudioCommand } from './commands.ts';
-import type { StudioState } from './state.ts';
+import type { CameraPose, StudioState } from './state.ts';
+import type { EntityType, WorldEntity } from '../world/types.ts';
 
 export interface ReducerContext {
   idFactory: () => string;
@@ -14,36 +15,47 @@ const defaultContext: ReducerContext = {
   clock: () => new Date().toISOString()
 };
 
-function isValidEntityName(name: string): boolean {
-  return name.length >= 1 && name.length <= 128;
+const DEFAULT_NAME_BASE: Record<EntityType, string> = {
+  cube: 'Cube',
+  sphere: 'Sphere',
+  plane: 'Plane'
+};
+
+const MAX_ENTITY_NAME_LENGTH = 128;
+
+function normalizeEntityName(name: string): string | null {
+  const trimmed = name.trim();
+  if (trimmed.length < 1 || trimmed.length > MAX_ENTITY_NAME_LENGTH) {
+    return null;
+  }
+  return trimmed;
 }
 
-function cloneState(state: StudioState): StudioState {
-  return {
-    project: {
-      format: state.project.format,
-      schemaVersion: state.project.schemaVersion,
-      project: { ...state.project.project },
-      world: {
-        format: state.project.world.format,
-        schemaVersion: state.project.world.schemaVersion,
-        entities: state.project.world.entities.map((entity) => ({
-          id: entity.id,
-          name: entity.name,
-          type: entity.type,
-          transform: {
-            position: { ...entity.transform.position },
-            rotation: { ...entity.transform.rotation },
-            scale: { ...entity.transform.scale }
-          },
-          metadata: { ...entity.metadata }
-        }))
-      }
-    },
-    editor: { ...state.editor, camera: state.editor.camera ? { ...state.editor.camera, target: { ...state.editor.camera.target } } : null },
-    persistence: { ...state.persistence, lastError: state.persistence.lastError ? { ...state.persistence.lastError } : null },
-    logs: [...state.logs]
-  };
+function defaultEntityName(entities: readonly WorldEntity[], entityType: EntityType): string {
+  const base = DEFAULT_NAME_BASE[entityType];
+  const used = new Set(entities.map((entity) => entity.name));
+  if (!used.has(base)) {
+    return base;
+  }
+  let suffix = 2;
+  while (used.has(`${base} ${suffix}`)) {
+    suffix += 1;
+  }
+  return `${base} ${suffix}`;
+}
+
+function sameCamera(a: CameraPose | null, b: CameraPose | null): boolean {
+  if (a === null || b === null) {
+    return a === b;
+  }
+  return (
+    a.alpha === b.alpha &&
+    a.beta === b.beta &&
+    a.radius === b.radius &&
+    a.target.x === b.target.x &&
+    a.target.y === b.target.y &&
+    a.target.z === b.target.z
+  );
 }
 
 function markDirty(state: StudioState): StudioState {
@@ -55,6 +67,14 @@ function markDirty(state: StudioState): StudioState {
       status: 'dirty'
     }
   };
+}
+
+function replaceEntity(
+  entities: readonly WorldEntity[],
+  id: string,
+  update: (entity: WorldEntity) => WorldEntity
+): WorldEntity[] {
+  return entities.map((entity) => (entity.id === id ? update(entity) : entity));
 }
 
 export function reduceStudioState(
@@ -134,7 +154,7 @@ export function reduceStudioState(
         return state;
       }
       return {
-        ...cloneState(state),
+        ...state,
         persistence: {
           ...state.persistence,
           status: 'saving',
@@ -145,7 +165,7 @@ export function reduceStudioState(
 
     case 'project/save-succeeded': {
       return {
-        ...cloneState(state),
+        ...state,
         persistence: {
           ...state.persistence,
           savedRevision: command.revision,
@@ -158,7 +178,7 @@ export function reduceStudioState(
 
     case 'project/save-failed': {
       return {
-        ...cloneState(state),
+        ...state,
         persistence: {
           ...state.persistence,
           status: 'save-failed',
@@ -169,15 +189,27 @@ export function reduceStudioState(
 
     case 'entity/create': {
       const id = context.idFactory();
-      const entity = createWorldEntity(command.entityType, id, `${command.entityType.charAt(0).toUpperCase()}${command.entityType.slice(1)}`, command.position ? {
+      const name = defaultEntityName(state.project.world.entities, command.entityType);
+      const entity = createWorldEntity(command.entityType, id, name, command.position ? {
         position: { ...command.position },
         rotation: { x: 0, y: 0, z: 0, w: 1 },
         scale: { x: 1, y: 1, z: 1 }
       } : undefined);
 
-      const next = cloneState(state);
-      next.project.world.entities = [...state.project.world.entities, entity];
-      return markDirty(next);
+      return markDirty({
+        ...state,
+        project: {
+          ...state.project,
+          world: {
+            ...state.project.world,
+            entities: [...state.project.world.entities, entity]
+          }
+        },
+        editor: {
+          ...state.editor,
+          selectedEntityId: id
+        }
+      });
     }
 
     case 'entity/delete': {
@@ -185,24 +217,40 @@ export function reduceStudioState(
       if (!exists) {
         return state;
       }
-      const next = cloneState(state);
-      next.project.world.entities = state.project.world.entities.filter((entity) => entity.id !== command.id);
-      if (state.editor.selectedEntityId === command.id) {
-        next.editor.selectedEntityId = null;
-      }
-      return markDirty(next);
+      return markDirty({
+        ...state,
+        project: {
+          ...state.project,
+          world: {
+            ...state.project.world,
+            entities: state.project.world.entities.filter((entity) => entity.id !== command.id)
+          }
+        },
+        editor: state.editor.selectedEntityId === command.id
+          ? { ...state.editor, selectedEntityId: null }
+          : state.editor
+      });
     }
 
     case 'entity/rename': {
       const entity = state.project.world.entities.find((item) => item.id === command.id);
-      if (!entity || !isValidEntityName(command.name)) {
+      if (!entity) {
         return state;
       }
-      const next = cloneState(state);
-      next.project.world.entities = state.project.world.entities.map((item) =>
-        item.id === command.id ? { ...item, name: command.name } : item
-      );
-      return markDirty(next);
+      const name = normalizeEntityName(command.name);
+      if (name === null || name === entity.name) {
+        return state;
+      }
+      return markDirty({
+        ...state,
+        project: {
+          ...state.project,
+          world: {
+            ...state.project.world,
+            entities: replaceEntity(state.project.world.entities, command.id, (item) => ({ ...item, name }))
+          }
+        }
+      });
     }
 
     case 'transform/set': {
@@ -214,20 +262,23 @@ export function reduceStudioState(
       if (error) {
         return state;
       }
-      const next = cloneState(state);
-      next.project.world.entities = state.project.world.entities.map((item) =>
-        item.id === command.id
-          ? {
+      return markDirty({
+        ...state,
+        project: {
+          ...state.project,
+          world: {
+            ...state.project.world,
+            entities: replaceEntity(state.project.world.entities, command.id, (item) => ({
               ...item,
               transform: {
                 position: { ...command.transform.position },
                 rotation: { ...command.transform.rotation },
                 scale: { ...command.transform.scale }
               }
-            }
-          : item
-      );
-      return markDirty(next);
+            }))
+          }
+        }
+      });
     }
 
     case 'selection/set': {
@@ -237,64 +288,77 @@ export function reduceStudioState(
       if (command.id === state.editor.selectedEntityId) {
         return state;
       }
-      const next = cloneState(state);
-      next.editor.selectedEntityId = command.id;
-      return next;
+      return {
+        ...state,
+        editor: { ...state.editor, selectedEntityId: command.id }
+      };
     }
 
     case 'gizmo/set-mode': {
       if (command.mode === state.editor.gizmoMode) {
         return state;
       }
-      const next = cloneState(state);
-      next.editor.gizmoMode = command.mode;
-      return next;
+      return {
+        ...state,
+        editor: { ...state.editor, gizmoMode: command.mode }
+      };
     }
 
     case 'grid/set-visible': {
       if (command.visible === state.editor.gridVisible) {
         return state;
       }
-      const next = cloneState(state);
-      next.editor.gridVisible = command.visible;
-      return next;
+      return {
+        ...state,
+        editor: { ...state.editor, gridVisible: command.visible }
+      };
     }
 
     case 'preset/set': {
       if (command.preset === state.editor.activePreset) {
         return state;
       }
-      const next = cloneState(state);
-      next.editor.activePreset = command.preset;
-      return next;
+      return {
+        ...state,
+        editor: { ...state.editor, activePreset: command.preset }
+      };
     }
 
     case 'camera/set': {
-      const next = cloneState(state);
-      next.editor.camera = command.pose
-        ? {
-            alpha: command.pose.alpha,
-            beta: command.pose.beta,
-            radius: command.pose.radius,
-            target: { ...command.pose.target }
-          }
-        : null;
-      return next;
+      if (sameCamera(state.editor.camera, command.pose)) {
+        return state;
+      }
+      return {
+        ...state,
+        editor: {
+          ...state.editor,
+          camera: command.pose
+            ? {
+                alpha: command.pose.alpha,
+                beta: command.pose.beta,
+                radius: command.pose.radius,
+                target: { ...command.pose.target }
+              }
+            : null
+        }
+      };
     }
 
     case 'log/append': {
-      const next = cloneState(state);
-      next.logs = [...state.logs, command.entry].slice(-500);
-      return next;
+      return {
+        ...state,
+        logs: [...state.logs, command.entry].slice(-500)
+      };
     }
 
     case 'log/clear': {
       if (state.logs.length === 0) {
         return state;
       }
-      const next = cloneState(state);
-      next.logs = [];
-      return next;
+      return {
+        ...state,
+        logs: []
+      };
     }
 
     default:
