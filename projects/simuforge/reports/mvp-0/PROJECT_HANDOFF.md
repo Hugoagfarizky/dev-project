@@ -55,3 +55,11 @@
 **WAIT FOR PROJECT OWNER AUTHORIZATION FOR MVP-1.**
 
 No further implementation until explicit authorization is granted.
+
+## H. MVP-1 planning status (2026-11-10)
+
+- M1-A: CLOSED (PASS WITH CONDITIONS). Residual: unknown component type handling on load (OPEN/PROPOSED).
+- M1-B..M1-F: PLANNED, NOT AUTHORIZED.
+- Owner decisions D-01..D-06 APPROVED.
+- M1-B decision brief and technical plan prepared; six Owner decisions pending.
+- See `projects/simuforge/reports/mvp-1/` for all planning documents.
