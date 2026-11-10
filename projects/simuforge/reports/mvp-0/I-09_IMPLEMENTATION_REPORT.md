@@ -34,7 +34,7 @@ Implemented reduced-motion support (CSS), performance sampler (`src/perf/perform
 | M0-AC-19 | Planned surfaces | PASS | I-08 |
 | M0-AC-20 | No comp/behavior/runtime in Inspector | PASS | I-05/I-08 |
 | M0-AC-21 | I-06 shortcut subset | PASS | I-06 audit |
-| M0-AC-22 | Keyboard focus visible; collapsed not tabbable; dialogs restore focus | NOT VERIFIED (partial) | Dialog.tsx has trap/restore; focus ring CSS; keyboard-only pass not fully documented |
+| M0-AC-22 | Keyboard focus visible; collapsed not tabbable; dialogs restore focus | PASS | Project Owner manual keyboard-only verification in Chrome (11/11 checks PASS, see §5 and `FINAL_OWNER_VERIFICATION_PREPARATION.md` §5.1); focus-ring CSS + dialog trap/restore implementation reviewed in `shell.css`, `ui/common/Dialog.tsx`, `Panel.tsx` |
 | M0-AC-23 | Boundary check | PASS | check-boundaries |
 | M0-AC-24 | Round-trip tests | PASS | project/world tests |
 | M0-AC-25 | Clean load, no unexpected console errors | PASS | I-06 harness 51/51 |
@@ -49,7 +49,35 @@ Implemented reduced-motion support (CSS), performance sampler (`src/perf/perform
 
 ## 5. Keyboard-only and Accessibility Results
 
-Dialog focus trap and restoration present in `Dialog.tsx`. Focus ring CSS present. Reduced-motion media query added. Full keyboard-only smoke not fully automated; manual verification recommended.
+**Status: PASS** — satisfied by Project Owner manual keyboard-only verification in Chrome, supported (not replaced) by implementation review and a transient automation run.
+
+### 5.1 Evidence sources (kept separate)
+
+| Source | What it establishes | Artifact |
+| --- | --- | --- |
+| Implementation review | Focus-ring CSS rules present (`.sf-btn`, `.sf-icon-btn`, `.sf-hierarchy-row`, `input/textarea/select`); `Dialog.tsx` implements initial focus, Tab/Shift+Tab trap, Escape close, focus restore; `Panel.tsx` renders panel body only when expanded, so collapsed content is not tabbable; `useStudioShortcuts` guards editable targets via `isEditableTarget` | `app/src/styles/shell.css`, `app/src/ui/common/Dialog.tsx`, `app/src/ui/shell/Panel.tsx`, `app/src/ui/hooks/useStudioShortcuts.ts` |
+| Automated browser run (supporting) | Tab sequence traversed canvas → File/Edit/View → Build/Program/Simulate → Project Hub/Save/Export; Delete opened the dialog with focus on Cancel; Escape closed it; focus returned to the invoking control. No keyboard trap in the 10-step sequence | Transient CDP harness output recorded in `FINAL_OWNER_VERIFICATION_PREPARATION.md` §6; the temporary script was removed and its output was not committed as a machine-readable artifact |
+| Project Owner manual verification (primary) | 11 manually observed checks in Chrome, listed in §5.2 | Owner-reported results recorded in `FINAL_OWNER_VERIFICATION_PREPARATION.md` §5.1 |
+
+### 5.2 Project Owner manual keyboard-only matrix (Chrome)
+
+| # | Test | Result |
+| --- | --- | --- |
+| 1 | Tab navigation through interactive controls | PASS |
+| 2 | Visible focus indicator | PASS |
+| 3 | Shift+Tab reverse navigation | PASS |
+| 4 | Delete dialog opens | PASS |
+| 5 | Initial dialog focus on Cancel | PASS |
+| 6 | Tab remains inside dialog | PASS |
+| 7 | Shift+Tab remains inside dialog | PASS |
+| 8 | Escape closes dialog | PASS |
+| 9 | Focus returns to invoking control | PASS |
+| 10 | Collapsed panel content is skipped by keyboard navigation | PASS |
+| 11 | Inspector input accepts keyboard editing without Studio shortcut interference | PASS |
+
+No failures were reported, so no targeted source fix was required for M0-AC-22. Focus-visible styling for text inputs had already been added earlier under commit `4ae47c7`.
+
+Reduced-motion media query remains in place in `shell.css`.
 
 ## 6. Reduced-motion Results
 
@@ -82,15 +110,15 @@ R-1..R-5 carried forward; R-3 (no performance baseline) now has evidence. R-1/R-
 
 ## 12. Known Limitations
 
-- ACG-01 pending Project Owner visual verification.
-- M0-AC-22 partially verified (keyboard-only pass not fully documented).
+- ACG-01 pending Project Owner visual verification (the only remaining MVP-0 blocker).
+- M0-AC-22 closed by Project Owner manual verification; automation of the full keyboard-only pass remains a manual step by design (no committed machine-readable keyboard artifact).
 - Layout persistence, Project Hub browser automation, unsaved-changes (I-07) remain.
 - Console log sources limited (I-08).
 
 ## 13. Git Commit and Push Status
 
-To be completed after final review.
+Documentation-only closure of M0-AC-22; commit and push reported in the closure summary.
 
 ## 14. Final Verdict
 
-**MVP-0 NOT ACCEPTED** — ACG-01 (visual layout) is NOT VERIFIED pending Project Owner visual inspection of the captured screenshots. All other gates pass. Once Project Owner confirms visual usability of all three presets at 1024×640, ACG-01 can be marked PASS and MVP-0 verdict revisited.
+**MVP-0 NOT ACCEPTED** — ACG-01 (visual layout) is NOT VERIFIED pending Project Owner visual inspection of the captured screenshots. M0-AC-22 is now PASS on combined Project Owner manual evidence and implementation review. Once Project Owner confirms visual usability of all three presets at 1024×640, ACG-01 can be marked PASS and the MVP-0 verdict revisited.

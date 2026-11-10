@@ -13,7 +13,7 @@
 
 ## Acceptance Matrix
 
-All M0-AC-01..26: PASS or NOT VERIFIED as documented in I-09 report. M0-AC-22 partially verified. M0-AC-26 PASS (performance evidence).
+All M0-AC-01..26: PASS or NOT VERIFIED as documented in I-09 report. M0-AC-22 PASS (Project Owner manual keyboard-only verification, 11/11 checks). M0-AC-26 PASS (performance evidence).
 
 ## Gates
 
@@ -37,8 +37,8 @@ R-1..R-5 carried; R-3 now has evidence. R-1/R-2/R-5 remain open.
 
 ## Known Limitations
 
-ACG-01 pending visual verification; M0-AC-22 partial; I-07/I-08 limitations remain.
+ACG-01 pending visual verification (sole remaining blocker); I-07/I-08 limitations remain. M0-AC-22 is closed.
 
 ## Final Verdict
 
-**MVP-0 NOT ACCEPTED** — pending ACG-01 visual verification by Project Owner. All other gates pass.
+**MVP-0 NOT ACCEPTED** — pending ACG-01 visual verification by Project Owner. All other gates, including M0-AC-22, pass.

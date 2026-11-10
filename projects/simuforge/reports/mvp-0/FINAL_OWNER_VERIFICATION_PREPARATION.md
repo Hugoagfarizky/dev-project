@@ -5,6 +5,10 @@
 **Final commit:** (this increment)
 **Branch:** `main`
 
+> **Update (M0-AC-22 closure round):** §5 now records the Project Owner's manual
+> keyboard-only verification results, and M0-AC-22 is closed as PASS. ACG-01
+> remains NOT VERIFIED pending Project Owner visual sign-off.
+
 ## 1. Repository pre-flight
 
 - Branch: `main`
@@ -38,18 +42,36 @@ Screenshots captured with exact viewport emulation. Preset state verified active
 
 ## 5. M0-AC-22 keyboard test matrix
 
+### 5.1 Project Owner manual verification (primary evidence, Chrome)
+
+Recorded exactly as reported by the Project Owner:
+
+| Test | Result |
+| --- | --- |
+| Tab navigation through interactive controls | PASS |
+| Visible focus indicator | PASS |
+| Shift+Tab reverse navigation | PASS |
+| Delete dialog opens | PASS |
+| Initial dialog focus on Cancel | PASS |
+| Tab remains inside dialog | PASS |
+| Shift+Tab remains inside dialog | PASS |
+| Escape closes dialog | PASS |
+| Focus returns to invoking control | PASS |
+| Collapsed panel content is skipped by keyboard navigation | PASS |
+| Inspector input accepts keyboard editing without Studio shortcut interference | PASS |
+
+### 5.2 Automated / implementation evidence (supporting)
+
 | Check | Status | Evidence |
 | --- | --- | --- |
 | Focus visible on buttons | PASS (CSS) | shell.css `:focus-visible` |
 | Focus visible on inputs | PASS (CSS) | commit `4ae47c7` |
-| Tab navigation through controls | NOT VERIFIED | harness timed out (see diagnosis) |
-| Shift+Tab reverse | NOT VERIFIED | not automated |
-| No unintended keyboard trap | NOT VERIFIED | not automated |
+| Tab navigation through controls (10 steps) | PASS (automated run) | transient CDP harness, §6 |
+| Dialog Escape close | PASS (automated run) | transient CDP harness, §6 |
+| Focus restore after dialog | PASS (automated run) | transient CDP harness, §6 |
 | Editable inputs not hijacked | PASS (code) | `isEditableTarget` guard |
 | Collapsed panels not tabbable | PASS (code) | Panel.tsx conditional render |
-| Dialog focus trap | NOT VERIFIED (code present) | Dialog.tsx |
-| Dialog Escape close | VERIFIED | KB harness: dialog closed on Escape |
-| Focus restore after dialog | VERIFIED | KB harness: focus restored to invoking control |
+| Dialog focus trap | PASS (code + Owner) | `ui/common/Dialog.tsx` |
 
 ## 6. Browser automation timeout diagnosis
 
@@ -57,11 +79,9 @@ Previous keyboard harness timed out because it waited 120s with no timeout handl
 
 ## 7. Manual verification steps still required
 
-1. Tab through all interactive controls in Build/Program/Simulate at 1024×640 and 1440×900; verify visible focus ring on every focusable element.
-2. Shift+Tab reverse navigation.
-3. Open delete dialog (Delete key), verify focus on Cancel, Tab cycles within dialog, Shift+Tab reverse, Escape closes, focus returns to invoking control.
-4. Verify collapsed panel content is not reachable via Tab.
-5. Visual inspection of the six screenshots for layout usability.
+M0-AC-22 manual keyboard verification is **complete** (Project Owner, §5.1). Remaining manual step:
+
+1. Visual inspection of the six screenshots for layout usability (Build/Program/Simulate at 1024×640 and 1440×900): no overlap, no unexpected page scroll, viewport ≥300 px, auto-collapse behaving per the responsive rules.
 
 ## 8. Regression results
 
@@ -75,6 +95,6 @@ No code changes in this round (evidence only). Temp harnesses removed. Working t
 ## 10. Remaining blockers
 
 - **ACG-01:** PENDING PROJECT OWNER VISUAL SIGN-OFF (screenshots provided, distinct, exact viewport).
-- **M0-AC-22:** NOT VERIFIED (partial — focus CSS improved; full keyboard-only smoke requires manual verification by Project Owner).
+- **M0-AC-22:** PASS — Project Owner manual keyboard-only verification (11/11) plus supporting implementation review and automated run.
 
-**MVP-0 remains NOT ACCEPTED. ACG-01 and M0-AC-22 await Project Owner verification. STOP.**
+**MVP-0 remains NOT ACCEPTED. ACG-01 awaits Project Owner visual sign-off. STOP.**
