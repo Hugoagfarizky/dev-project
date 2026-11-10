@@ -1,0 +1,56 @@
+{
+  "entityId": "8e03fda3-5af6-4698-954c-3a907a7143b3",
+  "base": {
+    "position": {
+      "x": 0,
+      "y": 0.5,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "scale": {
+      "x": 1,
+      "y": 1,
+      "z": 1
+    }
+  },
+  "afterPos": {
+    "store": 2.5,
+    "mesh": 2.5
+  },
+  "afterRot": {
+    "storeQ": {
+      "x": 0,
+      "y": 0.25881904510252074,
+      "z": 0,
+      "w": 0.9659258262890683
+    },
+    "meshQ": [
+      0,
+      0.25881904510252074,
+      0,
+      0.9659258262890683
+    ]
+  },
+  "afterScale": {
+    "store": 2,
+    "mesh": 2
+  },
+  "draftDuring": "99",
+  "afterEsc": {
+    "field": "2.5",
+    "store": 2.5,
+    "error": "false"
+  },
+  "invalid": {
+    "field": "abc",
+    "errorText": "Must be a finite number",
+    "ariaInvalid": "true",
+    "store": 2.5
+  },
+  "shot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac08-transform.png"
+}

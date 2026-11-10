@@ -1,0 +1,27 @@
+{
+  "states": {
+    "empty": {
+      "snap": {
+        "loadingSeen": true,
+        "bodyText": "Project HubNew ProjectImportNo projects yet.",
+        "hubVisible": true
+      },
+      "shot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac15-empty.png"
+    },
+    "sort": {
+      "order": [
+        "Newest",
+        "Middle",
+        "Oldest"
+      ],
+      "shot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac15-sort.png"
+    },
+    "error": {
+      "snap": {
+        "bodyText": "Project HubInjected IndexedDB failureNew ProjectImportNo projects yet.",
+        "hasAlert": true
+      },
+      "shot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac15-error.png"
+    }
+  }
+}

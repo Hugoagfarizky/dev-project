@@ -1,0 +1,120 @@
+{
+  "measurements": [
+    {
+      "w": 1024,
+      "h": 640,
+      "m": {
+        "host": {
+          "x": 221,
+          "y": 48,
+          "w": 522,
+          "h": 503
+        },
+        "canvas": {
+          "x": 221,
+          "y": 48,
+          "w": 522,
+          "h": 503
+        },
+        "drawingBuffer": {
+          "w": 522,
+          "h": 503
+        },
+        "dpr": 1.0000000149011612,
+        "cssWidth": "522px",
+        "cssHeight": "503px",
+        "docScroll": {
+          "sw": 1024,
+          "sh": 640,
+          "cw": 1024,
+          "ch": 640
+        },
+        "canvasWithinWindow": true
+      },
+      "shot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac03-1024x640.png",
+      "arHost": 1.0377733598409542,
+      "arCanvas": 1.0377733598409542,
+      "arBuffer": 1.0377733598409542,
+      "noDistortion": true
+    },
+    {
+      "w": 1440,
+      "h": 900,
+      "m": {
+        "host": {
+          "x": 261,
+          "y": 48,
+          "w": 858,
+          "h": 763
+        },
+        "canvas": {
+          "x": 261,
+          "y": 48,
+          "w": 858,
+          "h": 763
+        },
+        "drawingBuffer": {
+          "w": 858,
+          "h": 763
+        },
+        "dpr": 1.0000000149011612,
+        "cssWidth": "858px",
+        "cssHeight": "763px",
+        "docScroll": {
+          "sw": 1440,
+          "sh": 900,
+          "cw": 1440,
+          "ch": 900
+        },
+        "canvasWithinWindow": true
+      },
+      "shot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac03-1440x900.png",
+      "arHost": 1.124508519003932,
+      "arCanvas": 1.124508519003932,
+      "arBuffer": 1.124508519003932,
+      "noDistortion": true
+    },
+    {
+      "w": 1920,
+      "h": 1080,
+      "m": {
+        "host": {
+          "x": 261,
+          "y": 48,
+          "w": 1338,
+          "h": 943
+        },
+        "canvas": {
+          "x": 261,
+          "y": 48,
+          "w": 1338,
+          "h": 943
+        },
+        "drawingBuffer": {
+          "w": 1338,
+          "h": 943
+        },
+        "dpr": 1.0000000149011612,
+        "cssWidth": "1338px",
+        "cssHeight": "943px",
+        "docScroll": {
+          "sw": 1920,
+          "sh": 1080,
+          "cw": 1920,
+          "ch": 1080
+        },
+        "canvasWithinWindow": true
+      },
+      "shot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac03-1920x1080.png",
+      "arHost": 1.4188759278897136,
+      "arCanvas": 1.4188759278897136,
+      "arBuffer": 1.4188759278897136,
+      "noDistortion": true
+    }
+  ],
+  "screenshots": [
+    "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac03-1024x640.png",
+    "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac03-1440x900.png",
+    "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac03-1920x1080.png"
+  ]
+}

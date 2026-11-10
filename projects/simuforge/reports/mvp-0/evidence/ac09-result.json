@@ -1,0 +1,160 @@
+{
+  "entityId": "69aa4d6d-bf03-41c8-a263-9abf2e75fac5",
+  "rollSet": 30,
+  "tInfo": {
+    "meta": {
+      "positionGizmo": {
+        "coordinatesMode": 0,
+        "updateRotationToMatch": false
+      },
+      "rotationGizmo": null,
+      "scaleGizmo": null
+    },
+    "mode": "translate"
+  },
+  "tHandle": {
+    "count": 201,
+    "far": {
+      "px": 508.6,
+      "py": 332.1
+    },
+    "ringNormal": null
+  },
+  "tBefore": {
+    "store": {
+      "x": 0,
+      "y": 0.5,
+      "z": 0
+    },
+    "mesh": [
+      0,
+      0.5,
+      0
+    ]
+  },
+  "tDrag": {
+    "store": {
+      "x": 0.9724143743515015,
+      "y": 0.5,
+      "z": 0
+    },
+    "mesh": [
+      0.9724143743515015,
+      0.5,
+      0
+    ],
+    "mid": {
+      "isDragging": true,
+      "active": "69aa4d6d-bf03-41c8-a263-9abf2e75fac5",
+      "committed": true
+    }
+  },
+  "tShot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac09-translate.png",
+  "rInfo": {
+    "meta": {
+      "positionGizmo": {
+        "coordinatesMode": 0,
+        "updateRotationToMatch": false
+      },
+      "rotationGizmo": {
+        "coordinatesMode": 0,
+        "updateRotationToMatch": false
+      },
+      "scaleGizmo": null
+    },
+    "mode": "rotate"
+  },
+  "rHandle": {
+    "count": 201,
+    "far": {
+      "px": 613.7,
+      "py": 341.4
+    }
+  },
+  "rBefore": {
+    "storeQ": {
+      "x": 0,
+      "y": 0,
+      "z": 0.2588190471140138,
+      "w": 0.9659258257500906
+    },
+    "meshQ": [
+      0,
+      0,
+      0.2588190471140138,
+      0.9659258257500906
+    ]
+  },
+  "rDrag": {
+    "storeQ": {
+      "x": 0.25499204740871634,
+      "y": 0.9516432878261113,
+      "z": 0.044343577155521625,
+      "w": 0.165492464054628
+    },
+    "meshQ": [
+      0.25499204740871634,
+      0.9516432878261113,
+      0.044343577155521625,
+      0.165492464054628
+    ],
+    "isDragging": false
+  },
+  "rShot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac09-rotate.png",
+  "sInfo": {
+    "meta": {
+      "positionGizmo": {
+        "coordinatesMode": 0,
+        "updateRotationToMatch": false
+      },
+      "rotationGizmo": {
+        "coordinatesMode": 0,
+        "updateRotationToMatch": false
+      },
+      "scaleGizmo": {
+        "coordinatesMode": 1,
+        "updateRotationToMatch": true
+      }
+    },
+    "mode": "scale"
+  },
+  "sHandle": {
+    "count": 12,
+    "far": {
+      "px": 425.9,
+      "py": 295.6
+    }
+  },
+  "sBefore": {
+    "storeScale": {
+      "x": 1.0000001124655813,
+      "y": 0.9999999801184417,
+      "z": 1.0000001526956364
+    },
+    "meshScale": [
+      1.0000001124655813,
+      0.9999999801184417,
+      1.0000001526956364
+    ],
+    "meshQ": [
+      0.25499204740871634,
+      0.9516432878261113,
+      0.044343577155521625,
+      0.165492464054628
+    ]
+  },
+  "sDrag": {
+    "storeScale": {
+      "x": 0.8918954791103885,
+      "y": 0.999999972572626,
+      "z": 1.0000001225123754
+    },
+    "meshScale": [
+      0.8918954791103885,
+      0.999999972572626,
+      1.0000001225123754
+    ]
+  },
+  "sShot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac09-scale.png",
+  "align": null
+}

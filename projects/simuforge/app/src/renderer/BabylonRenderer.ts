@@ -41,6 +41,7 @@ export class BabylonRenderer {
   private contextLost = false;
   private activeDragEntityId: string | null = null;
   private isDragging = false;
+  private configuredGizmos = new Set<unknown>();
   private pointerDown: { x: number; y: number } | null = null;
   private pointerMoved = false;
   private lastCameraSignature = '';
@@ -116,19 +117,8 @@ export class BabylonRenderer {
       this.highlight = new HighlightLayer('selection-highlight', this.scene);
       this.gizmoManager = new GizmoManager(this.scene);
       this.gizmoManager.usePointerToAttachGizmos = false;
-      // Coordinate space policy (M0-AC-09): translate/rotate world, scale local.
-      if (this.gizmoManager.gizmos.positionGizmo) {
-        this.gizmoManager.gizmos.positionGizmo.coordinatesMode = GizmoCoordinatesMode.World;
-        this.gizmoManager.gizmos.positionGizmo.updateGizmoRotationToMatchAttachedMesh = false;
-      }
-      if (this.gizmoManager.gizmos.rotationGizmo) {
-        this.gizmoManager.gizmos.rotationGizmo.coordinatesMode = GizmoCoordinatesMode.World;
-        this.gizmoManager.gizmos.rotationGizmo.updateGizmoRotationToMatchAttachedMesh = false;
-      }
-      if (this.gizmoManager.gizmos.scaleGizmo) {
-        this.gizmoManager.gizmos.scaleGizmo.coordinatesMode = GizmoCoordinatesMode.Local;
-        this.gizmoManager.gizmos.scaleGizmo.updateGizmoRotationToMatchAttachedMesh = true;
-      }
+      // Coordinate space + observers are configured lazily in applyGizmoMode,
+      // because gizmos are created on demand by GizmoManager.
       this.applyGizmoMode(this.gizmoMode);
 
       this.engine.onContextLostObservable.add(() => {
@@ -151,33 +141,9 @@ export class BabylonRenderer {
       this.windowBlurHandler = windowBlur;
       window.addEventListener('blur', windowBlur);
 
-      const gizmos = [
-        this.gizmoManager.gizmos.positionGizmo,
-        this.gizmoManager.gizmos.rotationGizmo,
-        this.gizmoManager.gizmos.scaleGizmo
-      ];
-
-      for (const gizmo of gizmos) {
-        if (!gizmo) continue;
-        gizmo.onDragStartObservable.add(() => {
-          if (this.isDragging) return;
-          this.isDragging = true;
-          this.dragEnded = false;
-          const mesh = this.activeDragEntityId ? this.meshes.get(this.activeDragEntityId) : null;
-          if (mesh) {
-            this.committedTransform = readTransform(mesh);
-          }
-        });
-        gizmo.onDragObservable.add(() => {
-          if (!this.activeDragEntityId) return;
-          this.pendingPreview = true;
-        });
-        gizmo.onDragEndObservable.add(() => {
-          if (this.dragEnded) return;
-          this.dragEnded = true;
-          this.finalizeDrag();
-        });
-      }
+      // Gizmo observers + coordinate-space config are attached lazily in
+      // configureGizmos(), called from applyGizmoMode(), because the
+      // GizmoManager creates gizmos on demand.
 
       this.engine.runRenderLoop(() => {
         if (!this.scene || !this.camera) return;
@@ -241,6 +207,7 @@ export class BabylonRenderer {
     this.activeDragEntityId = null;
     this.isDragging = false;
     this.committedTransform = null;
+    this.configuredGizmos.clear();
   }
 
   resize(width: number, height: number): void {
@@ -352,11 +319,58 @@ export class BabylonRenderer {
     this.gizmoManager.rotationGizmoEnabled = mode === 'rotate';
     this.gizmoManager.scaleGizmoEnabled = mode === 'scale';
 
+    this.configureGizmos();
+
     if (this.selectedEntityId) {
       const mesh = this.meshes.get(this.selectedEntityId);
       if (mesh) {
         this.gizmoManager.attachToMesh(mesh);
       }
+    }
+  }
+
+  private configureGizmos(): void {
+    if (!this.gizmoManager) return;
+    const gm = this.gizmoManager;
+    const pos = gm.gizmos.positionGizmo;
+    const rot = gm.gizmos.rotationGizmo;
+    const scl = gm.gizmos.scaleGizmo;
+
+    if (pos) {
+      pos.coordinatesMode = GizmoCoordinatesMode.World;
+      pos.updateGizmoRotationToMatchAttachedMesh = false;
+    }
+    if (rot) {
+      rot.coordinatesMode = GizmoCoordinatesMode.World;
+      rot.updateGizmoRotationToMatchAttachedMesh = false;
+    }
+    if (scl) {
+      scl.coordinatesMode = GizmoCoordinatesMode.Local;
+      scl.updateGizmoRotationToMatchAttachedMesh = true;
+    }
+
+    const gizmos = [pos, rot, scl].filter((g): g is NonNullable<typeof g> => Boolean(g));
+    for (const gizmo of gizmos) {
+      if (this.configuredGizmos.has(gizmo)) continue;
+      this.configuredGizmos.add(gizmo);
+      gizmo.onDragStartObservable.add(() => {
+        if (this.isDragging) return;
+        this.isDragging = true;
+        this.dragEnded = false;
+        const mesh = this.activeDragEntityId ? this.meshes.get(this.activeDragEntityId) : null;
+        if (mesh) {
+          this.committedTransform = readTransform(mesh);
+        }
+      });
+      gizmo.onDragObservable.add(() => {
+        if (!this.activeDragEntityId) return;
+        this.pendingPreview = true;
+      });
+      gizmo.onDragEndObservable.add(() => {
+        if (this.dragEnded) return;
+        this.dragEnded = true;
+        this.finalizeDrag();
+      });
     }
   }
 

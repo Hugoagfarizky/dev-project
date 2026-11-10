@@ -1,0 +1,81 @@
+{
+  "entityId": "a2f13292-48e7-436e-adc7-14f1a7c3debf",
+  "selAfterClick": "a2f13292-48e7-436e-adc7-14f1a7c3debf",
+  "selFinal": "a2f13292-48e7-436e-adc7-14f1a7c3debf",
+  "leftNoOrbit": true,
+  "orbitChanged": true,
+  "midOrbit": true,
+  "panTargetChanged": true,
+  "panNoRotate": false,
+  "panNoRotateClean": true,
+  "rightPan": true,
+  "zoomIn": true,
+  "zoomOut": true,
+  "radiusLower": 0.5,
+  "radiusUpper": 500,
+  "betaLower": 0.01,
+  "betaUpper": 3.1315926535897933,
+  "poses": {
+    "p0": {
+      "alpha": 1.5707963267948966,
+      "beta": 1.0471975511965976,
+      "radius": 10,
+      "target": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "pOrbit": {
+      "alpha": 2.3411476117946206,
+      "beta": 0.5657279980717714,
+      "radius": 10,
+      "target": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "p3": {
+      "alpha": 3.0468458382602357,
+      "beta": 0.2565191723049921,
+      "radius": 10,
+      "target": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "pPan": {
+      "alpha": 3.0753690618744973,
+      "beta": 0.24432977541206763,
+      "radius": 10,
+      "target": {
+        "x": 0.14588348055880845,
+        "y": 0.04649210538328781,
+        "z": -0.5857493392639391
+      }
+    },
+    "pZoomIn": {
+      "alpha": 3.0753690618744973,
+      "beta": 0.24432977541206763,
+      "radius": 0.5,
+      "target": {
+        "x": 0.21619587961501135,
+        "y": 0.0727684336201094,
+        "z": -1.1182395434140227
+      }
+    },
+    "pZoomOut": {
+      "alpha": 3.0753690618744973,
+      "beta": 0.24432977541206763,
+      "radius": 54.28217571999006,
+      "target": {
+        "x": 0.21619541055028732,
+        "y": 0.07276843362010846,
+        "z": -1.1182466161017406
+      }
+    }
+  },
+  "shot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac11-camera.png"
+}

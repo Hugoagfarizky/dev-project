@@ -1,0 +1,390 @@
+[
+  {
+    "id": "M0-AC-03",
+    "status": "PASS",
+    "measurements": [
+      {
+        "size": "1024x640",
+        "host": {
+          "x": 221,
+          "y": 48,
+          "w": 522,
+          "h": 503
+        },
+        "canvas": {
+          "x": 221,
+          "y": 48,
+          "w": 522,
+          "h": 503
+        },
+        "buffer": {
+          "w": 522,
+          "h": 503
+        },
+        "dpr": 1.0000000149011612,
+        "arHost": 1.0378,
+        "arCanvas": 1.0378,
+        "arBuffer": 1.0378,
+        "noDistortion": true,
+        "noPageScroll": true
+      },
+      {
+        "size": "1440x900",
+        "host": {
+          "x": 261,
+          "y": 48,
+          "w": 858,
+          "h": 763
+        },
+        "canvas": {
+          "x": 261,
+          "y": 48,
+          "w": 858,
+          "h": 763
+        },
+        "buffer": {
+          "w": 858,
+          "h": 763
+        },
+        "dpr": 1.0000000149011612,
+        "arHost": 1.1245,
+        "arCanvas": 1.1245,
+        "arBuffer": 1.1245,
+        "noDistortion": true,
+        "noPageScroll": true
+      },
+      {
+        "size": "1920x1080",
+        "host": {
+          "x": 261,
+          "y": 48,
+          "w": 1338,
+          "h": 943
+        },
+        "canvas": {
+          "x": 261,
+          "y": 48,
+          "w": 1338,
+          "h": 943
+        },
+        "buffer": {
+          "w": 1338,
+          "h": 943
+        },
+        "dpr": 1.0000000149011612,
+        "arHost": 1.4189,
+        "arCanvas": 1.4189,
+        "arBuffer": 1.4189,
+        "noDistortion": true,
+        "noPageScroll": true
+      }
+    ]
+  },
+  {
+    "id": "M0-AC-03",
+    "status": "PASS",
+    "files": [
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac03-1024x640.png",
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac03-1440x900.png",
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac03-1920x1080.png"
+    ]
+  },
+  {
+    "id": "M0-AC-08",
+    "status": "PASS",
+    "entityId": "8e03fda3-5af6-4698-954c-3a907a7143b3",
+    "base": {
+      "position": {
+        "x": 0,
+        "y": 0.5,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      }
+    },
+    "afterPos": {
+      "store": 2.5,
+      "mesh": 2.5
+    },
+    "afterRot": {
+      "storeQ": {
+        "x": 0,
+        "y": 0.25881904510252074,
+        "z": 0,
+        "w": 0.9659258262890683
+      },
+      "meshQ": [
+        0,
+        0.25881904510252074,
+        0,
+        0.9659258262890683
+      ]
+    },
+    "afterScale": {
+      "store": 2,
+      "mesh": 2
+    },
+    "draftDuring": "99",
+    "afterEsc": {
+      "field": "2.5",
+      "store": 2.5,
+      "error": "false"
+    },
+    "invalid": {
+      "field": "abc",
+      "errorText": "Must be a finite number",
+      "ariaInvalid": "true",
+      "store": 2.5
+    },
+    "shot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac08-transform.png"
+  },
+  {
+    "id": "M0-AC-08",
+    "status": "PASS",
+    "files": [
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac08-transform.png"
+    ]
+  },
+  {
+    "id": "M0-AC-09",
+    "status": "PASS",
+    "detail": {
+      "translatePass": true,
+      "rotateCommits": true,
+      "rotateWorld": {
+        "isWorld": true,
+        "coordinatesMode": 0
+      },
+      "scaleLocal": true,
+      "scaleCommits": true,
+      "rotateCoordinatesMode": 0,
+      "scaleCoordinatesMode": 1,
+      "translateCoordinatesMode": 0
+    },
+    "evidence": {
+      "translate": {
+        "store": {
+          "x": 0.9724143743515015,
+          "y": 0.5,
+          "z": 0
+        },
+        "mesh": [
+          0.9724143743515015,
+          0.5,
+          0
+        ],
+        "mid": {
+          "isDragging": true,
+          "active": "69aa4d6d-bf03-41c8-a263-9abf2e75fac5",
+          "committed": true
+        }
+      },
+      "rotate": {
+        "storeQ": {
+          "x": 0.25499204740871634,
+          "y": 0.9516432878261113,
+          "z": 0.044343577155521625,
+          "w": 0.165492464054628
+        },
+        "meshQ": [
+          0.25499204740871634,
+          0.9516432878261113,
+          0.044343577155521625,
+          0.165492464054628
+        ],
+        "isDragging": false
+      },
+      "scale": {
+        "storeScale": {
+          "x": 0.8918954791103885,
+          "y": 0.999999972572626,
+          "z": 1.0000001225123754
+        },
+        "meshScale": [
+          0.8918954791103885,
+          0.999999972572626,
+          1.0000001225123754
+        ]
+      }
+    }
+  },
+  {
+    "id": "M0-AC-09",
+    "status": "PASS",
+    "files": [
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac09-translate.png",
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac09-rotate.png",
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac09-scale.png"
+    ]
+  },
+  {
+    "id": "M0-AC-11",
+    "status": "PASS",
+    "entityId": "a2f13292-48e7-436e-adc7-14f1a7c3debf",
+    "selAfterClick": "a2f13292-48e7-436e-adc7-14f1a7c3debf",
+    "selFinal": "a2f13292-48e7-436e-adc7-14f1a7c3debf",
+    "leftNoOrbit": true,
+    "orbitChanged": true,
+    "midOrbit": true,
+    "panTargetChanged": true,
+    "panNoRotate": false,
+    "panNoRotateClean": true,
+    "rightPan": true,
+    "zoomIn": true,
+    "zoomOut": true,
+    "radiusLower": 0.5,
+    "radiusUpper": 500,
+    "betaLower": 0.01,
+    "betaUpper": 3.1315926535897933,
+    "poses": {
+      "p0": {
+        "alpha": 1.5707963267948966,
+        "beta": 1.0471975511965976,
+        "radius": 10,
+        "target": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "pOrbit": {
+        "alpha": 2.3411476117946206,
+        "beta": 0.5657279980717714,
+        "radius": 10,
+        "target": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "p3": {
+        "alpha": 3.0468458382602357,
+        "beta": 0.2565191723049921,
+        "radius": 10,
+        "target": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "pPan": {
+        "alpha": 3.0753690618744973,
+        "beta": 0.24432977541206763,
+        "radius": 10,
+        "target": {
+          "x": 0.14588348055880845,
+          "y": 0.04649210538328781,
+          "z": -0.5857493392639391
+        }
+      },
+      "pZoomIn": {
+        "alpha": 3.0753690618744973,
+        "beta": 0.24432977541206763,
+        "radius": 0.5,
+        "target": {
+          "x": 0.21619587961501135,
+          "y": 0.0727684336201094,
+          "z": -1.1182395434140227
+        }
+      },
+      "pZoomOut": {
+        "alpha": 3.0753690618744973,
+        "beta": 0.24432977541206763,
+        "radius": 54.28217571999006,
+        "target": {
+          "x": 0.21619541055028732,
+          "y": 0.07276843362010846,
+          "z": -1.1182466161017406
+        }
+      }
+    },
+    "shot": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac11-camera.png"
+  },
+  {
+    "id": "M0-AC-11",
+    "status": "PASS",
+    "files": [
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac11-camera.png"
+    ]
+  },
+  {
+    "id": "M0-AC-15",
+    "status": "PASS",
+    "emptyOk": true,
+    "loadingOk": true,
+    "sortOk": true,
+    "errorOk": true,
+    "empty": {
+      "loadingSeen": true,
+      "bodyText": "Project HubNew ProjectImportNo projects yet.",
+      "hubVisible": true
+    },
+    "sort": [
+      "Newest",
+      "Middle",
+      "Oldest"
+    ],
+    "error": {
+      "bodyText": "Project HubInjected IndexedDB failureNew ProjectImportNo projects yet.",
+      "hasAlert": true
+    }
+  },
+  {
+    "id": "M0-AC-15",
+    "status": "PASS",
+    "files": [
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac15-empty.png",
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac15-sort.png",
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac15-error.png"
+    ]
+  },
+  {
+    "id": "M0-AC-21",
+    "status": "PASS",
+    "beforeProjectId": "9de0dfad-cb84-4c38-b865-7361380dd273",
+    "ctrlS": {
+      "status": "clean",
+      "savedRevision": 2,
+      "revision": 2,
+      "lastSavedAt": "2026-11-10T10:46:23.032Z",
+      "lastError": null,
+      "defaultPrevented": true
+    },
+    "idbCount": 1,
+    "ctrlO": {
+      "hubVisible": true,
+      "defaultPrevented": true,
+      "bodyHasHub": true
+    },
+    "shotHub": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac21-hub.png",
+    "ctrlN": {
+      "projectId": "184c3b24-2f7e-4f99-bd78-170195c74aca",
+      "entities": 0,
+      "persistenceStatus": "dirty",
+      "defaultPrevented": true,
+      "hubVisible": false
+    },
+    "ctrlSEditable": {
+      "defaultPrevented": false,
+      "fired": true
+    },
+    "shotStudio": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac21-studio.png"
+  },
+  {
+    "id": "M0-AC-21",
+    "status": "PASS",
+    "files": [
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac21-hub.png",
+      "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac21-studio.png"
+    ]
+  }
+]

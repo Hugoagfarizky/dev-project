@@ -1,0 +1,30 @@
+{
+  "beforeProjectId": "9de0dfad-cb84-4c38-b865-7361380dd273",
+  "ctrlS": {
+    "status": "clean",
+    "savedRevision": 2,
+    "revision": 2,
+    "lastSavedAt": "2026-11-10T10:46:23.032Z",
+    "lastError": null,
+    "defaultPrevented": true
+  },
+  "idbCount": 1,
+  "ctrlO": {
+    "hubVisible": true,
+    "defaultPrevented": true,
+    "bodyHasHub": true
+  },
+  "shotHub": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac21-hub.png",
+  "ctrlN": {
+    "projectId": "184c3b24-2f7e-4f99-bd78-170195c74aca",
+    "entities": 0,
+    "persistenceStatus": "dirty",
+    "defaultPrevented": true,
+    "hubVisible": false
+  },
+  "ctrlSEditable": {
+    "defaultPrevented": false,
+    "fired": true
+  },
+  "shotStudio": "D:\\Github\\dev-project\\projects\\simuforge\\reports\\mvp-0\\evidence\\mvp0-ac21-studio.png"
+}

@@ -3,7 +3,7 @@ import type { ProjectRepository } from './ProjectRepository.ts';
 import type { AppError } from '../world/types.ts';
 
 const DB_NAME = 'simuforge';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE = 'projects';
 
 function unavailableError(): AppError {
@@ -30,10 +30,13 @@ export class IndexedDbProjectRepository implements ProjectRepository {
       const request = indexedDB.open(DB_NAME, DB_VERSION);
       request.onupgradeneeded = () => {
         const db = request.result;
-        if (!db.objectStoreNames.contains(STORE)) {
-          const store = db.createObjectStore(STORE, { keyPath: 'id' });
-          store.createIndex('updatedAt', 'updatedAt', { unique: false });
+        // v1 stored records with keyPath 'id', which never matched ProjectDocument
+        // (id lives at project.id). Drop the unusable store and recreate it.
+        if (db.objectStoreNames.contains(STORE)) {
+          db.deleteObjectStore(STORE);
         }
+        const store = db.createObjectStore(STORE, { keyPath: 'project.id' });
+        store.createIndex('updatedAt', 'project.updatedAt', { unique: false });
       };
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject({ code: 'STORAGE_READ_FAILED', message: 'Failed to open IndexedDB' });
