@@ -20,7 +20,7 @@ All M0-AC-01..26: PASS or NOT VERIFIED as documented in I-09 report. M0-AC-22 PA
 - ACG-01: NOT VERIFIED (pending visual inspection) — screenshots provided.
 - ACG-02: PASS (4.80/5.35/5.60 ≥4.5:1).
 - ACG-03: PASS (audit.md).
-- ACG-04: PASS (no 60fps/fabricated metrics).
+- ACG-04: PASS (no 60fps/fabricated metrics) — note: the visual audit in `ACG-01_VISUAL_OWNER_REVIEW.md` (F-1) found the expanded Program panel unlabeled in the Program preset; owner confirmation of this clause is requested.
 
 ## Performance
 

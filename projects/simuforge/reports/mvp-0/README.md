@@ -15,6 +15,7 @@ and the raw result data captured in Chrome.
 | `I-08_IMPLEMENTATION_REPORT.md` | Console, status bar, planned surfaces | Complete |
 | `I-09_IMPLEMENTATION_REPORT.md` | Accessibility, performance, acceptance evidence | Complete |
 | `FINAL_OWNER_VERIFICATION_PREPARATION.md` | Exact-viewport screenshot evidence, keyboard-only verification record | M0-AC-22 pass; ACG-01 pending owner sign-off |
+| `ACG-01_VISUAL_OWNER_REVIEW.md` | Visual audit of the six ACG-01 screenshots | ACG-01 evidence complete; pending owner sign-off (F-1 decision) |
 | `MVP_0_ACCEPTANCE_REPORT.md` | MVP-0 final acceptance | Not accepted (ACG-01 pending) |
 | `I-05_ACCEPTANCE_MATRIX.md` | M0-AC-05, M0-AC-06, M0-AC-07, M0-AC-12 and I-05 exit criteria | Pass |
 | `I-05_BROWSER_VERIFICATION.md` | Chrome 156 browser results, console, context loss, layout sizes | Pass 51/51 |
