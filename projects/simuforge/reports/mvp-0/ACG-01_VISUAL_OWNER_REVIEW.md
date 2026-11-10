@@ -7,6 +7,8 @@
 **Gate being audited:** ACG-01 — Visual layout validation (spec §11.1)
 
 > **Status: PENDING PROJECT OWNER SIGN-OFF.** This document records a technical visual audit by OpenCode. It does not confer acceptance, and it does not mark ACG-01 as PASS.
+>
+> **Update 2026-11-10 (post-fix re-audit):** the Project Owner authorized a one-line CSS fix for finding F-1 and the re-capture of the two Program screenshots. The fix was applied, both Program images were re-captured and re-inspected; F-1 is **RESOLVED**. See §10. Sections 1–9 below are preserved unchanged as the pre-fix audit record.
 
 ---
 
@@ -61,7 +63,7 @@ Full hashes are recorded in `evidence/i09-visual-meta.json` and in `FINAL_OWNER_
 
 Observation: in compact mode the top bar reduces preset labels to `B` / `P` / `S` (spec §3.3 requires "preset labels become icons with accessible names"). Visually the single letters are small but legible; ambiguity is mitigated by accessibility names rather than visible text. Recorded as an observation, not a defect.
 
-### 3.2 Program — 1024×640
+### 3.2 Program — 1024×640 *(pre-fix capture; superseded by §10.4)*
 
 **Path:** `projects/simuforge/reports/mvp-0/evidence/i09-1024x640-program.png`
 **Active preset:** Program (`P` highlighted)
@@ -106,7 +108,7 @@ Observation: in compact mode the top bar reduces preset labels to `B` / `P` / `S
 | Unexpected page scroll | None. |
 | Preset consistency | Consistent with the 1024 Build layout, only wider. |
 
-### 3.5 Program — 1440×900 *(not previously reviewed by the Owner — inspected here)*
+### 3.5 Program — 1440×900 *(not previously reviewed by the Owner — inspected here; pre-fix capture, superseded by §10.4)*
 
 **Path:** `projects/simuforge/reports/mvp-0/evidence/i09-1440x900-program.png`
 **Active preset:** Program (highlighted)
@@ -166,6 +168,8 @@ Findings are listed by severity. None of them is one of ACG-01's four criteria, 
 
 ### F-1 — Expanded Program panel renders a blank surface with no `Planned` label (minor, ACG-04-relevant)
 
+**Status: RESOLVED on 2026-11-10** by the authorized one-line CSS fix; re-capture and re-audit recorded in §10. Original finding preserved below.
+
 - **Observed in:** `i09-1024x640-program.png`, `i09-1440x900-program.png`.
 - **Behaviour:** In the Program preset the Program dock is open (chevron points down), and its body is empty. In Build and Simulate the same panel is collapsed and its header shows the `Planned` summary. Monitor shows `PLANNED` in its body when expanded, so the two planned surfaces behave differently.
 - **Cause (code):** `app/src/ui/shell/StudioShell.tsx` renders `<div className="sf-planned-surface">Planned</div>` inside the Program panel body with `summary="Planned"`, but `app/src/styles/shell.css` contains `.sf-planned-panel .sf-panel-body { display: none; }`, which suppresses the body unconditionally. The `Planned` text therefore never appears in the open state.
@@ -204,7 +208,7 @@ Findings are listed by severity. None of them is one of ACG-01's four criteria, 
 | ACG-01 gate status | **PENDING PROJECT OWNER SIGN-OFF** (not PASS; sign-off is the Owner's) |
 | Findings F-1, F-2, F-3 | Recorded above; no source change made |
 
-**Readiness: READY FOR PROJECT OWNER SIGN-OFF on ACG-01**, conditional on the Owner's disposition of **F-1**, which is a labelling gap on an unavailable surface and therefore touches ACG-04 rather than ACG-01's four criteria.
+**Readiness: READY FOR PROJECT OWNER SIGN-OFF on ACG-01**, conditional on the Owner's disposition of **F-1**, which is a labelling gap on an unavailable surface and therefore touches ACG-04 rather than ACG-01's four criteria. *(Superseded on 2026-11-10: the Owner authorized the fix and F-1 is now resolved — see §10.6.)*
 
 **Decision required from the Project Owner:**
 
@@ -221,3 +225,122 @@ F-2 and F-3 can be deferred to a later increment; neither affects ACG-01 or the 
 - Index update: `projects/simuforge/reports/mvp-0/README.md` (one row).
 - No application source, test, ADR, specification, acceptance criteria, or screenshot was modified.
 - Commit and push status: reported in the accompanying summary.
+
+---
+
+# 10. Post-fix re-audit — 2026-11-10
+
+## 10.1 Authorization
+
+The Project Owner authorized, and only authorized:
+
+1. the one-line CSS fix for F-1;
+2. re-capture of the Program screenshot at 1024×640 and 1440×900;
+3. re-audit of ACG-01 and ACG-04.
+
+No other change was made. `package-lock.json` at the repository root stayed untracked and untouched.
+
+## 10.2 Baseline and environment
+
+| Check | Result |
+| --- | --- |
+| Branch | `main` |
+| Baseline HEAD = `origin/main` | `e276b0d85c72f6868eb6df3e6509ff2c03ef9c99` |
+| Tracked working tree at start | clean |
+| Node / npm | `24.22.2` / `11.19.1` |
+
+Dev-server note: port 5173 was occupied by an unrelated project (`Taste the Feeling — Coca-Cola Motion`), so the SimuForge dev server was reached on **port 5174**. The unrelated server was not stopped or modified. The capture harness targets `localhost:5174` and selects the Program preset by the `.sf-preset-btn` DOM collection, then verifies the active preset before capturing.
+
+## 10.3 The fix
+
+| Item | Value |
+| --- | --- |
+| File | `projects/simuforge/app/src/styles/shell.css` (line 414) |
+| Selector | `.sf-planned-panel .sf-panel-body` |
+| Before | `display: none;` |
+| After | `display: block;` |
+| Lines changed | 1 |
+| Other files changed | none (no JSX/TSX, reducer, state, layout logic, or acceptance criteria) |
+
+`sf-planned-panel` is applied to exactly one element (the Program panel, `StudioShell.tsx:351`), so the change cannot reveal content in any other panel. The Monitor planned surface never used this class and was already visible when expanded.
+
+## 10.4 Re-captured screenshots
+
+Capture harness: `evidence/verify-i09-visual-program.cjs`; record: `evidence/i09-visual-meta-program-fix.json`. Build and Simulate images were **not** re-captured and their SHA-256 values are unchanged.
+
+| Preset | Size | Path | Bytes | SHA-256 | Active preset |
+| --- | --- | --- | --- | --- | --- |
+| Program (post-fix) | 1024×640 | `evidence/i09-1024x640-program.png` | 75550 | `fc2a51369be5cd55dc8ff1cb5f18dcbf05b103b6627b36e9ed92acfa1f72507d` | `P` |
+| Program (post-fix) | 1440×900 | `evidence/i09-1440x900-program.png` | 110080 | `618a08f473059e016be47d00852809455b3b871d646cfd043d42986672d04ef3` | `Program` |
+
+Superseded pre-fix hashes (kept for the evidence trail): `i09-1024x640-program.png` = `d24d38d7514729299770fd8aa0d84aeb7a4bb1342b6c3c1e013f832e46d3fe6f`, `i09-1440x900-program.png` = `2651198020c9df055b73c9156effbcf1b24022b367e97730f81367e167e1a755`.
+
+Machine-verified capture facts (both sizes): `window.innerWidth/Height` = 1024×640 and 1440×900, `scrollWidth/scrollHeight` identical to the viewport, and the `.sf-planned-surface` inside the open Program panel reported `text: "Planned"`, `display: grid`, `bodyDisplay: block`, visible, 498×32 px at 1024 and 834×32 px at 1440.
+
+## 10.5 Visual inspection of the new images
+
+- **Program 1024×640:** the Program panel header remains at the same height, and the body now shows `PLANNED` centred under the header. No overlap with the viewport, Inspector, Monitor strip, console, or status bar. No control clipped. No page scrollbar. Centre column still ≈522 px wide; Program dock still occupies the same ~200 px, so the viewport did not shrink.
+- **Program 1440×900:** same result at the wider size; `PLANNED` is visible, layout unchanged apart from the label, no overlap, no clipping, no page scroll, viewport ≈862 px wide.
+- **Build and Simulate (unchanged files, re-inspected as comparison):** identical to the pre-fix audit — Program strip collapsed with the `Planned` summary in the header, no layout change attributable to the fix.
+
+## 10.6 Panel behaviour re-test (browser)
+
+Executed against the running app at 1024×640:
+
+| Step | Result |
+| --- | --- |
+| Program preset, initial state | `aria-expanded=true`, body present, `Planned` visible |
+| Click Program panel header (collapse) | `aria-expanded=false`, body not rendered (content correctly leaves the DOM) |
+| Click again (expand) | `aria-expanded=true`, body present, `Planned` visible |
+| Switch to Build preset | Program panel collapsed, body not rendered — no regression |
+| Switch to Simulate preset | Program panel collapsed, body not rendered — no regression |
+| Page scroll check in every state | no page-level scroll (`scrollWidth/scrollHeight` equal the viewport) |
+
+## 10.7 ACG-01 re-audit result
+
+| Criterion | Build | Program (post-fix) | Simulate |
+| --- | --- | --- | --- |
+| No overlap | PASS | PASS | PASS |
+| No page-level scroll | PASS | PASS | PASS |
+| Viewport ≥ 300 px | PASS | PASS (≈522 px) | PASS |
+| Documented auto-collapse | PASS | PASS (Program dock open ≈200 px at 640 height) | PASS |
+
+**ACG-01 technical result: criteria met on visual inspection. Gate status remains PENDING PROJECT OWNER SIGN-OFF.**
+
+## 10.8 ACG-04 re-audit result
+
+| Clause | Result |
+| --- | --- |
+| No `60 fps` literal (source/bundle) | PASS — unchanged; no source string added or removed |
+| Any unavailable surface clearly `Planned` | **PASS** — Program now shows `PLANNED` when expanded; Monitor unchanged; Build/Simulate headers still show `Planned` |
+| No fabricated summary values | PASS — no metric was introduced; the surface contains only the word `Planned` |
+| Regression on other surfaces | None found in the re-inspection or the panel-behaviour test |
+
+ACG-04's visual contradiction recorded in §6 F-1 is closed. ACG-04 remains PASS, now with visual evidence for the Program preset open state as well.
+
+## 10.9 Remaining open items
+
+- **F-2** (console filter controls use native white styling) — unchanged, cosmetic, deferred.
+- **F-3** (console log fields concatenated without separators) — unchanged, readability, deferred.
+- ACG-01 sign-off itself is still the Project Owner's decision.
+- Evidence still covers the empty-world state only; populated Inspector, dialogs, and Project Hub are not visually audited.
+
+## 10.10 Post-fix verdict
+
+| Item | Status |
+| --- | --- |
+| F-1 | **RESOLVED** (fix verified visually and in the DOM) |
+| ACG-01 | Evidence complete for all six screenshots; four criteria PASS on inspection; **PENDING PROJECT OWNER SIGN-OFF** |
+| ACG-04 | PASS (Program `Planned` label now visible in the open state) |
+| MVP-0 | **NOT ACCEPTED** — final acceptance requires the Owner's decision |
+
+F-2 and F-3 remain deferred observations and do not affect ACG-01 or ACG-04.
+
+## 10.11 Files changed in the fix round
+
+- `projects/simuforge/app/src/styles/shell.css` — one declaration.
+- `projects/simuforge/reports/mvp-0/evidence/i09-1024x640-program.png`, `i09-1440x900-program.png` — re-captured.
+- `projects/simuforge/reports/mvp-0/evidence/verify-i09-visual-program.cjs` — new capture harness.
+- `projects/simuforge/reports/mvp-0/evidence/i09-visual-meta-program-fix.json` — new capture record.
+- `projects/simuforge/reports/mvp-0/evidence/i09-visual-meta.json` — Program entries updated, previous hashes retained as `previousHash`.
+- `projects/simuforge/reports/mvp-0/ACG-01_VISUAL_OWNER_REVIEW.md`, `MVP_0_ACCEPTANCE_REPORT.md`, `README.md` — documentation.

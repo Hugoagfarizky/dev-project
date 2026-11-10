@@ -2,7 +2,7 @@
 
 **Baseline:** `5e89070921cd2723a60b57f8f5fb4af35a11325c`
 **Final commit:** (this increment)
-**Date:** 2026-11-08
+**Date:** 2026-11-08 (last updated 2026-11-10: F-1 fix and ACG-04 re-audit)
 
 ## Environment
 
@@ -17,10 +17,10 @@ All M0-AC-01..26: PASS or NOT VERIFIED as documented in I-09 report. M0-AC-22 PA
 
 ## Gates
 
-- ACG-01: NOT VERIFIED (pending visual inspection) — screenshots provided.
+- ACG-01: evidence complete (six screenshots, exact viewports, all inspected; F-1 fixed and Program re-captured) — **PENDING PROJECT OWNER SIGN-OFF**. See `ACG-01_VISUAL_OWNER_REVIEW.md`.
 - ACG-02: PASS (4.80/5.35/5.60 ≥4.5:1).
 - ACG-03: PASS (audit.md).
-- ACG-04: PASS (no 60fps/fabricated metrics) — note: the visual audit in `ACG-01_VISUAL_OWNER_REVIEW.md` (F-1) found the expanded Program panel unlabeled in the Program preset; owner confirmation of this clause is requested.
+- ACG-04: PASS — no 60 fps literal or fabricated metric; the F-1 gap (expanded Program panel unlabeled) was fixed by one CSS declaration and re-verified visually; `Planned` is now visible in every Program/Monitor state (see `ACG-01_VISUAL_OWNER_REVIEW.md` §10.8).
 
 ## Performance
 
@@ -37,8 +37,8 @@ R-1..R-5 carried; R-3 now has evidence. R-1/R-2/R-5 remain open.
 
 ## Known Limitations
 
-ACG-01 pending visual verification (sole remaining blocker); I-07/I-08 limitations remain. M0-AC-22 is closed.
+ACG-01 awaits the Project Owner's visual sign-off (sole remaining blocker). Deferred observations from the visual audit: console filter controls use native styling (F-2) and console log fields are concatenated without separators (F-3). I-07/I-08 limitations remain. M0-AC-22 is closed.
 
 ## Final Verdict
 
-**MVP-0 NOT ACCEPTED** — pending ACG-01 visual verification by Project Owner. All other gates, including M0-AC-22, pass.
+**MVP-0 NOT ACCEPTED** — ACG-01 evidence is complete and all technical criteria pass, but acceptance requires the Project Owner's visual sign-off. All other gates, including M0-AC-22 and ACG-04, pass.

@@ -27,8 +27,13 @@
         "sh": 640
       },
       "file": "i09-1024x640-program.png",
-      "hash": "d24d38d7514729299770fd8aa0d84aeb7a4bb1342b6c3c1e013f832e46d3fe6f",
-      "bytes": 75015
+      "hash": "fc2a51369be5cd55dc8ff1cb5f18dcbf05b103b6627b36e9ed92acfa1f72507d",
+      "bytes": 75550,
+      "previousHash": "d24d38d7514729299770fd8aa0d84aeb7a4bb1342b6c3c1e013f832e46d3fe6f",
+      "previousBytes": 75015,
+      "previousCapturedAt": "2026-11-08T11:24:51.240Z",
+      "recapturedAt": "2026-11-10T07:10:17.012Z",
+      "recapturedFor": "F-1 planned-surface label"
     },
     {
       "preset": "simulate",
@@ -74,8 +79,13 @@
         "sh": 900
       },
       "file": "i09-1440x900-program.png",
-      "hash": "2651198020c9df055b73c9156effbcf1b24022b367e97730f81367e167e1a755",
-      "bytes": 109539
+      "hash": "618a08f473059e016be47d00852809455b3b871d646cfd043d42986672d04ef3",
+      "bytes": 110080,
+      "previousHash": "2651198020c9df055b73c9156effbcf1b24022b367e97730f81367e167e1a755",
+      "previousBytes": 109539,
+      "previousCapturedAt": "2026-11-08T11:24:51.240Z",
+      "recapturedAt": "2026-11-10T07:10:17.012Z",
+      "recapturedFor": "F-1 planned-surface label"
     },
     {
       "preset": "simulate",
@@ -93,5 +103,6 @@
       "bytes": 113853
     }
   ],
-  "timestamp": "2026-11-08T11:24:51.240Z"
+  "timestamp": "2026-11-08T11:24:51.240Z",
+  "captureNote": "Build and Simulate captured 2026-11-08T11:24:51.240Z (pre-fix, unchanged). Program images re-captured after the F-1 CSS fix; see i09-visual-meta-program-fix.json."
 }

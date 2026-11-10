@@ -1,0 +1,62 @@
+{
+  "recapturedFor": "F-1 planned-surface label",
+  "capturedAt": "2026-11-10T07:10:17.012Z",
+  "results": [
+    {
+      "width": 1024,
+      "height": 640,
+      "active": [
+        "P"
+      ],
+      "dims": {
+        "w": 1024,
+        "h": 640,
+        "sw": 1024,
+        "sh": 640
+      },
+      "planned": {
+        "found": true,
+        "surface": true,
+        "text": "Planned",
+        "display": "grid",
+        "bodyDisplay": "block",
+        "rect": {
+          "w": 498,
+          "h": 32
+        },
+        "visible": true
+      },
+      "file": "i09-1024x640-program.png",
+      "hash": "fc2a51369be5cd55dc8ff1cb5f18dcbf05b103b6627b36e9ed92acfa1f72507d",
+      "bytes": 75550
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "active": [
+        "Program"
+      ],
+      "dims": {
+        "w": 1440,
+        "h": 900,
+        "sw": 1440,
+        "sh": 900
+      },
+      "planned": {
+        "found": true,
+        "surface": true,
+        "text": "Planned",
+        "display": "grid",
+        "bodyDisplay": "block",
+        "rect": {
+          "w": 834,
+          "h": 32
+        },
+        "visible": true
+      },
+      "file": "i09-1440x900-program.png",
+      "hash": "618a08f473059e016be47d00852809455b3b871d646cfd043d42986672d04ef3",
+      "bytes": 110080
+    }
+  ]
+}

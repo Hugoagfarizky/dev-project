@@ -412,7 +412,7 @@
 }
 
 .sf-planned-panel .sf-panel-body {
-  display: none;
+  display: block;
 }
 
 .sf-console {
