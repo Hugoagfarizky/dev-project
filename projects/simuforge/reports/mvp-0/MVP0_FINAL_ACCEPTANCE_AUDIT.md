@@ -62,7 +62,7 @@
 
 | Gate | Status | Notes |
 |---|---|---|
-| ACG-01 | **PENDING PROJECT OWNER SIGN-OFF** | Evidence complete (six screenshots, exact viewports); technical criteria pass on inspection; F-1 fixed; sign-off is the Owner's decision |
+| ACG-01 | PASS — Owner signed off | Six screenshots present and verified (Build/Program/Simulate at 1024×640 and 1440×900); F-1 fixed; Owner sign-off recorded |
 | ACG-02 | PASS | Tertiary contrast 5.60:1 ≥ 4.5:1 |
 | ACG-03 | PASS | Shortcut conflict audit (`shortcuts/audit.md`) |
 | ACG-04 | PASS | No "60 fps" literal; Program/Monitor show `Planned` (F-1 fixed) |
@@ -87,7 +87,7 @@
 | DoD | Requirement | Status | Notes |
 |---|---|---|---|
 | 1 | M0-AC-01..26 pass with recorded evidence | PASS (25/26 PASS; M0-AC-22 PASS via Owner manual) | All 26 PASS |
-| 2 | ACG-01..04 pass with recorded evidence | **CONDITIONAL** | ACG-01 pending Owner sign-off |
+| 2 | ACG-01..04 pass with recorded evidence | PASS | ACG-01 Owner signed off (six screenshots verified) |
 | 3 | Create/save/reopen/edit without data loss | PASS | After F-5 |
 | 4 | No MVP-1+ surface enabled or implied | PASS | Program/Monitor `Planned` |
 | 5 | Dependency lockfile & license inventory generated/reviewed | PASS | root `package-lock.json` present (untracked artefact) |
@@ -117,19 +117,19 @@
 
 ## 9. Final verdict
 
-**READY WITH CONDITIONS**
+**READY FOR PROJECT OWNER ACCEPTANCE**
 
 - All 26 acceptance criteria (M0-AC-01..26) are PASS with recorded evidence.
-- ACG-02, ACG-03, ACG-04 PASS.
-- ACG-01 is the sole remaining item: evidence complete, technical criteria pass on inspection, but **Project Owner visual sign-off is required** before it can be marked PASS.
+- ACG-01 (Owner signed off), ACG-02, ACG-03, ACG-04 all PASS.
+- DoD item 2 satisfied (ACG-01..04 all pass).
 - No FAIL, BLOCKED, or NOT VERIFIED criteria remain.
 - No source-scope violations; remediation strictly F-4/F-5.
 
 ## 10. Recommendation to Project Owner
 
-1. Review the six ACG-01 screenshots (`i09-1024x640-*.png`, `i09-1440x900-*.png`) and `ACG-01_VISUAL_OWNER_REVIEW.md`.
-2. If satisfied, mark ACG-01 PASS → MVP-0 DoD item 2 satisfied → MVP-0 can be accepted.
-3. Optionally refresh documentation (ACG-01 matrix row, mojibake, placeholder commit, R-1..R-5, F-6/F-7) in a follow-up docs increment.
-4. Do not start MVP-1 until acceptance decision is recorded.
+1. All MVP-0 acceptance criteria and DoD items are satisfied.
+2. ACG-01 Owner sign-off recorded; no further visual inspection required.
+3. Optionally refresh documentation (mojibake, placeholder commit, R-1..R-5, F-6/F-7) in a follow-up docs increment.
+4. Do not start MVP-1 until acceptance decision is formally recorded.
 
 **STOP. No implementation, commit, or push performed during this audit.**
