@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createStudioStore } from '../../src/editor/store.ts';
 import { reduceStudioState } from '../../src/editor/reducer.ts';
-import { createDefaultEditorState, createDefaultPersistenceState } from '../../src/editor/state.ts';
+import { createDefaultEditorState, createDefaultPersistenceState, createDefaultRuntimeState } from '../../src/editor/state.ts';
 import { selectEntities, selectSelectedEntityId } from '../../src/editor/selectors.ts';
 import type { StudioState } from '../../src/editor/state.ts';
 import type { ReducerContext } from '../../src/editor/reducer.ts';
@@ -12,7 +12,8 @@ function initialState(): StudioState {
     project: { format: 'simuforge.project', schemaVersion: 1, project: { id: '22222222-2222-4222-8222-222222222222', name: 'Test', createdAt: '2026-11-06T00:00:00.000Z', updatedAt: '2026-11-06T00:00:00.000Z' }, world: { format: 'simuforge.world', schemaVersion: 1, entities: [] } },
     editor: createDefaultEditorState(),
     persistence: createDefaultPersistenceState(),
-    logs: []
+    logs: [],
+    runtime: createDefaultRuntimeState()
   };
 }
 

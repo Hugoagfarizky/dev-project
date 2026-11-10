@@ -15,7 +15,7 @@ import { Dialog } from '../common/Dialog';
 import { Button } from '../common/Button';
 import { useStudioStore } from '../hooks/useStore.js';
 import { useStudioShortcuts } from '../hooks/useStudioShortcuts.js';
-import { selectEntities, selectSelectedEntityId, selectGridVisible, selectLogs } from '../../editor/selectors.js';
+import { selectEntities, selectSelectedEntityId, selectGridVisible, selectLogs, selectRuntimeStatus } from '../../editor/selectors.js';
 import { serializeProjectDocument } from '../../project/serialization.js';
 import type { ProjectDocument } from '../../project/types.js';
 import { computeLayout, resolveCollapsedPanels, type StudioPreset } from './computeLayout';
@@ -53,6 +53,7 @@ export function StudioShell({ store }: StudioShellProps) {
   const selectedId = useStudioStore(store, selectSelectedEntityId);
   const gridVisible = useStudioStore(store, selectGridVisible);
   const logs = useStudioStore(store, selectLogs);
+  const runtimeStatus = useStudioStore(store, selectRuntimeStatus);
   const autoExpandedRef = useRef(false);
   const rendererRef = useRef<import('../../renderer/RendererPort.js').RendererPort | null>(null);
   const selectedEntity = selectedId === null
@@ -273,7 +274,7 @@ export function StudioShell({ store }: StudioShellProps) {
   if (layout.tooSmall) {
     return (
       <div className="sf-shell sf-shell-too-small">
-        <TopBar compact={true} preset={preset} onPresetChange={handlePresetChange} />
+        <TopBar compact={true} preset={preset} onPresetChange={handlePresetChange} runtimeStatus={runtimeStatus} onPlay={() => store.dispatch({ type: 'runtime/play' })} onPause={() => store.dispatch({ type: 'runtime/pause' })} onStop={() => store.dispatch({ type: 'runtime/stop' })} onReset={() => store.dispatch({ type: 'runtime/reset' })} />
         <div className="sf-window-too-small" role="status">
           <h1>Window too small</h1>
           <p>SimuForge requires a viewport of at least 1024 × 640.</p>
@@ -290,7 +291,7 @@ export function StudioShell({ store }: StudioShellProps) {
         gridTemplateRows: `48px 1fr ${collapsed.console ? 32 : layout.consoleHeight}px 24px`
       }}
     >
-      <TopBar compact={layout.compact} preset={preset} onPresetChange={handlePresetChange} />
+      <TopBar compact={layout.compact} preset={preset} onPresetChange={handlePresetChange} runtimeStatus={runtimeStatus} onPlay={() => store.dispatch({ type: 'runtime/play' })} onPause={() => store.dispatch({ type: 'runtime/pause' })} onStop={() => store.dispatch({ type: 'runtime/stop' })} onReset={() => store.dispatch({ type: 'runtime/reset' })} />
 
       <div className="sf-project-actions" style={{ position: 'absolute', top: 52, right: 8, display: 'flex', gap: 6, zIndex: 10 }}>
         <Button variant="secondary" size="sm" onClick={() => setShowHub(true)}>Project Hub</Button>

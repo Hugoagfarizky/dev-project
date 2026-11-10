@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { reduceStudioState, type ReducerContext } from '../../src/editor/reducer.ts';
-import { createDefaultEditorState, createDefaultPersistenceState } from '../../src/editor/state.ts';
+import { createDefaultEditorState, createDefaultPersistenceState, createDefaultRuntimeState } from '../../src/editor/state.ts';
 import type { StudioState } from '../../src/editor/state.ts';
 
 const id = '11111111-1111-4111-8111-111111111111';
@@ -16,7 +16,8 @@ function initialState(): StudioState {
     },
     editor: { ...createDefaultEditorState(), selectedEntityId: id },
     persistence: createDefaultPersistenceState(),
-    logs: []
+    logs: [],
+    runtime: createDefaultRuntimeState()
   };
 }
 

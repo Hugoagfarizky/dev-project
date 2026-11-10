@@ -52,3 +52,7 @@ export function selectSaveStatus(state: StudioState): StudioState['persistence']
 export function selectLogs(state: StudioState): StudioState['logs'] {
   return state.logs;
 }
+
+export function selectRuntimeStatus(state: StudioState): StudioState['runtime']['status'] {
+  return state.runtime.status;
+}

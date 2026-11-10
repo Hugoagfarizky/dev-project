@@ -1,5 +1,5 @@
 export type LogSeverity = 'info' | 'warn' | 'error';
-export type LogSource = 'APP' | 'EDITOR' | 'RENDER' | 'IMPORT';
+export type LogSource = 'APP' | 'EDITOR' | 'RENDER' | 'IMPORT' | 'RUNTIME';
 
 export interface LogEntry {
   id: string;

@@ -22,5 +22,11 @@ export type StudioCommand =
   | { type: 'grid/set-visible'; visible: boolean }
   | { type: 'preset/set'; preset: Preset }
   | { type: 'camera/set'; pose: CameraPose | null }
+  | { type: 'runtime/play' }
+  | { type: 'runtime/pause' }
+  | { type: 'runtime/resume' }
+  | { type: 'runtime/stop' }
+  | { type: 'runtime/reset' }
+  | { type: 'runtime/error'; error: AppError }
   | { type: 'log/append'; entry: LogEntry }
   | { type: 'log/clear' };

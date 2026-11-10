@@ -78,11 +78,39 @@ function replaceEntity(
   return entities.map((entity) => (entity.id === id ? update(entity) : entity));
 }
 
+const STRUCTURAL_COMMANDS = new Set<string>([
+  'entity/create',
+  'entity/delete',
+  'entity/rename',
+  'transform/set',
+  'component/add',
+  'component/remove',
+  'component/set'
+]);
+
+function appendRuntimeBlockedLog(state: StudioState): StudioState {
+  return {
+    ...state,
+    logs: [...state.logs, {
+      id: crypto.randomUUID(),
+      timestamp: new Date().toISOString(),
+      severity: 'warn' as const,
+      source: 'RUNTIME' as const,
+      code: 'STRUCTURAL_EDIT_BLOCKED',
+      message: 'Structural edit blocked while simulation is running or paused.'
+    }].slice(-500)
+  };
+}
+
 export function reduceStudioState(
   state: StudioState,
   command: StudioCommand,
   context: ReducerContext = defaultContext
 ): StudioState {
+  if (STRUCTURAL_COMMANDS.has(command.type) && state.runtime.status !== 'editing') {
+    return appendRuntimeBlockedLog(state);
+  }
+
   switch (command.type) {
     case 'project/new': {
       if (command.name.trim().length < 1) {
@@ -106,7 +134,8 @@ export function reduceStudioState(
           lastSavedAt: null,
           lastError: null
         },
-        logs: [...state.logs]
+        logs: [...state.logs],
+        runtime: { status: 'editing', snapshot: null, lastError: null }
       };
     }
 
@@ -128,7 +157,8 @@ export function reduceStudioState(
                 rotation: { ...entity.transform.rotation },
                 scale: { ...entity.transform.scale }
               },
-              metadata: { ...entity.metadata }
+              metadata: { ...entity.metadata },
+              components: entity.components ? entity.components.map((c) => ({ ...c })) : []
             }))
           }
         },
@@ -146,7 +176,8 @@ export function reduceStudioState(
           lastSavedAt: null,
           lastError: null
         },
-        logs: [...state.logs]
+        logs: [...state.logs],
+        runtime: { status: 'editing', snapshot: null, lastError: null }
       };
     }
 
@@ -444,6 +475,90 @@ export function reduceStudioState(
       return {
         ...state,
         logs: []
+      };
+    }
+
+    case 'runtime/play': {
+      if (state.runtime.status === 'editing') {
+        const snapshot = { entities: state.project.world.entities.map((e) => ({ ...e, transform: { position: { ...e.transform.position }, rotation: { ...e.transform.rotation }, scale: { ...e.transform.scale } }, components: e.components ? e.components.map((c) => ({ ...c })) : [] })) };
+        return {
+          ...state,
+          runtime: { status: 'running', snapshot, lastError: null }
+        };
+      }
+      if (state.runtime.status === 'paused') {
+        return {
+          ...state,
+          runtime: { ...state.runtime, status: 'running' }
+        };
+      }
+      return state;
+    }
+
+    case 'runtime/pause': {
+      if (state.runtime.status === 'running') {
+        return {
+          ...state,
+          runtime: { ...state.runtime, status: 'paused' }
+        };
+      }
+      return state;
+    }
+
+    case 'runtime/resume': {
+      if (state.runtime.status === 'paused') {
+        return {
+          ...state,
+          runtime: { ...state.runtime, status: 'running' }
+        };
+      }
+      return state;
+    }
+
+    case 'runtime/stop': {
+      if (state.runtime.status === 'editing') {
+        return state;
+      }
+      // Reset before leaving runtime
+      let next = state;
+      if (state.runtime.snapshot) {
+        const restored = state.runtime.snapshot.entities.map((e) => ({ ...e, transform: { position: { ...e.transform.position }, rotation: { ...e.transform.rotation }, scale: { ...e.transform.scale } }, components: e.components ? e.components.map((c) => ({ ...c })) : [] }));
+        next = {
+          ...state,
+          project: {
+            ...state.project,
+            world: { ...state.project.world, entities: restored }
+          }
+        };
+      }
+      return {
+        ...next,
+        runtime: { status: 'editing', snapshot: null, lastError: null }
+      };
+    }
+
+    case 'runtime/reset': {
+      if (state.runtime.status === 'editing' || !state.runtime.snapshot) {
+        return state;
+      }
+      const restored = state.runtime.snapshot.entities.map((e) => ({ ...e, transform: { position: { ...e.transform.position }, rotation: { ...e.transform.rotation }, scale: { ...e.transform.scale } }, components: e.components ? e.components.map((c) => ({ ...c })) : [] }));
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          world: { ...state.project.world, entities: restored }
+        },
+        runtime: { ...state.runtime }
+      };
+    }
+
+    case 'runtime/error': {
+      if (state.runtime.status === 'editing') {
+        return state;
+      }
+      return {
+        ...state,
+        runtime: { ...state.runtime, status: 'paused', lastError: command.error }
       };
     }
 

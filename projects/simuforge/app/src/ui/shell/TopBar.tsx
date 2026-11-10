@@ -2,11 +2,16 @@ interface TopBarProps {
   compact?: boolean;
   preset: 'build' | 'program' | 'simulate';
   onPresetChange: (preset: 'build' | 'program' | 'simulate') => void;
+  runtimeStatus?: 'editing' | 'running' | 'paused';
+  onPlay?: () => void;
+  onPause?: () => void;
+  onStop?: () => void;
+  onReset?: () => void;
 }
 
 const presets: Array<'build' | 'program' | 'simulate'> = ['build', 'program', 'simulate'];
 
-export function TopBar({ compact = false, preset, onPresetChange }: TopBarProps) {
+export function TopBar({ compact = false, preset, onPresetChange, runtimeStatus = 'editing', onPlay, onPause, onStop, onReset }: TopBarProps) {
   return (
     <header className={`sf-topbar ${compact ? 'sf-topbar-compact' : ''}`.trim()}>
       <div className="sf-brand">
@@ -44,7 +49,11 @@ export function TopBar({ compact = false, preset, onPresetChange }: TopBarProps)
             </button>
           ))}
         </div>
-        <span className="sf-state-pill" aria-label="Runtime state">Editing</span>
+        <span className="sf-state-pill" aria-label="Runtime state">{runtimeStatus.charAt(0).toUpperCase() + runtimeStatus.slice(1)}</span>
+        <button type="button" className="sf-menu-item" onClick={onPlay} disabled={runtimeStatus !== 'editing' && runtimeStatus !== 'paused'}>Play</button>
+        <button type="button" className="sf-menu-item" onClick={onPause} disabled={runtimeStatus !== 'running'}>Pause</button>
+        <button type="button" className="sf-menu-item" onClick={onStop} disabled={runtimeStatus === 'editing'}>Stop</button>
+        <button type="button" className="sf-menu-item" onClick={onReset} disabled={runtimeStatus === 'editing'}>Reset</button>
       </div>
 
       <div className="sf-top-right">

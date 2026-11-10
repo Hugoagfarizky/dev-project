@@ -1,5 +1,5 @@
 import { createStudioStore } from './editor/store.js';
-import { createDefaultEditorState } from './editor/state.js';
+import { createDefaultEditorState, createDefaultRuntimeState } from './editor/state.js';
 import { createEmptyProject } from './editor/state.js';
 import { StudioShell } from './ui/shell/StudioShell.js';
 
@@ -7,6 +7,7 @@ const now = new Date().toISOString();
 const store = createStudioStore({
   project: createEmptyProject(crypto.randomUUID(), 'Untitled Simulation', now),
   editor: createDefaultEditorState(),
+  runtime: createDefaultRuntimeState(),
   persistence: {
     revision: 1,
     savedRevision: 0,

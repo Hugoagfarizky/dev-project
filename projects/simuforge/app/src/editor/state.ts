@@ -1,4 +1,4 @@
-import type { AppError } from '../world/types.ts';
+import type { AppError, WorldEntity } from '../world/types.ts';
 import type { ProjectDocument } from '../project/types.ts';
 import type { LogEntry } from '../console/types.ts';
 import { createEmptyWorld } from '../world/defaults.ts';
@@ -11,6 +11,18 @@ export interface CameraPose {
   beta: number;
   radius: number;
   target: { x: number; y: number; z: number };
+}
+
+export type RuntimeStatus = 'editing' | 'running' | 'paused';
+
+export interface RuntimeSnapshot {
+  entities: readonly WorldEntity[];
+}
+
+export interface RuntimeState {
+  status: RuntimeStatus;
+  snapshot: RuntimeSnapshot | null;
+  lastError: AppError | null;
 }
 
 export interface EditorState {
@@ -34,6 +46,15 @@ export interface StudioState {
   editor: EditorState;
   persistence: PersistenceState;
   logs: readonly LogEntry[];
+  runtime: RuntimeState;
+}
+
+export function createDefaultRuntimeState(): RuntimeState {
+  return {
+    status: 'editing',
+    snapshot: null,
+    lastError: null
+  };
 }
 
 export function createDefaultEditorState(): EditorState {
