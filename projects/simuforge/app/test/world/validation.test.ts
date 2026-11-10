@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateWorldDocument } from '../../src/world/validation.ts';
+import { validateWorldDocument, validateComponent } from '../../src/world/validation.ts';
 
 test('validates a valid empty world', () => {
   const result = validateWorldDocument({ format: 'simuforge.world', schemaVersion: 1, entities: [] });
@@ -66,6 +66,43 @@ test('rejects zero and negative scale', () => {
   });
   assert.equal(result.ok, false);
   if (!result.ok) assert.match(result.error.path ?? '', /entities\[0\]\.transform\.scale\.x/);
+});
+
+test('validates a valid rigidBody component', () => {
+  const result = validateComponent(
+    { id: '11111111-1111-4111-8111-111111111111', type: 'rigidBody', enabled: true, mass: 1, useGravity: true, collider: { kind: 'sphere', size: 0.5 }, velocity: { x: 0, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } },
+    'component'
+  );
+  assert.equal(result, null);
+});
+
+test('rejects rigidBody with invalid mass', () => {
+  const result = validateComponent(
+    { id: '11111111-1111-4111-8111-111111111111', type: 'rigidBody', enabled: true, mass: 0, useGravity: true, collider: { kind: 'sphere', size: 0.5 }, velocity: { x: 0, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } },
+    'component'
+  );
+  assert.notEqual(result, null);
+});
+
+test('rejects duplicate component ids in world document', () => {
+  const result = validateWorldDocument({
+    format: 'simuforge.world',
+    schemaVersion: 1,
+    entities: [
+      {
+        id: '11111111-1111-4111-8111-111111111111',
+        name: 'A',
+        type: 'cube',
+        transform: { position: { x: 0, y: 0, z: 0 }, rotation: { x: 0, y: 0, z: 0, w: 1 }, scale: { x: 1, y: 1, z: 1 } },
+        metadata: {},
+        components: [
+          { id: '22222222-2222-4222-8222-222222222222', type: 'rigidBody', enabled: true, mass: 1, useGravity: true, collider: { kind: 'sphere', size: 0.5 }, velocity: { x: 0, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } },
+          { id: '22222222-2222-4222-8222-222222222222', type: 'rigidBody', enabled: true, mass: 2, useGravity: true, collider: { kind: 'sphere', size: 0.5 }, velocity: { x: 0, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } }
+        ]
+      }
+    ]
+  });
+  assert.equal(result.ok, false);
 });
 
 test('rejects malformed metadata', () => {

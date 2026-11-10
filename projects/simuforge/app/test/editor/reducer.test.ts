@@ -276,3 +276,42 @@ test('transform/set with identical transform is a no-op', () => {
   assert.equal(next, state);
   assert.equal(next.persistence.revision, beforeRevision);
 });
+
+const COMP_ID = '33333333-3333-4333-8333-333333333333';
+
+test('component/add attaches a component to an entity', () => {
+  const state = reduceStudioState(initialState(), { type: 'component/add', entityId: id, component: { id: COMP_ID, type: 'rigidBody', enabled: true, mass: 1, useGravity: true, collider: { kind: 'sphere', size: 0.5 }, velocity: { x: 0, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } } });
+  const entity = state.project.world.entities.find((e) => e.id === id);
+  assert.equal(entity?.components?.length, 1);
+  assert.equal(entity?.components?.[0]?.id, COMP_ID);
+  assert.equal(state.persistence.status, 'dirty');
+});
+
+test('component/add rejects duplicate id', () => {
+  const s1 = reduceStudioState(initialState(), { type: 'component/add', entityId: id, component: { id: COMP_ID, type: 'rigidBody', enabled: true, mass: 1, useGravity: true, collider: { kind: 'sphere', size: 0.5 }, velocity: { x: 0, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } } });
+  const s2 = reduceStudioState(s1, { type: 'component/add', entityId: id, component: { id: COMP_ID, type: 'rigidBody', enabled: true, mass: 2, useGravity: true, collider: { kind: 'sphere', size: 0.5 }, velocity: { x: 0, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } } });
+  const entity = s2.project.world.entities.find((e) => e.id === id);
+  assert.equal(entity?.components?.length, 1);
+  assert.equal(entity?.components?.[0]?.mass, 1);
+});
+
+test('component/add rejects invalid component', () => {
+  const state = reduceStudioState(initialState(), { type: 'component/add', entityId: id, component: { id: COMP_ID, type: 'rigidBody', enabled: true, mass: 0, useGravity: true, collider: { kind: 'sphere', size: 0.5 }, velocity: { x: 0, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } } });
+  const entity = state.project.world.entities.find((e) => e.id === id);
+  assert.equal(entity?.components?.length ?? 0, 0);
+});
+
+test('component/set updates an existing component', () => {
+  const s1 = reduceStudioState(initialState(), { type: 'component/add', entityId: id, component: { id: COMP_ID, type: 'rigidBody', enabled: true, mass: 1, useGravity: true, collider: { kind: 'sphere', size: 0.5 }, velocity: { x: 0, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } } });
+  const s2 = reduceStudioState(s1, { type: 'component/set', entityId: id, component: { id: COMP_ID, type: 'rigidBody', enabled: false, mass: 3, useGravity: false, collider: { kind: 'sphere', size: 1 }, velocity: { x: 1, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } } });
+  const entity = s2.project.world.entities.find((e) => e.id === id);
+  assert.equal(entity?.components?.[0]?.mass, 3);
+  assert.equal(entity?.components?.[0]?.enabled, false);
+});
+
+test('component/remove removes a component', () => {
+  const s1 = reduceStudioState(initialState(), { type: 'component/add', entityId: id, component: { id: COMP_ID, type: 'rigidBody', enabled: true, mass: 1, useGravity: true, collider: { kind: 'sphere', size: 0.5 }, velocity: { x: 0, y: 0, z: 0 }, angularVelocity: { x: 0, y: 0, z: 0 } } });
+  const s2 = reduceStudioState(s1, { type: 'component/remove', entityId: id, componentId: COMP_ID });
+  const entity = s2.project.world.entities.find((e) => e.id === id);
+  assert.equal(entity?.components?.length, 0);
+});

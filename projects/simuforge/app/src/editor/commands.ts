@@ -1,6 +1,6 @@
 import type { AppError } from '../world/types.ts';
 import type { ProjectDocument } from '../project/types.ts';
-import type { Transform } from '../world/types.ts';
+import type { Transform, Component } from '../world/types.ts';
 import type { LogEntry } from '../console/types.ts';
 import type { CameraPose, GizmoMode, Preset } from './state.ts';
 
@@ -14,6 +14,9 @@ export type StudioCommand =
   | { type: 'entity/delete'; id: string }
   | { type: 'entity/rename'; id: string; name: string }
   | { type: 'transform/set'; id: string; transform: Transform; source: 'inspector' | 'gizmo' }
+  | { type: 'component/add'; entityId: string; component: Component }
+  | { type: 'component/remove'; entityId: string; componentId: string }
+  | { type: 'component/set'; entityId: string; component: Component }
   | { type: 'selection/set'; id: string | null }
   | { type: 'gizmo/set-mode'; mode: GizmoMode }
   | { type: 'grid/set-visible'; visible: boolean }

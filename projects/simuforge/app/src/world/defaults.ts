@@ -34,7 +34,8 @@ export function createWorldEntity(
     name,
     type: entityType,
     transform: cloneTransform(transform),
-    metadata: {}
+    metadata: {},
+    components: []
   };
 }
 

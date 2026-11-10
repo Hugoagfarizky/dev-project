@@ -21,12 +21,32 @@ export interface Transform {
   scale: Vec3;
 }
 
+export type ComponentId = string;
+
+export interface Component {
+  id: ComponentId;
+  type: string;
+  enabled: boolean;
+}
+
+export interface RigidBodyComponent extends Component {
+  type: 'rigidBody';
+  mass: number;
+  useGravity: boolean;
+  collider: { kind: 'sphere' | 'box' | 'plane'; size: number | Vec3 };
+  velocity: Vec3;
+  angularVelocity: Vec3;
+}
+
+export type AnyComponent = RigidBodyComponent | Component;
+
 export interface WorldEntity {
   id: EntityId;
   name: string;
   type: EntityType;
   transform: Transform;
   metadata: Record<string, unknown>;
+  components?: Component[];
 }
 
 export interface WorldDocument {

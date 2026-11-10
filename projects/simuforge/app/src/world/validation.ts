@@ -1,4 +1,4 @@
-import type { AppError, EntityType, Quat, Vec3, WorldDocument, WorldEntity } from './types.ts';
+import type { AppError, Component, EntityType, Quat, Vec3, WorldDocument, WorldEntity } from './types.ts';
 import { MIN_SCALE, WORLD_FORMAT, WORLD_SCHEMA_VERSION } from './defaults.ts';
 import { normalizeQuaternion, quaternionLength } from './transform.ts';
 
@@ -72,6 +72,51 @@ export function validateTransform(value: unknown, path: string): AppError | null
   return null;
 }
 
+export function validateComponent(value: unknown, path: string): AppError | null {
+  if (!isPlainObject(value)) {
+    return fail('VALIDATION_FAILED', 'Component must be an object', path);
+  }
+  if (typeof value.id !== 'string' || !UUID_V4_PATTERN.test(value.id)) {
+    return fail('VALIDATION_FAILED', 'id must be a UUID v4 string', `${path}.id`);
+  }
+  if (typeof value.type !== 'string' || value.type.length < 1) {
+    return fail('VALIDATION_FAILED', 'type must be a non-empty string', `${path}.type`);
+  }
+  if (typeof value.enabled !== 'boolean') {
+    return fail('VALIDATION_FAILED', 'enabled must be a boolean', `${path}.enabled`);
+  }
+
+  if (value.type === 'rigidBody') {
+    if (typeof value.mass !== 'number' || !Number.isFinite(value.mass) || value.mass <= 0) {
+      return fail('VALIDATION_FAILED', 'mass must be a finite number greater than zero', `${path}.mass`);
+    }
+    if (typeof value.useGravity !== 'boolean') {
+      return fail('VALIDATION_FAILED', 'useGravity must be a boolean', `${path}.useGravity`);
+    }
+    if (!isPlainObject(value.collider)) {
+      return fail('VALIDATION_FAILED', 'collider must be an object', `${path}.collider`);
+    }
+    const collider = value.collider as Record<string, unknown>;
+    if (collider.kind !== 'sphere' && collider.kind !== 'box' && collider.kind !== 'plane') {
+      return fail('VALIDATION_FAILED', 'collider.kind must be sphere, box, or plane', `${path}.collider.kind`);
+    }
+    if (collider.kind === 'sphere') {
+      if (typeof collider.size !== 'number' || !Number.isFinite(collider.size) || collider.size <= 0) {
+        return fail('VALIDATION_FAILED', 'sphere collider size must be a finite number greater than zero', `${path}.collider.size`);
+      }
+    } else {
+      const sizeError = validateVec3(collider.size, `${path}.collider.size`);
+      if (sizeError) return sizeError;
+    }
+    const velocityError = validateVec3(value.velocity, `${path}.velocity`);
+    if (velocityError) return velocityError;
+    const angularVelocityError = validateVec3(value.angularVelocity, `${path}.angularVelocity`);
+    if (angularVelocityError) return angularVelocityError;
+  }
+
+  return null;
+}
+
 export function validateWorldDocument(value: unknown): { ok: true; value: WorldDocument } | { ok: false; error: AppError } {
   if (!isPlainObject(value)) {
     return { ok: false, error: fail('VALIDATION_FAILED', 'World document must be an object') };
@@ -124,6 +169,25 @@ export function validateWorldDocument(value: unknown): { ok: true; value: WorldD
     if (!isPlainObject(entity.metadata)) {
       return { ok: false, error: fail('VALIDATION_FAILED', 'metadata must be a plain object', `${entityPath}.metadata`) };
     }
+
+    if (entity.components !== undefined) {
+      if (!Array.isArray(entity.components)) {
+        return { ok: false, error: fail('VALIDATION_FAILED', 'components must be an array', `${entityPath}.components`) };
+      }
+      const seenComponentIds = new Set<string>();
+      for (let cIndex = 0; cIndex < entity.components.length; cIndex += 1) {
+        const component = entity.components[cIndex];
+        const componentError = validateComponent(component, `${entityPath}.components[${cIndex}]`);
+        if (componentError) {
+          return { ok: false, error: componentError };
+        }
+        const comp = component as { id: string };
+        if (seenComponentIds.has(comp.id)) {
+          return { ok: false, error: fail('VALIDATION_FAILED', 'component id must be unique within the entity', `${entityPath}.components[${cIndex}].id`) };
+        }
+        seenComponentIds.add(comp.id);
+      }
+    }
   }
 
   const normalizedEntities: WorldEntity[] = value.entities.map((entity) => ({
@@ -135,8 +199,11 @@ export function validateWorldDocument(value: unknown): { ok: true; value: WorldD
       rotation: normalizeQuaternion((entity.transform as { rotation: Quat }).rotation),
       scale: { ...(entity.transform as { scale: Vec3 }).scale }
     },
-    metadata: { ...(entity.metadata as Record<string, unknown>) }
-  }));
+    metadata: { ...(entity.metadata as Record<string, unknown>) },
+    components: Array.isArray(entity.components)
+      ? (entity.components.map((component: unknown) => ({ ...(component as Record<string, unknown>) })) as Component[])
+      : []
+  })) as WorldEntity[];
 
   return {
     ok: true,

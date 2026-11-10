@@ -1,5 +1,5 @@
 import { createWorldEntity } from '../world/defaults.ts';
-import { validateTransform } from '../world/validation.ts';
+import { validateTransform, validateComponent } from '../world/validation.ts';
 import { transformsEqual } from '../world/transform.ts';
 import { createEmptyProject } from './state.ts';
 import type { StudioCommand } from './commands.ts';
@@ -279,6 +279,88 @@ export function reduceStudioState(
                 rotation: { ...command.transform.rotation },
                 scale: { ...command.transform.scale }
               }
+            }))
+          }
+        }
+      });
+    }
+
+    case 'component/add': {
+      const entity = state.project.world.entities.find((item) => item.id === command.entityId);
+      if (!entity) {
+        return state;
+      }
+      const error = validateComponent(command.component, `entities.${command.entityId}.components`);
+      if (error) {
+        return state;
+      }
+      const existing = entity.components ?? [];
+      if (existing.some((component) => component.id === command.component.id)) {
+        return state;
+      }
+      return markDirty({
+        ...state,
+        project: {
+          ...state.project,
+          world: {
+            ...state.project.world,
+            entities: replaceEntity(state.project.world.entities, command.entityId, (item) => ({
+              ...item,
+              components: [...(item.components ?? []), { ...command.component }]
+            }))
+          }
+        }
+      });
+    }
+
+    case 'component/remove': {
+      const entity = state.project.world.entities.find((item) => item.id === command.entityId);
+      if (!entity) {
+        return state;
+      }
+      const existing = entity.components ?? [];
+      if (!existing.some((component) => component.id === command.componentId)) {
+        return state;
+      }
+      return markDirty({
+        ...state,
+        project: {
+          ...state.project,
+          world: {
+            ...state.project.world,
+            entities: replaceEntity(state.project.world.entities, command.entityId, (item) => ({
+              ...item,
+              components: (item.components ?? []).filter((component) => component.id !== command.componentId)
+            }))
+          }
+        }
+      });
+    }
+
+    case 'component/set': {
+      const entity = state.project.world.entities.find((item) => item.id === command.entityId);
+      if (!entity) {
+        return state;
+      }
+      const error = validateComponent(command.component, `entities.${command.entityId}.components`);
+      if (error) {
+        return state;
+      }
+      const existing = entity.components ?? [];
+      if (!existing.some((component) => component.id === command.component.id)) {
+        return state;
+      }
+      return markDirty({
+        ...state,
+        project: {
+          ...state.project,
+          world: {
+            ...state.project.world,
+            entities: replaceEntity(state.project.world.entities, command.entityId, (item) => ({
+              ...item,
+              components: (item.components ?? []).map((component) =>
+                component.id === command.component.id ? { ...command.component } : component
+              )
             }))
           }
         }
