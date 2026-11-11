@@ -4,7 +4,7 @@
 **Milestone:** M1-F — Wiring, Demo, and Acceptance Evidence
 **Status:** CLOSED (PASS) — MVP-1 closure candidate
 **Authorization:** Project Owner authorized full M1-F implementation and MVP-1 closure
-**Implementation commit:** pending; recorded in the follow-up documentation commit
+**Implementation commit:** `166149c` (implementation + acceptance evidence)
 
 ## 1. Scope
 
