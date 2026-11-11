@@ -64,7 +64,7 @@ No further implementation until explicit authorization is granted.
 - M1-B: CLOSED (PASS). Runtime state machine + structural-edit gating.
 - M1-C: CLOSED (PASS). Rigid body + gravity + fixed-step integrator; 16/16 criteria, 113/113 tests at closure.
 - M1-D: IMPLEMENTED (pending closure acceptance). Primitive colliders (sphere/box/plane) + fully inelastic plane-contact response; 143/143 tests.
-- M1-E: IMPLEMENTED (pending closure acceptance). Persistent force + instantaneous impulse + runtime logs; 186/186 tests; evidence `evidence/m1e-force-impulse.json`.
+- M1-E: CLOSED (PASS). Persistent force + instantaneous impulse + runtime logs; 29/29 criteria, 186/186 tests, 16/16 evidence assertions; implementation `fe5eae3`, documentation `a6a0aaa`.
 - M1-F: NOT AUTHORIZED.
 - Owner decisions D-01..D-06 APPROVED; M1-C technical decisions D-M1C-01..D-M1C-03 APPROVED 2026-11-11; M1-D collision decision D-M1D-01 APPROVED 2026-11-11; M1-E force/impulse decisions D-M1E-01..D-M1E-04 APPROVED 2026-11-11.
 - See `projects/simuforge/reports/mvp-1/` for all planning, implementation, and audit documents.
@@ -105,3 +105,9 @@ No further implementation until explicit authorization is granted.
 - Validation: typecheck, production build, boundary, token, and Node 24.22.2 checks all pass.
 - Evidence: `reports/mvp-1/evidence/m1e-force-impulse.json`; report `reports/mvp-1/M1_E_IMPLEMENTATION_REPORT.md`.
 - Not implemented: M1-F full wiring/demo/browser acceptance evidence. M1-F remains NOT AUTHORIZED.
+
+## L. M1-E official closure and M1-F planning (2026-11-11)
+
+- M1-E status: CLOSED (PASS). Acceptance 29/29, tests 186/186, evidence assertions 16/16, checks PASS.
+- Commits: implementation `fe5eae3`; documentation `a6a0aaa`; closure documentation pending in this increment.
+- M1-F status: PLANNING PREPARED, NOT AUTHORIZED. Planning document: `reports/mvp-1/M1_F_IMPLEMENTATION_PLAN.md`. Owner decision package pending; no implementation performed.

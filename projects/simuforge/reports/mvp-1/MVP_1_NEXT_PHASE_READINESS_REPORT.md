@@ -1,7 +1,7 @@
 # SimuForge — MVP-1 Next Phase Readiness Report
 
 **Date:** 2026-11-10  
-**Status:** Historical planning record — current status in §9 (M1-D and M1-E implemented; M1-F not authorized)
+**Status:** Historical planning record — current status in §9 (M1-E closed; M1-F planning prepared, not authorized)
 
 ## 1. M1-A closure status
 
@@ -56,6 +56,6 @@ Explicit Project Owner authorization for M1-B implementation. No implementation,
 - M1-B: CLOSED (PASS).
 - M1-C: CLOSED (PASS) — 16/16 criteria, 113/113 tests at closure; implementation `ebc8c21`, report update `40342c0` on `origin/main`.
 - M1-D: IMPLEMENTED (pending closure acceptance) — D-M1D-01 plane-contact, fully inelastic collision; 143/143 tests; evidence `evidence/m1d-contact.json`; report `M1_D_IMPLEMENTATION_REPORT.md`.
-- M1-E: IMPLEMENTED (pending closure acceptance) — D-M1E-01..04 persistent force + instantaneous impulse + runtime logs; 186/186 tests; evidence `evidence/m1e-force-impulse.json`; report `M1_E_IMPLEMENTATION_REPORT.md`.
-- M1-F: NOT AUTHORIZED — acceptance evidence format still requires an Owner decision.
+- M1-E: CLOSED (PASS) — D-M1E-01..04 persistent force + instantaneous impulse + runtime logs; 29/29 criteria, 186/186 tests, 16/16 evidence assertions; evidence `evidence/m1e-force-impulse.json`; implementation `fe5eae3`, documentation `a6a0aaa`; report `M1_E_IMPLEMENTATION_REPORT.md`.
+- M1-F: PLANNING PREPARED, NOT AUTHORIZED — planning document `M1_F_IMPLEMENTATION_PLAN.md`; Owner decision package pending.
 - The historical sections above are preserved; they describe the 2026-11-10 planning state.

@@ -1,7 +1,7 @@
 # SimuForge — MVP-1 Consolidated Execution Roadmap
 
 **Date:** 2026-11-11  
-**Status:** M1-A, M1-B, M1-C CLOSED; M1-D IMPLEMENTED (pending closure acceptance); M1-E IMPLEMENTED (pending closure acceptance); M1-F NOT AUTHORIZED
+**Status:** M1-A, M1-B, M1-C, M1-E CLOSED; M1-D IMPLEMENTED (pending closure acceptance); M1-F PLANNED / NOT AUTHORIZED
 
 ## MVP-1 objective
 
@@ -15,7 +15,7 @@ Deliver Components & Basic Physics per product spec §7.3: basic component syste
 | M1-B | CLOSED (PASS) | Runtime state machine + structural-edit gating; audit `M1_B_POST_IMPLEMENTATION_CLOSURE_AUDIT.md` |
 | M1-C | CLOSED (PASS) | Rigid body + gravity + fixed-step integrator; 16/16 criteria, 113/113 tests, evidence `evidence/m1c-trajectory.json`; report `M1_C_IMPLEMENTATION_REPORT.md` |
 | M1-D | IMPLEMENTED (PENDING CLOSURE ACCEPTANCE) | Primitive colliders (sphere/box/plane) + plane-contact response; report `M1_D_IMPLEMENTATION_REPORT.md` |
-| M1-E | IMPLEMENTED (PENDING CLOSURE ACCEPTANCE) | Persistent force + instantaneous impulse + runtime logs; 29/29 criteria, 186/186 tests, evidence `evidence/m1e-force-impulse.json`; report `M1_E_IMPLEMENTATION_REPORT.md` |
+| M1-E | CLOSED (PASS) | Persistent force + instantaneous impulse + runtime logs; 29/29 criteria, 186/186 tests, 16/16 evidence assertions; evidence `evidence/m1e-force-impulse.json`; implementation `fe5eae3`, documentation `a6a0aaa`; report `M1_E_IMPLEMENTATION_REPORT.md` |
 | M1-F | NOT AUTHORIZED | Reset + wiring + acceptance evidence |
 
 ### M1-C closure record (2026-11-11)
@@ -28,7 +28,11 @@ M1-D implements the approved D-M1D-01 contract: dynamic sphere/box colliders vs 
 
 ### M1-E implementation record (2026-11-11)
 
-M1-E implements the approved D-M1E-01..04 contract: persistent world-space force in newtons applied every fixed step until cleared, instantaneous world-space momentum impulse in newton-seconds (`delta-v = impulse / mass`), Running/Paused acceptance with Editing rejection, dynamic sphere/box targets only, and runtime-only state with Console info/warn/error logging. No force/impulse UI was added. The fixed-step runtime, snapshot/reset/stop semantics, structural-edit gating, runtime/authored isolation, and persistence boundaries are preserved. Evidence: `evidence/m1e-force-impulse.json`; 186/186 tests pass (143 baseline + 43 new). Report: `M1_E_IMPLEMENTATION_REPORT.md`. M1-E remains pending Owner closure acceptance; M1-F is not authorized.
+M1-E implements the approved D-M1E-01..04 contract: persistent world-space force in newtons applied every fixed step until cleared, instantaneous world-space momentum impulse in newton-seconds (`delta-v = impulse / mass`), Running/Paused acceptance with Editing rejection, dynamic sphere/box targets only, and runtime-only state with Console info/warn/error logging. No force/impulse UI was added. The fixed-step runtime, snapshot/reset/stop semantics, structural-edit gating, runtime/authored isolation, and persistence boundaries are preserved. Evidence: `evidence/m1e-force-impulse.json`; 186/186 tests pass (143 baseline + 43 new). Report: `M1_E_IMPLEMENTATION_REPORT.md`. Implementation commit `fe5eae3`; documentation commit `a6a0aaa`.
+
+### M1-E closure record (2026-11-11)
+
+M1-E is officially **CLOSED (PASS)** by Project Owner authorization. Acceptance 29/29 PASS, full tests 186/186 PASS, evidence assertions 16/16 PASS, and typecheck/build/Node/boundary/token checks PASS. Runtime-only force/impulse behavior, lifecycle gating, logging, and runtime/authored isolation remain preserved. M1-F remains NOT AUTHORIZED; planning is authorized separately.
 
 ## Dependency map
 
@@ -45,7 +49,7 @@ M1-A (done) → M1-B (done) → M1-C (done) → M1-D (implemented) → M1-E (imp
 - M1-B: six decisions in `M1_B_PROJECT_OWNER_DECISION_BRIEF.md` (snapshot semantics, Play/Pause/Stop/Reset, gating, runtime store, failure recovery, integrator details). APPROVED.
 - M1-C: APPROVED 2026-11-11 — fixed timestep 1/60 s + simple accumulator (frame delta clamped to 0.25 s), semi-implicit Euler, gravity −9.81 m/s².
 - M1-D: APPROVED 2026-11-11 — D-M1D-01 plane contacts, fully inelastic: dynamic sphere/box vs static infinite plane; positional correction + inbound normal velocity removal; restitution 0, friction 0, no angular response; dynamic-vs-dynamic deferred.
-- M1-E: APPROVED 2026-11-11 — D-M1E-01 persistent force in newtons until cleared/Reset/Stop; D-M1E-02 instantaneous momentum impulse in N·s (`delta-v = impulse / mass`); D-M1E-03 Running/Paused acceptance, Editing rejection, dynamic targets only, info/warn/error logging; D-M1E-04 runtime/API only, no UI.
+- M1-E: APPROVED 2026-11-11 and CLOSED 2026-11-11 — D-M1E-01 persistent force in newtons until cleared/Reset/Stop; D-M1E-02 instantaneous momentum impulse in N·s (`delta-v = impulse / mass`); D-M1E-03 Running/Paused acceptance, Editing rejection, dynamic targets only, info/warn/error logging; D-M1E-04 runtime/API only, no UI. Implementation `fe5eae3`, documentation `a6a0aaa`.
 - M1-F: acceptance evidence format. NOT APPROVED / NOT AUTHORIZED.
 
 ## Technical risks

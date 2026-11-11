@@ -2,9 +2,10 @@
 
 **Date:** 2026-11-11  
 **Milestone:** M1-E — Force & Impulse + runtime logs  
-**Status:** IMPLEMENTED — all acceptance criteria pass with evidence; pending Owner closure acceptance  
-**Authorization:** Project Owner authorized M1-E implementation only (M1-F remains NOT AUTHORIZED)  
-**Implementation commit:** `fe5eae3` (implementation + acceptance evidence)
+**Status:** CLOSED (PASS) — official Project Owner closure 2026-11-11; all acceptance criteria pass with evidence  
+**Authorization:** Project Owner authorized M1-E implementation and official closure (M1-F remains NOT AUTHORIZED)  
+**Implementation commit:** `fe5eae3` (implementation + acceptance evidence)  
+**Documentation commit:** `a6a0aaa` (implementation commit hash record); closure documentation commit pending
 
 ## 1. Authorization and scope
 
