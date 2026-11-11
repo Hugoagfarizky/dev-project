@@ -1,6 +1,7 @@
 import type { AppError } from '../world/types.ts';
 import type { ProjectDocument } from '../project/types.ts';
 import type { Transform, Component, Vec3 } from '../world/types.ts';
+import type { Graph } from '../graph/types.ts';
 import type { LogEntry } from '../console/types.ts';
 import type { CameraPose, GizmoMode, Preset } from './state.ts';
 
@@ -32,6 +33,8 @@ export type StudioCommand =
   | { type: 'runtime/apply-impulse'; entityId: string; impulse: Vec3 }
   | { type: 'runtime/clear-force'; entityId?: string }
   | { type: 'demo/load-scenario' }
+  | { type: 'graph/set'; graph: Graph | null }
+  | { type: 'graph/select-node'; nodeId: string | null }
   | { type: 'runtime/error'; error: AppError }
   | { type: 'log/append'; entry: LogEntry }
   | { type: 'log/clear' };

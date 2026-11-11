@@ -11,6 +11,8 @@ import { LayoutStorage } from '../../storage/LayoutStorage.js';
 import { WorldHierarchy } from '../panels/WorldHierarchy.js';
 import { AssetLibrary } from '../panels/AssetLibrary.js';
 import { Inspector } from '../panels/Inspector.js';
+import { GraphEditor } from '../graph/GraphEditor.js';
+import { NodePalette } from '../graph/NodePalette.js';
 import { RuntimeMonitor } from '../panels/RuntimeMonitor.js';
 import { Dialog } from '../common/Dialog';
 import { Button } from '../common/Button';
@@ -368,10 +370,13 @@ export function StudioShell({ store }: StudioShellProps) {
             title="Program"
             collapsed={collapsed.program}
             onToggle={() => togglePanel('program')}
-            summary="Planned"
-            className="sf-planned-panel"
+            summary="Graph"
+            className="sf-graph-panel"
           >
-            <div className="sf-planned-surface">Planned</div>
+            <div className="sf-graph-workspace">
+              <NodePalette store={store} />
+              <GraphEditor store={store} />
+            </div>
           </Panel>
         </div>
 

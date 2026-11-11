@@ -6,6 +6,8 @@ import { Button } from '../common/Button';
 import { createPrimitive } from './primitives.js';
 import { TransformSection } from './TransformSection.js';
 import { RuntimeControls } from './RuntimeControls.js';
+import { GraphNodeInspector } from '../graph/GraphNodeInspector.js';
+import { selectSelectedGraphNodeId } from '../../editor/selectors.js';
 
 interface InspectorProps {
   store: StudioStore;
@@ -19,6 +21,15 @@ const TYPE_LABEL: Record<EntityType, string> = {
 
 export function Inspector({ store }: InspectorProps) {
   const selected = useStudioStore(store, selectSelectedEntity);
+  const selectedGraphNodeId = useStudioStore(store, selectSelectedGraphNodeId);
+
+  if (selectedGraphNodeId) {
+    return (
+      <div className="sf-inspector">
+        <GraphNodeInspector store={store} />
+      </div>
+    );
+  }
 
   if (!selected) {
     return (

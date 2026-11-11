@@ -31,6 +31,7 @@ export interface RuntimeState {
 
 export interface EditorState {
   selectedEntityId: string | null;
+  selectedGraphNodeId: string | null;
   gizmoMode: GizmoMode;
   gridVisible: boolean;
   activePreset: Preset;
@@ -51,6 +52,8 @@ export interface StudioState {
   persistence: PersistenceState;
   logs: readonly LogEntry[];
   runtime: RuntimeState;
+  /** M2-B in-memory graph document; not persisted in M2-B. */
+  graph?: import('../graph/types.ts').Graph | null;
 }
 
 export function createDefaultRuntimeState(): RuntimeState {
@@ -66,6 +69,7 @@ export function createDefaultRuntimeState(): RuntimeState {
 export function createDefaultEditorState(): EditorState {
   return {
     selectedEntityId: null,
+    selectedGraphNodeId: null,
     gizmoMode: 'translate',
     gridVisible: true,
     activePreset: 'build',

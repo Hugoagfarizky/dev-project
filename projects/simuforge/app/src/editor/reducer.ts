@@ -112,7 +112,8 @@ const STRUCTURAL_COMMANDS = new Set<string>([
   'component/add',
   'component/remove',
   'component/set',
-  'demo/load-scenario'
+  'demo/load-scenario',
+  'graph/set'
 ]);
 
 function appendRuntimeBlockedLog(state: StudioState): StudioState {
@@ -209,6 +210,7 @@ export function reduceStudioState(
         project,
         editor: {
           selectedEntityId: null,
+          selectedGraphNodeId: null,
           gizmoMode: 'translate',
           gridVisible: true,
           activePreset: 'build',
@@ -251,6 +253,7 @@ export function reduceStudioState(
         },
         editor: {
           selectedEntityId: null,
+          selectedGraphNodeId: null,
           gizmoMode: 'translate',
           gridVisible: true,
           activePreset: 'build',
@@ -876,6 +879,14 @@ export function reduceStudioState(
           message: 'Demo scenario loaded.'
         }].slice(-500)
       };
+    }
+
+    case 'graph/set': {
+      return { ...state, graph: command.graph };
+    }
+
+    case 'graph/select-node': {
+      return { ...state, editor: { ...state.editor, selectedGraphNodeId: command.nodeId } };
     }
 
     case 'runtime/error': {

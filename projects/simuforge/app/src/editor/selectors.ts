@@ -75,6 +75,14 @@ export function selectRuntimeStatus(state: StudioState): StudioState['runtime'][
   return state.runtime.status;
 }
 
+export function selectGraph(state: StudioState): StudioState['graph'] {
+  return state.graph ?? null;
+}
+
+export function selectSelectedGraphNodeId(state: StudioState): string | null {
+  return state.editor.selectedGraphNodeId ?? null;
+}
+
 export function selectRuntimeBodies(state: StudioState): StudioState['runtime']['bodies'] {
   return state.runtime.bodies;
 }
