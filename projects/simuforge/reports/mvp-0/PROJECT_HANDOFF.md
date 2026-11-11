@@ -119,7 +119,8 @@ No further implementation until explicit authorization is granted.
 - MVP-2 roadmap: `reports/mvp-2/MVP2_CONSOLIDATED_ROADMAP.md`.
 - MVP-2 readiness: `reports/mvp-2/MVP2_READINESS_REPORT.md`.
 - MVP-2 owner decision package: `reports/mvp-2/MVP2_OWNER_DECISION_PACKAGE.md`.
-- MVP-2 implementation is NOT AUTHORIZED. Owner decisions D-M2-01..D-M2-08 are APPROVED; planning is complete and ready for implementation authorization.
+- M2-A implementation is COMPLETE / READY FOR OWNER ACCEPTANCE. Canonical graph model, validation, and serialization implemented; 198/198 tests pass. Report: `reports/mvp-2/M2_A_IMPLEMENTATION_REPORT.md`.
+- M2-B and later remain NOT AUTHORIZED.
 
 ## M. MVP-1 closure (2026-11-11)
 

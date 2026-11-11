@@ -8,7 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test test/smoke.test.mjs test/layout/computeLayout.test.ts test/world/transform.test.ts test/world/validation.test.ts test/world/serialization.test.ts test/project/project.test.ts test/editor/reducer.test.ts test/editor/store.test.ts test/editor/runtime.test.ts test/runtime/physics.test.ts test/runtime/collision.test.ts test/runtime/force.test.ts test/editor/runtime-physics.test.ts test/editor/runtime-collision.test.ts test/editor/runtime-force.test.ts test/console/logs.test.ts",
+    "test": "node --experimental-strip-types --test test/smoke.test.mjs test/layout/computeLayout.test.ts test/world/transform.test.ts test/world/validation.test.ts test/world/serialization.test.ts test/project/project.test.ts test/editor/reducer.test.ts test/editor/store.test.ts test/editor/runtime.test.ts test/runtime/physics.test.ts test/runtime/collision.test.ts test/runtime/force.test.ts test/graph/graph.test.ts test/editor/runtime-physics.test.ts test/editor/runtime-collision.test.ts test/editor/runtime-force.test.ts test/console/logs.test.ts",
     "check:node": "node scripts/check-node.mjs",
     "check:boundaries": "node scripts/check-boundaries.mjs",
     "check:tokens": "node scripts/check-tokens.mjs",
