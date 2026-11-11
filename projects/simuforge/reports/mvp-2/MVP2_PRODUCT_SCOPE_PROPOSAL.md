@@ -1,21 +1,22 @@
 # SimuForge — MVP-2 Product Scope Proposal
 
 **Date:** 2026-11-11  
-**Status:** Discovery proposal; implementation NOT AUTHORIZED  
+**Status:** APPROVED planning scope; implementation NOT AUTHORIZED  
 **Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`
 
-## 1. Proposed MVP-2 goal
+## 1. Approved MVP-2 goal
 
-Deliver **Visual Scripting (Product Spec §7.4)** as the next verifiable increment: users can create a graph connecting a button event to a force action, save/reopen it, validate it, and execute it through a runtime independent of UI callbacks.
+Deliver Visual Scripting (Product Spec §7.4) as the next verifiable increment on top of MVP-1, using phased milestones and browser-level acceptance.
 
-## 2. Recommended in scope
+## 2. Approved in scope
 
-- Basic event nodes.
-- Basic action nodes.
+- Basic event nodes and basic action nodes.
 - Object references.
 - Graph connections.
 - Graph serialization and validation.
-- Graph execution through a runtime independent of UI callbacks.
+- Execution through a runtime independent of UI callbacks.
+- Six initial nodes: On Start, Manual Trigger, On Plane Contact, Apply Force, Apply Impulse, Clear Force.
+- React Flow (`@xyflow/react`) as the graph editor presentation dependency, behind a SimuForge-owned adapter.
 - Integration with the existing force/impulse runtime.
 - Browser acceptance for the end-to-end button-to-force scenario.
 - Save/reopen validation of graphs.
@@ -27,34 +28,15 @@ Deliver **Visual Scripting (Product Spec §7.4)** as the next verifiable increme
 - Electrical & Electronic Systems domain.
 - 2D simulation and hybrid 2D/3D.
 - Advanced physics, joints, friction, restitution, CCD.
+- Loops, branches, variables, math nodes, and delay nodes.
 - Custom components and extension marketplace.
-- Multi-user collaboration.
-- Cloud publishing.
+- Multi-user collaboration and cloud publishing.
 
-## 4. Candidate classification
+## 4. Library and data ownership
 
-### Recommended for MVP-2
-- Visual scripting graph model.
-- Graph validation and serialization.
-- Graph execution runtime.
-- Button event to force action integration.
-- Browser acceptance.
-
-### Deferred to later milestones
-- Python runtime.
-- Advanced physics.
-- Custom components.
-- Performance optimization beyond measurement.
-
-### Requires research or proof of concept
-- Visual scripting library selection (Rete.js/LiteGraph.js or custom).
-- Graph execution scheduling and cancellation.
-- Large graph performance.
-
-### Not recommended now
-- Robotics and electrical domains before visual scripting is stable.
-- 2D/hybrid physics before 3D foundation is proven.
-- Cloud collaboration.
+- SimuForge owns the canonical graph data model, schema, validation, and execution semantics.
+- React Flow is a presentation/editor dependency, not the canonical project data format.
+- Do not persist React Flow's internal representation as the authoritative project graph.
 
 ## 5. Success definition
 

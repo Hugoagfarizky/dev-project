@@ -1,25 +1,29 @@
 # SimuForge — MVP-2 Readiness Report
 
 **Date:** 2026-11-11  
-**Status:** Discovery/planning; implementation NOT AUTHORIZED  
+**Status:** PLANNING COMPLETE — APPROVED; implementation NOT AUTHORIZED  
 **Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`
 
-## 1. Foundation readiness
+## 1. Decision status
+
+All eight MVP-2 owner decisions D-M2-01 through D-M2-08 are APPROVED and recorded in `MVP2_OWNER_DECISION_PACKAGE.md`.
+
+## 2. Foundation readiness
 
 - MVP-0 and MVP-1 are CLOSED.
 - Runtime physics, force/impulse, UI wiring, demo, monitor, browser acceptance, and persistence are available.
 - Playwright browser acceptance infrastructure exists.
 - Component and reducer architecture supports new graph-related state.
 
-## 2. Gaps before MVP-2 implementation
+## 3. Remaining prerequisites before implementation
 
-- Visual scripting library not selected.
-- Graph data model not defined.
-- Graph execution runtime not designed.
-- Logic Editor panel is currently a placeholder.
-- No graph validation or serialization contract.
-- No MVP-2 owner decisions approved.
+- M2-A must define the canonical graph schema, validation, serialization, and execution/cancellation contract.
+- React Flow adapter boundary must be designed before UI implementation.
+- No MVP-2 milestone has started.
+- No implementation authorization has been granted.
 
-## 3. Recommended next step
+## 4. Final readiness status
 
-Owner reviews the MVP-2 owner decision package and authorizes M2-A (graph data model and validation) first.
+MVP-2 planning and decision gates are complete. Architecture and dependency decisions are recorded. The milestone roadmap is ready for implementation authorization.
+
+MVP-2 implementation remains NOT AUTHORIZED. M2-A has NOT STARTED.
