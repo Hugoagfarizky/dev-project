@@ -2,7 +2,18 @@ import { createWorldEntity } from '../world/defaults.ts';
 import { validateTransform, validateComponent } from '../world/validation.ts';
 import { transformsEqual } from '../world/transform.ts';
 import { createDefaultRuntimeState, createEmptyProject } from './state.ts';
-import { advanceSimulation, createRuntimeBodies, toSimulationFailure } from '../runtime/physics.ts';
+import {
+  advanceSimulation,
+  applyForce,
+  applyImpulse,
+  clearForce,
+  createRuntimeBodies,
+  FORCE_APPLIED,
+  FORCE_CLEARED,
+  IMPULSE_APPLIED,
+  RUNTIME_NOT_ACTIVE,
+  toSimulationFailure
+} from '../runtime/physics.ts';
 import type { SimulationFailure } from '../runtime/physics.ts';
 import type { RuntimeBodies } from '../runtime/types.ts';
 import type { StudioCommand } from './commands.ts';
@@ -120,6 +131,8 @@ function appendRuntimeBlockedLog(state: StudioState): StudioState {
 /**
  * Runtime failure contract (M1-B): preserve the last valid state, pause safely,
  * and report a diagnostic. Collision failures are surfaced the same way.
+ * M1-E validation failures use `severity: 'warn'` and leave runtime state
+ * untouched; internal failures remain errors and pause the simulation.
  */
 function appendRuntimeFailureLog(
   state: StudioState,
@@ -127,6 +140,23 @@ function appendRuntimeFailureLog(
   context: ReducerContext,
   status: 'editing' | 'paused'
 ): StudioState {
+  const severity = failure.severity ?? 'error';
+  const entry = {
+    id: context.idFactory(),
+    timestamp: context.clock(),
+    severity,
+    source: 'RUNTIME' as const,
+    code: failure.code,
+    message: failure.message
+  };
+
+  if (severity === 'warn') {
+    return {
+      ...state,
+      logs: [...state.logs, entry].slice(-500)
+    };
+  }
+
   return {
     ...state,
     runtime: {
@@ -134,13 +164,26 @@ function appendRuntimeFailureLog(
       status,
       lastError: { code: failure.code, message: failure.message }
     },
+    logs: [...state.logs, entry].slice(-500)
+  };
+}
+
+function appendRuntimeInfoLog(
+  state: StudioState,
+  context: ReducerContext,
+  entry: { code: string; message: string; entityId?: string; detail?: string }
+): StudioState {
+  return {
+    ...state,
     logs: [...state.logs, {
       id: context.idFactory(),
       timestamp: context.clock(),
-      severity: 'error' as const,
+      severity: 'info' as const,
       source: 'RUNTIME' as const,
-      code: failure.code,
-      message: failure.message
+      code: entry.code,
+      message: entry.message,
+      ...(entry.entityId ? { entityId: entry.entityId } : {}),
+      ...(entry.detail ? { detail: entry.detail } : {})
     }].slice(-500)
   };
 }
@@ -655,6 +698,97 @@ export function reduceStudioState(
           accumulatorSeconds: advance.accumulatorSeconds
         }
       };
+    }
+
+    case 'runtime/apply-force': {
+      if (state.runtime.status === 'editing') {
+        return appendRuntimeFailureLog(
+          state,
+          {
+            code: RUNTIME_NOT_ACTIVE,
+            message: 'Force can only be applied while the simulation is running or paused.',
+            severity: 'warn'
+          },
+          context,
+          'editing'
+        );
+      }
+      try {
+        const bodies = applyForce(state.runtime.bodies, command.entityId, command.force);
+        return appendRuntimeInfoLog(
+          { ...state, runtime: { ...state.runtime, bodies } },
+          context,
+          {
+            code: FORCE_APPLIED,
+            message: `Force applied to entity ${command.entityId}.`,
+            entityId: command.entityId,
+            detail: `F=(${command.force.x}, ${command.force.y}, ${command.force.z}) N`
+          }
+        );
+      } catch (error) {
+        return appendRuntimeFailureLog(state, toSimulationFailure(error), context, 'paused');
+      }
+    }
+
+    case 'runtime/apply-impulse': {
+      if (state.runtime.status === 'editing') {
+        return appendRuntimeFailureLog(
+          state,
+          {
+            code: RUNTIME_NOT_ACTIVE,
+            message: 'Impulse can only be applied while the simulation is running or paused.',
+            severity: 'warn'
+          },
+          context,
+          'editing'
+        );
+      }
+      try {
+        const bodies = applyImpulse(state.runtime.bodies, command.entityId, command.impulse);
+        return appendRuntimeInfoLog(
+          { ...state, runtime: { ...state.runtime, bodies } },
+          context,
+          {
+            code: IMPULSE_APPLIED,
+            message: `Impulse applied to entity ${command.entityId}.`,
+            entityId: command.entityId,
+            detail: `J=(${command.impulse.x}, ${command.impulse.y}, ${command.impulse.z}) N*s`
+          }
+        );
+      } catch (error) {
+        return appendRuntimeFailureLog(state, toSimulationFailure(error), context, 'paused');
+      }
+    }
+
+    case 'runtime/clear-force': {
+      if (state.runtime.status === 'editing') {
+        return appendRuntimeFailureLog(
+          state,
+          {
+            code: RUNTIME_NOT_ACTIVE,
+            message: 'Forces can only be cleared while the simulation is running or paused.',
+            severity: 'warn'
+          },
+          context,
+          'editing'
+        );
+      }
+      try {
+        const bodies = clearForce(state.runtime.bodies, command.entityId);
+        return appendRuntimeInfoLog(
+          { ...state, runtime: { ...state.runtime, bodies } },
+          context,
+          {
+            code: FORCE_CLEARED,
+            message: command.entityId
+              ? `Force cleared for entity ${command.entityId}.`
+              : 'All runtime forces cleared.',
+            ...(command.entityId ? { entityId: command.entityId } : {})
+          }
+        );
+      } catch (error) {
+        return appendRuntimeFailureLog(state, toSimulationFailure(error), context, 'paused');
+      }
     }
 
     case 'runtime/error': {

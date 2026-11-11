@@ -56,7 +56,7 @@
 
 No further implementation until explicit authorization is granted.
 
-> Superseded for M1-C and M1-D only: the Project Owner authorized M1-C implementation on 2026-11-11 and M1-C closure plus M1-D implementation on 2026-11-11 (see §H–§J). M1-E and M1-F still require explicit authorization.
+> Superseded for M1-C, M1-D, and M1-E only: the Project Owner authorized M1-C implementation on 2026-11-11, M1-C closure plus M1-D implementation on 2026-11-11, and M1-E implementation on 2026-11-11 (see §H–§K). M1-F still requires explicit authorization.
 
 ## H. MVP-1 status (updated 2026-11-11)
 
@@ -64,8 +64,9 @@ No further implementation until explicit authorization is granted.
 - M1-B: CLOSED (PASS). Runtime state machine + structural-edit gating.
 - M1-C: CLOSED (PASS). Rigid body + gravity + fixed-step integrator; 16/16 criteria, 113/113 tests at closure.
 - M1-D: IMPLEMENTED (pending closure acceptance). Primitive colliders (sphere/box/plane) + fully inelastic plane-contact response; 143/143 tests.
-- M1-E, M1-F: PLANNED, NOT AUTHORIZED.
-- Owner decisions D-01..D-06 APPROVED; M1-C technical decisions D-M1C-01..D-M1C-03 APPROVED 2026-11-11; M1-D collision decision D-M1D-01 APPROVED 2026-11-11.
+- M1-E: IMPLEMENTED (pending closure acceptance). Persistent force + instantaneous impulse + runtime logs; 186/186 tests; evidence `evidence/m1e-force-impulse.json`.
+- M1-F: NOT AUTHORIZED.
+- Owner decisions D-01..D-06 APPROVED; M1-C technical decisions D-M1C-01..D-M1C-03 APPROVED 2026-11-11; M1-D collision decision D-M1D-01 APPROVED 2026-11-11; M1-E force/impulse decisions D-M1E-01..D-M1E-04 APPROVED 2026-11-11.
 - See `projects/simuforge/reports/mvp-1/` for all planning, implementation, and audit documents.
 
 ## I. M1-C implementation snapshot (2026-11-11)
@@ -77,7 +78,7 @@ No further implementation until explicit authorization is granted.
 - Tests: 113/113 pass (87 M1-B baseline + 26 new).
 - Validation: typecheck, production build, boundary, token, and Node 24.22.2 checks all pass.
 - Evidence: `reports/mvp-1/evidence/m1c-trajectory.json`; report `reports/mvp-1/M1_C_IMPLEMENTATION_REPORT.md`.
-- Not implemented at M1-C time: M1-D collision, M1-E force/impulse/logs, M1-F full wiring/acceptance evidence. M1-D was subsequently implemented; M1-E and M1-F remain NOT AUTHORIZED.
+- Not implemented at M1-C time: M1-D collision, M1-E force/impulse/logs, M1-F full wiring/acceptance evidence. M1-D was subsequently implemented; M1-E was subsequently implemented; M1-F remains NOT AUTHORIZED.
 - Note: unapproved uncommitted physics scratch WIP found at pre-flight is preserved on local branch `wip/m1c-physics-scratch` (`a566c98`); it is not part of `main` and was not pushed.
 
 ## J. M1-D implementation snapshot (2026-11-11)
@@ -92,3 +93,15 @@ No further implementation until explicit authorization is granted.
 - Validation: typecheck, production build, boundary, token, and Node 24.22.2 checks all pass.
 - Evidence: `reports/mvp-1/evidence/m1d-contact.json`; report `reports/mvp-1/M1_D_IMPLEMENTATION_REPORT.md`.
 - Not implemented: M1-E force/impulse/logs, M1-F full wiring/acceptance evidence. Both remain NOT AUTHORIZED.
+
+## K. M1-E implementation snapshot (2026-11-11)
+
+- Scope: force/impulse application + runtime logs only; no force/impulse UI, authoring wiring, browser acceptance, advanced forces, or angular response.
+- Decisions: D-M1E-01 persistent world-space force in newtons until `clearForce`/Reset/Stop; D-M1E-02 instantaneous momentum impulse in N·s (`delta-v = impulse / mass`); D-M1E-03 Running/Paused acceptance, Editing rejection, dynamic sphere/box targets only, `info`/`warn`/`error` logging; D-M1E-04 runtime/API only.
+- Implementation: `RuntimeBody.mass` and `RuntimeBody.force` in `app/src/runtime/types.ts`; `applyForce`, `applyImpulse`, `clearForce`, mass validation, and force integration in `app/src/runtime/physics.ts`; `runtime/apply-force`, `runtime/apply-impulse`, and `runtime/clear-force` commands in `app/src/editor/commands.ts`; lifecycle, logging, and no-partial-commit handling in `app/src/editor/reducer.ts`.
+- Lifecycle: force/impulse are accepted while Running or Paused; Editing is rejected with `RUNTIME_NOT_ACTIVE` at `warn`. Validation warnings leave runtime state unchanged; internal failures pause, set `runtime.lastError`, and log an error.
+- Runtime/authored isolation preserved: force/impulse writes only `runtime.bodies`; authored state is not mutated; runtime force/mass/velocity state is not persisted; the project does not become dirty.
+- Tests: 186/186 pass (143 M1-D baseline + 43 new: 20 runtime + 23 editor).
+- Validation: typecheck, production build, boundary, token, and Node 24.22.2 checks all pass.
+- Evidence: `reports/mvp-1/evidence/m1e-force-impulse.json`; report `reports/mvp-1/M1_E_IMPLEMENTATION_REPORT.md`.
+- Not implemented: M1-F full wiring/demo/browser acceptance evidence. M1-F remains NOT AUTHORIZED.

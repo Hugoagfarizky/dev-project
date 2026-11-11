@@ -1,6 +1,6 @@
 import type { AppError } from '../world/types.ts';
 import type { ProjectDocument } from '../project/types.ts';
-import type { Transform, Component } from '../world/types.ts';
+import type { Transform, Component, Vec3 } from '../world/types.ts';
 import type { LogEntry } from '../console/types.ts';
 import type { CameraPose, GizmoMode, Preset } from './state.ts';
 
@@ -28,6 +28,9 @@ export type StudioCommand =
   | { type: 'runtime/stop' }
   | { type: 'runtime/reset' }
   | { type: 'runtime/step'; deltaSeconds: number }
+  | { type: 'runtime/apply-force'; entityId: string; force: Vec3 }
+  | { type: 'runtime/apply-impulse'; entityId: string; impulse: Vec3 }
+  | { type: 'runtime/clear-force'; entityId?: string }
   | { type: 'runtime/error'; error: AppError }
   | { type: 'log/append'; entry: LogEntry }
   | { type: 'log/clear' };

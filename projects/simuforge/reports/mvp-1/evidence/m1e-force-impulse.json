@@ -1,0 +1,200 @@
+{
+  "milestone": "M1-E",
+  "generatedAt": "2026-11-11T08:36:59.816Z",
+  "scenario": "Persistent force, instantaneous impulse, mass scaling, gravity cancellation, plane contact, and clear-force behavior over fixed steps.",
+  "decisions": {
+    "forceModel": "persistent world-space force in newtons; applied every fixed step until clearForce, Reset, or Stop",
+    "impulseModel": "instantaneous world-space momentum impulse in newton-seconds; delta-v = impulse / mass",
+    "integration": "semi-implicit Euler with fixed timestep 1/60 s",
+    "gravityAccelerationY": -9.81,
+    "angularResponse": "none",
+    "runtimeOnly": true
+  },
+  "force": {
+    "lightMass": {
+      "massKg": 2,
+      "forceN": {
+        "x": 0,
+        "y": 10,
+        "z": 0
+      },
+      "frames": 60,
+      "samples": [
+        {
+          "frame": 10,
+          "timeSeconds": 0.166667,
+          "positionY": 5.076388889,
+          "velocityY": 0.833333333,
+          "forceY": 10
+        },
+        {
+          "frame": 20,
+          "timeSeconds": 0.333333,
+          "positionY": 5.291666667,
+          "velocityY": 1.666666667,
+          "forceY": 10
+        },
+        {
+          "frame": 30,
+          "timeSeconds": 0.5,
+          "positionY": 5.645833333,
+          "velocityY": 2.5,
+          "forceY": 10
+        },
+        {
+          "frame": 40,
+          "timeSeconds": 0.666667,
+          "positionY": 6.138888889,
+          "velocityY": 3.333333333,
+          "forceY": 10
+        },
+        {
+          "frame": 50,
+          "timeSeconds": 0.833333,
+          "positionY": 6.770833333,
+          "velocityY": 4.166666667,
+          "forceY": 10
+        },
+        {
+          "frame": 60,
+          "timeSeconds": 1,
+          "positionY": 7.541666667,
+          "velocityY": 5,
+          "forceY": 10
+        }
+      ],
+      "final": {
+        "positionY": 7.541666667,
+        "velocityY": 5,
+        "forceY": 10,
+        "authoredPositionY": 5
+      }
+    },
+    "heavyMass": {
+      "massKg": 4,
+      "forceN": {
+        "x": 0,
+        "y": 10,
+        "z": 0
+      },
+      "frames": 60,
+      "samples": [
+        {
+          "frame": 10,
+          "timeSeconds": 0.166667,
+          "positionY": 5.038194444,
+          "velocityY": 0.416666667,
+          "forceY": 10
+        },
+        {
+          "frame": 20,
+          "timeSeconds": 0.333333,
+          "positionY": 5.145833333,
+          "velocityY": 0.833333333,
+          "forceY": 10
+        },
+        {
+          "frame": 30,
+          "timeSeconds": 0.5,
+          "positionY": 5.322916667,
+          "velocityY": 1.25,
+          "forceY": 10
+        },
+        {
+          "frame": 40,
+          "timeSeconds": 0.666667,
+          "positionY": 5.569444444,
+          "velocityY": 1.666666667,
+          "forceY": 10
+        },
+        {
+          "frame": 50,
+          "timeSeconds": 0.833333,
+          "positionY": 5.885416667,
+          "velocityY": 2.083333333,
+          "forceY": 10
+        },
+        {
+          "frame": 60,
+          "timeSeconds": 1,
+          "positionY": 6.270833333,
+          "velocityY": 2.5,
+          "forceY": 10
+        }
+      ],
+      "final": {
+        "positionY": 6.270833333,
+        "velocityY": 2.5,
+        "forceY": 10,
+        "authoredPositionY": 5
+      }
+    }
+  },
+  "impulse": {
+    "massKg": 2,
+    "impulseNs": {
+      "x": 0,
+      "y": 10,
+      "z": 0
+    },
+    "immediate": {
+      "positionY": 5,
+      "velocityY": 5
+    },
+    "final": {
+      "frame": 60,
+      "positionY": 10,
+      "velocityY": 5,
+      "authoredPositionY": 5
+    }
+  },
+  "gravityCancellation": {
+    "massKg": 2,
+    "forceN": {
+      "x": 0,
+      "y": 19.62,
+      "z": 0
+    },
+    "final": {
+      "frame": 30,
+      "positionY": 5,
+      "velocityY": 0
+    }
+  },
+  "planeContact": {
+    "forceN": {
+      "x": 0,
+      "y": -10,
+      "z": 0
+    },
+    "final": {
+      "frame": 10,
+      "positionY": 0.5,
+      "velocityY": 0,
+      "forceY": -10
+    }
+  },
+  "clearForce": {
+    "velocityAfterOneStep": 0.083333333,
+    "velocityAfterClearAndStep": 0.083333333,
+    "forceAfterClear": 0
+  },
+  "assertions": {
+    "lightForceVelocity": true,
+    "lightForcePosition": true,
+    "heavyMassHalvesAcceleration": true,
+    "forcePersistsAcrossSteps": true,
+    "impulseImmediateVelocity": true,
+    "impulseImmediatePositionUnchanged": true,
+    "impulseNotReapplied": true,
+    "impulseFinalPosition": true,
+    "gravityCancellationVelocity": true,
+    "gravityCancellationPosition": true,
+    "contactStaysAtSurface": true,
+    "contactVelocityRemoved": true,
+    "contactForcePersists": true,
+    "clearForceStopsAcceleration": true,
+    "clearForceZeroesForce": true,
+    "authoredStateUnchanged": true
+  }
+}

@@ -17,7 +17,7 @@ export type RuntimeCollider =
   | { kind: 'plane' };
 
 /**
- * Runtime-only body state for M1-C/M1-D.
+ * Runtime-only body state for M1-C/M1-D/M1-E.
  *
  * Bodies are derived from authored `RigidBodyComponent` values when Play is
  * pressed and are never persisted (ADR 0003). Transforms here are a runtime
@@ -27,6 +27,13 @@ export interface RuntimeBody {
   entityId: string;
   transform: Transform;
   velocity: Vec3;
+  /** Authored mass in kg, captured at Play and used for force/impulse. */
+  mass: number;
+  /**
+   * Runtime-only accumulated force in newtons (kg*m/s^2). It is applied every
+   * fixed step until cleared, Reset, or Stop. Never persisted (ADR 0003).
+   */
+  force: Vec3;
   useGravity: boolean;
   collider: RuntimeCollider;
 }

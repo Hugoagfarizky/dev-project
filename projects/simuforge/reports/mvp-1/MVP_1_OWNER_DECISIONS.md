@@ -76,3 +76,23 @@ Approved collider semantics:
 - Collider sizes are world-space; authored transform scale is not applied to colliders in M1-D.
 
 Scope: this decision authorizes M1-D implementation only. M1-E and M1-F remain NOT AUTHORIZED. The “not yet decided” list above is preserved as the historical record of 2026-11-10; the M1-D response item is resolved by this addendum.
+
+## Addendum — M1-E force/impulse decisions (2026-11-11)
+
+**Authority:** Project Owner, M1-E implementation authorization.
+
+| ID | Area | Approved decision |
+|---|---|---|
+| D-M1E-01 | Force model | Persistent world-space force in newtons; applied every fixed step until `clearForce`, Reset, or Stop; repeated applications accumulate |
+| D-M1E-02 | Impulse model | Instantaneous world-space momentum impulse in newton-seconds; `delta-v = impulse / mass`; no angular response |
+| D-M1E-03 | Lifecycle, target, and logging | Accept in Running and Paused; reject Editing with `warn`; only dynamic sphere/box bodies; success logs `info`; invalid input/target logs `warn` with no state change; internal failure logs `error` and pauses |
+| D-M1E-04 | UI scope | Runtime commands/API and logs only; no force/impulse UI; M1-F owns wiring, demo, and browser acceptance |
+
+Approved force/impulse semantics:
+
+- Force is applied at the center of mass; no torque or angular dynamics.
+- Force acceleration is `F / mass`, combined with gravity in the existing semi-implicit Euler step.
+- Impulse changes velocity immediately by `J / mass` and does not change position at application time.
+- Runtime force/mass/velocity state is never persisted (ADR 0003); authored `project.world` is not mutated.
+
+Scope: this decision authorizes M1-E implementation only. M1-F remains NOT AUTHORIZED. The “not yet decided” list above is preserved as the historical record of 2026-11-10; the force/impulse item is resolved by this addendum.

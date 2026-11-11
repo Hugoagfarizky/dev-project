@@ -18,25 +18,59 @@ export const COLLISION_INVALID_STATE = 'COLLISION_INVALID_STATE';
 export const COLLISION_INVALID_COLLIDER = 'COLLISION_INVALID_COLLIDER';
 export const RUNTIME_STEP_FAILED = 'RUNTIME_STEP_FAILED';
 
+/** M1-E force/impulse failure and diagnostic codes. */
+export const RUNTIME_NOT_ACTIVE = 'RUNTIME_NOT_ACTIVE';
+export const FORCE_INVALID_INPUT = 'FORCE_INVALID_INPUT';
+export const FORCE_INVALID_TARGET = 'FORCE_INVALID_TARGET';
+export const FORCE_INVALID_MASS = 'FORCE_INVALID_MASS';
+export const FORCE_INVALID_STATE = 'FORCE_INVALID_STATE';
+export const FORCE_APPLIED = 'FORCE_APPLIED';
+export const FORCE_CLEARED = 'FORCE_CLEARED';
+export const IMPULSE_INVALID_INPUT = 'IMPULSE_INVALID_INPUT';
+export const IMPULSE_INVALID_TARGET = 'IMPULSE_INVALID_TARGET';
+export const IMPULSE_INVALID_MASS = 'IMPULSE_INVALID_MASS';
+export const IMPULSE_INVALID_STATE = 'IMPULSE_INVALID_STATE';
+export const IMPULSE_APPLIED = 'IMPULSE_APPLIED';
+
 export interface SimulationFailure {
   code: string;
   message: string;
+  /** Validation failures are warnings; runtime failures pause the simulation. */
+  severity?: 'warn' | 'error';
+}
+
+/** Base class for deterministic runtime failures. */
+export class RuntimeError extends Error {
+  readonly code: string;
+  readonly severity: 'warn' | 'error';
+
+  constructor(code: string, message: string, severity: 'warn' | 'error' = 'error') {
+    super(message);
+    this.name = 'RuntimeError';
+    this.code = code;
+    this.severity = severity;
+  }
 }
 
 /** Thrown by the pure runtime layer when a step cannot be processed safely. */
-export class CollisionError extends Error {
-  readonly code: string;
-
+export class CollisionError extends RuntimeError {
   constructor(code: string, message: string) {
-    super(message);
+    super(code, message, 'error');
     this.name = 'CollisionError';
-    this.code = code;
+  }
+}
+
+/** Thrown when a force or impulse cannot be applied safely. */
+export class ForceError extends RuntimeError {
+  constructor(code: string, message: string, severity: 'warn' | 'error' = 'error') {
+    super(code, message, severity);
+    this.name = 'ForceError';
   }
 }
 
 export function toSimulationFailure(error: unknown): SimulationFailure {
-  if (error instanceof CollisionError) {
-    return { code: error.code, message: error.message };
+  if (error instanceof RuntimeError) {
+    return { code: error.code, message: error.message, severity: error.severity };
   }
   if (error instanceof Error) {
     return { code: RUNTIME_STEP_FAILED, message: error.message };
@@ -56,6 +90,16 @@ function findEnabledRigidBody(entity: WorldEntity): RigidBodyComponent | null {
 
 function isPositiveFinite(value: number): boolean {
   return Number.isFinite(value) && value > 0;
+}
+
+function isFiniteVec3(value: Vec3): boolean {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    Number.isFinite(value.x) &&
+    Number.isFinite(value.y) &&
+    Number.isFinite(value.z)
+  );
 }
 
 function toRuntimeCollider(entityId: string, collider: RigidBodyComponent['collider']): RuntimeCollider {
@@ -105,6 +149,12 @@ export function createRuntimeBodies(entities: readonly WorldEntity[]): RuntimeBo
     if (!rigidBody) {
       continue;
     }
+    if (!isPositiveFinite(rigidBody.mass)) {
+      throw new ForceError(
+        FORCE_INVALID_MASS,
+        `Rigid body mass for entity ${entity.id} must be a finite number greater than zero.`
+      );
+    }
     bodies[entity.id] = {
       entityId: entity.id,
       transform: {
@@ -113,6 +163,8 @@ export function createRuntimeBodies(entities: readonly WorldEntity[]): RuntimeBo
         scale: { ...entity.transform.scale }
       },
       velocity: { ...rigidBody.velocity },
+      mass: rigidBody.mass,
+      force: { x: 0, y: 0, z: 0 },
       useGravity: rigidBody.useGravity,
       collider: toRuntimeCollider(entity.id, rigidBody.collider)
     };
@@ -126,6 +178,150 @@ function cloneTransform(transform: Transform): Transform {
     rotation: { ...transform.rotation },
     scale: { ...transform.scale }
   };
+}
+
+function cloneRuntimeBody(body: RuntimeBody): RuntimeBody {
+  return {
+    entityId: body.entityId,
+    transform: cloneTransform(body.transform),
+    velocity: { ...body.velocity },
+    mass: body.mass,
+    force: { ...body.force },
+    useGravity: body.useGravity,
+    collider: body.collider
+  };
+}
+
+function requireDynamicTarget(
+  bodies: RuntimeBodies,
+  entityId: string,
+  invalidTargetCode: string
+): RuntimeBody {
+  const body = bodies[entityId];
+  if (!body) {
+    throw new ForceError(
+      invalidTargetCode,
+      `No runtime body exists for entity ${entityId}.`,
+      'warn'
+    );
+  }
+  if (body.collider.kind === 'plane') {
+    throw new ForceError(
+      invalidTargetCode,
+      `Entity ${entityId} is a static plane and cannot receive force or impulse.`,
+      'warn'
+    );
+  }
+  return body;
+}
+
+/**
+ * Adds a world-space force in newtons to the body's runtime force accumulator.
+ * The accumulated force is applied every fixed step until `clearForce`, Reset,
+ * or Stop. The input bodies are not mutated.
+ */
+export function applyForce(bodies: RuntimeBodies, entityId: string, force: Vec3): RuntimeBodies {
+  if (!isFiniteVec3(force)) {
+    throw new ForceError(
+      FORCE_INVALID_INPUT,
+      'Force must be a Vec3 with finite x, y, and z components.',
+      'warn'
+    );
+  }
+
+  const body = requireDynamicTarget(bodies, entityId, FORCE_INVALID_TARGET);
+  if (!isPositiveFinite(body.mass)) {
+    throw new ForceError(
+      FORCE_INVALID_MASS,
+      `Runtime mass for entity ${entityId} must be a finite number greater than zero.`
+    );
+  }
+  if (!isFiniteVec3(body.force)) {
+    throw new ForceError(
+      FORCE_INVALID_STATE,
+      `Runtime force for entity ${entityId} is not finite.`
+    );
+  }
+
+  const next = cloneRuntimeBody(body);
+  next.force = {
+    x: body.force.x + force.x,
+    y: body.force.y + force.y,
+    z: body.force.z + force.z
+  };
+  if (!isFiniteVec3(next.force)) {
+    throw new ForceError(
+      FORCE_INVALID_STATE,
+      `Accumulated force for entity ${entityId} is not finite.`
+    );
+  }
+
+  return { ...bodies, [entityId]: next };
+}
+
+/**
+ * Applies an instantaneous impulse in newton-seconds (kg*m/s) to a body's
+ * velocity: `delta-v = impulse / mass`. Position is unchanged at application
+ * time. The input bodies are not mutated.
+ */
+export function applyImpulse(bodies: RuntimeBodies, entityId: string, impulse: Vec3): RuntimeBodies {
+  if (!isFiniteVec3(impulse)) {
+    throw new ForceError(
+      IMPULSE_INVALID_INPUT,
+      'Impulse must be a Vec3 with finite x, y, and z components.',
+      'warn'
+    );
+  }
+
+  const body = requireDynamicTarget(bodies, entityId, IMPULSE_INVALID_TARGET);
+  if (!isPositiveFinite(body.mass)) {
+    throw new ForceError(
+      IMPULSE_INVALID_MASS,
+      `Runtime mass for entity ${entityId} must be a finite number greater than zero.`
+    );
+  }
+  if (!isFiniteVec3(body.velocity)) {
+    throw new ForceError(
+      IMPULSE_INVALID_STATE,
+      `Runtime velocity for entity ${entityId} is not finite.`
+    );
+  }
+
+  const next = cloneRuntimeBody(body);
+  next.velocity = {
+    x: body.velocity.x + impulse.x / body.mass,
+    y: body.velocity.y + impulse.y / body.mass,
+    z: body.velocity.z + impulse.z / body.mass
+  };
+  if (!isFiniteVec3(next.velocity)) {
+    throw new ForceError(
+      IMPULSE_INVALID_STATE,
+      `Resulting velocity for entity ${entityId} is not finite.`
+    );
+  }
+
+  return { ...bodies, [entityId]: next };
+}
+
+/**
+ * Clears the runtime force accumulator for one dynamic body, or for every body
+ * when `entityId` is omitted. The input bodies are not mutated.
+ */
+export function clearForce(bodies: RuntimeBodies, entityId?: string): RuntimeBodies {
+  if (entityId !== undefined) {
+    const body = requireDynamicTarget(bodies, entityId, FORCE_INVALID_TARGET);
+    const next = cloneRuntimeBody(body);
+    next.force = { x: 0, y: 0, z: 0 };
+    return { ...bodies, [entityId]: next };
+  }
+
+  const next: RuntimeBodies = {};
+  for (const [id, body] of Object.entries(bodies)) {
+    const clone = cloneRuntimeBody(body);
+    clone.force = { x: 0, y: 0, z: 0 };
+    next[id] = clone;
+  }
+  return next;
 }
 
 function assertFiniteBody(body: RuntimeBody): void {
@@ -149,6 +345,21 @@ function assertFiniteBody(body: RuntimeBody): void {
       COLLISION_INVALID_STATE,
       `Runtime transform or velocity for entity ${body.entityId} is not finite.`
     );
+  }
+
+  if (body.collider.kind !== 'plane') {
+    if (!isPositiveFinite(body.mass)) {
+      throw new ForceError(
+        FORCE_INVALID_MASS,
+        `Runtime mass for entity ${body.entityId} must be a finite number greater than zero.`
+      );
+    }
+    if (!isFiniteVec3(body.force)) {
+      throw new ForceError(
+        FORCE_INVALID_STATE,
+        `Runtime force for entity ${body.entityId} is not finite.`
+      );
+    }
   }
 
   if (body.collider.kind === 'sphere') {
@@ -245,20 +456,16 @@ export function stepBodies(bodies: RuntimeBodies, deltaSeconds: number): Runtime
     assertFiniteBody(body);
 
     if (body.collider.kind === 'plane') {
-      next[id] = {
-        entityId: body.entityId,
-        transform: cloneTransform(body.transform),
-        velocity: { ...body.velocity },
-        useGravity: body.useGravity,
-        collider: body.collider
-      };
+      next[id] = cloneRuntimeBody(body);
       continue;
     }
 
     const velocity: Vec3 = { ...body.velocity };
-    if (body.useGravity) {
-      velocity.y += GRAVITY_ACCELERATION_Y * deltaSeconds;
-    }
+    velocity.x += (body.force.x / body.mass) * deltaSeconds;
+    velocity.y += (
+      (body.force.y / body.mass) + (body.useGravity ? GRAVITY_ACCELERATION_Y : 0)
+    ) * deltaSeconds;
+    velocity.z += (body.force.z / body.mass) * deltaSeconds;
 
     const integrated: RuntimeBody = {
       entityId: body.entityId,
@@ -272,6 +479,8 @@ export function stepBodies(bodies: RuntimeBodies, deltaSeconds: number): Runtime
         scale: { ...body.transform.scale }
       },
       velocity,
+      mass: body.mass,
+      force: { ...body.force },
       useGravity: body.useGravity,
       collider: body.collider
     };
