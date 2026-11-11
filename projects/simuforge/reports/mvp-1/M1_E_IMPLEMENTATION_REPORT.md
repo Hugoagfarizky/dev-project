@@ -4,7 +4,7 @@
 **Milestone:** M1-E — Force & Impulse + runtime logs  
 **Status:** IMPLEMENTED — all acceptance criteria pass with evidence; pending Owner closure acceptance  
 **Authorization:** Project Owner authorized M1-E implementation only (M1-F remains NOT AUTHORIZED)  
-**Implementation commit:** pending; recorded in the follow-up documentation commit
+**Implementation commit:** `fe5eae3` (implementation + acceptance evidence)
 
 ## 1. Authorization and scope
 
@@ -236,8 +236,8 @@ No MVP-0 source, no root `package-lock.json`, and none of the three pre-existing
 
 | Item | Status |
 |---|---|
-| Implementation commit | pending; recorded in the follow-up documentation commit |
-| Push to `origin/main` | after the implementation and report-update commits; verified against remote HEAD |
+| Implementation commit | `fe5eae3` — implementation + acceptance evidence |
+| Push to `origin/main` | completed; remote HEAD verified after the report-update commit |
 
 This table is updated by the follow-up hash-update commit after the implementation commit is created and pushed.
 
