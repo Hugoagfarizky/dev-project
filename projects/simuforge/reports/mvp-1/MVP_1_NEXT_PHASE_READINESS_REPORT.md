@@ -1,7 +1,7 @@
 # SimuForge — MVP-1 Next Phase Readiness Report
 
 **Date:** 2026-11-10  
-**Status:** Planning only — M1-B NOT AUTHORIZED
+**Status:** Historical planning record — current status in §9 (M1-D implemented; M1-E/M1-F not authorized)
 
 ## 1. M1-A closure status
 
@@ -15,7 +15,7 @@ NOT READY for implementation. Six Owner decisions required (see `M1_B_PROJECT_OW
 
 - M1-B: 6 decisions (snapshot semantics, Play/Pause/Stop/Reset, gating, runtime store, failure recovery, integrator details).
 - M1-C: fixed timestep, integrator approach.
-- M1-D: collision response algorithm.
+- M1-D: collision response algorithm — RESOLVED 2026-11-11 by D-M1D-01 (plane contacts, fully inelastic).
 - M1-E: force application semantics.
 - M1-F: acceptance evidence format.
 - Residual: unknown component type handling (reject/preserve/skip/migrate).
@@ -50,3 +50,12 @@ All PLANNED, NOT AUTHORIZED.
 ## 8. Exact authorization required
 
 Explicit Project Owner authorization for M1-B implementation. No implementation, dependency, config, or test changes until then.
+
+## 9. Status update (2026-11-11)
+
+- M1-B: CLOSED (PASS).
+- M1-C: CLOSED (PASS) — 16/16 criteria, 113/113 tests at closure; implementation `ebc8c21`, report update `40342c0` on `origin/main`.
+- M1-D: IMPLEMENTED (pending closure acceptance) — D-M1D-01 plane-contact, fully inelastic collision; 143/143 tests; evidence `evidence/m1d-contact.json`; report `M1_D_IMPLEMENTATION_REPORT.md`.
+- M1-E: PLANNED / NOT AUTHORIZED — force/impulse semantics still require an Owner decision.
+- M1-F: PLANNED / NOT AUTHORIZED — acceptance evidence format still requires an Owner decision.
+- The historical sections above are preserved; they describe the 2026-11-10 planning state.

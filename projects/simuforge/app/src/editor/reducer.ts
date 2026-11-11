@@ -2,7 +2,9 @@ import { createWorldEntity } from '../world/defaults.ts';
 import { validateTransform, validateComponent } from '../world/validation.ts';
 import { transformsEqual } from '../world/transform.ts';
 import { createDefaultRuntimeState, createEmptyProject } from './state.ts';
-import { advanceSimulation, createRuntimeBodies } from '../runtime/physics.ts';
+import { advanceSimulation, createRuntimeBodies, toSimulationFailure } from '../runtime/physics.ts';
+import type { SimulationFailure } from '../runtime/physics.ts';
+import type { RuntimeBodies } from '../runtime/types.ts';
 import type { StudioCommand } from './commands.ts';
 import type { CameraPose, StudioState } from './state.ts';
 import type { EntityType, WorldEntity } from '../world/types.ts';
@@ -111,6 +113,34 @@ function appendRuntimeBlockedLog(state: StudioState): StudioState {
       source: 'RUNTIME' as const,
       code: 'STRUCTURAL_EDIT_BLOCKED',
       message: 'Structural edit blocked while simulation is running or paused.'
+    }].slice(-500)
+  };
+}
+
+/**
+ * Runtime failure contract (M1-B): preserve the last valid state, pause safely,
+ * and report a diagnostic. Collision failures are surfaced the same way.
+ */
+function appendRuntimeFailureLog(
+  state: StudioState,
+  failure: SimulationFailure,
+  context: ReducerContext,
+  status: 'editing' | 'paused'
+): StudioState {
+  return {
+    ...state,
+    runtime: {
+      ...state.runtime,
+      status,
+      lastError: { code: failure.code, message: failure.message }
+    },
+    logs: [...state.logs, {
+      id: context.idFactory(),
+      timestamp: context.clock(),
+      severity: 'error' as const,
+      source: 'RUNTIME' as const,
+      code: failure.code,
+      message: failure.message
     }].slice(-500)
   };
 }
@@ -494,13 +524,19 @@ export function reduceStudioState(
     case 'runtime/play': {
       if (state.runtime.status === 'editing') {
         const snapshot = { entities: state.project.world.entities.map(cloneEntity) };
+        let bodies: RuntimeBodies;
+        try {
+          bodies = createRuntimeBodies(snapshot.entities);
+        } catch (error) {
+          return appendRuntimeFailureLog(state, toSimulationFailure(error), context, 'editing');
+        }
         return {
           ...state,
           runtime: {
             status: 'running',
             snapshot,
             lastError: null,
-            bodies: createRuntimeBodies(snapshot.entities),
+            bodies,
             accumulatorSeconds: 0
           }
         };
@@ -561,6 +597,12 @@ export function reduceStudioState(
         return state;
       }
       const restored = state.runtime.snapshot.entities.map(cloneEntity);
+      let bodies: RuntimeBodies;
+      try {
+        bodies = createRuntimeBodies(state.runtime.snapshot.entities);
+      } catch (error) {
+        return appendRuntimeFailureLog(state, toSimulationFailure(error), context, 'paused');
+      }
       return {
         ...state,
         project: {
@@ -569,7 +611,7 @@ export function reduceStudioState(
         },
         runtime: {
           ...state.runtime,
-          bodies: createRuntimeBodies(state.runtime.snapshot.entities),
+          bodies,
           accumulatorSeconds: 0
         }
       };
@@ -587,6 +629,21 @@ export function reduceStudioState(
         state.runtime.accumulatorSeconds,
         command.deltaSeconds
       );
+      if (advance.error) {
+        return appendRuntimeFailureLog(
+          {
+            ...state,
+            runtime: {
+              ...state.runtime,
+              bodies: advance.bodies,
+              accumulatorSeconds: advance.accumulatorSeconds
+            }
+          },
+          advance.error,
+          context,
+          'paused'
+        );
+      }
       if (advance.steps === 0 && advance.accumulatorSeconds === state.runtime.accumulatorSeconds) {
         return state;
       }

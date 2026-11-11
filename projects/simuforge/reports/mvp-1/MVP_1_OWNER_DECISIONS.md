@@ -59,3 +59,20 @@ MVP-0 remains ACCEPTED and CLOSED. MVP-1 implementation is NOT AUTHORIZED. Plann
 Scope: these decisions authorize M1-C implementation only. M1-D, M1-E, and M1-F remain NOT AUTHORIZED.
 
 The “not yet decided” list above is preserved as the historical record of 2026-11-10; the M1-C integrator/timestep items are resolved by this addendum.
+
+## Addendum — M1-D collision decision (2026-11-11)
+
+**Authority:** Project Owner, M1-C closure and M1-D implementation authorization.
+
+| ID | Area | Approved decision |
+|---|---|---|
+| D-M1D-01 | Collision response | Plane contacts, fully inelastic: dynamic sphere/box vs static infinite plane; positional penetration correction + removal of inbound normal velocity; restitution 0, friction 0, no angular response; dynamic-vs-dynamic collisions deferred |
+
+Approved collider semantics:
+
+- Sphere collider size is the radius.
+- Box collider size is the full extents; half-extents are `size / 2`.
+- A plane collider is a horizontal infinite plane at the body position with a +Y normal; plane rotation and scale are ignored.
+- Collider sizes are world-space; authored transform scale is not applied to colliders in M1-D.
+
+Scope: this decision authorizes M1-D implementation only. M1-E and M1-F remain NOT AUTHORIZED. The “not yet decided” list above is preserved as the historical record of 2026-11-10; the M1-D response item is resolved by this addendum.

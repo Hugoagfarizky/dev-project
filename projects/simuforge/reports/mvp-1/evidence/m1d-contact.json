@@ -1,0 +1,151 @@
+{
+  "milestone": "M1-D",
+  "generatedAt": "2026-11-11T07:59:27.367Z",
+  "scenario": "A dynamic sphere and a dynamic box fall onto a static infinite plane for 120 fixed steps.",
+  "decisions": {
+    "colliders": "primitive sphere (radius), box (full extents), plane (static infinite horizontal plane, +Y normal)",
+    "detection": "dynamic sphere/box vs static plane; dynamic-vs-dynamic collisions deferred",
+    "response": "positional penetration correction plus removal of inbound normal velocity",
+    "restitution": 0,
+    "friction": 0,
+    "angularResponse": "none",
+    "fixedTimestepSeconds": 0.016666666666666666
+  },
+  "sphere": {
+    "contactFrame": 57,
+    "samples": [
+      {
+        "frame": 0,
+        "timeSeconds": 0,
+        "positionY": 5,
+        "velocityY": 0
+      },
+      {
+        "frame": 15,
+        "timeSeconds": 0.25,
+        "positionY": 4.673,
+        "velocityY": -2.4525
+      },
+      {
+        "frame": 30,
+        "timeSeconds": 0.5,
+        "positionY": 3.732875,
+        "velocityY": -4.905
+      },
+      {
+        "frame": 45,
+        "timeSeconds": 0.75,
+        "positionY": 2.179625,
+        "velocityY": -7.3575
+      },
+      {
+        "frame": 60,
+        "timeSeconds": 1,
+        "positionY": 0.5,
+        "velocityY": 0
+      },
+      {
+        "frame": 75,
+        "timeSeconds": 1.25,
+        "positionY": 0.5,
+        "velocityY": 0
+      },
+      {
+        "frame": 90,
+        "timeSeconds": 1.5,
+        "positionY": 0.5,
+        "velocityY": 0
+      },
+      {
+        "frame": 105,
+        "timeSeconds": 1.75,
+        "positionY": 0.5,
+        "velocityY": 0
+      },
+      {
+        "frame": 120,
+        "timeSeconds": 2,
+        "positionY": 0.5,
+        "velocityY": 0
+      }
+    ],
+    "final": {
+      "frame": 120,
+      "positionY": 0.5,
+      "velocityY": 0,
+      "authoredPositionY": 5
+    }
+  },
+  "box": {
+    "contactFrame": 57,
+    "samples": [
+      {
+        "frame": 0,
+        "timeSeconds": 0,
+        "positionY": 5,
+        "velocityY": 0
+      },
+      {
+        "frame": 15,
+        "timeSeconds": 0.25,
+        "positionY": 4.673,
+        "velocityY": -2.4525
+      },
+      {
+        "frame": 30,
+        "timeSeconds": 0.5,
+        "positionY": 3.732875,
+        "velocityY": -4.905
+      },
+      {
+        "frame": 45,
+        "timeSeconds": 0.75,
+        "positionY": 2.179625,
+        "velocityY": -7.3575
+      },
+      {
+        "frame": 60,
+        "timeSeconds": 1,
+        "positionY": 0.5,
+        "velocityY": 0
+      },
+      {
+        "frame": 75,
+        "timeSeconds": 1.25,
+        "positionY": 0.5,
+        "velocityY": 0
+      },
+      {
+        "frame": 90,
+        "timeSeconds": 1.5,
+        "positionY": 0.5,
+        "velocityY": 0
+      },
+      {
+        "frame": 105,
+        "timeSeconds": 1.75,
+        "positionY": 0.5,
+        "velocityY": 0
+      },
+      {
+        "frame": 120,
+        "timeSeconds": 2,
+        "positionY": 0.5,
+        "velocityY": 0
+      }
+    ],
+    "final": {
+      "frame": 120,
+      "positionY": 0.5,
+      "velocityY": 0,
+      "authoredPositionY": 5
+    }
+  },
+  "assertions": {
+    "sphereRestY": true,
+    "sphereVelocityY": true,
+    "boxRestY": true,
+    "boxVelocityY": true,
+    "authoredSpherePositionY": true
+  }
+}

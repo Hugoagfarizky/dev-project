@@ -56,15 +56,16 @@
 
 No further implementation until explicit authorization is granted.
 
-> Superseded for M1-C only: the Project Owner authorized M1-C implementation on 2026-11-11 (see §H–§I). M1-D, M1-E, and M1-F still require explicit authorization.
+> Superseded for M1-C and M1-D only: the Project Owner authorized M1-C implementation on 2026-11-11 and M1-C closure plus M1-D implementation on 2026-11-11 (see §H–§J). M1-E and M1-F still require explicit authorization.
 
 ## H. MVP-1 status (updated 2026-11-11)
 
 - M1-A: CLOSED (PASS WITH CONDITIONS). Residual: unknown component type handling on load (OPEN/PROPOSED).
 - M1-B: CLOSED (PASS). Runtime state machine + structural-edit gating.
-- M1-C: IMPLEMENTED (pending post-implementation closure audit). Rigid body + gravity + fixed-step integrator.
-- M1-D..M1-F: PLANNED, NOT AUTHORIZED.
-- Owner decisions D-01..D-06 APPROVED; M1-C technical decisions D-M1C-01..D-M1C-03 APPROVED 2026-11-11.
+- M1-C: CLOSED (PASS). Rigid body + gravity + fixed-step integrator; 16/16 criteria, 113/113 tests at closure.
+- M1-D: IMPLEMENTED (pending closure acceptance). Primitive colliders (sphere/box/plane) + fully inelastic plane-contact response; 143/143 tests.
+- M1-E, M1-F: PLANNED, NOT AUTHORIZED.
+- Owner decisions D-01..D-06 APPROVED; M1-C technical decisions D-M1C-01..D-M1C-03 APPROVED 2026-11-11; M1-D collision decision D-M1D-01 APPROVED 2026-11-11.
 - See `projects/simuforge/reports/mvp-1/` for all planning, implementation, and audit documents.
 
 ## I. M1-C implementation snapshot (2026-11-11)
@@ -76,5 +77,18 @@ No further implementation until explicit authorization is granted.
 - Tests: 113/113 pass (87 M1-B baseline + 26 new).
 - Validation: typecheck, production build, boundary, token, and Node 24.22.2 checks all pass.
 - Evidence: `reports/mvp-1/evidence/m1c-trajectory.json`; report `reports/mvp-1/M1_C_IMPLEMENTATION_REPORT.md`.
-- Not implemented: M1-D collision, M1-E force/impulse/logs, M1-F full wiring/acceptance evidence. All remain NOT AUTHORIZED.
+- Not implemented at M1-C time: M1-D collision, M1-E force/impulse/logs, M1-F full wiring/acceptance evidence. M1-D was subsequently implemented; M1-E and M1-F remain NOT AUTHORIZED.
 - Note: unapproved uncommitted physics scratch WIP found at pre-flight is preserved on local branch `wip/m1c-physics-scratch` (`a566c98`); it is not part of `main` and was not pushed.
+
+## J. M1-D implementation snapshot (2026-11-11)
+
+- Scope: primitive colliders (sphere/box/plane) + collision response; no force/impulse, authoring UI, mesh collision, or CCD.
+- Decision: D-M1D-01 — plane contacts, fully inelastic. Dynamic sphere/box vs static infinite plane; positional penetration correction + inbound normal velocity removal; restitution 0, friction 0, no angular response; dynamic-vs-dynamic collisions deferred.
+- Collider semantics: sphere size = radius; box size = full extents; plane = horizontal +Y plane at the body position, rotation/scale ignored; collider sizes are world-space and transform scale is not applied.
+- Implementation: `RuntimeCollider` in `app/src/runtime/types.ts`; collider derivation, static planes, and contact resolution in `app/src/runtime/physics.ts`; failure handling in `app/src/editor/reducer.ts`.
+- Failure contract preserved: collision failure pauses safely, preserves the last valid bodies/accumulator, sets `runtime.lastError`, and logs a `RUNTIME` error.
+- Runtime/authored isolation preserved: collision writes only `runtime.bodies`; authored state is not mutated; runtime collision state is not persisted; the project does not become dirty.
+- Tests: 143/143 pass (113 M1-C baseline + 30 new: 17 runtime + 13 editor).
+- Validation: typecheck, production build, boundary, token, and Node 24.22.2 checks all pass.
+- Evidence: `reports/mvp-1/evidence/m1d-contact.json`; report `reports/mvp-1/M1_D_IMPLEMENTATION_REPORT.md`.
+- Not implemented: M1-E force/impulse/logs, M1-F full wiring/acceptance evidence. Both remain NOT AUTHORIZED.
