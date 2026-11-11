@@ -4,7 +4,7 @@
 **Milestone:** M2-B — Graph Editor UI  
 **Status:** IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE  
 **Authorization:** Project Owner authorized M2-B implementation only (M2-C and later remain NOT AUTHORIZED)  
-**Implementation commit:** pending; recorded in the follow-up documentation commit
+**Implementation commit:** `006f0c2` (implementation + browser acceptance)
 
 ## 1. Scope
 
