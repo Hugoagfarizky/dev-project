@@ -16,7 +16,7 @@ Deliver Components & Basic Physics per product spec §7.3: basic component syste
 | M1-C | CLOSED (PASS) | Rigid body + gravity + fixed-step integrator; 16/16 criteria, 113/113 tests, evidence `evidence/m1c-trajectory.json`; report `M1_C_IMPLEMENTATION_REPORT.md` |
 | M1-D | IMPLEMENTED (PENDING CLOSURE ACCEPTANCE) | Primitive colliders (sphere/box/plane) + plane-contact response; report `M1_D_IMPLEMENTATION_REPORT.md` |
 | M1-E | CLOSED (PASS) | Persistent force + instantaneous impulse + runtime logs; 29/29 criteria, 186/186 tests, 16/16 evidence assertions; evidence `evidence/m1e-force-impulse.json`; implementation `fe5eae3`, documentation `a6a0aaa`; report `M1_E_IMPLEMENTATION_REPORT.md` |
-| M1-F | NOT AUTHORIZED | Reset + wiring + acceptance evidence |
+| M1-F | PLANNING COMPLETE — Owner decisions approved; implementation NOT AUTHORIZED | Wiring, D-05 demo, browser acceptance, and MVP-1 closure; plan `M1_F_IMPLEMENTATION_PLAN.md`; decisions D-M1F-01..08 approved 2026-11-11 |
 
 ### M1-C closure record (2026-11-11)
 
@@ -32,7 +32,11 @@ M1-E implements the approved D-M1E-01..04 contract: persistent world-space force
 
 ### M1-E closure record (2026-11-11)
 
-M1-E is officially **CLOSED (PASS)** by Project Owner authorization. Acceptance 29/29 PASS, full tests 186/186 PASS, evidence assertions 16/16 PASS, and typecheck/build/Node/boundary/token checks PASS. Runtime-only force/impulse behavior, lifecycle gating, logging, and runtime/authored isolation remain preserved. M1-F remains NOT AUTHORIZED; planning is authorized separately.
+M1-E is officially **CLOSED (PASS)** by Project Owner authorization. Acceptance 29/29 PASS, full tests 186/186 PASS, evidence assertions 16/16 PASS, and typecheck/build/Node/boundary/token checks PASS. Runtime-only force/impulse behavior, lifecycle gating, logging, and runtime/authored isolation remain preserved. M1-F remains NOT AUTHORIZED; planning and decisions are authorized separately.
+
+### M1-F planning record (2026-11-11)
+
+M1-F planning is complete. Owner decisions D-M1F-01..08 are approved. The plan covers full Product Spec §7.3 closure, Inspector Runtime Controls, the D-05 impulse button, Playwright/CDP acceptance with compatibility verification, JSON + screenshot evidence, runtime monitor readouts, explicit demo loading, and save/reopen acceptance. Implementation remains NOT AUTHORIZED. Plan: `M1_F_IMPLEMENTATION_PLAN.md`.
 
 ## Dependency map
 
@@ -50,7 +54,7 @@ M1-A (done) → M1-B (done) → M1-C (done) → M1-D (implemented) → M1-E (imp
 - M1-C: APPROVED 2026-11-11 — fixed timestep 1/60 s + simple accumulator (frame delta clamped to 0.25 s), semi-implicit Euler, gravity −9.81 m/s².
 - M1-D: APPROVED 2026-11-11 — D-M1D-01 plane contacts, fully inelastic: dynamic sphere/box vs static infinite plane; positional correction + inbound normal velocity removal; restitution 0, friction 0, no angular response; dynamic-vs-dynamic deferred.
 - M1-E: APPROVED 2026-11-11 and CLOSED 2026-11-11 — D-M1E-01 persistent force in newtons until cleared/Reset/Stop; D-M1E-02 instantaneous momentum impulse in N·s (`delta-v = impulse / mass`); D-M1E-03 Running/Paused acceptance, Editing rejection, dynamic targets only, info/warn/error logging; D-M1E-04 runtime/API only, no UI. Implementation `fe5eae3`, documentation `a6a0aaa`.
-- M1-F: acceptance evidence format. NOT APPROVED / NOT AUTHORIZED.
+- M1-F: decisions D-M1F-01..08 APPROVED 2026-11-11 (full §7.3 closure; Inspector Runtime Controls; D-05 button; Playwright/CDP with compatibility check; JSON + screenshots; Console/lifecycle/position-velocity monitor; explicit demo loading; save/reopen acceptance). Implementation still NOT AUTHORIZED.
 
 ## Technical risks
 

@@ -2,8 +2,8 @@
 
 **Date:** 2026-11-11  
 **Milestone:** M1-F — Wiring, Demo, and Acceptance Evidence  
-**Status:** PLANNING PREPARED — implementation NOT AUTHORIZED  
-**Authorization:** Project Owner authorized M1-E closure and M1-F discovery/planning only. M1-F implementation remains NOT AUTHORIZED.  
+**Status:** PLANNING COMPLETE — Owner decisions D-M1F-01..08 approved; implementation NOT AUTHORIZED  
+**Authorization:** Project Owner authorized M1-E closure, M1-F discovery/planning, and M1-F owner decisions. M1-F implementation remains NOT AUTHORIZED until a separate explicit authorization.  
 **Depends on:** M1-A CLOSED, M1-B CLOSED, M1-C CLOSED, M1-D IMPLEMENTED (pending closure acceptance), M1-E CLOSED
 
 ## 1. Purpose and boundaries
@@ -213,9 +213,20 @@ M1-F is complete only when all of the following pass:
 | Performance at scale | Reuse M1-C measurement approach; no new mandatory numeric target |
 | Accidental physics changes | Keep M1-F changes in UI/integration/tests/docs only |
 
-## 9. Owner decision package (pending)
+## 9. Owner decision package (APPROVED 2026-11-11)
 
-The following decisions are required before M1-F implementation. Recommendations are provided; the Project Owner must approve or reject each.
+The following decisions were approved by the Project Owner on 2026-11-11. They are recorded in `MVP_1_OWNER_DECISIONS.md` as D-M1F-01..D-M1F-08. Recommendations below match the approved decisions.
+
+| ID | Approved decision |
+|---|---|
+| D-M1F-01 | Full Product Spec §7.3 closure |
+| D-M1F-02 | Force/impulse controls in Inspector → Runtime Controls |
+| D-M1F-03 | Implement the D-05 impulse button |
+| D-M1F-04 | Playwright/CDP, with compatibility verification before use |
+| D-M1F-05 | JSON assertions + browser screenshots |
+| D-M1F-06 | Runtime monitor: Console, lifecycle status, selected object position/velocity |
+| D-M1F-07 | Explicit demo-scenario loading; Empty World remains empty |
+| D-M1F-08 | Save/reopen included in browser acceptance |
 
 ### D-M1F-01 — M1-F scope
 

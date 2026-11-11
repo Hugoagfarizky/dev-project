@@ -110,4 +110,4 @@ No further implementation until explicit authorization is granted.
 
 - M1-E status: CLOSED (PASS). Acceptance 29/29, tests 186/186, evidence assertions 16/16, checks PASS.
 - Commits: implementation `fe5eae3`; documentation `a6a0aaa`; closure documentation pending in this increment.
-- M1-F status: PLANNING PREPARED, NOT AUTHORIZED. Planning document: `reports/mvp-1/M1_F_IMPLEMENTATION_PLAN.md`. Owner decision package pending; no implementation performed.
+- M1-F status: PLANNING COMPLETE; Owner decisions D-M1F-01..08 approved 2026-11-11; implementation NOT AUTHORIZED. Planning document: `reports/mvp-1/M1_F_IMPLEMENTATION_PLAN.md`. Browser tooling available: Chrome, Edge, Playwright via npx v1.65.0. No implementation performed.

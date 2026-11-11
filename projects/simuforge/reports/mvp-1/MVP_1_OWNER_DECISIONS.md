@@ -96,3 +96,20 @@ Approved force/impulse semantics:
 - Runtime force/mass/velocity state is never persisted (ADR 0003); authored `project.world` is not mutated.
 
 Scope: this decision authorizes M1-E implementation only. M1-F remains NOT AUTHORIZED. The “not yet decided” list above is preserved as the historical record of 2026-11-10; the force/impulse item is resolved by this addendum.
+
+## Addendum — M1-F owner decisions (2026-11-11)
+
+**Authority:** Project Owner, M1-F planning and readiness authorization. Implementation remains NOT AUTHORIZED until a separate explicit authorization.
+
+| ID | Area | Approved decision |
+|---|---|---|
+| D-M1F-01 | M1-F scope | Full Product Spec §7.3 closure |
+| D-M1F-02 | Force/impulse UI location | Inspector → Runtime Controls |
+| D-M1F-03 | D-05 demo button | Implement the D-05 impulse button |
+| D-M1F-04 | Browser acceptance tooling | Playwright/CDP, with compatibility verification before use |
+| D-M1F-05 | Evidence format | JSON assertions + browser screenshots |
+| D-M1F-06 | Runtime monitor scope | Console, lifecycle status, and selected object position/velocity |
+| D-M1F-07 | Demo scenario loading | Explicit user action; Empty World remains empty |
+| D-M1F-08 | Save/reopen acceptance | Included in browser acceptance |
+
+Scope: these decisions authorize M1-F planning and readiness only. M1-F implementation is still NOT AUTHORIZED. The planning document is `M1_F_IMPLEMENTATION_PLAN.md`.
