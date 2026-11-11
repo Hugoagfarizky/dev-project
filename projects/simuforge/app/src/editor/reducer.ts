@@ -18,7 +18,7 @@ import type { SimulationFailure } from '../runtime/physics.ts';
 import type { RuntimeBodies } from '../runtime/types.ts';
 import type { StudioCommand } from './commands.ts';
 import type { CameraPose, StudioState } from './state.ts';
-import type { EntityType, WorldEntity } from '../world/types.ts';
+import type { EntityType, RigidBodyComponent, WorldEntity } from '../world/types.ts';
 
 export interface ReducerContext {
   idFactory: () => string;
@@ -111,7 +111,8 @@ const STRUCTURAL_COMMANDS = new Set<string>([
   'transform/set',
   'component/add',
   'component/remove',
-  'component/set'
+  'component/set',
+  'demo/load-scenario'
 ]);
 
 function appendRuntimeBlockedLog(state: StudioState): StudioState {
@@ -789,6 +790,92 @@ export function reduceStudioState(
       } catch (error) {
         return appendRuntimeFailureLog(state, toSimulationFailure(error), context, 'paused');
       }
+    }
+
+    case 'demo/load-scenario': {
+      if (state.runtime.status !== 'editing') {
+        return appendRuntimeFailureLog(
+          state,
+          {
+            code: 'DEMO_LOAD_BLOCKED',
+            message: 'Demo scenario can only be loaded while editing.',
+            severity: 'warn'
+          },
+          context,
+          state.runtime.status === 'paused' ? 'paused' : 'paused'
+        );
+      }
+
+      const floorId = context.idFactory();
+      const ballId = context.idFactory();
+      const floorRigidBodyId = context.idFactory();
+      const ballRigidBodyId = context.idFactory();
+
+      const floorEntity: WorldEntity = {
+        id: floorId,
+        name: 'Demo Floor',
+        type: 'plane',
+        transform: {
+          position: { x: 0, y: 0, z: 0 },
+          rotation: { x: 0, y: 0, z: 0, w: 1 },
+          scale: { x: 1, y: 1, z: 1 }
+        },
+        metadata: {},
+        components: [
+          {
+            id: floorRigidBodyId,
+            type: 'rigidBody',
+            enabled: true,
+            mass: 1,
+            useGravity: false,
+            collider: { kind: 'plane', size: { x: 100, y: 1, z: 100 } },
+            velocity: { x: 0, y: 0, z: 0 },
+            angularVelocity: { x: 0, y: 0, z: 0 }
+          } as RigidBodyComponent
+        ]
+      };
+
+      const ballEntity: WorldEntity = {
+        id: ballId,
+        name: 'Demo Ball',
+        type: 'sphere',
+        transform: {
+          position: { x: 0, y: 5, z: 0 },
+          rotation: { x: 0, y: 0, z: 0, w: 1 },
+          scale: { x: 1, y: 1, z: 1 }
+        },
+        metadata: {},
+        components: [
+          {
+            id: ballRigidBodyId,
+            type: 'rigidBody',
+            enabled: true,
+            mass: 1,
+            useGravity: true,
+            collider: { kind: 'sphere', size: 0.5 },
+            velocity: { x: 0, y: 0, z: 0 },
+            angularVelocity: { x: 0, y: 0, z: 0 }
+          } as RigidBodyComponent
+        ]
+      };
+
+      const nextEntities = [...state.project.world.entities, floorEntity, ballEntity];
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          world: { ...state.project.world, entities: nextEntities }
+        },
+        editor: { ...state.editor, selectedEntityId: ballId },
+        logs: [...state.logs, {
+          id: context.idFactory(),
+          timestamp: context.clock(),
+          severity: 'info' as const,
+          source: 'EDITOR' as const,
+          code: 'DEMO_LOADED',
+          message: 'Demo scenario loaded.'
+        }].slice(-500)
+      };
     }
 
     case 'runtime/error': {

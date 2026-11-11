@@ -1,7 +1,7 @@
 # SimuForge — MVP-1 Consolidated Execution Roadmap
 
 **Date:** 2026-11-11  
-**Status:** M1-A, M1-B, M1-C, M1-E CLOSED; M1-D IMPLEMENTED (pending closure acceptance); M1-F PLANNED / NOT AUTHORIZED
+**Status:** MVP-1 CLOSED — M1-A, M1-B, M1-C, M1-D, M1-E, M1-F CLOSED (PASS)
 
 ## MVP-1 objective
 
@@ -14,9 +14,9 @@ Deliver Components & Basic Physics per product spec §7.3: basic component syste
 | M1-A | CLOSED (PASS WITH CONDITIONS) | Component system foundation; residual: unknown component type handling on load |
 | M1-B | CLOSED (PASS) | Runtime state machine + structural-edit gating; audit `M1_B_POST_IMPLEMENTATION_CLOSURE_AUDIT.md` |
 | M1-C | CLOSED (PASS) | Rigid body + gravity + fixed-step integrator; 16/16 criteria, 113/113 tests, evidence `evidence/m1c-trajectory.json`; report `M1_C_IMPLEMENTATION_REPORT.md` |
-| M1-D | IMPLEMENTED (PENDING CLOSURE ACCEPTANCE) | Primitive colliders (sphere/box/plane) + plane-contact response; report `M1_D_IMPLEMENTATION_REPORT.md` |
+| M1-D | CLOSED (PASS) | Primitive colliders (sphere/box/plane) + plane-contact response; 143/143 tests at implementation; evidence `evidence/m1d-contact.json` |
 | M1-E | CLOSED (PASS) | Persistent force + instantaneous impulse + runtime logs; 29/29 criteria, 186/186 tests, 16/16 evidence assertions; evidence `evidence/m1e-force-impulse.json`; implementation `fe5eae3`, documentation `a6a0aaa`; report `M1_E_IMPLEMENTATION_REPORT.md` |
-| M1-F | PLANNING COMPLETE — Owner decisions approved; implementation NOT AUTHORIZED | Wiring, D-05 demo, browser acceptance, and MVP-1 closure; plan `M1_F_IMPLEMENTATION_PLAN.md`; decisions D-M1F-01..08 approved 2026-11-11 |
+| M1-F | CLOSED (PASS) | UI wiring, D-05 demo, runtime monitor, browser acceptance, persistence validation, MVP-1 closure; 13/13 criteria; report `M1_F_IMPLEMENTATION_REPORT.md` |
 
 ### M1-C closure record (2026-11-11)
 

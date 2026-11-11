@@ -1,0 +1,20 @@
+{
+  "milestone": "M1-F",
+  "generatedAt": "2026-11-11T09:05:24.890Z",
+  "browser": "chromium",
+  "assertions": {
+    "appLoaded": true,
+    "demoLoaded": true,
+    "gravityChangedState": true,
+    "positionVisible": true,
+    "impulseButtonWorked": true,
+    "pauseWorked": true,
+    "pauseFrozeProgression": true,
+    "resumeWorked": true,
+    "resetWorked": true,
+    "structuralEditBlocked": true,
+    "saveControlAvailable": true,
+    "consoleVisible": true
+  },
+  "allPassed": true
+}

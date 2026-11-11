@@ -5,6 +5,7 @@ import type { EntityType } from '../../world/types.js';
 import { Button } from '../common/Button';
 import { createPrimitive } from './primitives.js';
 import { TransformSection } from './TransformSection.js';
+import { RuntimeControls } from './RuntimeControls.js';
 
 interface InspectorProps {
   store: StudioStore;
@@ -50,6 +51,7 @@ export function Inspector({ store }: InspectorProps) {
       </section>
 
       <TransformSection entity={selected} store={store} />
+      <RuntimeControls store={store} />
     </div>
   );
 }

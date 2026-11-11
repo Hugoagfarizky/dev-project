@@ -74,3 +74,13 @@ export function selectLogs(state: StudioState): StudioState['logs'] {
 export function selectRuntimeStatus(state: StudioState): StudioState['runtime']['status'] {
   return state.runtime.status;
 }
+
+export function selectRuntimeBodies(state: StudioState): StudioState['runtime']['bodies'] {
+  return state.runtime.bodies;
+}
+
+export function selectSelectedRuntimeBody(state: StudioState): StudioState['runtime']['bodies'][string] | null {
+  const selectedId = state.editor.selectedEntityId;
+  if (selectedId === null) return null;
+  return state.runtime.bodies[selectedId] ?? null;
+}

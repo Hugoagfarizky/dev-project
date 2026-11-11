@@ -31,6 +31,7 @@ export type StudioCommand =
   | { type: 'runtime/apply-force'; entityId: string; force: Vec3 }
   | { type: 'runtime/apply-impulse'; entityId: string; impulse: Vec3 }
   | { type: 'runtime/clear-force'; entityId?: string }
+  | { type: 'demo/load-scenario' }
   | { type: 'runtime/error'; error: AppError }
   | { type: 'log/append'; entry: LogEntry }
   | { type: 'log/clear' };

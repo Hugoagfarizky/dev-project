@@ -11,6 +11,7 @@ import { LayoutStorage } from '../../storage/LayoutStorage.js';
 import { WorldHierarchy } from '../panels/WorldHierarchy.js';
 import { AssetLibrary } from '../panels/AssetLibrary.js';
 import { Inspector } from '../panels/Inspector.js';
+import { RuntimeMonitor } from '../panels/RuntimeMonitor.js';
 import { Dialog } from '../common/Dialog';
 import { Button } from '../common/Button';
 import { useStudioStore } from '../hooks/useStore.js';
@@ -214,6 +215,21 @@ export function StudioShell({ store }: StudioShellProps) {
     URL.revokeObjectURL(url);
   }
 
+  function handleLoadDemoScenario() {
+    store.dispatch({ type: 'demo/load-scenario' });
+  }
+
+  function handleImpulseDemoBall() {
+    const state = store.getSnapshot();
+    const demoBall = state.project.world.entities.find((entity) => entity.name === 'Demo Ball');
+    if (!demoBall) return;
+    store.dispatch({
+      type: 'runtime/apply-impulse',
+      entityId: demoBall.id,
+      impulse: { x: 0, y: 10, z: 0 }
+    });
+  }
+
   const layout = computeLayout({
     width: viewport.width,
     height: viewport.height,
@@ -299,6 +315,8 @@ export function StudioShell({ store }: StudioShellProps) {
         <Button variant="secondary" size="sm" onClick={() => setShowHub(true)}>Project Hub</Button>
         <Button variant="secondary" size="sm" onClick={handleSave}>Save</Button>
         <Button variant="secondary" size="sm" onClick={handleExport}>Export</Button>
+        <Button variant="secondary" size="sm" data-testid="load-demo-scenario" onClick={handleLoadDemoScenario}>Load Demo Scenario</Button>
+        <Button variant="primary" size="sm" data-testid="impulse-demo-ball" onClick={handleImpulseDemoBall}>Impulse Demo Ball</Button>
       </div>
 
       <div
@@ -373,8 +391,8 @@ export function StudioShell({ store }: StudioShellProps) {
             <Inspector store={store} />
           </Panel>
           <Splitter orientation="horizontal" />
-          <Panel title="Monitor" collapsed={collapsed.monitor} onToggle={() => togglePanel('monitor')} summary="Planned">
-            <div className="sf-planned-surface">Planned</div>
+          <Panel title="Monitor" collapsed={collapsed.monitor} onToggle={() => togglePanel('monitor')} summary="Runtime">
+            <RuntimeMonitor store={store} />
           </Panel>
         </div>
       </div>

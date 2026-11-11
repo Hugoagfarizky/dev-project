@@ -72,7 +72,7 @@ export function computeLayout(input: LayoutInput): LayoutResult {
 
   const presetCollapsed: CollapsedPanels = {
     assets: preset !== 'build',
-    monitor: true,
+    monitor: false,
     program: preset !== 'program',
     console: preset !== 'simulate'
   };

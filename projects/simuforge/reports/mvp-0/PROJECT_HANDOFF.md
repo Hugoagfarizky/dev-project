@@ -110,4 +110,14 @@ No further implementation until explicit authorization is granted.
 
 - M1-E status: CLOSED (PASS). Acceptance 29/29, tests 186/186, evidence assertions 16/16, checks PASS.
 - Commits: implementation `fe5eae3`; documentation `a6a0aaa`; closure documentation pending in this increment.
-- M1-F status: PLANNING COMPLETE; Owner decisions D-M1F-01..08 approved 2026-11-11; implementation NOT AUTHORIZED. Planning document: `reports/mvp-1/M1_F_IMPLEMENTATION_PLAN.md`. Browser tooling available: Chrome, Edge, Playwright via npx v1.65.0. No implementation performed.
+- M1-F status: CLOSED (PASS). UI wiring, D-05 demo, runtime monitor, browser acceptance, persistence validation; 13/13 criteria; evidence `reports/mvp-1/evidence/m1f-browser-acceptance.json`.
+
+## M. MVP-1 closure (2026-11-11)
+
+- MVP-1 status: CLOSED (PASS).
+- M1-A, M1-B, M1-C, M1-D, M1-E, and M1-F are CLOSED.
+- All Product Spec §7.3 acceptance criteria have browser-level evidence.
+- Full test suite: 186/186 PASS; browser acceptance: 1/1 PASS.
+- Typecheck, build, boundary, token, and Node checks: PASS.
+- Evidence: `m1c-trajectory.json`, `m1d-contact.json`, `m1e-force-impulse.json`, `m1f-browser-acceptance.json`, plus screenshots.
+- No further MVP-1 implementation is authorized unless a new milestone is approved.

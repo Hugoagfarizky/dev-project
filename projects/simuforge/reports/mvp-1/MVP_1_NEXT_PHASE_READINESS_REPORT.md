@@ -1,7 +1,7 @@
 # SimuForge — MVP-1 Next Phase Readiness Report
 
 **Date:** 2026-11-10  
-**Status:** Historical planning record — current status in §9 (M1-E closed; M1-F planning prepared, not authorized)
+**Status:** MVP-1 CLOSED — M1-A through M1-F CLOSED (PASS)
 
 ## 1. M1-A closure status
 
@@ -56,6 +56,8 @@ Explicit Project Owner authorization for M1-B implementation. No implementation,
 - M1-B: CLOSED (PASS).
 - M1-C: CLOSED (PASS) — 16/16 criteria, 113/113 tests at closure; implementation `ebc8c21`, report update `40342c0` on `origin/main`.
 - M1-D: IMPLEMENTED (pending closure acceptance) — D-M1D-01 plane-contact, fully inelastic collision; 143/143 tests; evidence `evidence/m1d-contact.json`; report `M1_D_IMPLEMENTATION_REPORT.md`.
-- M1-E: CLOSED (PASS) — D-M1E-01..04 persistent force + instantaneous impulse + runtime logs; 29/29 criteria, 186/186 tests, 16/16 evidence assertions; evidence `evidence/m1e-force-impulse.json`; implementation `fe5eae3`, documentation `a6a0aaa`; report `M1_E_IMPLEMENTATION_REPORT.md`.
-- M1-F: PLANNING COMPLETE, DECISIONS APPROVED, NOT AUTHORIZED — planning document `M1_F_IMPLEMENTATION_PLAN.md`; Owner decisions D-M1F-01..08 approved 2026-11-11; browser tooling available (Chrome, Edge, Playwright via npx v1.65.0). Implementation pending explicit authorization.
+- M1-D: CLOSED (PASS) — primitive colliders and plane-contact response; evidence `evidence/m1d-contact.json`.
+- M1-E: CLOSED (PASS) — persistent force + instantaneous impulse + runtime logs; 29/29 criteria; evidence `evidence/m1e-force-impulse.json`.
+- M1-F: CLOSED (PASS) — UI wiring, D-05 demo, runtime monitor, browser acceptance, persistence validation; 13/13 criteria; evidence `evidence/m1f-browser-acceptance.json` + screenshots.
+- MVP-1: CLOSED (PASS) — all Product Spec §7.3 acceptance criteria have browser-level evidence.
 - The historical sections above are preserved; they describe the 2026-11-10 planning state.
