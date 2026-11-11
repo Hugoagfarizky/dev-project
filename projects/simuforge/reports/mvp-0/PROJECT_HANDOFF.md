@@ -120,7 +120,8 @@ No further implementation until explicit authorization is granted.
 - MVP-2 readiness: `reports/mvp-2/MVP2_READINESS_REPORT.md`.
 - MVP-2 owner decision package: `reports/mvp-2/MVP2_OWNER_DECISION_PACKAGE.md`.
 - M2-A status: CLOSED — PASS (Project Owner accepted 2026-11-11). Implementation commit `200e838`.
-- M2-B and later remain NOT STARTED / NOT AUTHORIZED. Next action: Project Owner review and explicit authorization of M2-B.
+- M2-B planning is COMPLETE / PENDING IMPLEMENTATION AUTHORIZATION. Technical design: `reports/mvp-2/M2_B_TECHNICAL_DESIGN.md`; plan: `reports/mvp-2/M2_B_IMPLEMENTATION_PLAN.md`; readiness: `reports/mvp-2/M2_B_READINESS_REPORT.md`.
+- M2-B implementation is NOT AUTHORIZED. M2-C through M2-E remain NOT AUTHORIZED.
 
 ## M. MVP-1 closure (2026-11-11)
 
