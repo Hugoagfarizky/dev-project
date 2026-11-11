@@ -4,7 +4,7 @@
 **Milestone:** M1-D — Collision System  
 **Status:** IMPLEMENTED — all acceptance criteria pass with evidence  
 **Authorization:** Project Owner authorized M1-C closure documentation and M1-D implementation only (M1-E and M1-F remain NOT AUTHORIZED)  
-**Implementation commit:** `<pending>` (recorded by the follow-up hash-update commit)
+**Implementation commit:** `b539306` (implementation + acceptance evidence)
 
 ## 1. M1-C closure status
 
@@ -221,9 +221,9 @@ No MVP-0 source, no root `package-lock.json`, and none of the three pre-existing
 
 | Item | Status |
 |---|---|
-| Implementation commit | `<pending>` |
-| Report hash-update commit | `<pending>` |
-| Push to `origin/main` | `<pending>` |
+| Implementation commit | `b539306` |
+| Report hash-update commit | the follow-up documentation commit containing this update |
+| Push to `origin/main` | after the follow-up documentation commit; verified against remote HEAD |
 
 This table is updated by the follow-up hash-update commit after the implementation commit is created and pushed.
 
