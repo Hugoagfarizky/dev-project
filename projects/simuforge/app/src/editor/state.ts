@@ -1,6 +1,7 @@
 import type { AppError, WorldEntity } from '../world/types.ts';
 import type { ProjectDocument } from '../project/types.ts';
 import type { LogEntry } from '../console/types.ts';
+import type { RuntimeBodies } from '../runtime/types.ts';
 import { createEmptyWorld } from '../world/defaults.ts';
 
 export type GizmoMode = 'translate' | 'rotate' | 'scale';
@@ -23,6 +24,9 @@ export interface RuntimeState {
   status: RuntimeStatus;
   snapshot: RuntimeSnapshot | null;
   lastError: AppError | null;
+  /** Runtime-only physics state; never persisted (ADR 0003). */
+  bodies: RuntimeBodies;
+  accumulatorSeconds: number;
 }
 
 export interface EditorState {
@@ -53,7 +57,9 @@ export function createDefaultRuntimeState(): RuntimeState {
   return {
     status: 'editing',
     snapshot: null,
-    lastError: null
+    lastError: null,
+    bodies: {},
+    accumulatorSeconds: 0
   };
 }
 

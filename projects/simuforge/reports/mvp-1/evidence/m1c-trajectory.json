@@ -1,0 +1,62 @@
+{
+  "milestone": "M1-C",
+  "generatedAt": "2026-11-11T05:12:44.529Z",
+  "scenario": "A sphere with an enabled rigid body at y=5 falls under gravity for 60 fixed steps.",
+  "decisions": {
+    "fixedTimestepSeconds": 0.016666666666666666,
+    "integrator": "semi-implicit Euler",
+    "gravityAccelerationY": -9.81,
+    "maxFrameDeltaSeconds": 0.25,
+    "accumulator": "simple fixed-step accumulator"
+  },
+  "samples": [
+    {
+      "frame": 0,
+      "timeSeconds": 0,
+      "positionY": 5,
+      "velocityY": 0
+    },
+    {
+      "frame": 10,
+      "timeSeconds": 0.166667,
+      "positionY": 4.850125,
+      "velocityY": -1.635
+    },
+    {
+      "frame": 20,
+      "timeSeconds": 0.333333,
+      "positionY": 4.42775,
+      "velocityY": -3.27
+    },
+    {
+      "frame": 30,
+      "timeSeconds": 0.5,
+      "positionY": 3.732875,
+      "velocityY": -4.905
+    },
+    {
+      "frame": 40,
+      "timeSeconds": 0.666667,
+      "positionY": 2.7655,
+      "velocityY": -6.54
+    },
+    {
+      "frame": 50,
+      "timeSeconds": 0.833333,
+      "positionY": 1.525625,
+      "velocityY": -8.175
+    },
+    {
+      "frame": 60,
+      "timeSeconds": 1,
+      "positionY": 0.01325,
+      "velocityY": -9.81
+    }
+  ],
+  "final": {
+    "frame": 60,
+    "positionY": 0.01325,
+    "velocityY": -9.81,
+    "authoredPositionY": 5
+  }
+}

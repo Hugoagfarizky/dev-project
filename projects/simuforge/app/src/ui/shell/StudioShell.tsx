@@ -15,6 +15,7 @@ import { Dialog } from '../common/Dialog';
 import { Button } from '../common/Button';
 import { useStudioStore } from '../hooks/useStore.js';
 import { useStudioShortcuts } from '../hooks/useStudioShortcuts.js';
+import { useSimulationLoop } from '../hooks/useSimulationLoop.js';
 import { selectEntities, selectSelectedEntityId, selectGridVisible, selectLogs, selectRuntimeStatus } from '../../editor/selectors.js';
 import { serializeProjectDocument } from '../../project/serialization.js';
 import type { ProjectDocument } from '../../project/types.js';
@@ -54,6 +55,7 @@ export function StudioShell({ store }: StudioShellProps) {
   const gridVisible = useStudioStore(store, selectGridVisible);
   const logs = useStudioStore(store, selectLogs);
   const runtimeStatus = useStudioStore(store, selectRuntimeStatus);
+  useSimulationLoop(store, runtimeStatus === 'running');
   const autoExpandedRef = useRef(false);
   const rendererRef = useRef<import('../../renderer/RendererPort.js').RendererPort | null>(null);
   const selectedEntity = selectedId === null

@@ -9,6 +9,24 @@ export function selectEntities(state: StudioState): readonly WorldEntity[] {
   return state.project.world.entities;
 }
 
+/**
+ * World as it should be rendered. While running/paused, runtime body transforms
+ * overlay the authored transforms so simulation never mutates authored state.
+ */
+export function selectRenderWorld(state: StudioState): WorldDocument {
+  const bodies = state.runtime.bodies;
+  if (state.runtime.status === 'editing' || Object.keys(bodies).length === 0) {
+    return state.project.world;
+  }
+  return {
+    ...state.project.world,
+    entities: state.project.world.entities.map((entity) => {
+      const body = bodies[entity.id];
+      return body ? { ...entity, transform: body.transform } : entity;
+    })
+  };
+}
+
 export function selectSelectedEntityId(state: StudioState): string | null {
   return state.editor.selectedEntityId;
 }

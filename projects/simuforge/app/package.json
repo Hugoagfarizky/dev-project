@@ -8,12 +8,13 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test test/smoke.test.mjs test/layout/computeLayout.test.ts test/world/transform.test.ts test/world/validation.test.ts test/world/serialization.test.ts test/project/project.test.ts test/editor/reducer.test.ts test/editor/store.test.ts test/editor/runtime.test.ts test/console/logs.test.ts",
+    "test": "node --experimental-strip-types --test test/smoke.test.mjs test/layout/computeLayout.test.ts test/world/transform.test.ts test/world/validation.test.ts test/world/serialization.test.ts test/project/project.test.ts test/editor/reducer.test.ts test/editor/store.test.ts test/editor/runtime.test.ts test/runtime/physics.test.ts test/editor/runtime-physics.test.ts test/console/logs.test.ts",
     "check:node": "node scripts/check-node.mjs",
     "check:boundaries": "node scripts/check-boundaries.mjs",
     "check:tokens": "node scripts/check-tokens.mjs",
     "check": "npm run check:node && npm run typecheck && npm run check:boundaries && npm run check:tokens",
-    "notices": "node scripts/generate-notices.mjs"
+    "notices": "node scripts/generate-notices.mjs",
+    "evidence:m1c": "node --experimental-strip-types scripts/m1c-trajectory-evidence.mjs"
   },
   "dependencies": {
     "@babylonjs/core": "9.32.1",

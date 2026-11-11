@@ -27,6 +27,7 @@ export type StudioCommand =
   | { type: 'runtime/resume' }
   | { type: 'runtime/stop' }
   | { type: 'runtime/reset' }
+  | { type: 'runtime/step'; deltaSeconds: number }
   | { type: 'runtime/error'; error: AppError }
   | { type: 'log/append'; entry: LogEntry }
   | { type: 'log/clear' };

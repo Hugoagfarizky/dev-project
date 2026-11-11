@@ -45,3 +45,17 @@ These remain PROPOSED in the technical plan and require further design/authoriza
 ## Statement
 
 MVP-0 remains ACCEPTED and CLOSED. MVP-1 implementation is NOT AUTHORIZED. Planning documents updated to reflect APPROVED status for D-01..D-06.
+
+## Addendum — M1-C technical decisions (2026-11-11)
+
+**Authority:** Project Owner, M1-C implementation authorization.
+
+| ID | Area | Approved decision |
+|---|---|---|
+| D-M1C-01 | Fixed timestep | 1/60 s fixed step with a simple accumulator; frame delta clamped to 0.25 s |
+| D-M1C-02 | Integrator | Semi-implicit (symplectic) Euler: velocity first, then position |
+| D-M1C-03 | Gravity | −9.81 m/s² on the Y axis |
+
+Scope: these decisions authorize M1-C implementation only. M1-D, M1-E, and M1-F remain NOT AUTHORIZED.
+
+The “not yet decided” list above is preserved as the historical record of 2026-11-10; the M1-C integrator/timestep items are resolved by this addendum.

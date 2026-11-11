@@ -56,10 +56,25 @@
 
 No further implementation until explicit authorization is granted.
 
-## H. MVP-1 planning status (2026-11-10)
+> Superseded for M1-C only: the Project Owner authorized M1-C implementation on 2026-11-11 (see §H–§I). M1-D, M1-E, and M1-F still require explicit authorization.
+
+## H. MVP-1 status (updated 2026-11-11)
 
 - M1-A: CLOSED (PASS WITH CONDITIONS). Residual: unknown component type handling on load (OPEN/PROPOSED).
-- M1-B..M1-F: PLANNED, NOT AUTHORIZED.
-- Owner decisions D-01..D-06 APPROVED.
-- M1-B decision brief and technical plan prepared; six Owner decisions pending.
-- See `projects/simuforge/reports/mvp-1/` for all planning documents.
+- M1-B: CLOSED (PASS). Runtime state machine + structural-edit gating.
+- M1-C: IMPLEMENTED (pending post-implementation closure audit). Rigid body + gravity + fixed-step integrator.
+- M1-D..M1-F: PLANNED, NOT AUTHORIZED.
+- Owner decisions D-01..D-06 APPROVED; M1-C technical decisions D-M1C-01..D-M1C-03 APPROVED 2026-11-11.
+- See `projects/simuforge/reports/mvp-1/` for all planning, implementation, and audit documents.
+
+## I. M1-C implementation snapshot (2026-11-11)
+
+- Scope: rigid body + gravity + fixed-step integrator only.
+- Decisions: fixed timestep 1/60 s with a simple accumulator (frame delta clamped to 0.25 s), semi-implicit Euler, gravity −9.81 m/s².
+- Implementation: pure `app/src/runtime/**` physics; runtime-only bodies in `StudioState.runtime`; `runtime/step` reducer command; `selectRenderWorld` render overlay; `useSimulationLoop` UI driver.
+- Runtime/authored isolation preserved: authored `project.world` is never mutated while running; runtime state is never persisted (ADR 0003).
+- Tests: 113/113 pass (87 M1-B baseline + 26 new).
+- Validation: typecheck, production build, boundary, token, and Node 24.22.2 checks all pass.
+- Evidence: `reports/mvp-1/evidence/m1c-trajectory.json`; report `reports/mvp-1/M1_C_IMPLEMENTATION_REPORT.md`.
+- Not implemented: M1-D collision, M1-E force/impulse/logs, M1-F full wiring/acceptance evidence. All remain NOT AUTHORIZED.
+- Note: unapproved uncommitted physics scratch WIP found at pre-flight is preserved on local branch `wip/m1c-physics-scratch` (`a566c98`); it is not part of `main` and was not pushed.

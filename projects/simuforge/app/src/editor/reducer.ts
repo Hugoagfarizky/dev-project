@@ -1,7 +1,8 @@
 import { createWorldEntity } from '../world/defaults.ts';
 import { validateTransform, validateComponent } from '../world/validation.ts';
 import { transformsEqual } from '../world/transform.ts';
-import { createEmptyProject } from './state.ts';
+import { createDefaultRuntimeState, createEmptyProject } from './state.ts';
+import { advanceSimulation, createRuntimeBodies } from '../runtime/physics.ts';
 import type { StudioCommand } from './commands.ts';
 import type { CameraPose, StudioState } from './state.ts';
 import type { EntityType, WorldEntity } from '../world/types.ts';
@@ -78,6 +79,18 @@ function replaceEntity(
   return entities.map((entity) => (entity.id === id ? update(entity) : entity));
 }
 
+function cloneEntity(entity: WorldEntity): WorldEntity {
+  return {
+    ...entity,
+    transform: {
+      position: { ...entity.transform.position },
+      rotation: { ...entity.transform.rotation },
+      scale: { ...entity.transform.scale }
+    },
+    components: entity.components ? entity.components.map((component) => ({ ...component })) : []
+  };
+}
+
 const STRUCTURAL_COMMANDS = new Set<string>([
   'entity/create',
   'entity/delete',
@@ -135,7 +148,7 @@ export function reduceStudioState(
           lastError: null
         },
         logs: [...state.logs],
-        runtime: { status: 'editing', snapshot: null, lastError: null }
+        runtime: createDefaultRuntimeState()
       };
     }
 
@@ -177,7 +190,7 @@ export function reduceStudioState(
           lastError: null
         },
         logs: [...state.logs],
-        runtime: { status: 'editing', snapshot: null, lastError: null }
+        runtime: createDefaultRuntimeState()
       };
     }
 
@@ -480,10 +493,16 @@ export function reduceStudioState(
 
     case 'runtime/play': {
       if (state.runtime.status === 'editing') {
-        const snapshot = { entities: state.project.world.entities.map((e) => ({ ...e, transform: { position: { ...e.transform.position }, rotation: { ...e.transform.rotation }, scale: { ...e.transform.scale } }, components: e.components ? e.components.map((c) => ({ ...c })) : [] })) };
+        const snapshot = { entities: state.project.world.entities.map(cloneEntity) };
         return {
           ...state,
-          runtime: { status: 'running', snapshot, lastError: null }
+          runtime: {
+            status: 'running',
+            snapshot,
+            lastError: null,
+            bodies: createRuntimeBodies(snapshot.entities),
+            accumulatorSeconds: 0
+          }
         };
       }
       if (state.runtime.status === 'paused') {
@@ -522,7 +541,7 @@ export function reduceStudioState(
       // Reset before leaving runtime
       let next = state;
       if (state.runtime.snapshot) {
-        const restored = state.runtime.snapshot.entities.map((e) => ({ ...e, transform: { position: { ...e.transform.position }, rotation: { ...e.transform.rotation }, scale: { ...e.transform.scale } }, components: e.components ? e.components.map((c) => ({ ...c })) : [] }));
+        const restored = state.runtime.snapshot.entities.map(cloneEntity);
         next = {
           ...state,
           project: {
@@ -533,7 +552,7 @@ export function reduceStudioState(
       }
       return {
         ...next,
-        runtime: { status: 'editing', snapshot: null, lastError: null }
+        runtime: createDefaultRuntimeState()
       };
     }
 
@@ -541,14 +560,43 @@ export function reduceStudioState(
       if (state.runtime.status === 'editing' || !state.runtime.snapshot) {
         return state;
       }
-      const restored = state.runtime.snapshot.entities.map((e) => ({ ...e, transform: { position: { ...e.transform.position }, rotation: { ...e.transform.rotation }, scale: { ...e.transform.scale } }, components: e.components ? e.components.map((c) => ({ ...c })) : [] }));
+      const restored = state.runtime.snapshot.entities.map(cloneEntity);
       return {
         ...state,
         project: {
           ...state.project,
           world: { ...state.project.world, entities: restored }
         },
-        runtime: { ...state.runtime }
+        runtime: {
+          ...state.runtime,
+          bodies: createRuntimeBodies(state.runtime.snapshot.entities),
+          accumulatorSeconds: 0
+        }
+      };
+    }
+
+    case 'runtime/step': {
+      if (state.runtime.status !== 'running') {
+        return state;
+      }
+      if (Object.keys(state.runtime.bodies).length === 0) {
+        return state;
+      }
+      const advance = advanceSimulation(
+        state.runtime.bodies,
+        state.runtime.accumulatorSeconds,
+        command.deltaSeconds
+      );
+      if (advance.steps === 0 && advance.accumulatorSeconds === state.runtime.accumulatorSeconds) {
+        return state;
+      }
+      return {
+        ...state,
+        runtime: {
+          ...state.runtime,
+          bodies: advance.bodies,
+          accumulatorSeconds: advance.accumulatorSeconds
+        }
       };
     }
 
