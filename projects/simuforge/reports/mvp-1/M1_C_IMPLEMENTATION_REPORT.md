@@ -4,7 +4,7 @@
 **Milestone:** M1-C — Rigid Body + Gravity + Integrator  
 **Status:** IMPLEMENTED — all acceptance criteria pass with evidence; pending post-implementation closure audit / Owner acceptance  
 **Authorization:** Project Owner authorized M1-C implementation only (M1-D, M1-E, M1-F remain NOT AUTHORIZED)  
-**Commit:** (recorded after commit)
+**Commit:** `ebc8c21` (implementation commit)
 
 ## 1. Scope and authorization
 
