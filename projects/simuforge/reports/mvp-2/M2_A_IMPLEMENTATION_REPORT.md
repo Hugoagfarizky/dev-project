@@ -4,7 +4,7 @@
 **Milestone:** M2-A — Graph Data Model and Validation  
 **Status:** IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE  
 **Authorization:** Project Owner authorized M2-A implementation only (M2-B and later remain NOT AUTHORIZED)  
-**Implementation commit:** pending; recorded in the follow-up documentation commit
+**Implementation commit:** `200e838` (implementation + validation)
 
 ## 1. Scope
 
