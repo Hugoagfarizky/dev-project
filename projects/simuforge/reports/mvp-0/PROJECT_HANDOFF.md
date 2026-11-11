@@ -112,6 +112,15 @@ No further implementation until explicit authorization is granted.
 - Commits: implementation `fe5eae3`; documentation `a6a0aaa`; closure documentation pending in this increment.
 - M1-F status: CLOSED (PASS). UI wiring, D-05 demo, runtime monitor, browser acceptance, persistence validation; 13/13 criteria; evidence `reports/mvp-1/evidence/m1f-browser-acceptance.json`.
 
+## N. Post-MVP-1 review and MVP-2 planning (2026-11-11)
+
+- Post-MVP-1 review: `reports/mvp-2/POST_MVP1_REVIEW.md`.
+- MVP-2 scope proposal: `reports/mvp-2/MVP2_PRODUCT_SCOPE_PROPOSAL.md`.
+- MVP-2 roadmap: `reports/mvp-2/MVP2_CONSOLIDATED_ROADMAP.md`.
+- MVP-2 readiness: `reports/mvp-2/MVP2_READINESS_REPORT.md`.
+- MVP-2 owner decision package: `reports/mvp-2/MVP2_OWNER_DECISION_PACKAGE.md`.
+- MVP-2 implementation is NOT AUTHORIZED. Awaiting Project Owner decisions.
+
 ## M. MVP-1 closure (2026-11-11)
 
 - MVP-1 status: CLOSED (PASS).
