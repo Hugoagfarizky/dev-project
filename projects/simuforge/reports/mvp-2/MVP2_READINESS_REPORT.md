@@ -1,7 +1,7 @@
 # SimuForge — MVP-2 Readiness Report
 
 **Date:** 2026-11-11  
-**Status:** PLANNING COMPLETE — APPROVED; implementation NOT AUTHORIZED  
+**Status:** M2-A CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-11); M2-B NOT STARTED / NOT AUTHORIZED  
 **Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`
 
 ## 1. Decision status
@@ -24,6 +24,6 @@ All eight MVP-2 owner decisions D-M2-01 through D-M2-08 are APPROVED and recorde
 
 ## 4. Final readiness status
 
-MVP-2 planning and decision gates are complete. Architecture and dependency decisions are recorded. The milestone roadmap is ready for implementation authorization.
+M2-A is CLOSED — PASS (Project Owner accepted, 2026-11-11). Implementation commit `200e838`; pre-closure documentation commit `6a4de87`.
 
-MVP-2 implementation remains NOT AUTHORIZED. M2-A has NOT STARTED.
+M2-B is the next planned milestone, but it is NOT STARTED and NOT AUTHORIZED. No implementation, UI, execution runtime, persistence integration, or demo work may begin until explicit Project Owner authorization.

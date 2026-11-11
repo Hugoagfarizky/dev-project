@@ -2,9 +2,12 @@
 
 **Date:** 2026-11-11  
 **Milestone:** M2-A — Graph Data Model and Validation  
-**Status:** IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE  
+**Status:** CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-11)  
 **Authorization:** Project Owner authorized M2-A implementation only (M2-B and later remain NOT AUTHORIZED)  
-**Implementation commit:** `200e838` (implementation + validation)
+**Implementation commit:** `200e838` (implementation + validation)  
+**Official acceptance:** Project Owner accepted M2-A on 2026-11-11. Final status: CLOSED — PASS.  
+**Accepted implementation commit:** `200e838`  
+**Pre-closure documentation commit:** `6a4de87490a82e6d970c9682d61e5c1dabad9ec0`
 
 ## 1. Scope
 

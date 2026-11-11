@@ -1,7 +1,7 @@
 # SimuForge — MVP-2 Consolidated Roadmap
 
 **Date:** 2026-11-11  
-**Status:** M2-A IMPLEMENTED (ready for Owner acceptance); M2-B..M2-E NOT AUTHORIZED  
+**Status:** M2-A CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-11); M2-B..M2-E NOT STARTED / NOT AUTHORIZED  
 **Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`
 
 ## 1. Objective
@@ -10,7 +10,7 @@ Deliver Visual Scripting (Product Spec §7.4) as a verifiable increment on top o
 
 ## 2. Approved milestones
 
-### M2-A — Graph data model and validation (IMPLEMENTED)
+### M2-A — Graph data model and validation (CLOSED — PASS)
 - Implementation report: `M2_A_IMPLEMENTATION_REPORT.md`
 - Tests: 12 new graph tests; full suite 198/198 PASS
 - Scope: canonical graph schema, nodes, connections, object references, serialization, validation.
