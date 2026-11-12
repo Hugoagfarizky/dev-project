@@ -33,8 +33,9 @@ export function NodePalette({ store }: NodePaletteProps) {
       nodes: [
         ...currentGraph.nodes,
         createCanonicalNode(type, crypto.randomUUID(), {
-          x: 80 + currentGraph.nodes.length * 40,
-          y: 80 + currentGraph.nodes.length * 40
+          // Lay new nodes out on a grid that leaves a gap between cards.
+          x: 80 + (currentGraph.nodes.length % 3) * 280,
+          y: 80 + Math.floor(currentGraph.nodes.length / 3) * 180
         })
       ]
     };

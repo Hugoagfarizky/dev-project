@@ -8,6 +8,7 @@ import {
   serializeGraphDocument,
   parseGraphDocument
 } from '../../src/graph/serialization.ts';
+import { getNodePortDefinitions } from '../../src/graph/nodes.ts';
 import type { Graph, GraphValidationContext } from '../../src/graph/types.ts';
 
 const context: GraphValidationContext = {
@@ -158,6 +159,76 @@ test('cycles are rejected', () => {
   }), context);
   assert.equal(result.valid, false);
   assert.ok(result.diagnostics.some((d) => d.code === GRAPH_DIAGNOSTIC_CODES.UNSUPPORTED_CYCLE));
+});
+
+test('connection endpoints and ports are validated', () => {
+  const missingSource = validateGraph(graph({
+    nodes: [node('b', 'applyForce', { kind: 'applyForce', targetEntityId: 'ball-1', force: { x: 0, y: 1, z: 0 } })],
+    edges: [edge('e1', 'missing', 'out', 'b', 'in')]
+  }), context);
+  assert.equal(missingSource.valid, false);
+  assert.ok(missingSource.diagnostics.some((d) => d.code === GRAPH_DIAGNOSTIC_CODES.MISSING_SOURCE_NODE));
+
+  const missingSourcePort = validateGraph(graph({
+    nodes: [
+      node('a', 'onStart', { kind: 'onStart' }),
+      node('b', 'applyForce', { kind: 'applyForce', targetEntityId: 'ball-1', force: { x: 0, y: 1, z: 0 } })
+    ],
+    edges: [edge('e1', 'a', 'nope', 'b', 'in')]
+  }), context);
+  assert.equal(missingSourcePort.valid, false);
+  assert.ok(missingSourcePort.diagnostics.some((d) => d.code === GRAPH_DIAGNOSTIC_CODES.MISSING_SOURCE_PORT));
+
+  const missingTargetPort = validateGraph(graph({
+    nodes: [
+      node('a', 'onStart', { kind: 'onStart' }),
+      node('b', 'applyForce', { kind: 'applyForce', targetEntityId: 'ball-1', force: { x: 0, y: 1, z: 0 } })
+    ],
+    edges: [edge('e1', 'a', 'out', 'b', 'nope')]
+  }), context);
+  assert.equal(missingTargetPort.valid, false);
+  assert.ok(missingTargetPort.diagnostics.some((d) => d.code === GRAPH_DIAGNOSTIC_CODES.MISSING_TARGET_PORT));
+
+  const sourceDirection = validateGraph(graph({
+    nodes: [
+      node('a', 'onStart', { kind: 'onStart' }),
+      node('b', 'applyForce', { kind: 'applyForce', targetEntityId: 'ball-1', force: { x: 0, y: 1, z: 0 } })
+    ],
+    edges: [edge('e1', 'b', 'in', 'b', 'in')]
+  }), context);
+  assert.equal(sourceDirection.valid, false);
+  assert.ok(sourceDirection.diagnostics.some((d) => d.code === GRAPH_DIAGNOSTIC_CODES.PORT_DIRECTION_MISMATCH));
+});
+
+test('self connections are rejected as unsupported cycles', () => {
+  const result = validateGraph(graph({
+    nodes: [node('a', 'applyForce', { kind: 'applyForce', targetEntityId: 'ball-1', force: { x: 0, y: 1, z: 0 } })],
+    edges: [edge('e1', 'a', 'out', 'a', 'in')]
+  }), context);
+  assert.equal(result.valid, false);
+  assert.ok(result.diagnostics.some((d) => d.code === GRAPH_DIAGNOSTIC_CODES.UNSUPPORTED_CYCLE));
+});
+
+test('node-specific connection compatibility is enforced through target validation', () => {
+  const forceOnPlane = validateGraph(graph({
+    nodes: [node('a', 'applyForce', { kind: 'applyForce', targetEntityId: 'floor-1', force: { x: 0, y: 1, z: 0 } })]
+  }), context);
+  assert.equal(forceOnPlane.valid, false);
+  assert.ok(forceOnPlane.diagnostics.some((d) => d.code === GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_ENTITY));
+
+  const contactOnStaticPlane = validateGraph(graph({
+    nodes: [node('a', 'onPlaneContact', { kind: 'onPlaneContact', targetEntityId: 'floor-1' })]
+  }), context);
+  assert.equal(contactOnStaticPlane.valid, true);
+});
+
+test('all approved node ports use the execution kind', () => {
+  const types = ['onStart', 'manualTrigger', 'onPlaneContact', 'applyForce', 'applyImpulse', 'clearForce'] as const;
+  for (const type of types) {
+    for (const port of getNodePortDefinitions(type)) {
+      assert.equal(port.kind, 'execution');
+    }
+  }
 });
 
 test('serialization round trips a valid graph', () => {

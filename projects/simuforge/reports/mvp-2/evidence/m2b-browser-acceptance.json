@@ -1,12 +1,149 @@
 {
   "milestone": "M2-B",
-  "generatedAt": "2026-11-11T13:33:54.714Z",
-  "browser": "chromium",
-  "assertions": {
-    "programWorkspaceOpened": true,
-    "paletteHasSixNodes": true,
-    "nodesCreated": true,
-    "inspectorVisible": true,
-    "allPassed": true
-  }
+  "generatedAt": "2026-11-12T06:39:35.164Z",
+  "browser": "Chromium 158.0.8127.18",
+  "scenarios": [
+    {
+      "name": "empty graph state and six-node palette",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "paletteHasSixNodes": true,
+        "emptyStateVisible": true,
+        "noGraphNodeSelected": true,
+        "noDiagnosticsOnEmptyGraph": true,
+        "firstNodeAdded": true,
+        "emptyStateCleared": true,
+        "noStaleSelection": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2b-empty-graph.png"
+      ]
+    },
+    {
+      "name": "direct selection, movement, and deletion with connected edges",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "directNodeSelection": true,
+        "selectedStateVisible": true,
+        "nodeMoved": true,
+        "movedPositionPersists": true,
+        "edgeCreatedBeforeDelete": true,
+        "nodeDeleted": true,
+        "connectedEdgeRemoved": true,
+        "selectionClearedAfterDelete": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2b-node-selected.png",
+        "reports/mvp-2/evidence/screenshots/m2b-node-moved.png",
+        "reports/mvp-2/evidence/screenshots/m2b-node-deleted.png"
+      ]
+    },
+    {
+      "name": "connection, canonical persistence, disconnection, and invalid duplicate",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "validConnectionCreated": true,
+        "connectionPersistsAcrossRebuild": true,
+        "edgeDisconnected": true,
+        "disconnectionPersistsAcrossRebuild": true,
+        "duplicateConnectionReported": true,
+        "duplicateConnectionNotAccepted": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2b-connected-graph.png",
+        "reports/mvp-2/evidence/screenshots/m2b-invalid-connection.png"
+      ]
+    },
+    {
+      "name": "inspector configuration editing against a demo entity",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "demoEntityIdAvailable": true,
+        "rendererReflectsTarget": true,
+        "rendererReflectsForce": true,
+        "noTargetDiagnosticAfterEdit": true,
+        "targetPersistsInCanonicalGraph": true,
+        "editedForcePersists": true,
+        "unrelatedForceFieldsIntact": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2b-inspector-editing.png"
+      ]
+    },
+    {
+      "name": "validation diagnostics update and clear",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "missingTargetDiagnosticShown": true,
+        "diagnosticSeverityShown": true,
+        "diagnosticMessageShown": true,
+        "diagnosticsUpdateAfterEdit": true,
+        "updatedMessageShown": true,
+        "diagnosticsCleared": true,
+        "emptyStateRestored": true,
+        "selectionCleared": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2b-validation.png"
+      ]
+    },
+    {
+      "name": "responsive layout at 1024x640 and 1440x900",
+      "status": "passed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertions": {
+        "1024x640PaletteVisible": true,
+        "1024x640CanvasVisible": true,
+        "1024x640InspectorVisible": true,
+        "1024x640DiagnosticsVisible": true,
+        "1024x640PaletteButtonsVisible": true,
+        "1024x640CanvasUsableHeight": true,
+        "1024x640DiagnosticsBelowCanvas": true,
+        "1024x640PaletteDoesNotOverlapCanvas": true,
+        "1024x640InspectorDoesNotOverlapCanvas": true,
+        "1024x640LayoutFitsViewport": true,
+        "1024x640DiagnosticsReadable": true,
+        "1440x900PaletteVisible": true,
+        "1440x900CanvasVisible": true,
+        "1440x900InspectorVisible": true,
+        "1440x900DiagnosticsVisible": true,
+        "1440x900PaletteButtonsVisible": true,
+        "1440x900CanvasUsableHeight": true,
+        "1440x900DiagnosticsBelowCanvas": true,
+        "1440x900PaletteDoesNotOverlapCanvas": true,
+        "1440x900InspectorDoesNotOverlapCanvas": true,
+        "1440x900LayoutFitsViewport": true,
+        "1440x900DiagnosticsReadable": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2b-responsive-1024x640.png",
+        "reports/mvp-2/evidence/screenshots/m2b-responsive-1440x900.png",
+        "reports/mvp-2/evidence/screenshots/m2b-graph-editor.png"
+      ]
+    }
+  ],
+  "allPassed": true
 }

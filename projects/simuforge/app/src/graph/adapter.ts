@@ -12,13 +12,15 @@ export type GraphEditorEdge = Edge;
 
 export function toReactFlowNodes(
   graph: Graph | null | undefined,
-  diagnostics: GraphDiagnostic[] = []
+  diagnostics: GraphDiagnostic[] = [],
+  selectedNodeId: string | null = null
 ): GraphEditorNode[] {
   if (!graph) return [];
   return graph.nodes.map((node) => ({
     id: node.id,
     type: 'default',
     position: node.position ?? { x: 0, y: 0 },
+    selected: node.id === selectedNodeId,
     data: {
       node,
       diagnostics: diagnostics.filter((diagnostic) => diagnostic.nodeId === node.id)

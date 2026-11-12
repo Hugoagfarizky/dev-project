@@ -1000,3 +1000,181 @@ select:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* M2-B graph editor */
+
+.sf-graph-panel .sf-panel-body {
+  display: flex;
+  overflow: hidden;
+  padding: var(--sf-space-1-5);
+}
+
+.sf-graph-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sf-space-1-5);
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sf-graph-palette {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: var(--sf-space-1);
+}
+
+.sf-graph-editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid var(--sf-border-subtle);
+  border-radius: var(--sf-radius-sm);
+  background: var(--sf-bg-canvas);
+  overflow: hidden;
+}
+
+.sf-graph-canvas {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sf-graph-empty {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  padding: var(--sf-space-4);
+  color: var(--sf-text-tertiary);
+  font-size: var(--sf-text-sm);
+  text-align: center;
+  pointer-events: none;
+}
+
+.sf-graph-diagnostics {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 50%;
+  padding: var(--sf-space-1) var(--sf-space-2);
+  overflow: auto;
+  border-top: 1px solid var(--sf-border-strong);
+  background: var(--sf-bg-panel);
+  font-size: var(--sf-text-xs);
+}
+
+.sf-graph-diagnostic {
+  color: var(--sf-text-secondary);
+}
+
+.sf-graph-diagnostic-error {
+  color: var(--sf-danger);
+}
+
+.sf-graph-diagnostic-warning {
+  color: var(--sf-warning);
+}
+
+.sf-graph-node {
+  min-width: 150px;
+  max-width: 220px;
+  padding: var(--sf-space-2);
+  border: 1px solid var(--sf-border-strong);
+  border-radius: var(--sf-radius-md);
+  background: var(--sf-bg-raised);
+  color: var(--sf-text-primary);
+  font-size: var(--sf-text-xs);
+  box-shadow: var(--sf-elevation-1);
+}
+
+.sf-graph-node-selected {
+  border-color: var(--sf-accent);
+  box-shadow: 0 0 0 2px rgba(240, 138, 75, 0.35);
+}
+
+.sf-graph-node-error {
+  border-color: var(--sf-danger);
+}
+
+.sf-graph-node-title {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.sf-graph-node-id {
+  overflow: hidden;
+  color: var(--sf-text-tertiary);
+  font-family: var(--sf-font-mono);
+  font-size: var(--sf-text-2xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sf-graph-node-config {
+  margin-top: 2px;
+  color: var(--sf-text-secondary);
+}
+
+.sf-graph-node-diagnostic {
+  margin-top: 2px;
+  color: var(--sf-danger);
+  font-size: var(--sf-text-2xs);
+}
+
+.sf-graph-inspector-empty {
+  color: var(--sf-text-tertiary);
+  font-size: var(--sf-text-sm);
+}
+
+/* React Flow ships a white card for the default node wrapper. The custom
+   renderer owns every node visual, so the wrapper must stay inert. */
+.sf-graph-editor .react-flow__node-default {
+  width: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font-size: inherit;
+  text-align: left;
+}
+
+.sf-graph-editor .react-flow__handle {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--sf-border-strong);
+  background: var(--sf-bg-panel);
+  z-index: 3;
+}
+
+/* Larger invisible hit area so the handles stay easy to grab at low zoom. */
+.sf-graph-editor .react-flow__handle::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+}
+
+.sf-graph-editor .react-flow__handle.source {
+  background: var(--sf-accent);
+}
+
+.sf-graph-editor .react-flow__controls-button {
+  border-bottom: 1px solid var(--sf-border-subtle);
+  background: var(--sf-bg-raised);
+  color: var(--sf-text-primary);
+  fill: var(--sf-text-primary);
+}
+
+.sf-graph-editor .react-flow__controls-button:hover {
+  background: var(--sf-bg-hover);
+}
