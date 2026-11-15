@@ -266,3 +266,27 @@ No further implementation until explicit authorization is granted.
 - M2-D closed. M2-E remains NOT STARTED / NOT AUTHORIZED. M2-E carry-forward issue (`parseGraphDocument` validates with `{ entities: [] }`) unchanged.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
 - Next required action: prepare M2-E planning/readiness work only after separate Project Owner authorization. No M2-E implementation may begin before then.
+
+## T. M2-E technical review and readiness planning (2026-11-16)
+
+- M2-E status: PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION.
+- Baseline: `main` @ `13242e33038f74729bf39dc4173b9da0f3a03f77` (M2-D CLOSED — PASS).
+- Planning documents: `reports/mvp-2/M2_E_TECHNICAL_REVIEW.md`; `reports/mvp-2/M2_E_OWNER_DECISION_PACKAGE.md` (D-M2E-01..D-M2E-05 PENDING — PROJECT OWNER).
+- Scope: persist canonical graph in project document; save/reopen round-trip; dirty tracking; invalid-document recovery; full regression; final browser acceptance and evidence; MVP-2 closure.
+- M2-E carry-forward issue: `parseGraphDocument` validates with `{ entities: [] }` (to be fixed in M2-E).
+- Readiness verdict: READY FOR OWNER DECISIONS. Implementation NOT AUTHORIZED.
+- Milestone register (current):
+
+| Milestone | Official status |
+|---|---|
+| MVP-0 | CLOSED — PASS |
+| MVP-1 | CLOSED — PASS |
+| M2-A | CLOSED — PASS |
+| M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-D | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-E | PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION |
+
+- M2-E implementation remains NOT AUTHORIZED. M2-E carry-forward issue unchanged.
+- Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
+- Next required action: Project Owner reviews D-M2E-01..D-M2E-05 and grants separate explicit M2-E implementation authorization. No M2-E implementation may begin before then.

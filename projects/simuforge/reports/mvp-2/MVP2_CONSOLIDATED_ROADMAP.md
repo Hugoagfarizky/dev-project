@@ -79,9 +79,13 @@ Deliver Visual Scripting (Product Spec §7.4) as a verifiable increment on top o
 - Implementation: COMPLETE (2026-11-15). Full suite 250/250 PASS; M2-D browser 5/5 PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7.
 - Readiness verdict: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED. Implementation authorized and completed. M2-E remains NOT STARTED / NOT AUTHORIZED.
 
-### M2-E — Persistence, regression, and closure (NOT STARTED / NOT AUTHORIZED)
-- Scope: save/reopen validation, full regression, closure documentation.
-- Depends on: M2-D.
+### M2-E — Persistence, regression, and closure (PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION)
+- Scope: persist canonical graph in project document; save/reopen round-trip; dirty tracking for graph edits; invalid-document recovery; full regression; final browser acceptance and evidence; MVP-2 closure. M2-E carry-forward issue: `parseGraphDocument` validates with `{ entities: [] }`.
+- Exclusions: new node types, physics, Python, robotics/electrical, hybrid 2D, advanced features.
+- Depends on: M2-A, M2-B, M2-C, M2-D, M1-E, M1-F.
+- Planning documents: `M2_E_TECHNICAL_REVIEW.md`; `M2_E_OWNER_DECISION_PACKAGE.md` (D-M2E-01..D-M2E-05 PENDING — PROJECT OWNER).
+- Planning and readiness review: COMPLETE (2026-11-16).
+- Readiness verdict: READY FOR OWNER DECISIONS. Implementation NOT AUTHORIZED.
 - Deliverables: persistence tests, closure report, evidence index.
 - Acceptance: no graph/runtime state leakage; all gates pass.
 - Validation: full suite + browser evidence.

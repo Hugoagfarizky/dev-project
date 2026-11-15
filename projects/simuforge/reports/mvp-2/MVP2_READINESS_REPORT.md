@@ -105,6 +105,14 @@ M2-D scope delivered: in-memory Load Demo Graph button (test id `load-demo-graph
 
 M2-E remains NOT STARTED / NOT AUTHORIZED. Save/reopen deferred to M2-E.
 
-## 11. Authorization statement
+## 12. M2-E planning
 
-M2-C and M2-D are closed. M2-E remains NOT STARTED / NOT AUTHORIZED. No M2-E work may begin without separate Project Owner authorization.
+M2-E technical review and consolidated planning COMPLETE (2026-11-16). Planning documents: `M2_E_TECHNICAL_REVIEW.md`, `M2_E_OWNER_DECISION_PACKAGE.md` (D-M2E-01..D-M2E-05 PENDING — PROJECT OWNER).
+
+M2-E scope: persist canonical graph in project document; save/reopen round-trip; dirty tracking for graph edits; invalid-document recovery; full regression; final browser acceptance and evidence; MVP-2 closure. M2-E carry-forward issue: `parseGraphDocument` validates with `{ entities: [] }`.
+
+Readiness verdict: READY FOR OWNER DECISIONS. Implementation NOT AUTHORIZED.
+
+## 13. Authorization statement
+
+M2-C and M2-D are closed. M2-E remains NOT STARTED / NOT AUTHORIZED. M2-E planning is complete and awaits Owner decisions (D-M2E-01..D-M2E-05) and separate explicit implementation authorization. No M2-E work may begin without separate Project Owner authorization.
