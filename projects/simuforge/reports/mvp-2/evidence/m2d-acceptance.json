@@ -1,0 +1,104 @@
+{
+  "milestone": "M2-D",
+  "generatedAt": "2026-11-15T16:51:41.187Z",
+  "browser": "Chromium 158.0.8127.18",
+  "scenarios": [
+    {
+      "name": "D1: On Start applies an impulse and produces visible motion",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "demoGraphLoaded": true,
+        "executionCompleted": true,
+        "impulseApplied": true,
+        "bodyMovedAlongX": true,
+        "highlightObserved": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2d-end-to-end.png"
+      ]
+    },
+    {
+      "name": "D2: Manual Trigger applies force and updates status/console",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "forceApplied": true,
+        "executionCompleted": true,
+        "highlightObserved": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2d-manual-force.png"
+      ]
+    },
+    {
+      "name": "D3: On Plane Contact fires on rising edge and bounces once",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "contactExecutionCompleted": true,
+        "bounceOccurred": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2d-contact-bounce.png"
+      ]
+    },
+    {
+      "name": "D4: invalid graph skips execution with warning while physics remains usable",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "executionSkipped": true,
+        "runtimeStillRunning": true,
+        "physicsStillAdvances": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2d-invalid-recovery.png"
+      ]
+    },
+    {
+      "name": "responsive layout at 1024x640 and 1440x900",
+      "status": "passed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertions": {
+        "1024x640EditorVisible": true,
+        "1024x640ExecutionBarVisible": true,
+        "1024x640StatusLineVisible": true,
+        "1024x640ManualTriggerVisible": true,
+        "1024x640LoadDemoGraphVisible": true,
+        "1024x640CanvasUsableHeight": true,
+        "1024x640BarAboveCanvas": true,
+        "1024x640EditorFitsViewport": true,
+        "1440x900EditorVisible": true,
+        "1440x900ExecutionBarVisible": true,
+        "1440x900StatusLineVisible": true,
+        "1440x900ManualTriggerVisible": true,
+        "1440x900LoadDemoGraphVisible": true,
+        "1440x900CanvasUsableHeight": true,
+        "1440x900BarAboveCanvas": true,
+        "1440x900EditorFitsViewport": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2d-layout-1024x640.png",
+        "reports/mvp-2/evidence/screenshots/m2d-layout-1440x900.png",
+        "reports/mvp-2/evidence/screenshots/m2d-end-to-end.png"
+      ]
+    }
+  ],
+  "allPassed": true
+}

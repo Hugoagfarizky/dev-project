@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-15 (planning)  
 **Milestone:** M2-D — End-to-End Demo and Browser Acceptance  
-**Status:** ALL FIVE DECISIONS APPROVED — PROJECT OWNER, 2026-11-15; PLANNING COMPLETE — READY FOR IMPLEMENTATION AUTHORIZATION PENDING (not authorized)  
+**Status:** IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED (implementation authorized and completed 2026-11-15)  
 **Authorization:** Planning only. M2-D implementation is NOT AUTHORIZED.  
 **Baseline:** `main` @ `0ebaccd1e8a5130f0192c4a07a24d2c90b6b2889` (M2-C CLOSED — PASS, Project Owner accepted 2026-11-15)  
 **Companion documents:** `M2_D_OWNER_DECISION_PACKAGE.md` (D-M2D-01..D-M2D-05 PENDING — PROJECT OWNER), `MVP2_CONSOLIDATED_ROADMAP.md`, `MVP2_READINESS_REPORT.md`, `reports/mvp-0/PROJECT_HANDOFF.md`
@@ -131,7 +131,7 @@ See `M2_D_OWNER_DECISION_PACKAGE.md`. All five decisions D-M2D-01..D-M2D-05 are 
 | Evidence screenshot staleness | Low | Regenerate on final run only |
 | M2-E dependency | Low | Documented; M2-D does not touch persistence |
 
-**Readiness verdict: READY FOR IMPLEMENTATION AUTHORIZATION (pending separate explicit Project Owner authorization).** Decisions D-M2D-01..D-M2D-05 approved 2026-11-15. Implementation NOT AUTHORIZED.
+**Readiness verdict: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED.** All 5 decisions approved; implementation complete; full suite 250/250 PASS; M2-D browser 5/5 PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7. Closure requires explicit Project Owner acceptance.
 
 ## 11. Proposed file changes (planning only)
 

@@ -245,12 +245,11 @@ No further implementation until explicit authorization is granted.
 
 ## S. M2-D technical review and readiness planning (2026-11-15)
 
-- M2-D status: PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION.
-- Baseline: `main` @ `0ebaccd1e8a5130f0192c4a07a24d2c90b6b2889` (M2-C CLOSED — PASS).
-- Planning documents: `reports/mvp-2/M2_D_TECHNICAL_REVIEW.md`; `reports/mvp-2/M2_D_OWNER_DECISION_PACKAGE.md` (D-M2D-01..D-M2D-05 APPROVED — PROJECT OWNER, 2026-11-15; D-M2D-03 with clarification).
-- Scope: integrated end-to-end demo and browser acceptance proving MVP-2 visual scripting as a product; in-session only.
-- Exclusions: M2-E persistence, Python, new node types, loops/branches/variables/math/delay, robotics/electrical, hybrid 2D, advanced physics.
-- Readiness verdict: READY FOR IMPLEMENTATION AUTHORIZATION (pending separate explicit Project Owner authorization). Implementation NOT AUTHORIZED.
+- M2-D status: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED.
+- Baseline: `main` @ `221911534d0487242100897f37626662c84a35bd` (decisions approved) → implementation commit (this increment).
+- Implementation: Load Demo Graph button (test id `load-demo-graph`), Console auto-expand after execution, end-to-end browser spec `m2d-end-to-end.spec.ts` (5/5 PASS), evidence `m2d-acceptance.json` (5/5 passed, 33 assertions).
+- Validation: full suite 250/250 PASS; `npm run check` PASS; `npm run build` PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5.
+- Readiness verdict: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED. M2-E remains NOT STARTED / NOT AUTHORIZED.
 - Milestone register (current):
 
 | Milestone | Official status |
@@ -260,9 +259,9 @@ No further implementation until explicit authorization is granted.
 | M2-A | CLOSED — PASS |
 | M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
-| M2-D | PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION |
+| M2-D | IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED |
 | M2-E | NOT STARTED / NOT AUTHORIZED |
 
-- M2-D implementation remains NOT AUTHORIZED; M2-E remains NOT STARTED / NOT AUTHORIZED. M2-E carry-forward issue (`parseGraphDocument` validates with `{ entities: [] }`) unchanged and documented.
+- M2-D implementation complete; not closed. M2-E remains NOT STARTED / NOT AUTHORIZED. M2-E carry-forward issue (`parseGraphDocument` validates with `{ entities: [] }`) unchanged.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
-- Next required action: Project Owner reviews D-M2D-01..D-M2D-05 and grants separate explicit M2-D implementation authorization. No M2-D or M2-E implementation may begin before then.
+- Next required action: Project Owner reviews M2-D implementation and decides acceptance (closure) or requests changes. M2-E remains not authorized.

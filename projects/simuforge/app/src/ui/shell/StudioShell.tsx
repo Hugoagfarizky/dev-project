@@ -19,7 +19,7 @@ import { Button } from '../common/Button';
 import { useStudioStore } from '../hooks/useStore.js';
 import { useStudioShortcuts } from '../hooks/useStudioShortcuts.js';
 import { useSimulationLoop } from '../hooks/useSimulationLoop.js';
-import { selectEntities, selectSelectedEntityId, selectGridVisible, selectLogs, selectRuntimeStatus } from '../../editor/selectors.js';
+import { selectEntities, selectSelectedEntityId, selectGridVisible, selectLogs, selectRuntimeStatus, selectRuntimeExecution } from '../../editor/selectors.js';
 import { serializeProjectDocument } from '../../project/serialization.js';
 import type { ProjectDocument } from '../../project/types.js';
 import { computeLayout, resolveCollapsedPanels, type StudioPreset } from './computeLayout';
@@ -58,8 +58,12 @@ export function StudioShell({ store }: StudioShellProps) {
   const gridVisible = useStudioStore(store, selectGridVisible);
   const logs = useStudioStore(store, selectLogs);
   const runtimeStatus = useStudioStore(store, selectRuntimeStatus);
+  const execution = useStudioStore(store, selectRuntimeExecution);
   useSimulationLoop(store, runtimeStatus === 'running');
   const autoExpandedRef = useRef(false);
+  const executionConsoleExpandedRef = useRef(false);
+  const userCollapsedConsoleRef = useRef(false);
+  const lastExecutionResultAtRef = useRef<string | null>(null);
   const rendererRef = useRef<import('../../renderer/RendererPort.js').RendererPort | null>(null);
   const selectedEntity = selectedId === null
     ? null
@@ -245,16 +249,40 @@ export function StudioShell({ store }: StudioShellProps) {
     userOverrides
   });
 
+  function expandConsoleProgrammatically() {
+    if (userCollapsedConsoleRef.current) return;
+    setUserOverrides((previous) => ({
+      ...previous,
+      console: false
+    }));
+  }
+
   useEffect(() => {
     if (autoExpandedRef.current) return;
     const hasError = logs.some((entry) => entry.severity === 'error');
     if (hasError && collapsed.console) {
       autoExpandedRef.current = true;
-      togglePanel('console');
+      expandConsoleProgrammatically();
     }
   }, [logs, collapsed.console]);
 
+  useEffect(() => {
+    if (userCollapsedConsoleRef.current) return;
+    if (!collapsed.console) return;
+    const result = execution.lastResult;
+    if (!result) return;
+    if (result.at === lastExecutionResultAtRef.current) return;
+    lastExecutionResultAtRef.current = result.at;
+    if (result.outcome === 'completed' || result.outcome === 'failed' || result.outcome === 'skipped' || result.outcome === 'cancelled') {
+      executionConsoleExpandedRef.current = true;
+      expandConsoleProgrammatically();
+    }
+  }, [execution.lastResult, collapsed.console]);
+
   function togglePanel(panel: PanelKey) {
+    if (panel === 'console' && !collapsed.console) {
+      userCollapsedConsoleRef.current = true;
+    }
     setUserOverrides((previous) => ({
       ...previous,
       [panel]: !collapsed[panel]

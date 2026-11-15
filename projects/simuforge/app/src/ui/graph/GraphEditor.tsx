@@ -29,7 +29,7 @@ import type { RuntimeExecutionState } from '../../editor/state.js';
 import { toReactFlowNodes, toReactFlowEdges, applyNodePosition } from '../../graph/adapter.js';
 import { GRAPH_DIAGNOSTIC_CODES, validateGraph } from '../../graph/validation.js';
 import { selectTriggerNodes } from '../../runtime/graphExecution.js';
-import type { GraphDiagnostic, GraphValidationContext } from '../../graph/types.js';
+import type { Graph, GraphDiagnostic, GraphValidationContext } from '../../graph/types.js';
 import { GraphNodeRenderer } from './GraphNodeRenderer.js';
 import { Button } from '../common/Button.js';
 
@@ -102,6 +102,33 @@ export function GraphEditor({ store }: GraphEditorProps) {
     (node) => node.id === selectedGraphNodeId
   );
   const manualTriggerDisabled = runtimeStatus === 'editing' || manualTriggers.length === 0;
+  const demoAvailable = entities.some((entity) => entity.name === 'Demo Ball') &&
+    entities.some((entity) => entity.name === 'Demo Floor');
+
+  function handleLoadDemoGraph(): void {
+    const snapshot = store.getSnapshot();
+    const ball = snapshot.project.world.entities.find((entity) => entity.name === 'Demo Ball');
+    const floor = snapshot.project.world.entities.find((entity) => entity.name === 'Demo Floor');
+    if (!ball || !floor) return;
+
+    const ballId = ball.id;
+    const floorId = floor.id;
+    const nodes = [
+      { id: 'demo-start', type: 'onStart' as const, position: { x: 80, y: 80 }, config: { kind: 'onStart' as const } },
+      { id: 'demo-impulse-start', type: 'applyImpulse' as const, position: { x: 360, y: 80 }, config: { kind: 'applyImpulse' as const, targetEntityId: ballId, impulse: { x: 6, y: 0, z: 0 } } },
+      { id: 'demo-manual', type: 'manualTrigger' as const, position: { x: 80, y: 260 }, config: { kind: 'manualTrigger' as const } },
+      { id: 'demo-force-manual', type: 'applyForce' as const, position: { x: 360, y: 260 }, config: { kind: 'applyForce' as const, targetEntityId: ballId, force: { x: 4, y: 0, z: 0 } } },
+      { id: 'demo-contact', type: 'onPlaneContact' as const, position: { x: 80, y: 440 }, config: { kind: 'onPlaneContact' as const, targetEntityId: floorId } },
+      { id: 'demo-impulse-bounce', type: 'applyImpulse' as const, position: { x: 360, y: 440 }, config: { kind: 'applyImpulse' as const, targetEntityId: ballId, impulse: { x: 0, y: 5, z: 0 } } }
+    ];
+    const edges = [
+      { id: 'demo-e1', sourceNodeId: 'demo-start', sourcePortId: 'out', targetNodeId: 'demo-impulse-start', targetPortId: 'in' },
+      { id: 'demo-e2', sourceNodeId: 'demo-manual', sourcePortId: 'out', targetNodeId: 'demo-force-manual', targetPortId: 'in' },
+      { id: 'demo-e3', sourceNodeId: 'demo-contact', sourcePortId: 'out', targetNodeId: 'demo-impulse-bounce', targetPortId: 'in' }
+    ];
+    const graph = { id: crypto.randomUUID(), name: 'Demo Graph', nodes, edges } as Graph;
+    store.dispatch({ type: 'graph/set', graph });
+  }
 
   // D-M2C-09: transient highlight only. The class is applied to the rendered
   // node for a short pulse and removed on timeout or cleanup; it never enters
@@ -249,6 +276,20 @@ export function GraphEditor({ store }: GraphEditorProps) {
   return (
     <div className="sf-graph-editor" ref={editorRef}>
       <div className="sf-graph-execution-bar">
+        <Button
+          variant="secondary"
+          size="sm"
+          data-testid="load-demo-graph"
+          disabled={!demoAvailable}
+          title={
+            demoAvailable
+              ? 'Load the canonical M2-D demo graph (in-memory).'
+              : 'Load the demo scenario first.'
+          }
+          onClick={handleLoadDemoGraph}
+        >
+          Load Demo Graph
+        </Button>
         <span
           className="sf-graph-execution-status"
           role="status"

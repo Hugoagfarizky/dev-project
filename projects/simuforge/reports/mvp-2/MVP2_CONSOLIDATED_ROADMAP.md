@@ -1,7 +1,7 @@
 # SimuForge — MVP-2 Consolidated Roadmap
 
 **Date:** 2026-11-11 (planning); 2026-11-15 (M2-B closure, M2-C planning, M2-C Owner decisions and readiness)  
-**Status:** M2-A CLOSED — PASS; M2-B CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
+**Status:** M2-A CLOSED - PASS; M2-B CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-D IMPLEMENTED / READY FOR OWNER ACCEPTANCE - NOT CLOSED; M2-E NOT STARTED / NOT AUTHORIZED  
 **Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`; M2-B closure @ `c01cad4`; M2-C planning @ `5b404b0`; M2-C implementation @ `c78897c` (baseline) → `073f0f34a029abe85d596bb2e29e20eefb488226` (final)
 
 ## 1. Objective
@@ -71,13 +71,13 @@ Deliver Visual Scripting (Product Spec §7.4) as a verifiable increment on top o
 - Status: NOT STARTED / NOT AUTHORIZED. M2-C is not implemented and not closed.
 - Gate: separate explicit Project Owner implementation authorization before any batch starts.
 
-### M2-D — End-to-end demo and browser acceptance (DECISIONS APPROVED — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION)
+### M2-D — End-to-end demo and browser acceptance (IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED)
 - Scope: integrated, demonstrable, repeatable end-to-end experience proving MVP-2 visual scripting works as a product: load world, author graph, run, observe motion, inspect status/Console, recover from invalid graphs, repeat; browser acceptance with evidence. In-session only.
 - Exclusions: M2-E persistence (save/reopen), Python, new node types, loops/branches/variables/math/delay, robotics/electrical, hybrid 2D, advanced physics.
 - Depends on: M2-A, M2-B, M2-C, M1-E, M1-F.
 - Planning documents: `M2_D_TECHNICAL_REVIEW.md`; `M2_D_OWNER_DECISION_PACKAGE.md` (D-M2D-01..D-M2D-05 APPROVED — PROJECT OWNER, 2026-11-15).
-- Planning and readiness review: COMPLETE (2026-11-15). Decisions APPROVED.
-- Readiness verdict: READY FOR IMPLEMENTATION AUTHORIZATION (pending separate explicit Project Owner authorization). Implementation NOT AUTHORIZED.
+- Implementation: COMPLETE (2026-11-15). Full suite 250/250 PASS; M2-D browser 5/5 PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7.
+- Readiness verdict: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED. Implementation authorized and completed. M2-E remains NOT STARTED / NOT AUTHORIZED.
 
 ### M2-E — Persistence, regression, and closure (NOT STARTED / NOT AUTHORIZED)
 - Scope: save/reopen validation, full regression, closure documentation.

@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-15 (decisions recorded for approval)  
 **Milestone:** M2-D — End-to-End Demo and Browser Acceptance  
-**Status:** ALL FIVE DECISIONS APPROVED — PROJECT OWNER, 2026-11-15; implementation NOT AUTHORIZED  
+**Status:** ALL FIVE DECISIONS APPROVED — PROJECT OWNER, 2026-11-15; IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED  
 **Baseline:** `main` @ `0ebaccd1e8a5130f0192c4a07a24d2c90b6b2889` (M2-C CLOSED — PASS)  
 **Technical review:** `M2_D_TECHNICAL_REVIEW.md`  
 **Decision groups:** previously approved MVP-2 decisions are D-M2-01..D-M2-08; M2-C decisions are D-M2C-01..D-M2C-09; M2-D decisions are D-M2D-01..D-M2D-05. The three groups are distinct and must not be conflated.
