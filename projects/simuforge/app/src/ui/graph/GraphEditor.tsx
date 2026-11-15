@@ -15,14 +15,51 @@ import {
 import '@xyflow/react/dist/style.css';
 
 import { useStudioStore } from '../hooks/useStore.js';
-import { selectEntities, selectGraph, selectSelectedGraphNodeId } from '../../editor/selectors.js';
+import {
+  selectEntities,
+  selectExecutingGraphNodeId,
+  selectExecutionSequence,
+  selectGraph,
+  selectRuntimeExecution,
+  selectRuntimeStatus,
+  selectSelectedGraphNodeId
+} from '../../editor/selectors.js';
 import type { StudioStore } from '../../editor/store.js';
+import type { RuntimeExecutionState } from '../../editor/state.js';
 import { toReactFlowNodes, toReactFlowEdges, applyNodePosition } from '../../graph/adapter.js';
 import { GRAPH_DIAGNOSTIC_CODES, validateGraph } from '../../graph/validation.js';
+import { selectTriggerNodes } from '../../runtime/graphExecution.js';
 import type { GraphDiagnostic, GraphValidationContext } from '../../graph/types.js';
 import { GraphNodeRenderer } from './GraphNodeRenderer.js';
+import { Button } from '../common/Button.js';
 
 const nodeTypes = { default: GraphNodeRenderer } satisfies NodeTypes;
+
+function describeExecution(execution: RuntimeExecutionState): string {
+  const queued = execution.queue.length > 0 ? ` · ${execution.queue.length} queued` : '';
+  if (execution.status === 'suspended') {
+    return `Execution: suspended${queued}`;
+  }
+  if (execution.status === 'executing') {
+    return `Execution: executing${queued}`;
+  }
+
+  const result = execution.lastResult;
+  if (!result) {
+    return `Execution: ${execution.status}${queued}`;
+  }
+
+  switch (result.outcome) {
+    case 'completed':
+      return `Execution: completed · ${result.nodeCount} node(s)${queued}`;
+    case 'failed':
+      return `Execution: failed · ${result.failedNodeId ?? 'node'}${result.code ? ` · ${result.code}` : ''}${queued}`;
+    case 'skipped':
+      return `Execution: skipped${result.message ? ` · ${result.message}` : ''}${queued}`;
+    case 'cancelled':
+      return `Execution: cancelled${result.message ? ` · ${result.message}` : ''}${queued}`;
+  }
+}
 
 function FitViewOnNodeCount({ nodeCount }: { nodeCount: number }) {
   const { fitView } = useReactFlow();
@@ -48,9 +85,48 @@ export function GraphEditor({ store }: GraphEditorProps) {
   const graph = useStudioStore(store, selectGraph);
   const selectedGraphNodeId = useStudioStore(store, selectSelectedGraphNodeId);
   const entities = useStudioStore(store, selectEntities);
+  const runtimeStatus = useStudioStore(store, selectRuntimeStatus);
+  const execution = useStudioStore(store, selectRuntimeExecution);
+  const executingGraphNodeId = useStudioStore(store, selectExecutingGraphNodeId);
+  const executionSequence = useStudioStore(store, selectExecutionSequence);
+  const editorRef = useRef<HTMLDivElement | null>(null);
 
   const selectedGraphNodeIdRef = useRef(selectedGraphNodeId);
   selectedGraphNodeIdRef.current = selectedGraphNodeId;
+
+  const manualTriggers = useMemo(
+    () => (graph ? selectTriggerNodes(graph, 'manualTrigger') : []),
+    [graph]
+  );
+  const selectedIsManualTrigger = selectedGraphNodeId !== null && manualTriggers.some(
+    (node) => node.id === selectedGraphNodeId
+  );
+  const manualTriggerDisabled = runtimeStatus === 'editing' || manualTriggers.length === 0;
+
+  // D-M2C-09: transient highlight only. The class is applied to the rendered
+  // node for a short pulse and removed on timeout or cleanup; it never enters
+  // the canonical graph.
+  useEffect(() => {
+    const container = editorRef.current;
+    if (!container || !executingGraphNodeId) {
+      return;
+    }
+    const wrapper = Array.from(container.querySelectorAll<HTMLElement>('.react-flow__node')).find(
+      (element) => element.getAttribute('data-id') === executingGraphNodeId
+    );
+    const node = wrapper?.querySelector<HTMLElement>('.sf-graph-node');
+    if (!node) {
+      return;
+    }
+    node.classList.add('sf-graph-node-executing');
+    const timer = window.setTimeout(() => {
+      node.classList.remove('sf-graph-node-executing');
+    }, 700);
+    return () => {
+      window.clearTimeout(timer);
+      node.classList.remove('sf-graph-node-executing');
+    };
+  }, [executionSequence, executingGraphNodeId]);
 
   const validationContext = useMemo<GraphValidationContext>(() => ({
     entities: entities.map((entity) => ({
@@ -171,7 +247,38 @@ export function GraphEditor({ store }: GraphEditorProps) {
   const isEmpty = !graph || graph.nodes.length === 0;
 
   return (
-    <div className="sf-graph-editor">
+    <div className="sf-graph-editor" ref={editorRef}>
+      <div className="sf-graph-execution-bar">
+        <span
+          className="sf-graph-execution-status"
+          role="status"
+          data-testid="graph-execution-status"
+          title={describeExecution(execution)}
+        >
+          {describeExecution(execution)}
+        </span>
+        <Button
+          variant="secondary"
+          size="sm"
+          data-testid="graph-manual-trigger"
+          disabled={manualTriggerDisabled}
+          title={
+            manualTriggers.length === 0
+              ? 'Add a Manual Trigger node to enable this control.'
+              : 'Queue a Manual Trigger execution.'
+          }
+          onClick={() => {
+            store.dispatch({
+              type: 'runtime/graph-trigger',
+              ...(selectedIsManualTrigger && selectedGraphNodeId
+                ? { triggerNodeId: selectedGraphNodeId }
+                : {})
+            });
+          }}
+        >
+          Manual Trigger
+        </Button>
+      </div>
       <div className="sf-graph-canvas">
         {isEmpty ? (
           <div className="sf-graph-empty">Empty graph. Add a node from the palette.</div>

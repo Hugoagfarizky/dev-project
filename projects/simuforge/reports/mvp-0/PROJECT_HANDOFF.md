@@ -121,7 +121,7 @@ No further implementation until explicit authorization is granted.
 - MVP-2 owner decision package: `reports/mvp-2/MVP2_OWNER_DECISION_PACKAGE.md`.
 - M2-A status: CLOSED — PASS (Project Owner accepted 2026-11-11). Implementation commit `200e838`.
 - M2-B status: IMPLEMENTED / READY FOR OWNER ACCEPTANCE. Graph editor UI, six nodes, connections, Inspector config, validation diagnostics, browser acceptance. Report: `reports/mvp-2/M2_B_IMPLEMENTATION_REPORT.md`. Superseded — M2-B is now CLOSED — PASS, Project Owner accepted 2026-11-15 (see §O).
-- M2-C through M2-E remain NOT STARTED / NOT AUTHORIZED.
+- M2-C status: IMPLEMENTED / READY FOR OWNER ACCEPTANCE (not closed). M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
 
 ## M. MVP-1 closure (2026-11-11)
 
@@ -217,4 +217,28 @@ No further implementation until explicit authorization is granted.
 - Documentation commit for this increment: `docs(simuforge): record M2-C owner decisions and readiness`; local HEAD equals `origin/main` after push.
 - Protected unrelated working-tree state: three modified MVP-0 reports (`MVP0_EVIDENCE_CLOSURE_REPORT.md`, `MVP0_FINAL_ACCEPTANCE_AUDIT.md`, `MVP_0_ACCEPTANCE_REPORT.md`) remain modified and unstaged; untracked root `package-lock.json` remains untouched.
 - WIP branch `wip/m1c-physics-scratch` remains at `a566c98`; not merged, modified, or pushed.
-- Next required action: Project Owner grants a separate explicit M2-C implementation authorization. No batch may start before then.
+## R. M2-C implementation (2026-11-15)
+
+- M2-C status: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED.
+- Baseline: `main` @ `c78897c` (= `origin/main` at start of this increment); M2-B closure remains `c01cad4`.
+- Implementation report: `reports/mvp-2/M2_C_IMPLEMENTATION_REPORT.md` (traceability matrix for all 17 criteria).
+- Pure execution engine: `app/src/runtime/graphExecution.ts`; contact boundary in `app/src/runtime/physics.ts`; lifecycle/queue/session integration in `app/src/editor/reducer.ts`; state in `app/src/editor/state.ts`; command `runtime/graph-trigger`; selectors; UI status line + Manual Trigger button + transient highlight in `app/src/ui/graph/GraphEditor.tsx`; `RUNTIME` source filter in ConsoleDrawer.
+- Tests: 41 new (17 engine + 8 contact + 16 lifecycle); full suite 250/250 PASS. Browser: M2-C 7/7 PASS; M1-F 1/1; M2-B 6/6.
+- Validation: `npm test`, `npm run check`, `npm run build`, boundary checks (`src/runtime`, `src/world`), token contrast all PASS.
+- Evidence: `reports/mvp-2/evidence/m2c-execution.json` (7/7 `passed`, `allPassed: true`); screenshots in `reports/mvp-2/evidence/screenshots/`.
+- Milestone register (current):
+
+| Milestone | Official status |
+|---|---|
+| MVP-0 | CLOSED — PASS |
+| MVP-1 | CLOSED — PASS |
+| M2-A | CLOSED — PASS |
+| M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-C | IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED |
+| M2-D | NOT STARTED / NOT AUTHORIZED |
+| M2-E | NOT STARTED / NOT AUTHORIZED |
+
+- M2-C is implemented and ready for Owner acceptance; not closed. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
+- Cross-milestone item for M2-E (unchanged): `parseGraphDocument` validates against an empty entity list and rejects entity references; must be corrected during M2-E persistence work. M2-C did not change it.
+- Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
+- Next required action: Project Owner reviews M2-C implementation and decides acceptance (closure) or requests changes. M2-D/M2-E remain not authorized.

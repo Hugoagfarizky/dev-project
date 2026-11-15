@@ -14,10 +14,29 @@ import {
   RUNTIME_NOT_ACTIVE,
   toSimulationFailure
 } from '../runtime/physics.ts';
+import {
+  EXECUTION_QUEUE_CAPACITY,
+  GRAPH_EXECUTION_CODES,
+  buildExecutionPlan,
+  evaluateExecutionReadiness,
+  executeChain,
+  hasOutgoingEdge,
+  matchContactTriggers,
+  selectManualTriggerNode,
+  selectTriggerNodes
+} from '../runtime/graphExecution.ts';
 import type { SimulationFailure } from '../runtime/physics.ts';
 import type { RuntimeBodies } from '../runtime/types.ts';
+import type { GraphNodeType, GraphValidationContext } from '../graph/types.ts';
 import type { StudioCommand } from './commands.ts';
-import type { CameraPose, StudioState } from './state.ts';
+import type {
+  CameraPose,
+  ExecutionOutcome,
+  ExecutionQueueEntry,
+  ExecutionResultSummary,
+  RuntimeExecutionState,
+  StudioState
+} from './state.ts';
 import type { EntityType, RigidBodyComponent, WorldEntity } from '../world/types.ts';
 
 export interface ReducerContext {
@@ -190,6 +209,345 @@ function appendRuntimeInfoLog(
   };
 }
 
+function appendExecutionLog(
+  state: StudioState,
+  context: ReducerContext,
+  entry: {
+    severity: 'info' | 'warn' | 'error';
+    code: string;
+    message: string;
+    entityId?: string;
+    detail?: string;
+  }
+): StudioState {
+  return {
+    ...state,
+    logs: [...state.logs, {
+      id: context.idFactory(),
+      timestamp: context.clock(),
+      severity: entry.severity,
+      source: 'RUNTIME' as const,
+      code: entry.code,
+      message: entry.message,
+      ...(entry.entityId ? { entityId: entry.entityId } : {}),
+      ...(entry.detail ? { detail: entry.detail } : {})
+    }].slice(-500)
+  };
+}
+
+function graphValidationContext(state: StudioState): GraphValidationContext {
+  return {
+    entities: state.project.world.entities.map((entity) => ({
+      id: entity.id,
+      components: entity.components ?? []
+    }))
+  };
+}
+
+function withExecutionStatus(
+  state: StudioState,
+  status: RuntimeExecutionState['status']
+): StudioState {
+  if (state.runtime.execution.status === status) {
+    return state;
+  }
+  return {
+    ...state,
+    runtime: {
+      ...state.runtime,
+      execution: { ...state.runtime.execution, status }
+    }
+  };
+}
+
+function executionSummary(
+  entry: ExecutionQueueEntry,
+  outcome: ExecutionOutcome,
+  nodeCount: number,
+  failedNodeId: string | null,
+  code: string | null,
+  message: string | null,
+  context: ReducerContext
+): ExecutionResultSummary {
+  return {
+    triggerNodeId: entry.triggerNodeId,
+    triggerType: entry.triggerType,
+    outcome,
+    nodeCount,
+    failedNodeId,
+    code,
+    message,
+    at: context.clock()
+  };
+}
+
+interface ExecutionEnqueueInput {
+  sessionId: number;
+  triggerNodeId: string;
+  triggerType: GraphNodeType;
+  bodyEntityId?: string;
+  planeEntityId?: string;
+}
+
+/**
+ * D-M2C-04: bounded FIFO. When full, the newest incoming event is dropped and a
+ * warning names the trigger. Manual activations are never coalesced.
+ */
+function enqueueExecution(
+  state: StudioState,
+  context: ReducerContext,
+  input: ExecutionEnqueueInput
+): StudioState {
+  const execution = state.runtime.execution;
+  if (execution.queue.length >= EXECUTION_QUEUE_CAPACITY) {
+    const withCount = {
+      ...state,
+      runtime: {
+        ...state.runtime,
+        execution: { ...execution, droppedEvents: execution.droppedEvents + 1 }
+      }
+    };
+    return appendExecutionLog(withCount, context, {
+      severity: 'warn',
+      code: GRAPH_EXECUTION_CODES.QUEUE_OVERFLOW,
+      message: `Dropped ${input.triggerType} trigger ${input.triggerNodeId}: execution queue is full (${EXECUTION_QUEUE_CAPACITY}).`,
+      detail: `session ${input.sessionId}`
+    });
+  }
+
+  const entry: ExecutionQueueEntry = {
+    id: context.idFactory(),
+    sessionId: input.sessionId,
+    triggerNodeId: input.triggerNodeId,
+    triggerType: input.triggerType,
+    bodyEntityId: input.bodyEntityId ?? null,
+    planeEntityId: input.planeEntityId ?? null
+  };
+
+  return {
+    ...state,
+    runtime: {
+      ...state.runtime,
+      execution: {
+        ...execution,
+        status: state.runtime.status === 'paused' ? 'suspended' : execution.status,
+        queue: [...execution.queue, entry]
+      }
+    }
+  };
+}
+
+/**
+ * Drains the FIFO queue while Running. Chains are atomic (D-M2C-01), so this is
+ * synchronous. Paused sessions never reach the drain. Stale-session entries are
+ * rejected defensively even though cancellation clears the queue synchronously.
+ */
+function drainExecution(state: StudioState, context: ReducerContext): StudioState {
+  if (state.runtime.status !== 'running') {
+    return withExecutionStatus(
+      state,
+      state.runtime.execution.queue.length > 0 ? 'suspended' : 'idle'
+    );
+  }
+
+  const graph = state.graph ?? null;
+  if (!graph || !state.runtime.execution.enabled) {
+    return withExecutionStatus(state, 'idle');
+  }
+
+  let working = state;
+
+  while (working.runtime.execution.queue.length > 0) {
+    const execution = working.runtime.execution;
+    const entry = execution.queue[0] as ExecutionQueueEntry;
+    const remaining = execution.queue.slice(1);
+
+    if (entry.sessionId !== execution.sessionId) {
+      working = appendExecutionLog(
+        {
+          ...working,
+          runtime: {
+            ...working.runtime,
+            execution: {
+              ...execution,
+              queue: remaining,
+              status: remaining.length > 0 ? 'suspended' : 'idle'
+            }
+          }
+        },
+        context,
+        {
+          severity: 'warn',
+          code: GRAPH_EXECUTION_CODES.CANCELLED,
+          message: `Discarded stale ${entry.triggerType} trigger ${entry.triggerNodeId} from session ${entry.sessionId}.`,
+          detail: `current session ${execution.sessionId}`
+        }
+      );
+      continue;
+    }
+
+    const planResult = buildExecutionPlan(graph, entry.triggerNodeId);
+    if (!planResult.ok || !planResult.plan) {
+      const reason = planResult.error?.message ?? 'Execution plan could not be built.';
+      working = appendExecutionLog(
+        {
+          ...working,
+          runtime: {
+            ...working.runtime,
+            execution: {
+              ...execution,
+              queue: remaining,
+              status: remaining.length > 0 ? 'suspended' : 'idle',
+              lastResult: executionSummary(
+                entry,
+                'skipped',
+                0,
+                null,
+                planResult.error?.code ?? GRAPH_EXECUTION_CODES.SKIPPED,
+                reason,
+                context
+              )
+            }
+          }
+        },
+        context,
+        {
+          severity: 'warn',
+          code: GRAPH_EXECUTION_CODES.SKIPPED,
+          message: `Graph execution skipped for trigger ${entry.triggerNodeId}: ${reason}`
+        }
+      );
+      continue;
+    }
+
+    const plan = planResult.plan;
+    working = appendExecutionLog(
+      {
+        ...working,
+        runtime: {
+          ...working.runtime,
+          execution: {
+            ...execution,
+            queue: remaining,
+            status: 'executing',
+            lastTrigger: {
+              nodeId: entry.triggerNodeId,
+              type: entry.triggerType,
+              at: context.clock()
+            }
+          }
+        }
+      },
+      context,
+      {
+        severity: 'info',
+        code: GRAPH_EXECUTION_CODES.TRIGGERED,
+        message: `Graph triggered by ${entry.triggerType} node ${entry.triggerNodeId} (session ${execution.sessionId}).`,
+        ...(entry.bodyEntityId ? { entityId: entry.bodyEntityId } : {}),
+        ...(entry.planeEntityId ? { detail: `plane ${entry.planeEntityId}` } : {})
+      }
+    );
+
+    const chain = executeChain(plan, graph, working.runtime.bodies);
+
+    let editor = working.editor;
+    for (const result of chain.executed) {
+      editor = {
+        ...editor,
+        executingGraphNodeId: result.nodeId,
+        executionSequence: editor.executionSequence + 1
+      };
+      working = appendExecutionLog(
+        { ...working, editor },
+        context,
+        {
+          severity: 'info',
+          code: GRAPH_EXECUTION_CODES.NODE_EXECUTED,
+          message: `Node ${result.nodeId} (${result.type}) executed.`,
+          ...(result.entityId ? { entityId: result.entityId } : {}),
+          ...(result.detail ? { detail: result.detail } : {})
+        }
+      );
+    }
+
+    if (chain.failure) {
+      const failure = chain.failure;
+      const paused = failure.severity === 'error';
+      working = appendExecutionLog(
+        {
+          ...working,
+          editor,
+          runtime: {
+            ...working.runtime,
+            bodies: chain.bodies,
+            status: paused ? 'paused' : working.runtime.status,
+            execution: {
+              ...working.runtime.execution,
+              status: paused
+                ? remaining.length > 0 ? 'suspended' : 'idle'
+                : 'idle',
+              queue: remaining,
+              lastResult: executionSummary(
+                entry,
+                'failed',
+                chain.executed.length,
+                failure.nodeId,
+                failure.code,
+                failure.message,
+                context
+              )
+            }
+          }
+        },
+        context,
+        {
+          severity: failure.severity,
+          code: GRAPH_EXECUTION_CODES.FAILED,
+          message: `Graph execution failed at node ${failure.nodeId} (${failure.type}): ${failure.code} ${failure.message}`,
+          ...(paused ? { detail: 'Runtime paused automatically.' } : {})
+        }
+      );
+      if (paused) {
+        break;
+      }
+      continue;
+    }
+
+    working = appendExecutionLog(
+      {
+        ...working,
+        editor,
+        runtime: {
+          ...working.runtime,
+          bodies: chain.bodies,
+          execution: {
+            ...working.runtime.execution,
+            status: 'idle',
+            queue: remaining,
+            lastResult: executionSummary(
+              entry,
+              'completed',
+              chain.executed.length,
+              null,
+              null,
+              null,
+              context
+            )
+          }
+        }
+      },
+      context,
+      {
+        severity: 'info',
+        code: GRAPH_EXECUTION_CODES.COMPLETED,
+        message: `Graph execution completed: ${chain.executed.length} node(s) from trigger ${entry.triggerNodeId}.`
+      }
+    );
+  }
+
+  return working;
+}
+
 export function reduceStudioState(
   state: StudioState,
   command: StudioCommand,
@@ -211,6 +569,8 @@ export function reduceStudioState(
         editor: {
           selectedEntityId: null,
           selectedGraphNodeId: null,
+          executingGraphNodeId: null,
+          executionSequence: 0,
           gizmoMode: 'translate',
           gridVisible: true,
           activePreset: 'build',
@@ -254,6 +614,8 @@ export function reduceStudioState(
         editor: {
           selectedEntityId: null,
           selectedGraphNodeId: null,
+          executingGraphNodeId: null,
+          executionSequence: 0,
           gizmoMode: 'translate',
           gridVisible: true,
           activePreset: 'build',
@@ -577,22 +939,106 @@ export function reduceStudioState(
         } catch (error) {
           return appendRuntimeFailureLog(state, toSimulationFailure(error), context, 'editing');
         }
-        return {
+
+        // D-M2C-02: a new Editing -> Running transition starts a new session.
+        const sessionId = state.runtime.execution.sessionId + 1;
+        const graph = state.graph ?? null;
+        let next: StudioState = {
           ...state,
+          editor: { ...state.editor, executingGraphNodeId: null },
           runtime: {
             status: 'running',
             snapshot,
             lastError: null,
             bodies,
-            accumulatorSeconds: 0
+            accumulatorSeconds: 0,
+            execution: {
+              sessionId,
+              status: 'idle',
+              enabled: false,
+              queue: [],
+              lastTrigger: null,
+              lastResult: null,
+              droppedEvents: state.runtime.execution.droppedEvents,
+              contactKeys: []
+            }
           }
         };
+
+        if (!graph) {
+          return next;
+        }
+
+        const readiness = evaluateExecutionReadiness(graph, graphValidationContext(state));
+        if (!readiness.ready) {
+          // D-M2C-06: Play stays usable; execution is skipped in full.
+          const reason = readiness.reasons.join(' ');
+          return appendExecutionLog(
+            {
+              ...next,
+              runtime: {
+                ...next.runtime,
+                execution: {
+                  ...next.runtime.execution,
+                  enabled: false,
+                  lastResult: {
+                    triggerNodeId: readiness.triggerNodeIds[0] ?? '',
+                    triggerType: 'onStart',
+                    outcome: 'skipped',
+                    nodeCount: 0,
+                    failedNodeId: null,
+                    code: GRAPH_EXECUTION_CODES.SKIPPED,
+                    message: reason,
+                    at: context.clock()
+                  }
+                }
+              }
+            },
+            context,
+            {
+              severity: 'warn',
+              code: GRAPH_EXECUTION_CODES.SKIPPED,
+              message: `Graph execution skipped: ${reason}`,
+              detail: 'Physics-only simulation continues.'
+            }
+          );
+        }
+
+        next = {
+          ...next,
+          runtime: {
+            ...next.runtime,
+            execution: { ...next.runtime.execution, enabled: true }
+          }
+        };
+
+        for (const warning of readiness.warnings) {
+          next = appendExecutionLog(next, context, {
+            severity: 'warn',
+            code: GRAPH_EXECUTION_CODES.WARNING,
+            message: warning
+          });
+        }
+
+        for (const trigger of selectTriggerNodes(graph, 'onStart')) {
+          if (!hasOutgoingEdge(graph, trigger.id)) {
+            continue;
+          }
+          next = enqueueExecution(next, context, {
+            sessionId,
+            triggerNodeId: trigger.id,
+            triggerType: 'onStart'
+          });
+        }
+
+        return drainExecution(next, context);
       }
       if (state.runtime.status === 'paused') {
-        return {
-          ...state,
-          runtime: { ...state.runtime, status: 'running' }
-        };
+        // Resume is not a new session and must not re-fire On Start (D-M2C-02).
+        return drainExecution(
+          { ...state, runtime: { ...state.runtime, status: 'running' } },
+          context
+        );
       }
       return state;
     }
@@ -601,7 +1047,14 @@ export function reduceStudioState(
       if (state.runtime.status === 'running') {
         return {
           ...state,
-          runtime: { ...state.runtime, status: 'paused' }
+          runtime: {
+            ...state.runtime,
+            status: 'paused',
+            execution: {
+              ...state.runtime.execution,
+              status: state.runtime.execution.queue.length > 0 ? 'suspended' : 'idle'
+            }
+          }
         };
       }
       return state;
@@ -609,10 +1062,11 @@ export function reduceStudioState(
 
     case 'runtime/resume': {
       if (state.runtime.status === 'paused') {
-        return {
-          ...state,
-          runtime: { ...state.runtime, status: 'running' }
-        };
+        // D-M2C-03: queued manual triggers drain only after resume.
+        return drainExecution(
+          { ...state, runtime: { ...state.runtime, status: 'running' } },
+          context
+        );
       }
       return state;
     }
@@ -621,6 +1075,10 @@ export function reduceStudioState(
       if (state.runtime.status === 'editing') {
         return state;
       }
+      const hadQueued = state.runtime.execution.queue.length > 0;
+      const cancelledEntry = state.runtime.execution.queue[0];
+      const sessionId = state.runtime.execution.sessionId + 1;
+
       // Reset before leaving runtime
       let next = state;
       if (state.runtime.snapshot) {
@@ -633,10 +1091,25 @@ export function reduceStudioState(
           }
         };
       }
-      return {
+
+      next = {
         ...next,
-        runtime: createDefaultRuntimeState()
+        editor: { ...next.editor, executingGraphNodeId: null },
+        runtime: {
+          ...createDefaultRuntimeState(),
+          execution: { ...createDefaultRuntimeState().execution, sessionId }
+        }
       };
+
+      if (hadQueued && cancelledEntry) {
+        next = appendExecutionLog(next, context, {
+          severity: 'warn',
+          code: GRAPH_EXECUTION_CODES.CANCELLED,
+          message: `Graph execution cancelled on Stop: ${state.runtime.execution.queue.length} queued trigger(s) discarded.`,
+          detail: `last queued trigger ${cancelledEntry.triggerNodeId}`
+        });
+      }
+      return next;
     }
 
     case 'runtime/reset': {
@@ -650,18 +1123,53 @@ export function reduceStudioState(
       } catch (error) {
         return appendRuntimeFailureLog(state, toSimulationFailure(error), context, 'paused');
       }
-      return {
+
+      const hadQueued = state.runtime.execution.queue.length > 0;
+      const cancelledEntry = state.runtime.execution.queue[0];
+      const sessionId = state.runtime.execution.sessionId + 1;
+
+      let next: StudioState = {
         ...state,
         project: {
           ...state.project,
           world: { ...state.project.world, entities: restored }
         },
+        editor: { ...state.editor, executingGraphNodeId: null },
         runtime: {
           ...state.runtime,
           bodies,
-          accumulatorSeconds: 0
+          accumulatorSeconds: 0,
+          execution: {
+            ...state.runtime.execution,
+            sessionId,
+            status: 'idle',
+            queue: [],
+            lastTrigger: null,
+            lastResult: hadQueued && cancelledEntry
+              ? executionSummary(
+                  cancelledEntry,
+                  'cancelled',
+                  0,
+                  null,
+                  GRAPH_EXECUTION_CODES.CANCELLED,
+                  'reset',
+                  context
+                )
+              : state.runtime.execution.lastResult,
+            contactKeys: []
+          }
         }
       };
+
+      if (hadQueued) {
+        next = appendExecutionLog(next, context, {
+          severity: 'warn',
+          code: GRAPH_EXECUTION_CODES.CANCELLED,
+          message: `Graph execution cancelled on Reset: ${state.runtime.execution.queue.length} queued trigger(s) discarded.`,
+          detail: 'On Start does not re-fire on Reset (D-M2C-02).'
+        });
+      }
+      return next;
     }
 
     case 'runtime/step': {
@@ -674,7 +1182,8 @@ export function reduceStudioState(
       const advance = advanceSimulation(
         state.runtime.bodies,
         state.runtime.accumulatorSeconds,
-        command.deltaSeconds
+        command.deltaSeconds,
+        state.runtime.execution.contactKeys
       );
       if (advance.error) {
         return appendRuntimeFailureLog(
@@ -683,7 +1192,12 @@ export function reduceStudioState(
             runtime: {
               ...state.runtime,
               bodies: advance.bodies,
-              accumulatorSeconds: advance.accumulatorSeconds
+              accumulatorSeconds: advance.accumulatorSeconds,
+              execution: {
+                ...state.runtime.execution,
+                contactKeys: advance.activeContactKeys,
+                status: state.runtime.execution.queue.length > 0 ? 'suspended' : 'idle'
+              }
             }
           },
           advance.error,
@@ -694,14 +1208,36 @@ export function reduceStudioState(
       if (advance.steps === 0 && advance.accumulatorSeconds === state.runtime.accumulatorSeconds) {
         return state;
       }
-      return {
+
+      let next: StudioState = {
         ...state,
         runtime: {
           ...state.runtime,
           bodies: advance.bodies,
-          accumulatorSeconds: advance.accumulatorSeconds
+          accumulatorSeconds: advance.accumulatorSeconds,
+          execution: {
+            ...state.runtime.execution,
+            contactKeys: advance.activeContactKeys
+          }
         }
       };
+
+      // D-M2C-07: rising-edge contacts fire matching On Plane Contact triggers.
+      if (advance.contacts.length > 0 && next.graph && next.runtime.execution.enabled) {
+        const matches = matchContactTriggers(next.graph, advance.contacts);
+        for (const match of matches) {
+          next = enqueueExecution(next, context, {
+            sessionId: next.runtime.execution.sessionId,
+            triggerNodeId: match.node.id,
+            triggerType: 'onPlaneContact',
+            bodyEntityId: match.contact.bodyEntityId,
+            planeEntityId: match.contact.planeEntityId
+          });
+        }
+        next = drainExecution(next, context);
+      }
+
+      return next;
     }
 
     case 'runtime/apply-force': {
@@ -793,6 +1329,49 @@ export function reduceStudioState(
       } catch (error) {
         return appendRuntimeFailureLog(state, toSimulationFailure(error), context, 'paused');
       }
+    }
+
+    case 'runtime/graph-trigger': {
+      if (state.runtime.status === 'editing') {
+        return appendExecutionLog(state, context, {
+          severity: 'warn',
+          code: GRAPH_EXECUTION_CODES.MANUAL_TRIGGER_INACTIVE,
+          message: 'Manual Trigger requires a running or paused simulation.'
+        });
+      }
+
+      const graph = state.graph ?? null;
+      if (!graph) {
+        return appendExecutionLog(state, context, {
+          severity: 'warn',
+          code: GRAPH_EXECUTION_CODES.SKIPPED,
+          message: 'Manual Trigger ignored: no graph exists.'
+        });
+      }
+      if (!state.runtime.execution.enabled) {
+        return appendExecutionLog(state, context, {
+          severity: 'warn',
+          code: GRAPH_EXECUTION_CODES.SKIPPED,
+          message: 'Manual Trigger ignored: graph execution was skipped for this session.'
+        });
+      }
+
+      const trigger = selectManualTriggerNode(graph, command.triggerNodeId);
+      if (!trigger) {
+        return appendExecutionLog(state, context, {
+          severity: 'warn',
+          code: GRAPH_EXECUTION_CODES.MANUAL_TRIGGER_MISSING,
+          message: 'Manual Trigger ignored: the graph has no manualTrigger node.'
+        });
+      }
+
+      // D-M2C-03: while Paused the activation is queued; drainExecution holds it.
+      const next = enqueueExecution(state, context, {
+        sessionId: state.runtime.execution.sessionId,
+        triggerNodeId: trigger.id,
+        triggerType: 'manualTrigger'
+      });
+      return drainExecution(next, context);
     }
 
     case 'demo/load-scenario': {
@@ -895,7 +1474,15 @@ export function reduceStudioState(
       }
       return {
         ...state,
-        runtime: { ...state.runtime, status: 'paused', lastError: command.error }
+        runtime: {
+          ...state.runtime,
+          status: 'paused',
+          lastError: command.error,
+          execution: {
+            ...state.runtime.execution,
+            status: state.runtime.execution.queue.length > 0 ? 'suspended' : 'idle'
+          }
+        }
       };
     }
 

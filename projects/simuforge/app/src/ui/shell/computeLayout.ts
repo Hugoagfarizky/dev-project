@@ -67,7 +67,7 @@ export function computeLayout(input: LayoutInput): LayoutResult {
 
   const leftWidth = compact ? 220 : 260;
   const rightWidth = compact ? 280 : 320;
-  const expandedProgramHeight = shortHeight ? 200 : 320;
+  const expandedProgramHeight = shortHeight ? 224 : 320;
   const expandedConsoleHeight = shortHeight ? 160 : 200;
 
   const presetCollapsed: CollapsedPanels = {

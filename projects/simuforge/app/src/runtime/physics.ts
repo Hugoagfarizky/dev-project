@@ -39,6 +39,28 @@ export interface SimulationFailure {
   severity?: 'warn' | 'error';
 }
 
+/**
+ * M2-C additive contact boundary. Physics behaviour is unchanged; the step
+ * pipeline now reports rising-edge dynamic-body/static-plane contacts so the
+ * graph runtime can fire On Plane Contact triggers (D-M2C-07).
+ */
+export interface PlaneContact {
+  kind: 'planeContact';
+  bodyEntityId: string;
+  planeEntityId: string;
+  stepIndex: number;
+  position: Vec3;
+  normal: Vec3;
+  impactSpeed: number;
+}
+
+/** Stable key for one dynamic-body/static-plane pair. */
+export function contactPairKey(bodyEntityId: string, planeEntityId: string): string {
+  return `${bodyEntityId}::${planeEntityId}`;
+}
+
+const CONTACT_EPSILON = 1e-9;
+
 /** Base class for deterministic runtime failures. */
 export class RuntimeError extends Error {
   readonly code: string;
@@ -407,6 +429,11 @@ function restingCenterY(body: RuntimeBody, planeY: number): number {
   return planeY;
 }
 
+interface ResolvedPlaneContacts {
+  contacts: Array<Omit<PlaneContact, 'stepIndex'>>;
+  activeContactKeys: string[];
+}
+
 /**
  * M1-D approved response: dynamic sphere/box bodies collide with static
  * infinite planes. Penetration is corrected positionally and the inbound
@@ -414,42 +441,89 @@ function restingCenterY(body: RuntimeBody, planeY: number): number {
  * motion is not integrated or changed. Dynamic-vs-dynamic contacts are out of
  * scope for M1-D.
  *
- * Planes are sorted by entity id so multi-plane resolution is deterministic.
+ * Planes and dynamic bodies are sorted by entity id so multi-plane resolution
+ * and contact reporting are deterministic. A contact is a rising edge only when
+ * the pair was absent from the previous step's active set (D-M2C-07).
  */
-function resolvePlaneCollisions(bodies: RuntimeBodies): void {
+function resolvePlaneCollisions(
+  bodies: RuntimeBodies,
+  previousContactKeys: ReadonlySet<string>
+): ResolvedPlaneContacts {
   const planes = Object.values(bodies)
     .filter((body) => body.collider.kind === 'plane')
     .sort((a, b) => (a.entityId < b.entityId ? -1 : a.entityId > b.entityId ? 1 : 0));
 
   if (planes.length === 0) {
-    return;
+    return { contacts: [], activeContactKeys: [] };
   }
 
-  for (const body of Object.values(bodies)) {
-    if (body.collider.kind === 'plane') {
-      continue;
-    }
+  const dynamicBodies = Object.values(bodies)
+    .filter((body) => body.collider.kind !== 'plane')
+    .sort((a, b) => (a.entityId < b.entityId ? -1 : a.entityId > b.entityId ? 1 : 0));
 
+  const contacts: Array<Omit<PlaneContact, 'stepIndex'>> = [];
+  const activeContactKeys: string[] = [];
+
+  for (const body of dynamicBodies) {
     for (const plane of planes) {
       const planeY = plane.transform.position.y;
-      if (lowestPointY(body) < planeY) {
+      const lowestBeforeResolution = lowestPointY(body);
+      if (lowestBeforeResolution > planeY + CONTACT_EPSILON) {
+        continue;
+      }
+
+      const wasPenetrating = lowestBeforeResolution < planeY;
+      const impactSpeed = wasPenetrating ? Math.max(0, -body.velocity.y) : 0;
+      if (wasPenetrating) {
         body.transform.position.y = restingCenterY(body, planeY);
         if (body.velocity.y < 0) {
           body.velocity.y = 0;
         }
       }
+
+      const key = contactPairKey(body.entityId, plane.entityId);
+      activeContactKeys.push(key);
+      if (!previousContactKeys.has(key)) {
+        contacts.push({
+          kind: 'planeContact',
+          bodyEntityId: body.entityId,
+          planeEntityId: plane.entityId,
+          position: {
+            x: body.transform.position.x,
+            y: planeY,
+            z: body.transform.position.z
+          },
+          normal: { x: 0, y: 1, z: 0 },
+          impactSpeed
+        });
+      }
     }
   }
+
+  return { contacts, activeContactKeys };
+}
+
+export interface StepContactsResult {
+  bodies: RuntimeBodies;
+  /** Rising-edge contacts for this step only. */
+  contacts: PlaneContact[];
+  /** Every body/plane pair in contact after this step. */
+  activeContactKeys: string[];
 }
 
 /**
  * Semi-implicit (symplectic) Euler step: velocity is integrated first, then
  * position uses the updated velocity. Plane colliders are static and are not
- * integrated. After integration, M1-D plane contacts are resolved. Pure and
- * deterministic; throws `CollisionError` when runtime state cannot be
- * processed safely.
+ * integrated. After integration, M1-D plane contacts are resolved and M2-C
+ * rising-edge contacts are reported. Pure and deterministic; throws
+ * `CollisionError` when runtime state cannot be processed safely.
  */
-export function stepBodies(bodies: RuntimeBodies, deltaSeconds: number): RuntimeBodies {
+export function stepBodiesWithContacts(
+  bodies: RuntimeBodies,
+  deltaSeconds: number,
+  previousContactKeys: readonly string[] = [],
+  stepIndex = 0
+): StepContactsResult {
   const next: RuntimeBodies = {};
 
   for (const [id, body] of Object.entries(bodies)) {
@@ -489,14 +563,27 @@ export function stepBodies(bodies: RuntimeBodies, deltaSeconds: number): Runtime
     next[id] = integrated;
   }
 
-  resolvePlaneCollisions(next);
-  return next;
+  const resolution = resolvePlaneCollisions(next, new Set(previousContactKeys));
+  return {
+    bodies: next,
+    contacts: resolution.contacts.map((contact) => ({ ...contact, stepIndex })),
+    activeContactKeys: resolution.activeContactKeys
+  };
+}
+
+/** Backwards-compatible step used by the M1-C/M1-D physics surface. */
+export function stepBodies(bodies: RuntimeBodies, deltaSeconds: number): RuntimeBodies {
+  return stepBodiesWithContacts(bodies, deltaSeconds).bodies;
 }
 
 export interface SimulationAdvance {
   bodies: RuntimeBodies;
   accumulatorSeconds: number;
   steps: number;
+  /** Rising-edge contacts aggregated in step order, deduped per pair. */
+  contacts: PlaneContact[];
+  /** Contact pairs still active after the final step. */
+  activeContactKeys: string[];
   error?: SimulationFailure;
 }
 
@@ -505,31 +592,56 @@ export interface SimulationAdvance {
  * MAX_FRAME_DELTA_SECONDS and only whole FIXED_TIMESTEP_SECONDS are consumed;
  * the remainder carries into the next frame.
  *
+ * M2-C contact reporting is additive: `previousContactKeys` carries the pair set
+ * from the prior command so rising edges can be detected, and multiple fixed
+ * steps in one frame collapse to the first contact per pair.
+ *
  * If a step fails, the last valid bodies and accumulator are returned together
  * with a diagnostic so the reducer can pause without committing partial state.
  */
 export function advanceSimulation(
   bodies: RuntimeBodies,
   accumulatorSeconds: number,
-  frameDeltaSeconds: number
+  frameDeltaSeconds: number,
+  previousContactKeys: readonly string[] = []
 ): SimulationAdvance {
   if (!Number.isFinite(frameDeltaSeconds) || frameDeltaSeconds <= 0) {
-    return { bodies, accumulatorSeconds, steps: 0 };
+    return {
+      bodies,
+      accumulatorSeconds,
+      steps: 0,
+      contacts: [],
+      activeContactKeys: [...previousContactKeys]
+    };
   }
 
   const clampedDelta = Math.min(frameDeltaSeconds, MAX_FRAME_DELTA_SECONDS);
   let accumulator = accumulatorSeconds + clampedDelta;
   let current = bodies;
   let steps = 0;
+  let activeContactKeys = [...previousContactKeys];
+  const contacts: PlaneContact[] = [];
+  const seenPairs = new Set<string>();
 
   while (accumulator >= FIXED_TIMESTEP_SECONDS) {
     try {
-      current = stepBodies(current, FIXED_TIMESTEP_SECONDS);
+      const step = stepBodiesWithContacts(current, FIXED_TIMESTEP_SECONDS, activeContactKeys, steps);
+      current = step.bodies;
+      activeContactKeys = step.activeContactKeys;
+      for (const contact of step.contacts) {
+        const key = contactPairKey(contact.bodyEntityId, contact.planeEntityId);
+        if (!seenPairs.has(key)) {
+          seenPairs.add(key);
+          contacts.push(contact);
+        }
+      }
     } catch (error) {
       return {
         bodies: current,
         accumulatorSeconds: accumulator,
         steps,
+        contacts,
+        activeContactKeys,
         error: toSimulationFailure(error)
       };
     }
@@ -537,5 +649,5 @@ export function advanceSimulation(
     steps += 1;
   }
 
-  return { bodies: current, accumulatorSeconds: accumulator, steps };
+  return { bodies: current, accumulatorSeconds: accumulator, steps, contacts, activeContactKeys };
 }

@@ -87,6 +87,22 @@ export function selectRuntimeBodies(state: StudioState): StudioState['runtime'][
   return state.runtime.bodies;
 }
 
+export function selectRuntimeExecution(state: StudioState): StudioState['runtime']['execution'] {
+  return state.runtime.execution;
+}
+
+export function selectExecutionStatus(state: StudioState): StudioState['runtime']['execution']['status'] {
+  return state.runtime.execution.status;
+}
+
+export function selectExecutingGraphNodeId(state: StudioState): string | null {
+  return state.editor.executingGraphNodeId;
+}
+
+export function selectExecutionSequence(state: StudioState): number {
+  return state.editor.executionSequence;
+}
+
 export function selectSelectedRuntimeBody(state: StudioState): StudioState['runtime']['bodies'][string] | null {
   const selectedId = state.editor.selectedEntityId;
   if (selectedId === null) return null;

@@ -1,8 +1,8 @@
 # SimuForge — MVP-2 Readiness Report
 
 **Date:** 2026-11-11 (initial planning); 2026-11-15 (M2-B closure); 2026-11-15 (M2-C final readiness review)  
-**Status:** M2-A CLOSED — PASS; M2-B CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C READY FOR IMPLEMENTATION AUTHORIZATION — NOT STARTED / NOT AUTHORIZED; M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
-**Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`; M2-B closure @ `c01cad4`; M2-C planning @ `5b404b0`
+**Status:** M2-A CLOSED - PASS; M2-B CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C IMPLEMENTED / READY FOR OWNER ACCEPTANCE - NOT CLOSED; M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
+**Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`; M2-B closure @ `c01cad4`; M2-C planning @ `5b404b0`; M2-C implementation @ `c78897c` (baseline) → (final commit)
 
 ## 1. Decision status
 
@@ -28,7 +28,7 @@ All nine M2-C decisions are **APPROVED — PROJECT OWNER, 2026-11-15** and recor
 
 ### 1.3 Authorization status
 
-No M2-C implementation authorization has been granted. Approval of the nine decisions finalizes the design only.
+M2-C implementation has been authorized and completed on 2026-11-15. All nine decisions implemented; see `M2_C_IMPLEMENTATION_REPORT.md`.
 
 ## 2. Foundation readiness
 
@@ -48,7 +48,7 @@ No M2-C implementation authorization has been granted. Approval of the nine deci
 | MVP-1 | CLOSED — PASS |
 | M2-A | CLOSED — PASS |
 | M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
-| M2-C | READY FOR IMPLEMENTATION AUTHORIZATION — NOT STARTED / NOT AUTHORIZED |
+| M2-C | IMPLEMENTED / READY FOR OWNER ACCEPTANCE - NOT CLOSED |
 | M2-D | NOT STARTED / NOT AUTHORIZED |
 | M2-E | NOT STARTED / NOT AUTHORIZED |
 
@@ -85,21 +85,20 @@ None of the remaining questions requires an Owner decision or blocks authorizati
 
 Cross-milestone item carried forward: `parseGraphDocument` validates against an empty entity list and therefore rejects entity references. This must be corrected during M2-E persistence work; it does not block M2-C.
 
-## 7. Remaining prerequisites before M2-C implementation
+## 7. M2-C implementation status
 
-1. The Project Owner grants a separate explicit M2-C implementation authorization.
-2. No M2-D or M2-E work starts before M2-C closure.
+M2-C implementation was authorized and completed on 2026-11-15. See `M2_C_IMPLEMENTATION_REPORT.md` for the traceability matrix, batches, files, evidence, and limitations.
+
+1. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED until M2-C is accepted.
 
 No design, decision, or evidence prerequisite remains outstanding.
 
 ## 8. Readiness verdict
 
-**READY FOR IMPLEMENTATION AUTHORIZATION.**
+**IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED.**
 
-All thirteen readiness checks pass. The nine behaviour decisions are approved, the architecture has a clear ownership boundary, cancellation and stale-session handling are specified, error and atomicity semantics are unambiguous, the contact-event boundary is defined, acceptance criteria are testable, batch dependencies are clear, and scope exclusions are explicit.
-
-This verdict is a planning judgment. No implementation test has been run for M2-C, and no M2-C criterion is claimed as passing.
+All thirteen readiness checks passed; implementation and verification are complete (full suite 250/250 PASS, M2-C browser 7/7 PASS, M1-F 1/1 PASS, M2-B 6/6 PASS). Closure requires explicit Project Owner acceptance.
 
 ## 9. Authorization statement
 
-M2-C implementation remains **NOT AUTHORIZED**. This report and the accompanying planning documents authorize no code, test, dependency, or evidence changes. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
+M2-C is implemented and ready for Owner acceptance. It is not closed. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.

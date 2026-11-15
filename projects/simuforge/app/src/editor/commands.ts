@@ -32,6 +32,7 @@ export type StudioCommand =
   | { type: 'runtime/apply-force'; entityId: string; force: Vec3 }
   | { type: 'runtime/apply-impulse'; entityId: string; impulse: Vec3 }
   | { type: 'runtime/clear-force'; entityId?: string }
+  | { type: 'runtime/graph-trigger'; triggerNodeId?: string }
   | { type: 'demo/load-scenario' }
   | { type: 'graph/set'; graph: Graph | null }
   | { type: 'graph/select-node'; nodeId: string | null }

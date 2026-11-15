@@ -1045,6 +1045,35 @@ select:focus-visible {
   min-height: 0;
 }
 
+.sf-graph-execution-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sf-space-2);
+  min-height: 20px;
+  padding: 0 var(--sf-space-2);
+  border-bottom: 1px solid var(--sf-border-subtle);
+  background: var(--sf-bg-panel);
+}
+
+.sf-graph-execution-status {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--sf-text-secondary);
+  font-family: var(--sf-font-mono);
+  font-size: var(--sf-text-2xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sf-graph-execution-bar .sf-btn {
+  flex: none;
+  height: 20px;
+  padding: 0 var(--sf-space-1-5);
+  font-size: var(--sf-text-2xs);
+}
+
 .sf-graph-empty {
   position: absolute;
   inset: 0;
@@ -1102,6 +1131,22 @@ select:focus-visible {
 
 .sf-graph-node-error {
   border-color: var(--sf-danger);
+}
+
+/* D-M2C-09 transient execution highlight; applied and removed by the editor. */
+.sf-graph-node-executing {
+  border-color: var(--sf-accent);
+  box-shadow: 0 0 0 2px rgba(240, 138, 75, 0.55);
+  animation: sf-graph-node-pulse 0.7s ease-out;
+}
+
+@keyframes sf-graph-node-pulse {
+  0% {
+    box-shadow: 0 0 0 4px rgba(240, 138, 75, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 2px rgba(240, 138, 75, 0.35);
+  }
 }
 
 .sf-graph-node-title {

@@ -12,7 +12,7 @@ interface ConsoleDrawerProps {
 }
 
 const SEVERITIES: (LogSeverity | 'all')[] = ['all', 'info', 'warn', 'error'];
-const SOURCES: (LogSource | 'all')[] = ['all', 'APP', 'EDITOR', 'RENDER', 'IMPORT'];
+const SOURCES: (LogSource | 'all')[] = ['all', 'APP', 'EDITOR', 'RENDER', 'IMPORT', 'RUNTIME'];
 
 export function ConsoleDrawer({ store, expanded, onToggle }: ConsoleDrawerProps) {
   const logs = useStudioStore(store, selectLogs);

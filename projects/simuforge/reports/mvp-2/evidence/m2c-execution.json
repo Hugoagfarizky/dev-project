@@ -1,0 +1,151 @@
+{
+  "milestone": "M2-C",
+  "generatedAt": "2026-11-15T15:02:05.885Z",
+  "browser": "Chromium 158.0.8127.18",
+  "scenarios": [
+    {
+      "name": "On Start applies an impulse and produces visible motion",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "demoBallIdAvailable": true,
+        "positionReadableWhileEditing": true,
+        "onStartExecutionCompleted": true,
+        "onStartExecutedTwoNodes": true,
+        "impulseAppliedToVelocityX": true,
+        "bodyMovedAlongX": true,
+        "transientHighlightObserved": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2c-on-start-impulse.png"
+      ]
+    },
+    {
+      "name": "Manual Trigger executes repeatedly while running",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "manualTriggerEnabledWhileRunning": true,
+        "firstManualTriggerApplied": true,
+        "secondManualTriggerApplied": true,
+        "manualTriggerHighlightObserved": true,
+        "manualTriggerStatusCompleted": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2c-manual-trigger.png"
+      ]
+    },
+    {
+      "name": "Paused Manual Trigger queues and drains only on resume",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "manualTriggerAvailableWhilePaused": true,
+        "pausedQueueVisible": true,
+        "noExecutionWhilePaused": true,
+        "queuedTriggerDrainedOnResume": true,
+        "queueEmptyAfterResume": true,
+        "resumeStatusCompleted": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2c-paused-queue.png"
+      ]
+    },
+    {
+      "name": "Stop cancels queued execution and does not leak into the next session",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "twoTriggersQueued": true,
+        "stopCancelsQueue": true,
+        "stopReturnsToEditing": true,
+        "staleQueueNotReplayed": true,
+        "newSessionHasNoQueuedWork": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2c-stop-cancelled.png"
+      ]
+    },
+    {
+      "name": "Reset cancels queued execution without re-firing On Start",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "onStartImpulseApplied": true,
+        "triggerQueuedBeforeReset": true,
+        "resetCancelsQueue": true,
+        "resetRestoresRestState": true,
+        "onStartNotReplayedOnResume": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2c-reset-cancelled.png"
+      ]
+    },
+    {
+      "name": "invalid graph skips execution with a warning while physics remains usable",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "invalidGraphSkipped": true,
+        "skipWarningNamesValidation": true,
+        "runtimeStillRunning": true,
+        "physicsStillAdvances": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2c-invalid-skip.png"
+      ]
+    },
+    {
+      "name": "responsive layout at 1024x640 and 1440x900",
+      "status": "passed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertions": {
+        "1024x640EditorVisible": true,
+        "1024x640ExecutionBarVisible": true,
+        "1024x640StatusLineVisible": true,
+        "1024x640ManualTriggerVisible": true,
+        "1024x640ManualTriggerDisabledWhileEditing": true,
+        "1024x640CanvasUsableHeight": true,
+        "1024x640BarAboveCanvas": true,
+        "1024x640EditorFitsViewport": true,
+        "1024x640StatusLineReadable": true,
+        "1440x900EditorVisible": true,
+        "1440x900ExecutionBarVisible": true,
+        "1440x900StatusLineVisible": true,
+        "1440x900ManualTriggerVisible": true,
+        "1440x900ManualTriggerDisabledWhileEditing": true,
+        "1440x900CanvasUsableHeight": true,
+        "1440x900BarAboveCanvas": true,
+        "1440x900EditorFitsViewport": true,
+        "1440x900StatusLineReadable": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2c-layout-1024x640.png",
+        "reports/mvp-2/evidence/screenshots/m2c-layout-1440x900.png",
+        "reports/mvp-2/evidence/screenshots/m2c-execution.png"
+      ]
+    }
+  ],
+  "allPassed": true
+}
