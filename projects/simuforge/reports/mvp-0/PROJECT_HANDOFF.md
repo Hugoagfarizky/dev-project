@@ -219,7 +219,7 @@ No further implementation until explicit authorization is granted.
 - WIP branch `wip/m1c-physics-scratch` remains at `a566c98`; not merged, modified, or pushed.
 ## R. M2-C implementation (2026-11-15)
 
-- M2-C status: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED.
+- M2-C status: CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15). Independent read-only acceptance audit PASS.
 - Baseline: `main` @ `c78897c` (= `origin/main` at start of this increment); M2-B closure remains `c01cad4`.
 - Implementation report: `reports/mvp-2/M2_C_IMPLEMENTATION_REPORT.md` (traceability matrix for all 17 criteria).
 - Pure execution engine: `app/src/runtime/graphExecution.ts`; contact boundary in `app/src/runtime/physics.ts`; lifecycle/queue/session integration in `app/src/editor/reducer.ts`; state in `app/src/editor/state.ts`; command `runtime/graph-trigger`; selectors; UI status line + Manual Trigger button + transient highlight in `app/src/ui/graph/GraphEditor.tsx`; `RUNTIME` source filter in ConsoleDrawer.
@@ -234,11 +234,11 @@ No further implementation until explicit authorization is granted.
 | MVP-1 | CLOSED — PASS |
 | M2-A | CLOSED — PASS |
 | M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
-| M2-C | IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED |
+| M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-D | NOT STARTED / NOT AUTHORIZED |
 | M2-E | NOT STARTED / NOT AUTHORIZED |
 
-- M2-C is implemented and ready for Owner acceptance; not closed. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
+- M2-C is CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15). Independent read-only acceptance audit PASS. All 17 acceptance criteria PASS; all 9 approved decisions satisfied. Final pre-closure HEAD: `80d692a396a692676877e2b2be98dcf1e3b5b980`. Closure documentation commit: recorded after push.
 - Cross-milestone item for M2-E (unchanged): `parseGraphDocument` validates against an empty entity list and rejects entity references; must be corrected during M2-E persistence work. M2-C did not change it.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
-- Next required action: Project Owner reviews M2-C implementation and decides acceptance (closure) or requests changes. M2-D/M2-E remain not authorized.
+- M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED. Next permitted action: prepare M2-D planning/readiness work only after separate Project Owner authorization. No M2-D or M2-E implementation may begin.

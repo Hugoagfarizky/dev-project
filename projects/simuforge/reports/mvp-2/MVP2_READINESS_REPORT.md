@@ -1,7 +1,7 @@
 # SimuForge — MVP-2 Readiness Report
 
 **Date:** 2026-11-11 (initial planning); 2026-11-15 (M2-B closure); 2026-11-15 (M2-C final readiness review)  
-**Status:** M2-A CLOSED - PASS; M2-B CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C IMPLEMENTED / READY FOR OWNER ACCEPTANCE - NOT CLOSED; M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
+**Status:** M2-A CLOSED - PASS; M2-B CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
 **Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`; M2-B closure @ `c01cad4`; M2-C planning @ `5b404b0`; M2-C implementation @ `c78897c` (baseline) → `073f0f34a029abe85d596bb2e29e20eefb488226` (final)
 
 ## 1. Decision status
@@ -48,7 +48,7 @@ M2-C implementation has been authorized and completed on 2026-11-15. All nine de
 | MVP-1 | CLOSED — PASS |
 | M2-A | CLOSED — PASS |
 | M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
-| M2-C | IMPLEMENTED / READY FOR OWNER ACCEPTANCE - NOT CLOSED |
+| M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-D | NOT STARTED / NOT AUTHORIZED |
 | M2-E | NOT STARTED / NOT AUTHORIZED |
 
@@ -85,20 +85,18 @@ None of the remaining questions requires an Owner decision or blocks authorizati
 
 Cross-milestone item carried forward: `parseGraphDocument` validates against an empty entity list and therefore rejects entity references. This must be corrected during M2-E persistence work; it does not block M2-C.
 
-## 7. M2-C implementation status
+## 7. M2-C closure
 
-M2-C implementation was authorized and completed on 2026-11-15. See `M2_C_IMPLEMENTATION_REPORT.md` for the traceability matrix, batches, files, evidence, and limitations.
+M2-C is CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15). Independent read-only acceptance audit: PASS. All 17 acceptance criteria PASS; all 9 approved decisions satisfied. Full suite 250/250 PASS; M2-C browser 7/7 PASS; M1-F 1/1 PASS; M2-B 6/6 PASS. Implementation report: `M2_C_IMPLEMENTATION_REPORT.md`.
 
-1. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED until M2-C is accepted.
-
-No design, decision, or evidence prerequisite remains outstanding.
+M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
 
 ## 8. Readiness verdict
 
-**IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED.**
+**M2-C CLOSED — PASS. M2-D and M2-E NOT STARTED / NOT AUTHORIZED.**
 
-All thirteen readiness checks passed; implementation and verification are complete (full suite 250/250 PASS, M2-C browser 7/7 PASS, M1-F 1/1 PASS, M2-B 6/6 PASS). Closure requires explicit Project Owner acceptance.
+M2-C closure is recorded. No implementation test remains outstanding. M2-D/M2-E readiness and authorization statuses are unchanged.
 
 ## 9. Authorization statement
 
-M2-C is implemented and ready for Owner acceptance. It is not closed. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
+M2-C is closed. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED. No M2-D or M2-E work may begin without separate Project Owner authorization.

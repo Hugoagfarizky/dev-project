@@ -1,7 +1,7 @@
 # SimuForge — MVP-2 Consolidated Roadmap
 
 **Date:** 2026-11-11 (planning); 2026-11-15 (M2-B closure, M2-C planning, M2-C Owner decisions and readiness)  
-**Status:** M2-A CLOSED — PASS; M2-B CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED; M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
+**Status:** M2-A CLOSED — PASS; M2-B CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
 **Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`; M2-B closure @ `c01cad4`; M2-C planning @ `5b404b0`; M2-C implementation @ `c78897c` (baseline) → `073f0f34a029abe85d596bb2e29e20eefb488226` (final)
 
 ## 1. Objective
@@ -36,14 +36,14 @@ Deliver Visual Scripting (Product Spec §7.4) as a verifiable increment on top o
 - Report: `M2_B_IMPLEMENTATION_REPORT.md`; evidence: `evidence/m2b-browser-acceptance.json` and `evidence/screenshots/`.
 - Accepted limitations: in-memory graph only, no undo/redo, plain entity-ID input without a picker, diagnostics not mirrored to Console, compact fit-view zoom in the current Program panel.
 
-### M2-C — Graph execution runtime (IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED)
+### M2-C — Graph execution runtime (CLOSED — PASS — PROJECT OWNER ACCEPTED, 2026-11-15)
 - Scope: event-triggered sequential execution of the canonical graph with cancellation tokens or equivalent, Stop/Reset cancellation, Pause suspension, and Console error reporting.
 - Exclusions: loops, branches, variables, math nodes, delay nodes, Python, robotics/electrical systems, 2D/hybrid simulation, graph persistence (M2-E), new node types, unrelated UI redesign.
 - Depends on: M2-A, M2-B, M1-E.
 - Implementation report: `M2_C_IMPLEMENTATION_REPORT.md`
 - Planning documents: `M2_C_TECHNICAL_REVIEW.md`; `M2_C_OWNER_DECISION_PACKAGE.md`.
 - Implementation and verification: COMPLETE (2026-11-15). Full suite 250/250 PASS; M2-C browser 7/7 PASS; M1-F 1/1; M2-B 6/6.
-- Status: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
+- Status: CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15). All 17 acceptance criteria PASS; independent audit PASS. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
 - Owner decisions: all nine approved — PROJECT OWNER, 2026-11-15:
 
 | ID | Topic | Approved decision |

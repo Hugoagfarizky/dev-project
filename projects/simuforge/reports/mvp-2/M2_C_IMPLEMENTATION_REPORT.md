@@ -2,8 +2,8 @@
 
 **Date:** 2026-11-15 (implementation and verification)  
 **Milestone:** M2-C — Graph Execution Runtime  
-**Status:** IMPLEMENTED / READY FOR OWNER ACCEPTANCE (not closed; closure requires explicit Project Owner acceptance)  
-**Authorization:** Project Owner explicitly authorized M2-C implementation on 2026-11-15  
+**Status:** CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15)  
+**Authorization:** Project Owner explicitly authorized M2-C implementation on 2026-11-15; independent read-only acceptance audit PASS; Project Owner accepted closure on 2026-11-15  
 **Implementation baseline:** `main` @ `c78897c` (`origin/main` matched)  
 **Final HEAD:** `main` @ `99c32a8ed2e89ca815226bd23ce7c16ace72cea1`  
 **M2-A / M2-B:** CLOSED — PASS (unchanged)
@@ -153,4 +153,4 @@ Modified:
 
 ## 9. Status
 
-M2-C is IMPLEMENTED / READY FOR OWNER ACCEPTANCE. It is not CLOSED; closure requires explicit Project Owner acceptance. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
+M2-C is CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15). Independent read-only acceptance audit: PASS. All 17 acceptance criteria PASS; all 9 approved decisions satisfied. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
