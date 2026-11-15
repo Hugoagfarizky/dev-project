@@ -71,13 +71,13 @@ Deliver Visual Scripting (Product Spec §7.4) as a verifiable increment on top o
 - Status: NOT STARTED / NOT AUTHORIZED. M2-C is not implemented and not closed.
 - Gate: separate explicit Project Owner implementation authorization before any batch starts.
 
-### M2-D — End-to-end demo and browser acceptance (PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION)
+### M2-D — End-to-end demo and browser acceptance (DECISIONS APPROVED — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION)
 - Scope: integrated, demonstrable, repeatable end-to-end experience proving MVP-2 visual scripting works as a product: load world, author graph, run, observe motion, inspect status/Console, recover from invalid graphs, repeat; browser acceptance with evidence. In-session only.
 - Exclusions: M2-E persistence (save/reopen), Python, new node types, loops/branches/variables/math/delay, robotics/electrical, hybrid 2D, advanced physics.
 - Depends on: M2-A, M2-B, M2-C, M1-E, M1-F.
-- Planning documents: `M2_D_TECHNICAL_REVIEW.md`; `M2_D_OWNER_DECISION_PACKAGE.md` (D-M2D-01..D-M2D-05 PENDING — PROJECT OWNER).
-- Planning and readiness review: COMPLETE (2026-11-15).
-- Readiness verdict: READY FOR OWNER DECISIONS. Implementation NOT AUTHORIZED.
+- Planning documents: `M2_D_TECHNICAL_REVIEW.md`; `M2_D_OWNER_DECISION_PACKAGE.md` (D-M2D-01..D-M2D-05 APPROVED — PROJECT OWNER, 2026-11-15).
+- Planning and readiness review: COMPLETE (2026-11-15). Decisions APPROVED.
+- Readiness verdict: READY FOR IMPLEMENTATION AUTHORIZATION (pending separate explicit Project Owner authorization). Implementation NOT AUTHORIZED.
 
 ### M2-E — Persistence, regression, and closure (NOT STARTED / NOT AUTHORIZED)
 - Scope: save/reopen validation, full regression, closure documentation.

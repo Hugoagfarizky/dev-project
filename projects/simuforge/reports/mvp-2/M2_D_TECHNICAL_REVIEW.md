@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-15 (planning)  
 **Milestone:** M2-D — End-to-End Demo and Browser Acceptance  
-**Status:** PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION  
+**Status:** ALL FIVE DECISIONS APPROVED — PROJECT OWNER, 2026-11-15; PLANNING COMPLETE — READY FOR IMPLEMENTATION AUTHORIZATION PENDING (not authorized)  
 **Authorization:** Planning only. M2-D implementation is NOT AUTHORIZED.  
 **Baseline:** `main` @ `0ebaccd1e8a5130f0192c4a07a24d2c90b6b2889` (M2-C CLOSED — PASS, Project Owner accepted 2026-11-15)  
 **Companion documents:** `M2_D_OWNER_DECISION_PACKAGE.md` (D-M2D-01..D-M2D-05 PENDING — PROJECT OWNER), `MVP2_CONSOLIDATED_ROADMAP.md`, `MVP2_READINESS_REPORT.md`, `reports/mvp-0/PROJECT_HANDOFF.md`
@@ -118,12 +118,7 @@ Reuse existing infrastructure:
 
 ## 9. Owner decision package
 
-See `M2_D_OWNER_DECISION_PACKAGE.md`. Proposed decisions:
-- D-M2D-01: Canonical demo scenario definition (On Start → Apply Impulse on Demo Ball; Manual Trigger → Apply Force; On Plane Contact → Apply Impulse bounce).
-- D-M2D-02: Add a one-click "Load Demo Graph" (in-memory) vs. manual authoring only.
-- D-M2D-03: Console visibility in Program preset (status-line primary vs. auto-expand Console).
-- D-M2D-04: Save/reopen explicitly deferred to M2-E (M2-D in-session only).
-- D-M2D-05: Browser evidence schema/viewports/browsers reuse M2-C conventions.
+See `M2_D_OWNER_DECISION_PACKAGE.md`. All five decisions D-M2D-01..D-M2D-05 are APPROVED — PROJECT OWNER, 2026-11-15 (D-M2D-03 with clarification). No item remains pending.
 
 ## 10. Risk and readiness assessment
 
@@ -136,7 +131,7 @@ See `M2_D_OWNER_DECISION_PACKAGE.md`. Proposed decisions:
 | Evidence screenshot staleness | Low | Regenerate on final run only |
 | M2-E dependency | Low | Documented; M2-D does not touch persistence |
 
-**Readiness verdict: READY FOR OWNER DECISIONS.** (Implementation authorization not granted; D-M2D-01..05 pending Owner approval.)
+**Readiness verdict: READY FOR IMPLEMENTATION AUTHORIZATION (pending separate explicit Project Owner authorization).** Decisions D-M2D-01..D-M2D-05 approved 2026-11-15. Implementation NOT AUTHORIZED.
 
 ## 11. Proposed file changes (planning only)
 

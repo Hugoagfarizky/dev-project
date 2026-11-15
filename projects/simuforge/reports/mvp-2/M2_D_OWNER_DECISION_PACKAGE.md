@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-15 (decisions recorded for approval)  
 **Milestone:** M2-D — End-to-End Demo and Browser Acceptance  
-**Status:** ALL ITEMS PENDING — PROJECT OWNER DECISION REQUIRED; implementation NOT AUTHORIZED  
+**Status:** ALL FIVE DECISIONS APPROVED — PROJECT OWNER, 2026-11-15; implementation NOT AUTHORIZED  
 **Baseline:** `main` @ `0ebaccd1e8a5130f0192c4a07a24d2c90b6b2889` (M2-C CLOSED — PASS)  
 **Technical review:** `M2_D_TECHNICAL_REVIEW.md`  
 **Decision groups:** previously approved MVP-2 decisions are D-M2-01..D-M2-08; M2-C decisions are D-M2C-01..D-M2C-09; M2-D decisions are D-M2D-01..D-M2D-05. The three groups are distinct and must not be conflated.
@@ -48,6 +48,8 @@ No item is approved yet. M2-D implementation requires a separate explicit Projec
 
 **Recommendation:** Keep the execution status line as the primary feedback (always visible). Optionally auto-expand the Console strip when a graph execution completes or fails, without changing the default collapsed state for other workflows. Do not change the default preset layout.
 
+**Owner clarification (2026-11-15):** APPROVED WITH CLARIFICATION — preserve existing default Program preset layout; Console may auto-expand after execution completes or fails; do not override explicit user collapse; status line remains primary feedback.
+
 **Alternatives:** (a) Always expand Console in Program preset (more visible feedback, costs ~160 px of canvas height); (b) Rely on status line only (minimal change, less message detail).
 
 **Trade-offs:** (a) richer feedback but layout regression risk at 1024×640; (b) minimal but hides detailed Console codes. Recommendation keeps layout safe while exposing detail on demand.
@@ -72,6 +74,16 @@ No item is approved yet. M2-D implementation requires a separate explicit Projec
 
 ## 3. Approval
 
-All five items are PENDING — PROJECT OWNER. None is approved. Implementation of M2-D remains NOT AUTHORIZED until these decisions are settled and a separate explicit implementation authorization is granted.
+All five items are **APPROVED — PROJECT OWNER, 2026-11-15**. D-M2D-03 is approved with the clarification recorded in §2 (D-M2D-03). No item is pending. Implementation of M2-D remains NOT AUTHORIZED until a separate explicit Project Owner authorization is granted.
+
+### Approved decision summary
+
+| ID | Topic | Decision |
+|---|---|---|
+| D-M2D-01 | Canonical end-to-end demo scenario | APPROVED |
+| D-M2D-02 | Load Demo Graph (in-memory) | APPROVED |
+| D-M2D-03 | Console visibility in Program preset | APPROVED WITH CLARIFICATION |
+| D-M2D-04 | Save/reopen scope | APPROVED |
+| D-M2D-05 | Browser evidence and reproducibility | APPROVED |
 
 Cross-milestone note: the M2-E `parseGraphDocument` carry-forward issue is unaffected by M2-D planning and is not addressed here.

@@ -247,10 +247,10 @@ No further implementation until explicit authorization is granted.
 
 - M2-D status: PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION.
 - Baseline: `main` @ `0ebaccd1e8a5130f0192c4a07a24d2c90b6b2889` (M2-C CLOSED — PASS).
-- Planning documents: `reports/mvp-2/M2_D_TECHNICAL_REVIEW.md`; `reports/mvp-2/M2_D_OWNER_DECISION_PACKAGE.md` (D-M2D-01..D-M2D-05 PENDING — PROJECT OWNER).
+- Planning documents: `reports/mvp-2/M2_D_TECHNICAL_REVIEW.md`; `reports/mvp-2/M2_D_OWNER_DECISION_PACKAGE.md` (D-M2D-01..D-M2D-05 APPROVED — PROJECT OWNER, 2026-11-15; D-M2D-03 with clarification).
 - Scope: integrated end-to-end demo and browser acceptance proving MVP-2 visual scripting as a product; in-session only.
 - Exclusions: M2-E persistence, Python, new node types, loops/branches/variables/math/delay, robotics/electrical, hybrid 2D, advanced physics.
-- Readiness verdict: READY FOR OWNER DECISIONS. Implementation NOT AUTHORIZED.
+- Readiness verdict: READY FOR IMPLEMENTATION AUTHORIZATION (pending separate explicit Project Owner authorization). Implementation NOT AUTHORIZED.
 - Milestone register (current):
 
 | Milestone | Official status |
