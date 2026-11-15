@@ -156,4 +156,20 @@ No further implementation until explicit authorization is granted.
 
 - Protected unrelated working-tree state: three modified MVP-0 reports (`MVP0_EVIDENCE_CLOSURE_REPORT.md`, `MVP0_FINAL_ACCEPTANCE_AUDIT.md`, `MVP_0_ACCEPTANCE_REPORT.md`) remain modified and unstaged; untracked root `package-lock.json` remains untouched.
 - WIP branch `wip/m1c-physics-scratch` remains at `a566c98`; not merged, modified, or pushed.
-- Next recommended action: M2-C technical review and planning, followed by separate Project Owner authorization. M2-C implementation is NOT authorized.
+- Next required action: Project Owner review of the M2-C decision package (D-M2C-01..D-M2C-09), followed by separate explicit implementation authorization. M2-C implementation is NOT authorized.
+
+## P. M2-C technical review and planning (2026-11-15)
+
+- M2-C status: PLANNING COMPLETE / PENDING OWNER DECISIONS — NOT AUTHORIZED.
+- Planning documents: `reports/mvp-2/M2_C_TECHNICAL_REVIEW.md`; `reports/mvp-2/M2_C_OWNER_DECISION_PACKAGE.md`.
+- Readiness verdict: READY FOR OWNER DECISIONS.
+- Outstanding Owner decisions: D-M2C-01 execution pacing; D-M2C-02 On Start firing; D-M2C-03 manual trigger while paused; D-M2C-04 multiple/repeated events; D-M2C-05 fan-out/fan-in; D-M2C-06 invalid-graph gating; D-M2C-07 plane-contact definition; D-M2C-08 failure atomicity; D-M2C-09 observability scope.
+- Proposed implementation batches (not started): 1 execution engine foundation; 2 trigger system; 3 action node execution; 4 cancellation and error hardening; 5 integration and acceptance.
+- Planned acceptance: 17 criteria across unit, integration, and browser evidence; evidence target `reports/mvp-2/evidence/m2c-execution.json` plus screenshots.
+- Recommended architecture: pure `graphExecution` runtime module over the canonical graph, reusing the M1-E force/impulse APIs, with reducer-owned session, FIFO queue, and monotonic session token. React Flow is not involved at execution time.
+- Key finding for M2-E: `parseGraphDocument` validates against an empty entity list and rejects entity references; this must be corrected during M2-E persistence work.
+- No application source, tests, dependencies, or evidence changed by this planning increment.
+- Latest implementation commit: `c01cad4` (M2-B official closure). M2-C planning commit: this documentation commit.
+- Working tree: three modified MVP-0 reports and untracked root `package-lock.json` remain untouched and unstaged; WIP branch `wip/m1c-physics-scratch` remains at `a566c98`.
+- Next required Project Owner action: approve or amend D-M2C-01..D-M2C-09, then grant explicit M2-C implementation authorization.
+- M2-C, M2-D, and M2-E implementation remain NOT AUTHORIZED.

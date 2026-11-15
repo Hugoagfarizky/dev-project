@@ -1,7 +1,7 @@
 # SimuForge — MVP-2 Consolidated Roadmap
 
-**Date:** 2026-11-11 (planning); 2026-11-15 (M2-B closure)  
-**Status:** M2-A CLOSED — PASS; M2-B CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C..M2-E NOT STARTED / NOT AUTHORIZED  
+**Date:** 2026-11-11 (planning); 2026-11-15 (M2-B closure, M2-C planning)  
+**Status:** M2-A CLOSED — PASS; M2-B CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C PLANNING COMPLETE / PENDING OWNER DECISIONS — NOT AUTHORIZED; M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
 **Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`
 
 ## 1. Objective
@@ -36,15 +36,23 @@ Deliver Visual Scripting (Product Spec §7.4) as a verifiable increment on top o
 - Report: `M2_B_IMPLEMENTATION_REPORT.md`; evidence: `evidence/m2b-browser-acceptance.json` and `evidence/screenshots/`.
 - Accepted limitations: in-memory graph only, no undo/redo, plain entity-ID input without a picker, diagnostics not mirrored to Console, compact fit-view zoom in the current Program panel.
 
-### M2-C — Graph execution runtime (NOT STARTED / NOT AUTHORIZED)
-- Scope: event-triggered sequential execution with cancellation tokens, Stop/Reset cancellation, Pause suspension, Console error reporting.
-- Exclusions: loops, branches, variables, math nodes, delay nodes.
-- Depends on: M2-A, M1-E.
-- Deliverables: execution runtime, cancellation, error reporting.
-- Acceptance: triggering an event applies the configured force to the target object.
-- Validation: integration tests.
-- Evidence: test results.
-- Gate: Project Owner authorization before implementation.
+### M2-C — Graph execution runtime (PLANNING COMPLETE / PENDING OWNER DECISIONS — NOT AUTHORIZED)
+- Scope: event-triggered sequential execution of the canonical graph with cancellation tokens or equivalent, Stop/Reset cancellation, Pause suspension, and Console error reporting.
+- Exclusions: loops, branches, variables, math nodes, delay nodes, Python, robotics/electrical systems, 2D/hybrid simulation, graph persistence (M2-E), new node types.
+- Depends on: M2-A, M2-B, M1-E.
+- Planning documents: `M2_C_TECHNICAL_REVIEW.md`; `M2_C_OWNER_DECISION_PACKAGE.md`.
+- Deliverables: pure execution engine, trigger dispatch (On Start, Manual Trigger, On Plane Contact), action execution through M1-E force/impulse APIs, cancellation and error handling, observability, browser acceptance.
+- Acceptance: a trigger executes its chain in deterministic order and applies the configured force/impulse to the target object; the 17-criterion plan is in `M2_C_TECHNICAL_REVIEW.md` §15.
+- Validation: unit + integration tests and Playwright browser acceptance.
+- Evidence: `reports/mvp-2/evidence/m2c-execution.json` plus screenshots.
+- Gate: Project Owner approval of D-M2C-01..D-M2C-09, then separate explicit implementation authorization.
+- Proposed implementation batches:
+  1. Execution engine foundation — pure plan builder, session/queue/cancellation primitives, atomic action application.
+  2. Trigger system — On Start on Play, Manual Trigger command and control, On Plane Contact event boundary.
+  3. Action node execution — Apply Force, Apply Impulse, Clear Force through M1-E APIs.
+  4. Cancellation and error hardening — pause/resume queue, Stop/Reset cancellation, stale-session protection, Console codes.
+  5. Integration and acceptance — Program status/highlight, Playwright E2E, regression, evidence, report.
+- Outstanding owner decisions: D-M2C-01 execution pacing; D-M2C-02 On Start firing; D-M2C-03 manual trigger while paused; D-M2C-04 multiple/repeated events; D-M2C-05 fan-out/fan-in; D-M2C-06 invalid-graph gating; D-M2C-07 plane-contact definition; D-M2C-08 failure atomicity; D-M2C-09 observability scope.
 
 ### M2-D — End-to-end demo and browser acceptance (NOT STARTED / NOT AUTHORIZED)
 - Scope: complete button → graph → force → motion scenario.
