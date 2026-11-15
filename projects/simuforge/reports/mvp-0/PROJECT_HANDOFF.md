@@ -238,7 +238,7 @@ No further implementation until explicit authorization is granted.
 | M2-D | NOT STARTED / NOT AUTHORIZED |
 | M2-E | NOT STARTED / NOT AUTHORIZED |
 
-- M2-C is CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15). Independent read-only acceptance audit PASS. All 17 acceptance criteria PASS; all 9 approved decisions satisfied. Final pre-closure HEAD: `80d692a396a692676877e2b2be98dcf1e3b5b980`. Closure documentation commit: recorded after push.
+- M2-C is CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15). Independent read-only acceptance audit PASS. All 17 acceptance criteria PASS; all 9 approved decisions satisfied. Final pre-closure HEAD: `80d692a396a692676877e2b2be98dcf1e3b5b980`. Closure documentation commit: `a63737d` (this commit).
 - Cross-milestone item for M2-E (unchanged): `parseGraphDocument` validates against an empty entity list and rejects entity references; must be corrected during M2-E persistence work. M2-C did not change it.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
 - M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED. Next permitted action: prepare M2-D planning/readiness work only after separate Project Owner authorization. No M2-D or M2-E implementation may begin.
