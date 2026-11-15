@@ -242,3 +242,27 @@ No further implementation until explicit authorization is granted.
 - Cross-milestone item for M2-E (unchanged): `parseGraphDocument` validates against an empty entity list and rejects entity references; must be corrected during M2-E persistence work. M2-C did not change it.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
 - M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED. Next permitted action: prepare M2-D planning/readiness work only after separate Project Owner authorization. No M2-D or M2-E implementation may begin.
+
+## S. M2-D technical review and readiness planning (2026-11-15)
+
+- M2-D status: PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION.
+- Baseline: `main` @ `0ebaccd1e8a5130f0192c4a07a24d2c90b6b2889` (M2-C CLOSED — PASS).
+- Planning documents: `reports/mvp-2/M2_D_TECHNICAL_REVIEW.md`; `reports/mvp-2/M2_D_OWNER_DECISION_PACKAGE.md` (D-M2D-01..D-M2D-05 PENDING — PROJECT OWNER).
+- Scope: integrated end-to-end demo and browser acceptance proving MVP-2 visual scripting as a product; in-session only.
+- Exclusions: M2-E persistence, Python, new node types, loops/branches/variables/math/delay, robotics/electrical, hybrid 2D, advanced physics.
+- Readiness verdict: READY FOR OWNER DECISIONS. Implementation NOT AUTHORIZED.
+- Milestone register (current):
+
+| Milestone | Official status |
+|---|---|
+| MVP-0 | CLOSED — PASS |
+| MVP-1 | CLOSED — PASS |
+| M2-A | CLOSED — PASS |
+| M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-D | PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION |
+| M2-E | NOT STARTED / NOT AUTHORIZED |
+
+- M2-D implementation remains NOT AUTHORIZED; M2-E remains NOT STARTED / NOT AUTHORIZED. M2-E carry-forward issue (`parseGraphDocument` validates with `{ entities: [] }`) unchanged and documented.
+- Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
+- Next required action: Project Owner reviews D-M2D-01..D-M2D-05 and grants separate explicit M2-D implementation authorization. No M2-D or M2-E implementation may begin before then.

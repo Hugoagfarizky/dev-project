@@ -97,6 +97,16 @@ M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
 
 M2-C closure is recorded. No implementation test remains outstanding. M2-D/M2-E readiness and authorization statuses are unchanged.
 
-## 9. Authorization statement
+## 10. M2-D planning
 
-M2-C is closed. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED. No M2-D or M2-E work may begin without separate Project Owner authorization.
+M2-D technical review and readiness planning is COMPLETE (2026-11-15). Planning documents: `M2_D_TECHNICAL_REVIEW.md`, `M2_D_OWNER_DECISION_PACKAGE.md` (D-M2D-01..D-M2D-05 PENDING — PROJECT OWNER).
+
+M2-D scope: integrated, demonstrable, repeatable end-to-end experience proving MVP-2 visual scripting works as a product (load world, author graph, run, observe motion, inspect status/Console, recover from invalid graphs, repeat); browser acceptance with evidence; in-session only.
+
+M2-D exclusions: M2-E persistence (save/reopen), Python, new node types, loops/branches/variables/math/delay, robotics/electrical, hybrid 2D, advanced physics.
+
+Readiness verdict: READY FOR OWNER DECISIONS. Implementation NOT AUTHORIZED.
+
+## 11. Authorization statement
+
+M2-C is closed. M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED. M2-D planning is complete and awaits Owner decisions (D-M2D-01..D-M2D-05) and separate explicit implementation authorization. M2-E remains NOT STARTED / NOT AUTHORIZED.
