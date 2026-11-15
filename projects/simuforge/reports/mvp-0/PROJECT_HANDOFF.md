@@ -156,9 +156,11 @@ No further implementation until explicit authorization is granted.
 
 - Protected unrelated working-tree state: three modified MVP-0 reports (`MVP0_EVIDENCE_CLOSURE_REPORT.md`, `MVP0_FINAL_ACCEPTANCE_AUDIT.md`, `MVP_0_ACCEPTANCE_REPORT.md`) remain modified and unstaged; untracked root `package-lock.json` remains untouched.
 - WIP branch `wip/m1c-physics-scratch` remains at `a566c98`; not merged, modified, or pushed.
-- Next required action: Project Owner review of the M2-C decision package (D-M2C-01..D-M2C-09), followed by separate explicit implementation authorization. M2-C implementation is NOT authorized.
+- Next required action: Project Owner review of the M2-C decision package (D-M2C-01..D-M2C-09), followed by separate explicit implementation authorization. M2-C implementation is NOT authorized. (Superseded by §Q: the decisions were approved on 2026-11-15.)
 
 ## P. M2-C technical review and planning (2026-11-15)
+
+> Superseded — the nine M2-C Owner decisions were approved on 2026-11-15 and the final readiness review is complete (see §Q). This section is retained as the planning-increment record.
 
 - M2-C status: PLANNING COMPLETE / PENDING OWNER DECISIONS — NOT AUTHORIZED.
 - Planning documents: `reports/mvp-2/M2_C_TECHNICAL_REVIEW.md`; `reports/mvp-2/M2_C_OWNER_DECISION_PACKAGE.md`.
@@ -173,3 +175,46 @@ No further implementation until explicit authorization is granted.
 - Working tree: three modified MVP-0 reports and untracked root `package-lock.json` remain untouched and unstaged; WIP branch `wip/m1c-physics-scratch` remains at `a566c98`.
 - Next required Project Owner action: approve or amend D-M2C-01..D-M2C-09, then grant explicit M2-C implementation authorization.
 - M2-C, M2-D, and M2-E implementation remain NOT AUTHORIZED.
+
+## Q. M2-C official Owner decisions and final readiness review (2026-11-15)
+
+- M2-C status: READY FOR IMPLEMENTATION AUTHORIZATION — NOT STARTED / NOT AUTHORIZED.
+- Baseline: `main` @ `5b404b0` (= `origin/main` at the start of this increment); M2-B closure remains `c01cad4`.
+- M2-B remains officially CLOSED — PASS, Project Owner accepted 2026-11-15. This increment does not reopen or amend it.
+- Owner decisions D-M2C-01 through D-M2C-09 are **APPROVED — PROJECT OWNER, 2026-11-15**, recorded in `reports/mvp-2/M2_C_OWNER_DECISION_PACKAGE.md`. No decision remains PENDING.
+
+| ID | Topic | Approved decision |
+|---|---|---|
+| D-M2C-01 | Execution pacing | Atomic execution chain per trigger; deterministic sequential progression, no concurrency |
+| D-M2C-02 | On Start firing | Once per Editing → Running transition only; not on resume, standalone Reset, Stop, or other non-session transitions |
+| D-M2C-03 | Manual Trigger while Paused | Available while Paused but queued; executes only after resume; no progression while Paused |
+| D-M2C-04 | Multiple/repeated events | FIFO; capacity 64; drop newest when full; warn on drops |
+| D-M2C-05 | Fan-out / fan-in | Deterministic topological order; node ID tie-break; node at most once per trigger; fan-in waits for relevant predecessor paths |
+| D-M2C-06 | Invalid graph gating | Play allowed; graph execution skipped with warning; simulation remains usable; no partial execution |
+| D-M2C-07 | Plane-contact definition | Rising-edge event per body/plane pair; no resting re-fire; match dynamic body or plane per payload |
+| D-M2C-08 | Failure atomicity | Per-node atomic; node failure stops chain; runtime error auto-pauses; no whole-chain rollback |
+| D-M2C-09 | Observability | Console messages + execution status line + transient node highlight |
+
+- Final readiness verdict: **READY FOR IMPLEMENTATION AUTHORIZATION** (13/13 readiness checks PASS in `reports/mvp-2/MVP2_READINESS_REPORT.md`).
+- Technical review reconciliation: `reports/mvp-2/M2_C_TECHNICAL_REVIEW.md` §5.5. Two approved decisions superseded the original recommendations and are documented explicitly — D-M2C-05 replaces depth-first edge-array ordering with deterministic topological ordering and a node-ID tie-break; D-M2C-08 removes warn-severity chain continuation, so any node failure stops the chain while only error severity auto-pauses.
+- Remaining technical blockers: none. Implementation-detail questions (plan-cache keying, queue drain granularity, Console code naming, status-line layout at 1024×640, cross-frame contact dedupe) are listed in `M2_C_TECHNICAL_REVIEW.md` §17.3 and require no Owner decision.
+- Cross-milestone item for M2-E: `parseGraphDocument` validates against an empty entity list and rejects entity references; must be corrected during M2-E persistence work.
+- Milestone register (current; §O's register remains the M2-B closure snapshot):
+
+| Milestone | Official status |
+|---|---|
+| MVP-0 | CLOSED — PASS |
+| MVP-1 | CLOSED — PASS |
+| M2-A | CLOSED — PASS |
+| M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-C | NOT STARTED / NOT AUTHORIZED — decisions approved, readiness complete |
+| M2-D | NOT STARTED / NOT AUTHORIZED |
+| M2-E | NOT STARTED / NOT AUTHORIZED |
+
+- M2-C is not implemented and not closed. No implementation batch has started.
+- M2-C implementation remains **NOT AUTHORIZED**; M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
+- This increment was documentation-only: no application source, tests, dependencies, execution engine, runtime commands, physics contact events, node highlighting, Console runtime integration, or M2-B evidence changed.
+- Documentation commit for this increment: `docs(simuforge): record M2-C owner decisions and readiness`; local HEAD equals `origin/main` after push.
+- Protected unrelated working-tree state: three modified MVP-0 reports (`MVP0_EVIDENCE_CLOSURE_REPORT.md`, `MVP0_FINAL_ACCEPTANCE_AUDIT.md`, `MVP_0_ACCEPTANCE_REPORT.md`) remain modified and unstaged; untracked root `package-lock.json` remains untouched.
+- WIP branch `wip/m1c-physics-scratch` remains at `a566c98`; not merged, modified, or pushed.
+- Next required action: Project Owner grants a separate explicit M2-C implementation authorization. No batch may start before then.

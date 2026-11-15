@@ -1,14 +1,34 @@
 # SimuForge — MVP-2 Readiness Report
 
-**Date:** 2026-11-11 (initial planning); 2026-11-15 (M2-C planning review)  
-**Status:** M2-A CLOSED — PASS; M2-B CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C PLANNING COMPLETE / PENDING OWNER DECISIONS — NOT AUTHORIZED; M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
-**Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`; current `main` @ `c01cad4`
+**Date:** 2026-11-11 (initial planning); 2026-11-15 (M2-B closure); 2026-11-15 (M2-C final readiness review)  
+**Status:** M2-A CLOSED — PASS; M2-B CLOSED — PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C READY FOR IMPLEMENTATION AUTHORIZATION — NOT STARTED / NOT AUTHORIZED; M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
+**Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`; M2-B closure @ `c01cad4`; M2-C planning @ `5b404b0`
 
 ## 1. Decision status
 
-- MVP-2 decisions **D-M2-01 through D-M2-08** are APPROVED and recorded in `MVP2_OWNER_DECISION_PACKAGE.md`.
-- M2-C decisions **D-M2C-01 through D-M2C-09** are PROPOSED and PENDING Project Owner approval (`M2_C_OWNER_DECISION_PACKAGE.md`).
-- No M2-C implementation authorization has been granted.
+### 1.1 Previously approved MVP-2 decisions
+
+**D-M2-01 through D-M2-08** remain APPROVED and unchanged in `MVP2_OWNER_DECISION_PACKAGE.md`. They are a separate decision group from the M2-C decisions and are not restated or amended here.
+
+### 1.2 M2-C decisions
+
+All nine M2-C decisions are **APPROVED — PROJECT OWNER, 2026-11-15** and recorded in `M2_C_OWNER_DECISION_PACKAGE.md`. None is PENDING.
+
+| ID | Topic | Approved decision |
+|---|---|---|
+| D-M2C-01 | Execution pacing | Atomic execution chain per trigger; deterministic sequential progression, no concurrency |
+| D-M2C-02 | On Start firing | Once per Editing → Running transition only; not on resume, standalone Reset, Stop, or other non-session transitions |
+| D-M2C-03 | Manual Trigger while Paused | Available while Paused but queued; executes only after resume; no progression while Paused |
+| D-M2C-04 | Multiple/repeated events | FIFO; capacity 64; drop newest when full; warn on drops |
+| D-M2C-05 | Fan-out / fan-in | Deterministic topological order; node ID tie-break; node at most once per trigger; fan-in waits for relevant predecessor paths |
+| D-M2C-06 | Invalid graph gating | Play allowed; graph execution skipped with warning; simulation remains usable; no partial execution |
+| D-M2C-07 | Plane-contact definition | Rising-edge event per body/plane pair; no resting re-fire; match dynamic body or plane per payload |
+| D-M2C-08 | Failure atomicity | Per-node atomic; node failure stops chain; runtime error auto-pauses; no whole-chain rollback |
+| D-M2C-09 | Observability | Console messages + execution status line + transient node highlight |
+
+### 1.3 Authorization status
+
+No M2-C implementation authorization has been granted. Approval of the nine decisions finalizes the design only.
 
 ## 2. Foundation readiness
 
@@ -28,73 +48,57 @@
 | MVP-1 | CLOSED — PASS |
 | M2-A | CLOSED — PASS |
 | M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
-| M2-C | PLANNING COMPLETE / PENDING OWNER DECISIONS — NOT AUTHORIZED |
+| M2-C | READY FOR IMPLEMENTATION AUTHORIZATION — NOT STARTED / NOT AUTHORIZED |
 | M2-D | NOT STARTED / NOT AUTHORIZED |
 | M2-E | NOT STARTED / NOT AUTHORIZED |
 
-## 4. M2-C technical review status
+## 4. Final M2-C readiness assessment
 
-The M2-C technical review is complete. Documents:
+| # | Check | Result | Basis |
+|---|---|---|---|
+| 1 | All nine Owner decisions recorded and consistent | PASS | `M2_C_OWNER_DECISION_PACKAGE.md` §3 and §5; every ID marked APPROVED — PROJECT OWNER, 2026-11-15 |
+| 2 | D-M2-01..D-M2-08 remain intact | PASS | `MVP2_OWNER_DECISION_PACKAGE.md` unchanged; decision groups kept distinct |
+| 3 | M1-B..M1-F runtime invariants respected | PASS | Stop implies Reset; standalone Reset preserves mode; structural edits blocked while Running/Paused; failures auto-pause; failed operations do not partially commit |
+| 4 | All six node contracts covered | PASS | `M2_C_TECHNICAL_REVIEW.md` §8 covers On Start, Manual Trigger, On Plane Contact, Apply Force, Apply Impulse, Clear Force |
+| 5 | Existing graph validation accounted for | PASS | §10 separates editor diagnostics from execution readiness; invalid graph skips execution per D-M2C-06 |
+| 6 | Execution architecture ownership boundary clear | PASS | §5: pure engine, reducer-owned session/queue, trigger sources, presentation; React Flow never read at execution time |
+| 7 | Cancellation and stale-session handling specified | PASS | §7: monotonic session id, queue tagging, session bump on Play/Stop/Reset, queue clear, mismatch rejection |
+| 8 | Error behavior and atomicity unambiguous | PASS | §7.4 and §8: any node failure stops the chain, error severity auto-pauses, per-node atomicity with no whole-chain rollback |
+| 9 | Contact-event integration boundary defined | PASS | §9: additive contact return from the step pipeline, rising-edge rule, deterministic ordering, payload carries both entity ids |
+| 10 | Acceptance criteria testable | PASS | §15: 17 criteria, each typed as unit, integration, or browser |
+| 11 | Implementation batches have clear dependencies | PASS | §14: five batches; 2 and 3 depend on 1, 4 on 2+3, 5 on all |
+| 12 | Regression and browser evidence requirements defined | PASS | §16: unit/integration/browser files, JSON evidence, screenshots, pinned Node, M1-F regression |
+| 13 | Scope exclusions explicit | PASS | Roadmap and §5/§17: no new node types, no persistence, no Python, no robotics/electrical, no 2D/hybrid, no M2-D/M2-E work |
 
-- `M2_C_TECHNICAL_REVIEW.md` — architecture findings, integration boundaries, recommended execution architecture, trigger semantics, cancellation design, node contracts, readiness validation, lifecycle matrix, observability, performance plan, batches, acceptance criteria, evidence plan, risks.
-- `M2_C_OWNER_DECISION_PACKAGE.md` — nine decisions requiring Owner approval with recommendations and alternatives.
+## 5. Reconciliation results
 
-Key findings:
+The technical review was reconciled against all nine approved decisions. Two approved decisions superseded the original recommendations; both deltas are documented explicitly rather than silently applied:
 
-1. The canonical graph is acyclic but permits fan-out and fan-in; execution ordering and repeat semantics are undefined and need an Owner decision.
-2. The graph is frozen during Running/Paused (`graph/set` is structural), which removes mid-session graph mutation from the concurrency model.
-3. The runtime has no session identity; Stop/Reset are state restorations, so a monotonic session token must be added for stale-continuation protection.
-4. Physics resolves plane contacts internally and reports nothing; `On Plane Contact` requires an additive contact-event boundary, not a physics behaviour change.
-5. All current graph diagnostics are errors and there is no execution-readiness layer; invalid-graph gating needs an explicit rule.
-6. The M1-E force/impulse/clear APIs are pure, atomic, and severity-aware, so they are safe to reuse directly from graph nodes.
-7. React Flow is not involved at execution time; the canonical graph remains the sole execution input.
-8. `parseGraphDocument` validates against an empty entity list and rejects entity references — an M2-E persistence defect, not an M2-C blocker.
+1. **D-M2C-05 — ordering algorithm.** The recommendation used depth-first traversal ordered by the canonical edge array. The approved decision requires deterministic topological ordering with node ID as tie-breaker and a fan-in barrier. Edge-array order is no longer an ordering input.
+2. **D-M2C-08 — warn-severity continuation.** The recommendation allowed a warn-severity failure to log and continue. The approved decision states that a node failure stops the chain; automatic pause remains reserved for runtime error severity.
 
-## 5. Planning completeness
+Everything else reconciled without conflict: atomic pacing, On Start rule, paused manual-trigger queueing, FIFO/capacity 64/drop-newest, invalid-graph skip, rising-edge contact semantics with body-or-plane matching, and the three observability surfaces.
 
-| Area | Status |
-|---|---|
-| Existing architecture review | COMPLETE |
-| Integration boundary definition | COMPLETE |
-| Recommended execution architecture | COMPLETE |
-| Trigger semantics proposal | COMPLETE (pending decisions) |
-| Cancellation and lifecycle design | COMPLETE (pending decisions) |
-| Node execution contracts | COMPLETE |
-| Plane-contact event design | COMPLETE (design only) |
-| Execution-readiness validation | COMPLETE (pending gating decision) |
-| Observability scope | COMPLETE (pending decision) |
-| Performance plan | COMPLETE (measurement-first per D-M2-08) |
-| Implementation batches | COMPLETE (five batches, not started) |
-| Acceptance criteria | COMPLETE (17 planned criteria) |
-| Evidence plan | COMPLETE |
-| Risks and unresolved issues | COMPLETE |
+## 6. Remaining technical questions
 
-## 6. Outstanding Owner decisions
+None of the remaining questions requires an Owner decision or blocks authorization. They are implementation details recorded in `M2_C_TECHNICAL_REVIEW.md` §17.3: plan-cache keying, queue drain granularity within a frame, final Console code naming, status-line layout at 1024×640, and cross-frame contact dedupe behaviour.
 
-| ID | Question |
-|---|---|
-| D-M2C-01 | Atomic chain per trigger vs step-paced execution |
-| D-M2C-02 | On Start fires once per Editing → Running, or on resume/reset too |
-| D-M2C-03 | Manual Trigger availability and behaviour while Paused |
-| D-M2C-04 | Multiple/repeated trigger serialization and queue limits |
-| D-M2C-05 | Fan-out/fan-in ordering and once-per-trigger semantics |
-| D-M2C-06 | Invalid-graph gating at Play |
-| D-M2C-07 | Plane-contact event definition and target matching |
-| D-M2C-08 | Per-node vs whole-chain failure atomicity |
-| D-M2C-09 | Execution observability scope |
+Cross-milestone item carried forward: `parseGraphDocument` validates against an empty entity list and therefore rejects entity references. This must be corrected during M2-E persistence work; it does not block M2-C.
 
 ## 7. Remaining prerequisites before M2-C implementation
 
-1. Project Owner records decisions D-M2C-01 through D-M2C-09.
-2. The M2-C design is finalized against those decisions.
-3. The Project Owner grants explicit M2-C implementation authorization.
-4. No M2-D or M2-E work starts before M2-C closure.
+1. The Project Owner grants a separate explicit M2-C implementation authorization.
+2. No M2-D or M2-E work starts before M2-C closure.
+
+No design, decision, or evidence prerequisite remains outstanding.
 
 ## 8. Readiness verdict
 
-**READY FOR OWNER DECISIONS.**
+**READY FOR IMPLEMENTATION AUTHORIZATION.**
 
-M2-C is not implementation-ready while D-M2C-01 through D-M2C-09 remain unresolved, because each materially affects observable behaviour, testability, or scope. The architecture itself is understood and no technical blocker was found.
+All thirteen readiness checks pass. The nine behaviour decisions are approved, the architecture has a clear ownership boundary, cancellation and stale-session handling are specified, error and atomicity semantics are unambiguous, the contact-event boundary is defined, acceptance criteria are testable, batch dependencies are clear, and scope exclusions are explicit.
+
+This verdict is a planning judgment. No implementation test has been run for M2-C, and no M2-C criterion is claimed as passing.
 
 ## 9. Authorization statement
 
