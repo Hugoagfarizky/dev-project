@@ -5,7 +5,7 @@
 **Status:** IMPLEMENTED / READY FOR OWNER ACCEPTANCE (not closed; closure requires explicit Project Owner acceptance)  
 **Authorization:** Project Owner explicitly authorized M2-D implementation on 2026-11-15 (D-M2D-01..D-M2D-05 approved)  
 **Implementation baseline:** `main` @ `221911534d0487242100897f37626662c84a35bd`  
-**Final HEAD:** (recorded after push)
+**Final HEAD:** `main` @ `550bbf6f2d65586b132e8b30eb574371b75bf08b`
 
 ## 1. Scope
 
