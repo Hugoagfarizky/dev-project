@@ -5,7 +5,7 @@
 **Status:** IMPLEMENTED / READY FOR OWNER ACCEPTANCE (not closed; closure requires explicit Project Owner acceptance)  
 **Authorization:** Project Owner explicitly authorized M2-C implementation on 2026-11-15  
 **Implementation baseline:** `main` @ `c78897c` (`origin/main` matched)  
-**Final HEAD:** `main` @ `073f0f34a029abe85d596bb2e29e20eefb488226`  
+**Final HEAD:** `main` @ `99c32a8ed2e89ca815226bd23ce7c16ace72cea1`  
 **M2-A / M2-B:** CLOSED — PASS (unchanged)
 
 ## 1. Scope
