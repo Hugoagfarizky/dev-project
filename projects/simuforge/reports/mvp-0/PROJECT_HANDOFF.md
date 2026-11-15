@@ -245,11 +245,12 @@ No further implementation until explicit authorization is granted.
 
 ## S. M2-D technical review and readiness planning (2026-11-15)
 
-- M2-D status: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED.
-- Baseline: `main` @ `221911534d0487242100897f37626662c84a35bd` (decisions approved) → implementation commit (this increment).
+- M2-D status: CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15).
+- Baseline: `main` @ `3623f433ea6fdb47ac226be69f6a81af58558e3f` (implementation) → closure commit (this increment).
 - Implementation: Load Demo Graph button (test id `load-demo-graph`), Console auto-expand after execution, end-to-end browser spec `m2d-end-to-end.spec.ts` (5/5 PASS), evidence `m2d-acceptance.json` (5/5 passed, 33 assertions).
 - Validation: full suite 250/250 PASS; `npm run check` PASS; `npm run build` PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5.
-- Readiness verdict: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED. M2-E remains NOT STARTED / NOT AUTHORIZED.
+- Independent audit: PASS. Minor finding (manual node construction vs. createCanonicalNode) accepted as-is.
+- Readiness verdict: CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15). M2-E remains NOT STARTED / NOT AUTHORIZED.
 - Milestone register (current):
 
 | Milestone | Official status |
@@ -259,9 +260,9 @@ No further implementation until explicit authorization is granted.
 | M2-A | CLOSED — PASS |
 | M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
-| M2-D | IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED |
+| M2-D | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-E | NOT STARTED / NOT AUTHORIZED |
 
-- M2-D implementation complete; not closed. M2-E remains NOT STARTED / NOT AUTHORIZED. M2-E carry-forward issue (`parseGraphDocument` validates with `{ entities: [] }`) unchanged.
+- M2-D closed. M2-E remains NOT STARTED / NOT AUTHORIZED. M2-E carry-forward issue (`parseGraphDocument` validates with `{ entities: [] }`) unchanged.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
-- Next required action: Project Owner reviews M2-D implementation and decides acceptance (closure) or requests changes. M2-E remains not authorized.
+- Next required action: prepare M2-E planning/readiness work only after separate Project Owner authorization. No M2-E implementation may begin before then.

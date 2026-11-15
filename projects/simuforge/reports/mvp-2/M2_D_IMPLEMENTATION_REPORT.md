@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-15 (implementation and verification)  
 **Milestone:** M2-D — End-to-End Demo and Browser Acceptance  
-**Status:** IMPLEMENTED / READY FOR OWNER ACCEPTANCE (not closed; closure requires explicit Project Owner acceptance)  
+**Status:** CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15)  
 **Authorization:** Project Owner explicitly authorized M2-D implementation on 2026-11-15 (D-M2D-01..D-M2D-05 approved)  
 **Implementation baseline:** `main` @ `221911534d0487242100897f37626662c84a35bd`  
 **Final HEAD:** `main` @ `550bbf6f2d65586b132e8b30eb574371b75bf08b`
@@ -60,4 +60,4 @@ Modified:
 
 ## 7. Status
 
-M2-D is IMPLEMENTED / READY FOR OWNER ACCEPTANCE. Not closed. M2-E remains NOT STARTED / NOT AUTHORIZED.
+M2-D is CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15). Independent read-only acceptance audit: PASS. All 5 browser scenarios PASS (33 assertions). Full suite 250/250 PASS. M1-F 1/1, M2-B 6/6, M2-C 7/7. Minor finding (manual node construction vs. createCanonicalNode) accepted as-is. M2-E remains NOT STARTED / NOT AUTHORIZED.

@@ -49,7 +49,7 @@ M2-C implementation has been authorized and completed on 2026-11-15. All nine de
 | M2-A | CLOSED — PASS |
 | M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
-| M2-D | IMPLEMENTED / READY FOR OWNER ACCEPTANCE - NOT CLOSED |
+| M2-D | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-E | NOT STARTED / NOT AUTHORIZED |
 
 ## 4. Final M2-C readiness assessment
@@ -97,7 +97,7 @@ M2-D and M2-E remain NOT STARTED / NOT AUTHORIZED.
 
 M2-C closure is recorded. No implementation test remains outstanding. M2-D/M2-E readiness and authorization statuses are unchanged.
 
-## 10. M2-D implementation
+## 10. M2-D closure
 
 M2-D implementation authorized and completed 2026-11-15. Implementation report: `M2_D_IMPLEMENTATION_REPORT.md` (to be created). Decisions D-M2D-01..D-M2D-05 implemented (D-M2D-03 with clarification). Full suite 250/250 PASS; M2-D browser 5/5 PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7.
 
@@ -107,4 +107,4 @@ M2-E remains NOT STARTED / NOT AUTHORIZED. Save/reopen deferred to M2-E.
 
 ## 11. Authorization statement
 
-M2-C and M2-D are implemented. M2-D is READY FOR OWNER ACCEPTANCE (not closed). M2-E remains NOT STARTED / NOT AUTHORIZED. No M2-E work may begin without separate Project Owner authorization.
+M2-C and M2-D are closed. M2-E remains NOT STARTED / NOT AUTHORIZED. No M2-E work may begin without separate Project Owner authorization.
