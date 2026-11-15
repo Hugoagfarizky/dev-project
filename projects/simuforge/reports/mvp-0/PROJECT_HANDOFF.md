@@ -312,3 +312,26 @@ No further implementation until explicit authorization is granted.
 - M2-E implementation complete; not closed. M2-E is the final MVP-2 milestone. MVP-2 closure pending Owner acceptance of M2-E.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
 - Next required action: Project Owner reviews M2-E implementation and decides acceptance (closure) or requests changes. No M2-E closure without explicit Owner acceptance.
+
+## V. MVP-2 closure (2026-11-15)
+
+- M2-E: CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15).
+- MVP-2: CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15).
+- M2-E independent audit: PASS. All 10 acceptance criteria PASS. Full suite 250/250 PASS. M2-E browser 2/2 PASS (13 assertions). M1-F 1/1, M2-B 6/6, M2-C 7/7, M2-D 5/5.
+- Milestone register (final):
+
+| Milestone | Official status |
+|---|---|
+| MVP-0 | CLOSED — PASS |
+| MVP-1 | CLOSED — PASS |
+| M2-A | CLOSED — PASS |
+| M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-D | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-E | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+
+- MVP-2 scope delivered: canonical graph model (M2-A), graph editor UI (M2-B), graph execution runtime (M2-C), end-to-end demo and browser acceptance (M2-D), persistence and closure (M2-E).
+- Deferred capabilities (not in MVP-2): Python integration, robotics/electrical domains, hybrid 2D, advanced physics, extension marketplace, cloud collaboration.
+- M2-E carry-forward issue resolved: `parseGraphDocument` now validates against actual entity list.
+- Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
+- No further MVP-2 work. M2-E was the final MVP-2 milestone. MVP-2 is CLOSED.

@@ -50,7 +50,7 @@ M2-C implementation has been authorized and completed on 2026-11-15. All nine de
 | M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-D | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
-| M2-E | IMPLEMENTED / READY FOR OWNER ACCEPTANCE - NOT CLOSED |
+| M2-E | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 
 ## 4. Final M2-C readiness assessment
 
@@ -105,7 +105,7 @@ M2-D scope delivered: in-memory Load Demo Graph button (test id `load-demo-graph
 
 M2-E remains NOT STARTED / NOT AUTHORIZED. Save/reopen deferred to M2-E.
 
-## 12. M2-E implementation
+## 12. M2-E closure
 
 M2-E implementation authorized and completed 2026-11-16. Implementation report: `M2_E_IMPLEMENTATION_REPORT.md`. Decisions D-M2E-01..D-M2E-05 implemented. Full suite 250/250 PASS; M2-E browser 2/2 PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5.
 
@@ -115,4 +115,4 @@ M2-E is the final MVP-2 milestone. Closure requires explicit Project Owner accep
 
 ## 13. Authorization statement
 
-M2-C, M2-D, and M2-E are implemented. M2-E is READY FOR OWNER ACCEPTANCE (not closed). MVP-2 closure pending Owner acceptance of M2-E.
+MVP-2 is closed. M2-E was the final MVP-2 milestone. M2-C, M2-D, and M2-E are CLOSED — PASS. No further MVP-2 work remains.
