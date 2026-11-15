@@ -120,7 +120,7 @@ No further implementation until explicit authorization is granted.
 - MVP-2 readiness: `reports/mvp-2/MVP2_READINESS_REPORT.md`.
 - MVP-2 owner decision package: `reports/mvp-2/MVP2_OWNER_DECISION_PACKAGE.md`.
 - M2-A status: CLOSED — PASS (Project Owner accepted 2026-11-11). Implementation commit `200e838`.
-- M2-B status: IMPLEMENTED / READY FOR OWNER ACCEPTANCE. Graph editor UI, six nodes, connections, Inspector config, validation diagnostics, browser acceptance. Report: `reports/mvp-2/M2_B_IMPLEMENTATION_REPORT.md`.
+- M2-B status: IMPLEMENTED / READY FOR OWNER ACCEPTANCE. Graph editor UI, six nodes, connections, Inspector config, validation diagnostics, browser acceptance. Report: `reports/mvp-2/M2_B_IMPLEMENTATION_REPORT.md`. Superseded — M2-B is now CLOSED — PASS, Project Owner accepted 2026-11-15 (see §O).
 - M2-C through M2-E remain NOT STARTED / NOT AUTHORIZED.
 
 ## M. MVP-1 closure (2026-11-11)
@@ -132,3 +132,28 @@ No further implementation until explicit authorization is granted.
 - Typecheck, build, boundary, token, and Node checks: PASS.
 - Evidence: `m1c-trajectory.json`, `m1d-contact.json`, `m1e-force-impulse.json`, `m1f-browser-acceptance.json`, plus screenshots.
 - No further MVP-1 implementation is authorized unless a new milestone is approved.
+
+## O. M2-B official acceptance and closure (2026-11-15)
+
+- M2-B status: CLOSED — PASS (Project Owner accepted 2026-11-15).
+- Accepted implementation HEAD: `c06eea8` (`main` = `origin/main` at acceptance; closure documentation is a separate commit).
+- Commits: implementation `006f0c2`; acceptance remediation `66b609a`; acceptance report `c06eea8`.
+- Acceptance: 13/13 M2-B criteria PASS; full suite 209/209 PASS; adapter tests 7/7 PASS; browser acceptance 6/6 scenarios and 58 assertions PASS; responsive 1024x640 and 1440x900 PASS; M1-F regression 1/1 PASS; typecheck, build, boundary, and token checks PASS.
+- Evidence: `reports/mvp-2/evidence/m2b-browser-acceptance.json`; screenshots in `reports/mvp-2/evidence/screenshots/`; report `reports/mvp-2/M2_B_IMPLEMENTATION_REPORT.md`.
+- Accepted limitations: graph state in-memory only; no undo/redo; entity references are plain ID input without a picker; diagnostics not mirrored to Console; compact fit-view zoom for the current Program panel.
+- This closure increment was documentation-only: no source code, tests, dependencies, or browser evidence changed.
+- Milestone register:
+
+| Milestone | Official status |
+|---|---|
+| MVP-0 | CLOSED — PASS |
+| MVP-1 | CLOSED — PASS |
+| M2-A | CLOSED — PASS |
+| M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-C | NOT STARTED / NOT AUTHORIZED |
+| M2-D | NOT STARTED / NOT AUTHORIZED |
+| M2-E | NOT STARTED / NOT AUTHORIZED |
+
+- Protected unrelated working-tree state: three modified MVP-0 reports (`MVP0_EVIDENCE_CLOSURE_REPORT.md`, `MVP0_FINAL_ACCEPTANCE_AUDIT.md`, `MVP_0_ACCEPTANCE_REPORT.md`) remain modified and unstaged; untracked root `package-lock.json` remains untouched.
+- WIP branch `wip/m1c-physics-scratch` remains at `a566c98`; not merged, modified, or pushed.
+- Next recommended action: M2-C technical review and planning, followed by separate Project Owner authorization. M2-C implementation is NOT authorized.

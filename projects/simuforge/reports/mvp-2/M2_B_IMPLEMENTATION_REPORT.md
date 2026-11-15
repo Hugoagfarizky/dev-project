@@ -1,11 +1,14 @@
 # SimuForge — M2-B Implementation Report
 
-**Date:** 2026-11-12  
+**Date:** 2026-11-12 (implementation and remediation); 2026-11-15 (official closure)  
 **Milestone:** M2-B — Graph Editor UI  
-**Status:** IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE  
+**Status:** CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15)  
 **Authorization:** Project Owner authorized M2-B implementation only (M2-C and later remain NOT AUTHORIZED)  
 **Implementation commit:** `006f0c2`  
-**Acceptance remediation commit:** `66b609a` (source, tests, and regenerated evidence)
+**Acceptance remediation commit:** `66b609a` (source, tests, and regenerated evidence)  
+**Report commit:** `c06eea8`  
+**Accepted implementation HEAD:** `c06eea8` (source, tests, and evidence; `main` = `origin/main` at acceptance)  
+**Closure commit:** this documentation-only commit
 
 ## 1. Scope
 
@@ -122,12 +125,47 @@ The first acceptance audit verified criteria 1, 2, 11, 12, and 13 but found crit
 - Diagnostics are not mirrored to the Console yet.
 - Object-reference editing is a plain entity ID field; no picker yet.
 
+These limitations were reviewed and accepted by the Project Owner on 2026-11-15 as non-blocking for M2-B closure.
+
 ## 8. Scope exclusion confirmation
 
 No M2-C, M2-D, or M2-E work was performed. No execution, persistence, Python, robotics, electrical systems, 2D/hybrid simulation, or deferred node types were implemented. No new node types, loops, branches, variables, math nodes, or delay nodes were added.
 
-## 9. Final status
+## 9. Project Owner acceptance and official closure (2026-11-15)
 
-**READY FOR PROJECT OWNER ACCEPTANCE.**
+- **Decision:** ACCEPTED by the Project Owner on 2026-11-15.
+- **Official status:** CLOSED — PASS.
+- **Accepted implementation HEAD:** `c06eea8` (`main` = `origin/main` at acceptance).
+- **Commit trail:** implementation `006f0c2`; acceptance remediation `66b609a`; acceptance report `c06eea8`.
 
-M2-B remains open until the Project Owner records acceptance. No M2-C or later work may start before that decision.
+### Acceptance basis
+
+- 13/13 M2-B acceptance criteria PASS (§3).
+- Full test suite 209/209 PASS; adapter tests 7/7 PASS.
+- Browser acceptance 6/6 scenarios PASS; 58 assertions PASS; Chromium 158.0.8127.18.
+- Responsive checks 1024x640 and 1440x900 PASS.
+- M1-F regression 1/1 PASS.
+- Typecheck, production build, architecture boundary, and token checks PASS.
+- Evidence and implementation report committed and pushed.
+
+### Evidence references
+
+- Acceptance criteria source: `reports/mvp-2/M2_B_TECHNICAL_DESIGN.md`.
+- Browser evidence: `reports/mvp-2/evidence/m2b-browser-acceptance.json`.
+- Screenshots: `reports/mvp-2/evidence/screenshots/` (11 files).
+- Browser spec: `app/tests/browser/m2b-graph-editor.spec.ts`.
+- Acceptance audit findings and remediation record: §4 of this report.
+
+### Evidence provenance note
+
+The final documentation-only session performed no new Playwright execution. Existing browser evidence was produced from source identical to the accepted implementation source (`c06eea8` is documentation-only after `66b609a`), and the browser scenarios had passed three consecutive runs.
+
+### Accepted limitations
+
+The limitations in §7 were accepted by the Project Owner as non-blocking for closure.
+
+## 10. Final status
+
+**CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15).**
+
+M2-B is officially closed. M2-C, M2-D, and M2-E remain NOT STARTED / NOT AUTHORIZED and require separate Project Owner authorization.
