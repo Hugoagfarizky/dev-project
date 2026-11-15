@@ -4,7 +4,7 @@ import { validateProjectDocument, checkProjectSize } from './validation.ts';
 import type { ProjectDocument } from './types.ts';
 
 export function serializeProjectDocument(project: ProjectDocument): string {
-  return JSON.stringify({
+  const payload: Record<string, unknown> = {
     format: PROJECT_FORMAT,
     schemaVersion: PROJECT_SCHEMA_VERSION,
     project: {
@@ -14,7 +14,11 @@ export function serializeProjectDocument(project: ProjectDocument): string {
       updatedAt: project.project.updatedAt
     },
     world: JSON.parse(serializeWorldDocument(project.world))
-  });
+  };
+  if (project.graph) {
+    payload.graph = JSON.parse(JSON.stringify(project.graph));
+  }
+  return JSON.stringify(payload);
 }
 
 export function parseProjectDocument(json: string): ReturnType<typeof validateProjectDocument> {

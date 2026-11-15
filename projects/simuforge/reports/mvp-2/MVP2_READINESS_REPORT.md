@@ -50,7 +50,7 @@ M2-C implementation has been authorized and completed on 2026-11-15. All nine de
 | M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-D | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
-| M2-E | NOT STARTED / NOT AUTHORIZED |
+| M2-E | IMPLEMENTED / READY FOR OWNER ACCEPTANCE - NOT CLOSED |
 
 ## 4. Final M2-C readiness assessment
 
@@ -105,14 +105,14 @@ M2-D scope delivered: in-memory Load Demo Graph button (test id `load-demo-graph
 
 M2-E remains NOT STARTED / NOT AUTHORIZED. Save/reopen deferred to M2-E.
 
-## 12. M2-E planning
+## 12. M2-E implementation
 
-M2-E technical review and consolidated planning COMPLETE (2026-11-16). Planning documents: `M2_E_TECHNICAL_REVIEW.md`, `M2_E_OWNER_DECISION_PACKAGE.md` (D-M2E-01..D-M2E-05 PENDING — PROJECT OWNER).
+M2-E implementation authorized and completed 2026-11-16. Implementation report: `M2_E_IMPLEMENTATION_REPORT.md`. Decisions D-M2E-01..D-M2E-05 implemented. Full suite 250/250 PASS; M2-E browser 2/2 PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5.
 
-M2-E scope: persist canonical graph in project document; save/reopen round-trip; dirty tracking for graph edits; invalid-document recovery; full regression; final browser acceptance and evidence; MVP-2 closure. M2-E carry-forward issue: `parseGraphDocument` validates with `{ entities: [] }`.
+M2-E scope delivered: optional `graph?` in ProjectDocument, parseGraphDocument validates against actual entities, `graph/set` marks dirty, project/open restores graph with warning on invalid, save flow syncs graph, browser save/reopen spec (2/2 PASS), evidence `m2e-acceptance.json`.
 
-Readiness verdict: READY FOR OWNER DECISIONS. Implementation NOT AUTHORIZED.
+M2-E is the final MVP-2 milestone. Closure requires explicit Project Owner acceptance.
 
 ## 13. Authorization statement
 
-M2-C and M2-D are closed. M2-E remains NOT STARTED / NOT AUTHORIZED. M2-E planning is complete and awaits Owner decisions (D-M2E-01..D-M2E-05) and separate explicit implementation authorization. No M2-E work may begin without separate Project Owner authorization.
+M2-C, M2-D, and M2-E are implemented. M2-E is READY FOR OWNER ACCEPTANCE (not closed). MVP-2 closure pending Owner acceptance of M2-E.

@@ -27,7 +27,7 @@ import {
 } from '../runtime/graphExecution.ts';
 import type { SimulationFailure } from '../runtime/physics.ts';
 import type { RuntimeBodies } from '../runtime/types.ts';
-import type { GraphNodeType, GraphValidationContext } from '../graph/types.ts';
+import { validateGraph } from '../graph/validation.ts';
 import type { StudioCommand } from './commands.ts';
 import type {
   CameraPose,
@@ -38,6 +38,7 @@ import type {
   StudioState
 } from './state.ts';
 import type { EntityType, RigidBodyComponent, WorldEntity } from '../world/types.ts';
+import type { Graph, GraphNodeType, GraphValidationContext } from '../graph/types.ts';
 
 export interface ReducerContext {
   idFactory: () => string;
@@ -584,12 +585,32 @@ export function reduceStudioState(
           lastError: null
         },
         logs: [...state.logs],
-        runtime: createDefaultRuntimeState()
+        runtime: createDefaultRuntimeState(),
+        graph: null
       };
     }
 
     case 'project/open': {
-      return {
+      const incomingGraph = command.document.graph ?? null;
+      let restoredGraph: Graph | null = null;
+      let graphWarning: string | null = null;
+      if (incomingGraph) {
+        const graphContext: GraphValidationContext = {
+          entities: command.document.world.entities.map((entity) => ({
+            id: entity.id,
+            components: entity.components ? entity.components.map((c) => ({ ...c })) : []
+          }))
+        };
+        const result = validateGraph(incomingGraph, graphContext);
+        if (result.valid) {
+          restoredGraph = incomingGraph;
+        } else {
+          const diag = result.diagnostics.find((d) => d.severity === 'error') ?? result.diagnostics[0];
+          graphWarning = diag ? `${diag.code}: ${diag.message}` : 'Graph is invalid.';
+        }
+      }
+
+      const openedState: StudioState = {
         project: {
           format: command.document.format,
           schemaVersion: command.document.schemaVersion,
@@ -609,7 +630,8 @@ export function reduceStudioState(
               metadata: { ...entity.metadata },
               components: entity.components ? entity.components.map((c) => ({ ...c })) : []
             }))
-          }
+          },
+          ...(restoredGraph ? { graph: restoredGraph } : {})
         },
         editor: {
           selectedEntityId: null,
@@ -629,8 +651,18 @@ export function reduceStudioState(
           lastError: null
         },
         logs: [...state.logs],
-        runtime: createDefaultRuntimeState()
+        runtime: createDefaultRuntimeState(),
+        graph: restoredGraph
       };
+
+      if (graphWarning) {
+        return appendExecutionLog(openedState, context, {
+          severity: 'warn',
+          code: 'GRAPH_INVALID',
+          message: `Graph skipped on open: ${graphWarning}`
+        });
+      }
+      return openedState;
     }
 
     case 'project/save-started': {
@@ -1461,7 +1493,7 @@ export function reduceStudioState(
     }
 
     case 'graph/set': {
-      return { ...state, graph: command.graph };
+      return markDirty({ ...state, graph: command.graph });
     }
 
     case 'graph/select-node': {

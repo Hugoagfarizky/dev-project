@@ -172,6 +172,11 @@ export function StudioShell({ store }: StudioShellProps) {
         store.dispatch({ type: 'log/append', entry: { id: crypto.randomUUID(), timestamp: new Date().toISOString(), severity: 'error', source: 'IMPORT', code: result.error.code ?? 'IMPORT_FAILED', message: result.error.message } });
         return result.error.message;
       }
+      if (result.warnings?.length) {
+        result.warnings.forEach((warning) => {
+          store.dispatch({ type: 'log/append', entry: { id: crypto.randomUUID(), timestamp: new Date().toISOString(), severity: 'warn', source: 'IMPORT', code: 'GRAPH_INVALID', message: warning } });
+        });
+      }
       rendererRef.current?.cancelGizmoDrag?.();
       store.dispatch({ type: 'project/open', document: result.value });
       if (repositoryRef.current.isAvailable()) {
@@ -191,7 +196,7 @@ export function StudioShell({ store }: StudioShellProps) {
     const state = store.getSnapshot();
     const project = state.project;
     const now = new Date().toISOString();
-    const toSave = { ...project, project: { ...project.project, updatedAt: now } };
+    const toSave = { ...project, project: { ...project.project, updatedAt: now }, graph: state.graph ?? null };
     store.dispatch({ type: 'project/save-started' });
     try {
       if (!repositoryRef.current.isAvailable()) {

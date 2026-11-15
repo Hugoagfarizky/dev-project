@@ -1,7 +1,7 @@
 # SimuForge — MVP-2 Consolidated Roadmap
 
 **Date:** 2026-11-11 (planning); 2026-11-15 (M2-B closure, M2-C planning, M2-C Owner decisions and readiness)  
-**Status:** M2-A CLOSED - PASS; M2-B CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-D CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-E NOT STARTED / NOT AUTHORIZED  
+**Status:** M2-A CLOSED - PASS; M2-B CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-D CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-E IMPLEMENTED / READY FOR OWNER ACCEPTANCE - NOT CLOSED  
 **Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`; M2-B closure @ `c01cad4`; M2-C planning @ `5b404b0`; M2-C implementation @ `c78897c` (baseline) → `073f0f34a029abe85d596bb2e29e20eefb488226` (final)
 
 ## 1. Objective
@@ -79,13 +79,13 @@ Deliver Visual Scripting (Product Spec §7.4) as a verifiable increment on top o
 - Implementation: COMPLETE (2026-11-15). Full suite 250/250 PASS; M2-D browser 5/5 PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7.
 - Readiness verdict: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED. Implementation authorized and completed. M2-E remains NOT STARTED / NOT AUTHORIZED.
 
-### M2-E — Persistence, regression, and closure (PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION)
+### M2-E — Persistence, regression, and closure (IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED)
 - Scope: persist canonical graph in project document; save/reopen round-trip; dirty tracking for graph edits; invalid-document recovery; full regression; final browser acceptance and evidence; MVP-2 closure. M2-E carry-forward issue: `parseGraphDocument` validates with `{ entities: [] }`.
 - Exclusions: new node types, physics, Python, robotics/electrical, hybrid 2D, advanced features.
 - Depends on: M2-A, M2-B, M2-C, M2-D, M1-E, M1-F.
-- Planning documents: `M2_E_TECHNICAL_REVIEW.md`; `M2_E_OWNER_DECISION_PACKAGE.md` (D-M2E-01..D-M2E-05 PENDING — PROJECT OWNER).
-- Planning and readiness review: COMPLETE (2026-11-16).
-- Readiness verdict: READY FOR OWNER DECISIONS. Implementation NOT AUTHORIZED.
+- Planning documents: `M2_E_TECHNICAL_REVIEW.md`; `M2_E_OWNER_DECISION_PACKAGE.md` (D-M2E-01..D-M2E-05 APPROVED — PROJECT OWNER, 2026-11-16).
+- Implementation: COMPLETE (2026-11-16). Full suite 250/250 PASS; M2-E browser 2/2 PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5.
+- Readiness verdict: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED. M2-E is the final MVP-2 milestone.
 - Deliverables: persistence tests, closure report, evidence index.
 - Acceptance: no graph/runtime state leakage; all gates pass.
 - Validation: full suite + browser evidence.

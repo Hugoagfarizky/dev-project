@@ -290,3 +290,25 @@ No further implementation until explicit authorization is granted.
 - M2-E implementation remains NOT AUTHORIZED. M2-E carry-forward issue unchanged.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
 - Next required action: Project Owner reviews D-M2E-01..D-M2E-05 and grants separate explicit M2-E implementation authorization. No M2-E implementation may begin before then.
+
+## U. M2-E implementation (2026-11-16)
+
+- M2-E status: IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED.
+- Baseline: `main` @ `130eea58f328252e481ec0ad301a68674a132289` (M2-D CLOSED — PASS).
+- Implementation: optional `graph?` in ProjectDocument; parseProjectDocument validates against actual entities (carry-forward fix); `graph/set` marks dirty; project/open restores graph with warning on invalid; save flow syncs graph; browser spec `m2e-persistence.spec.ts` (2/2 PASS); evidence `m2e-acceptance.json` (2/2 passed, 13 assertions).
+- Validation: full suite 250/250 PASS; `npm run check` PASS; `npm run build` PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5; M2-E 2/2.
+- Milestone register (current):
+
+| Milestone | Official status |
+|---|---|
+| MVP-0 | CLOSED — PASS |
+| MVP-1 | CLOSED — PASS |
+| M2-A | CLOSED — PASS |
+| M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-D | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-E | IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED |
+
+- M2-E implementation complete; not closed. M2-E is the final MVP-2 milestone. MVP-2 closure pending Owner acceptance of M2-E.
+- Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
+- Next required action: Project Owner reviews M2-E implementation and decides acceptance (closure) or requests changes. No M2-E closure without explicit Owner acceptance.

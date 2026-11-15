@@ -1,0 +1,49 @@
+{
+  "milestone": "M2-E",
+  "generatedAt": "2026-11-15T17:22:01.078Z",
+  "browser": "Chromium 158.0.8127.18",
+  "scenarios": [
+    {
+      "name": "save and reopen preserves graph and enables execution",
+      "status": "passed",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "assertions": {
+        "graphLoaded": true,
+        "edgesLoaded": true,
+        "graphRestored": true,
+        "edgesRestored": true,
+        "executionCompleted": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2e-save-reopen.png"
+      ]
+    },
+    {
+      "name": "responsive layout at 1024x640 and 1440x900",
+      "status": "passed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertions": {
+        "1024x640EditorVisible": true,
+        "1024x640StatusVisible": true,
+        "1024x640CanvasUsable": true,
+        "1024x640EditorFits": true,
+        "1440x900EditorVisible": true,
+        "1440x900StatusVisible": true,
+        "1440x900CanvasUsable": true,
+        "1440x900EditorFits": true
+      },
+      "screenshots": [
+        "reports/mvp-2/evidence/screenshots/m2e-layout-1024x640.png",
+        "reports/mvp-2/evidence/screenshots/m2e-layout-1440x900.png",
+        "reports/mvp-2/evidence/screenshots/m2e-save-reopen.png"
+      ]
+    }
+  ],
+  "allPassed": true
+}

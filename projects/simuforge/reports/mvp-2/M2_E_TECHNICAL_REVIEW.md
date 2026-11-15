@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-16 (planning)  
 **Milestone:** M2-E — Persistence, Regression, and Closure  
-**Status:** PLANNING COMPLETE — NOT STARTED / NOT AUTHORIZED FOR IMPLEMENTATION  
+**Status:** IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED (implementation authorized and completed 2026-11-16)  
 **Authorization:** Planning only. M2-E implementation is NOT AUTHORIZED.  
 **Baseline:** `main` @ `13242e33038f74729bf39dc4173b9da0f3a03f77` (M2-D CLOSED — PASS)  
 **Companion:** `M2_E_OWNER_DECISION_PACKAGE.md` (D-M2E-01..D-M2E-05 PENDING — PROJECT OWNER)
@@ -109,4 +109,4 @@ See `M2_E_OWNER_DECISION_PACKAGE.md`. Five genuine decisions, all with recommend
 
 ## 11. Readiness verdict
 
-**READY FOR OWNER DECISIONS.** Implementation NOT AUTHORIZED. Five decisions D-M2E-01..D-M2E-05 pending Project Owner approval; after approval, a single explicit implementation authorization suffices.
+**IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED.** All 5 decisions approved and implemented. Full suite 250/250 PASS; M2-E browser 2/2 PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5. Closure requires explicit Project Owner acceptance.

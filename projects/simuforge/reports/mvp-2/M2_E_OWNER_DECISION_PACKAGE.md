@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-16 (decisions recorded for approval)  
 **Milestone:** M2-E — Persistence, Regression, and Closure  
-**Status:** ALL FIVE ITEMS PENDING — PROJECT OWNER DECISION REQUIRED; implementation NOT AUTHORIZED  
+**Status:** ALL FIVE DECISIONS APPROVED — PROJECT OWNER, 2026-11-16; IMPLEMENTED / READY FOR OWNER ACCEPTANCE — NOT CLOSED  
 **Baseline:** `main` @ `13242e33038f74729bf39dc4173b9da0f3a03f77` (M2-D CLOSED — PASS)  
 **Technical review:** `M2_E_TECHNICAL_REVIEW.md`
 

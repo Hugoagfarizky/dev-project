@@ -1,7 +1,10 @@
 import { validateWorldDocument } from '../world/validation.ts';
+import { validateGraph } from '../graph/validation.ts';
 import type { AppError } from '../world/types.ts';
 import { PROJECT_FORMAT, PROJECT_SCHEMA_VERSION } from './types.ts';
 import type { ProjectDocument, ProjectValidationResult } from './types.ts';
+import type { Graph } from '../graph/types.ts';
+import type { GraphValidationContext } from '../graph/types.ts';
 
 const UUID_V4_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -81,6 +84,35 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
     };
   }
 
+  // Optional graph (M2-E). Validate against the project's actual entities; an
+  // invalid graph is stripped (not fatal) and reported via warnings so the rest
+  // of a valid project can still open.
+  let normalizedGraph: Graph | null | undefined;
+  const warnings: string[] = [];
+  if (value.graph !== undefined && value.graph !== null) {
+    if (typeof value.graph !== 'object' || Array.isArray(value.graph)) {
+      normalizedGraph = null;
+      warnings.push('INVALID_GRAPH: graph must be an object or null');
+    } else {
+      const graphContext: GraphValidationContext = {
+        entities: worldResult.value.entities.map((entity) => ({
+          id: entity.id,
+          components: entity.components ?? []
+        }))
+      };
+      const graphResult = validateGraph(value.graph as Graph, graphContext);
+      if (!graphResult.valid) {
+        const diag = graphResult.diagnostics.find((d) => d.severity === 'error') ?? graphResult.diagnostics[0];
+        normalizedGraph = null;
+        warnings.push(diag ? `${diag.code}: ${diag.message}` : 'Graph is invalid.');
+      } else {
+        normalizedGraph = value.graph as Graph;
+      }
+    }
+  } else if (value.graph === null) {
+    normalizedGraph = null;
+  }
+
   const normalized: ProjectDocument = {
     format: PROJECT_FORMAT,
     schemaVersion: PROJECT_SCHEMA_VERSION,
@@ -90,10 +122,11 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
       createdAt: project.createdAt,
       updatedAt: project.updatedAt
     },
-    world: worldResult.value
+    world: worldResult.value,
+    ...(normalizedGraph !== undefined ? { graph: normalizedGraph } : {})
   };
 
-  return { ok: true, value: normalized };
+  return { ok: true, value: normalized, ...(warnings.length ? { warnings } : {}) };
 }
 
 export function checkProjectSize(bytes: number): AppError | null {
