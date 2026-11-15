@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-11 (initial planning); 2026-11-15 (M2-B closure); 2026-11-15 (M2-C final readiness review)  
 **Status:** M2-A CLOSED - PASS; M2-B CLOSED - PASS (PROJECT OWNER ACCEPTED, 2026-11-15); M2-C IMPLEMENTED / READY FOR OWNER ACCEPTANCE - NOT CLOSED; M2-D and M2-E NOT STARTED / NOT AUTHORIZED  
-**Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`; M2-B closure @ `c01cad4`; M2-C planning @ `5b404b0`; M2-C implementation @ `c78897c` (baseline) → (final commit)
+**Baseline:** MVP-1 CLOSED (PASS) @ `2f08302650883390c2c81812d33a5d3389ff2349`; M2-B closure @ `c01cad4`; M2-C planning @ `5b404b0`; M2-C implementation @ `c78897c` (baseline) → `073f0f34a029abe85d596bb2e29e20eefb488226` (final)
 
 ## 1. Decision status
 
