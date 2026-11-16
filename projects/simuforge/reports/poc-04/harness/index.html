@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>POC 4 — Python Runtime in a Web Worker</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #10131a;
+        --panel: #171c26;
+        --text: #e6ebf5;
+        --muted: #9aa7bd;
+        --accent: #63d0ff;
+        --ok: #5ee6a8;
+        --warn: #ffc857;
+        --bad: #ff7a7a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        font: 14px/1.5 "Segoe UI", system-ui, sans-serif;
+      }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 24px 48px;
+      }
+      h1 {
+        margin: 0 0 4px;
+        font-size: 20px;
+        letter-spacing: 0.01em;
+      }
+      p.lead {
+        margin: 0 0 24px;
+        color: var(--muted);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      section {
+        background: var(--panel);
+        border: 1px solid #263043;
+        border-radius: 10px;
+        padding: 16px;
+      }
+      h2 {
+        margin: 0 0 8px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+      .status {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--accent);
+      }
+      .heartbeat {
+        font-variant-numeric: tabular-nums;
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 1;
+        color: var(--ok);
+      }
+      pre {
+        margin: 12px 0 0;
+        padding: 12px;
+        max-height: 260px;
+        overflow: auto;
+        background: #0b0e14;
+        border: 1px solid #263043;
+        border-radius: 8px;
+        color: #cfe3ff;
+        font: 12px/1.5 "Cascadia Code", Consolas, monospace;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .note {
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #243049;
+        color: var(--text);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>POC 4 — Python Runtime in a Web Worker</h1>
+      <p class="lead">
+        Validation harness for worker isolation, restricted capabilities, cancellation, timeout, error reporting,
+        startup cost, messaging cost, and UI responsiveness. Evidence is written by the Playwright runner.
+      </p>
+      <div class="grid">
+        <section>
+          <h2>Runtime status</h2>
+          <div class="status" data-testid="poc-status">Booting…</div>
+          <pre data-testid="poc-output">Waiting for the runner.</pre>
+        </section>
+        <section>
+          <h2>Main-thread heartbeat</h2>
+          <div class="heartbeat" data-testid="poc-heartbeat">0</div>
+          <div class="note">Frames rendered by <code>requestAnimationFrame</code> while Python runs.</div>
+          <div class="note"><span class="pill" data-testid="poc-isolation">isolation: unknown</span></div>
+        </section>
+      </div>
+      <p class="note">
+        This page is a proof of concept only. It is not part of the Studio application and is not bundled into the
+        production build.
+      </p>
+    </main>
+    <script>
+      // Main-thread heartbeat. The runner reads these counters to prove the UI
+      // keeps rendering while Python executes in the worker.
+      let frames = 0;
+      let maxGapMs = 0;
+      let last = performance.now();
+
+      function tick(now) {
+        frames += 1;
+        const gap = now - last;
+        if (gap > maxGapMs) maxGapMs = gap;
+        last = now;
+        document.querySelector('[data-testid="poc-heartbeat"]').textContent = String(frames);
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+
+      window.__pocHeartbeat = () => ({ frames, maxGapMs });
+      window.__pocResetHeartbeat = () => {
+        frames = 0;
+        maxGapMs = 0;
+        last = performance.now();
+      };
+      window.__pocSetStatus = (text) => {
+        document.querySelector('[data-testid="poc-status"]').textContent = text;
+      };
+      window.__pocSetOutput = (text) => {
+        document.querySelector('[data-testid="poc-output"]').textContent = text;
+      };
+      window.__pocIsolation = () => {
+        const crossOriginIsolated = self.crossOriginIsolated;
+        const sharedArrayBuffer = typeof SharedArrayBuffer === 'function';
+        document.querySelector('[data-testid="poc-isolation"]').textContent =
+          `crossOriginIsolated: ${crossOriginIsolated} / SharedArrayBuffer: ${sharedArrayBuffer}`;
+        return { crossOriginIsolated, sharedArrayBuffer };
+      };
+    </script>
+  </body>
+</html>

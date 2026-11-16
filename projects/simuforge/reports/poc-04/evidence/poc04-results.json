@@ -1,0 +1,287 @@
+{
+  "poc": "POC-04",
+  "title": "Python runtime in a Web Worker",
+  "generatedAt": "2026-11-16T07:26:57.022Z",
+  "browser": "Chromium 158.0.8127.18",
+  "pyodide": {
+    "version": "314.0.8",
+    "url": "https://cdn.jsdelivr.net/pyodide/v314.0.8/full/pyodide.mjs",
+    "source": "jsDelivr CDN, pinned version",
+    "reportedVersion": "314.0.8",
+    "loadMs": 144,
+    "initMs": 2061,
+    "totalStartupMs": 2211,
+    "interruptBufferAttached": true
+  },
+  "isolation": {
+    "crossOriginIsolated": true,
+    "sharedArrayBuffer": true
+  },
+  "scenarios": [
+    {
+      "id": "init",
+      "status": "passed",
+      "assertions": {
+        "initSucceeded": true,
+        "versionReported": true,
+        "interruptBufferAttached": true
+      },
+      "details": {
+        "loadMs": 144,
+        "initMs": 2061,
+        "totalMs": 2211,
+        "crossOriginIsolated": true
+      }
+    },
+    {
+      "id": "simple-execution",
+      "status": "passed",
+      "assertions": {
+        "resultReturned": true,
+        "resultCorrect": true
+      },
+      "details": {
+        "value": "19999900000",
+        "executionMs": 10,
+        "wallMs": 10
+      }
+    },
+    {
+      "id": "messaging-round-trip",
+      "status": "passed",
+      "assertions": {
+        "averageUnder100ms": true
+      },
+      "details": {
+        "samples": [
+          1.01,
+          0.79,
+          0.61,
+          0.67,
+          0.6,
+          1.5,
+          0.88,
+          0.7,
+          0.71,
+          0.62,
+          1.44,
+          1.39,
+          1.02,
+          1.11,
+          1.47,
+          1.32,
+          2.05,
+          0.89,
+          0.66,
+          0.78
+        ],
+        "averageMs": 1.01
+      }
+    },
+    {
+      "id": "syntax-error",
+      "status": "passed",
+      "assertions": {
+        "errorReturned": true,
+        "syntaxErrorNamed": true
+      },
+      "details": {
+        "name": "PythonError",
+        "message": "Traceback (most recent call last):\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 619, in eval_code_async\n    await CodeRunner(\n          ~~~~~~~~~~^\n        source,\n        ^^^^^^^\n    ...<6 lines>...\n        dedent=dedent,\n        ^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 294, in __init__\n    self.ast = next(self._gen)\n               ~~~~^^^^^^^^^^^\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 151, in _parse_and_compile_gen\n    mod = compile(sou",
+        "ms": 29
+      }
+    },
+    {
+      "id": "runtime-error",
+      "status": "passed",
+      "assertions": {
+        "errorReturned": true,
+        "zeroDivisionNamed": true,
+        "tracebackHasLine": true
+      },
+      "details": {
+        "name": "PythonError",
+        "message": "Traceback (most recent call last):\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 619, in eval_code_async\n    await CodeRunner(\n    ...<10 lines>...\n    .run_async(globals, locals)\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 420, in run_async\n    coroutine = eval(self.code, globals, locals)\n  File \"<exec>\", line 1, in <module>\nZeroDivisionError: division by zero\n",
+        "ms": 3
+      }
+    },
+    {
+      "id": "capability-probe",
+      "status": "passed",
+      "assertions": {
+        "domUnavailable": true,
+        "networkReachable": true,
+        "storageReachable": true
+      },
+      "details": {
+        "capabilities": {
+          "window": "absent",
+          "document": "absent",
+          "fetch": "present",
+          "XMLHttpRequest": "present",
+          "WebSocket": "present",
+          "indexedDB": "present",
+          "localStorage": "absent",
+          "sessionStorage": "absent",
+          "location": "present",
+          "navigator": "present",
+          "caches": "present",
+          "importScripts": "present",
+          "postMessage": "present"
+        }
+      }
+    },
+    {
+      "id": "capability-lockdown",
+      "status": "passed",
+      "assertions": {
+        "fetchBlocked": true,
+        "websocketBlocked": true,
+        "indexedDbBlocked": true,
+        "runtimeStillWorks": true
+      },
+      "details": {
+        "blocked": [
+          "fetch",
+          "XMLHttpRequest",
+          "WebSocket",
+          "indexedDB",
+          "caches",
+          "importScripts"
+        ],
+        "capabilitiesAfterLockdown": {
+          "window": "absent",
+          "document": "absent",
+          "fetch": "none",
+          "XMLHttpRequest": "none",
+          "WebSocket": "none",
+          "indexedDB": "none",
+          "localStorage": "absent",
+          "sessionStorage": "absent",
+          "location": "present",
+          "navigator": "present",
+          "caches": "none",
+          "importScripts": "none",
+          "postMessage": "present"
+        },
+        "stillWorks": "42"
+      }
+    },
+    {
+      "id": "memory",
+      "status": "passed",
+      "assertions": {
+        "heapMeasured": true
+      },
+      "details": {
+        "beforeBytes": 10000000,
+        "afterAllocBytes": 10000000,
+        "afterFreeBytes": 10000000,
+        "note": "performance.memory reports the JS heap; Pyodide Wasm memory is not fully represented."
+      }
+    },
+    {
+      "id": "ui-responsiveness",
+      "status": "passed",
+      "assertions": {
+        "framesRendered": true,
+        "maxFrameGapUnder250ms": true
+      },
+      "details": {
+        "frames": 148,
+        "maxGapMs": 16.67,
+        "busyMs": 2451
+      }
+    },
+    {
+      "id": "interrupt",
+      "status": "passed",
+      "assertions": {
+        "interruptSent": true,
+        "loopInterrupted": true,
+        "workerSurvived": true
+      },
+      "details": {
+        "stopMs": 333,
+        "errorName": "PythonError",
+        "errorMessage": "Traceback (most recent call last):\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 619, in eval_code_async\n    await CodeRunner(\n    ...<10 lines>...\n    .run_async(globals, locals)\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 420, in run_async\n    coroutine = eval(self.code, globals, locals)\n  File \"<exec>\", line 2, in <module>\nKeyboardInterrupt\n",
+        "survivedValue": "6"
+      }
+    },
+    {
+      "id": "terminate",
+      "status": "passed",
+      "assertions": {
+        "workerStopped": true,
+        "restartSucceeded": true
+      },
+      "details": {
+        "terminateMs": 315,
+        "restartMs": 2088,
+        "resultAfterRestart": "4"
+      }
+    },
+    {
+      "id": "output-truncation",
+      "status": "passed",
+      "assertions": {
+        "truncatedFlag": true,
+        "cappedAt65536": true
+      },
+      "details": {
+        "valueLength": 65536,
+        "truncated": true
+      }
+    }
+  ],
+  "observations": {
+    "capabilities": {
+      "window": "absent",
+      "document": "absent",
+      "fetch": "present",
+      "XMLHttpRequest": "present",
+      "WebSocket": "present",
+      "indexedDB": "present",
+      "localStorage": "absent",
+      "sessionStorage": "absent",
+      "location": "present",
+      "navigator": "present",
+      "caches": "present",
+      "importScripts": "present",
+      "postMessage": "present"
+    },
+    "capabilitiesAfterLockdown": {
+      "window": "absent",
+      "document": "absent",
+      "fetch": "none",
+      "XMLHttpRequest": "none",
+      "WebSocket": "none",
+      "indexedDB": "none",
+      "localStorage": "absent",
+      "sessionStorage": "absent",
+      "location": "present",
+      "navigator": "present",
+      "caches": "none",
+      "importScripts": "none",
+      "postMessage": "present"
+    },
+    "lockdownBlocked": [
+      "fetch",
+      "XMLHttpRequest",
+      "WebSocket",
+      "indexedDB",
+      "caches",
+      "importScripts"
+    ],
+    "memory": {
+      "beforeBytes": 10000000,
+      "afterAllocBytes": 10000000,
+      "afterFreeBytes": 10000000,
+      "note": "performance.memory reports the JS heap; Pyodide Wasm memory is not fully represented."
+    }
+  },
+  "console": [
+    "pageerror: Traceback (most recent call last):\n  File \"/lib/python314.zip/pyodide/webloop.py\", line 479, in run_handle\n    h._run()\n    ~~~~~~^^\n  File \"/lib/python314.zip/asyncio/events.py\", line 94, in _run\n    self._context.run(self._callback, *self._args)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 619, in eval_code_async\n    await CodeRunner(\n    ...<10 lines>...\n    .run_async(globals, locals)\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 420, in run_async\n    coroutine = eval(self.code, globals, locals)\n  File \"<exec>\", line 2, in <module>\nKeyboardInterrupt\n"
+  ],
+  "allPassed": true
+}
