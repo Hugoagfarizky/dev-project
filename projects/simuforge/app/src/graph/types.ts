@@ -14,7 +14,8 @@ export type GraphNodeType =
   | 'onPlaneContact'
   | 'applyForce'
   | 'applyImpulse'
-  | 'clearForce';
+  | 'clearForce'
+  | 'runPython';
 
 export type GraphPortDirection = 'input' | 'output';
 export type GraphPortKind = 'execution';
@@ -67,13 +68,24 @@ export interface ClearForceNodeConfig {
   targetEntityId: string;
 }
 
+/**
+ * Phase 07: runs a project Python script. The node stores only a reference; the
+ * source lives in the project's Python section so the two authoring surfaces
+ * stay separate and the source is never duplicated.
+ */
+export interface RunPythonNodeConfig {
+  kind: 'runPython';
+  scriptId: string;
+}
+
 export type GraphNodeConfig =
   | OnStartNodeConfig
   | ManualTriggerNodeConfig
   | OnPlaneContactNodeConfig
   | ApplyForceNodeConfig
   | ApplyImpulseNodeConfig
-  | ClearForceNodeConfig;
+  | ClearForceNodeConfig
+  | RunPythonNodeConfig;
 
 export interface GraphNode extends GraphNodeBase {
   config: GraphNodeConfig;
@@ -121,6 +133,12 @@ export interface GraphValidationContext {
     id: string;
     components: readonly { type: string; enabled: boolean; collider?: { kind: string } }[];
   }[];
+  /**
+   * Ids of the project's Python scripts. When provided, a `runPython` node must
+   * reference one of them. When omitted (graph-only validation), only the
+   * presence of a non-empty reference is checked.
+   */
+  scriptIds?: readonly string[];
 }
 
 export interface GraphParseResult {

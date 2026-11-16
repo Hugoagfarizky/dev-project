@@ -22,6 +22,8 @@ function configSummary(node: GraphNode): string {
       return `Target: ${node.config.targetEntityId || '(none)'} · Impulse (${formatVec3(node.config.impulse)})`;
     case 'clearForce':
       return `Target: ${node.config.targetEntityId || '(none)'}`;
+    case 'runPython':
+      return `Script: ${(node.config as { scriptId: string }).scriptId || '(none)'}`;
   }
 }
 

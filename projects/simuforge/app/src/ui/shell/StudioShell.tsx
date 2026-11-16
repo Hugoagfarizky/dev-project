@@ -13,6 +13,9 @@ import { AssetLibrary } from '../panels/AssetLibrary.js';
 import { Inspector } from '../panels/Inspector.js';
 import { GraphEditor } from '../graph/GraphEditor.js';
 import { NodePalette } from '../graph/NodePalette.js';
+// import { PythonPanel } from '../python/PythonPanel.js';
+import { PythonRuntime } from '../../python/runtime.js';
+import { attachPythonController } from '../../python/controller.js';
 import { RuntimeMonitor } from '../panels/RuntimeMonitor.js';
 import { Dialog } from '../common/Dialog';
 import { Button } from '../common/Button';
@@ -52,6 +55,14 @@ export function StudioShell({ store }: StudioShellProps) {
   const [showHub, setShowHub] = useState<boolean>(false);
   const repositoryRef = useRef<IndexedDbProjectRepository>(new IndexedDbProjectRepository());
   const layoutStorageRef = useRef<LayoutStorage>(new LayoutStorage());
+  const pythonRuntimeRef = useRef<PythonRuntime | null>(null);
+  if (pythonRuntimeRef.current === null) {
+    pythonRuntimeRef.current = new PythonRuntime({
+      onStatus(status, detail) {
+        store.dispatch({ type: 'python/runtime-status', status, detail });
+      }
+    });
+  }
 
   const entities = useStudioStore(store, selectEntities);
   const selectedId = useStudioStore(store, selectSelectedEntityId);
@@ -82,6 +93,12 @@ export function StudioShell({ store }: StudioShellProps) {
 
   useEffect(() => {
     store.dispatch({ type: 'log/append', entry: { id: crypto.randomUUID(), timestamp: new Date().toISOString(), severity: 'info', source: 'APP', code: 'APP_STARTED', message: 'SimuForge Studio started' } });
+    const runtime = pythonRuntimeRef.current;
+    if (runtime) {
+      const handle = attachPythonController(store, runtime);
+      return () => handle.dispose();
+    }
+    return undefined;
   }, []);
 
   useEffect(() => {
@@ -410,6 +427,7 @@ export function StudioShell({ store }: StudioShellProps) {
               <NodePalette store={store} />
               <GraphEditor store={store} />
             </div>
+            {/* <PythonPanel store={store} /> */}
           </Panel>
         </div>
 

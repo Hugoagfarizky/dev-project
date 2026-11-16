@@ -3,6 +3,8 @@ import type { ProjectDocument } from '../project/types.ts';
 import type { LogEntry } from '../console/types.ts';
 import type { RuntimeBodies } from '../runtime/types.ts';
 import type { GraphNodeType } from '../graph/types.ts';
+import type { PythonSnapshot, PythonRuntimeStatus } from '../python/types.ts';
+import type { ExecutionPlan } from '../runtime/graphExecution.ts';
 import { createEmptyWorld } from '../world/defaults.ts';
 
 export type GizmoMode = 'translate' | 'rotate' | 'scale';
@@ -55,6 +57,36 @@ export interface ExecutionQueueEntry {
  * M2-C runtime execution slice. Transient only: never persisted (ADR 0003).
  * `sessionId` is monotonic and increments on Play-from-Editing and Stop/Reset.
  */
+export interface PendingPythonExecution {
+  requestId: string;
+  entry: ExecutionQueueEntry;
+  plan: ExecutionPlan;
+  nodeId: string;
+  index: number;
+  scriptId: string;
+  snapshot: PythonSnapshot;
+  executedBefore: number;
+  startedAt: string;
+}
+
+export interface PythonRunSummary {
+  scriptId: string;
+  scriptName: string;
+  ok: boolean;
+  durationMs: number;
+  message: string | null;
+  actionCount: number;
+  at: string;
+}
+
+export interface PythonEditorState {
+  selectedScriptId: string | null;
+  runtimeStatus: PythonRuntimeStatus;
+  runtimeDetail: string | null;
+  loadRequest: number;
+  lastRun: PythonRunSummary | null;
+}
+
 export interface RuntimeExecutionState {
   sessionId: number;
   status: ExecutionStatus;
@@ -66,6 +98,8 @@ export interface RuntimeExecutionState {
   droppedEvents: number;
   /** Active body/plane contact pairs from the previous physics command. */
   contactKeys: string[];
+  /** Phase 07: a chain suspended on an async Python node. */
+  pendingPython: PendingPythonExecution | null;
 }
 
 export interface RuntimeState {
@@ -75,6 +109,8 @@ export interface RuntimeState {
   /** Runtime-only physics state; never persisted (ADR 0003). */
   bodies: RuntimeBodies;
   accumulatorSeconds: number;
+  /** Simulation time in seconds (fixed-step count * dt). Transient. */
+  elapsedSeconds: number;
   execution: RuntimeExecutionState;
 }
 
@@ -107,6 +143,8 @@ export interface StudioState {
   runtime: RuntimeState;
   /** M2-B in-memory graph document; not persisted in M2-B. */
   graph?: import('../graph/types.ts').Graph | null;
+  /** Phase 07 Python authoring state. Canonical scripts live in project.python. */
+  python?: PythonEditorState;
 }
 
 export function createDefaultExecutionState(): RuntimeExecutionState {
@@ -118,7 +156,8 @@ export function createDefaultExecutionState(): RuntimeExecutionState {
     lastTrigger: null,
     lastResult: null,
     droppedEvents: 0,
-    contactKeys: []
+    contactKeys: [],
+    pendingPython: null
   };
 }
 
@@ -129,7 +168,18 @@ export function createDefaultRuntimeState(): RuntimeState {
     lastError: null,
     bodies: {},
     accumulatorSeconds: 0,
+    elapsedSeconds: 0,
     execution: createDefaultExecutionState()
+  };
+}
+
+export function createDefaultPythonState(): PythonEditorState {
+  return {
+    selectedScriptId: null,
+    runtimeStatus: 'idle',
+    runtimeDetail: null,
+    loadRequest: 0,
+    lastRun: null
   };
 }
 

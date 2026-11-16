@@ -2,6 +2,7 @@ import { useStudioStore } from '../hooks/useStore.js';
 import { selectGraph, selectSelectedGraphNodeId } from '../../editor/selectors.js';
 import type { StudioStore } from '../../editor/store.js';
 import type { Graph, GraphNode } from '../../graph/types.js';
+import { pythonScripts } from '../../python/validation.js';
 
 interface GraphNodeInspectorProps {
   store: StudioStore;
@@ -19,6 +20,7 @@ export function GraphNodeInspector({ store }: GraphNodeInspectorProps) {
   const graph = useStudioStore(store, selectGraph) as Graph | null;
   const selectedId = useStudioStore(store, selectSelectedGraphNodeId);
   const node = graph?.nodes.find((item) => item.id === selectedId) ?? null;
+  const scripts = pythonScripts(store.getSnapshot().project.python);
 
   if (!node) {
     return <div className="sf-graph-inspector-empty">No graph node selected.</div>;
@@ -76,6 +78,25 @@ export function GraphNodeInspector({ store }: GraphNodeInspectorProps) {
             </label>
           ))}
         </>
+      ) : null}
+
+      {node.config.kind === 'runPython' ? (
+        <label className="sf-inspector-row">
+          <span className="sf-inspector-label">Python script</span>
+          <select
+            value={(node.config as { scriptId: string }).scriptId}
+            onChange={(event) =>
+              setConfig({ kind: 'runPython', scriptId: event.target.value } as GraphNode['config'])
+            }
+          >
+            <option value="">(none)</option>
+            {scripts.map((script) => (
+              <option key={script.id} value={script.id}>
+                {script.name}
+              </option>
+            ))}
+          </select>
+        </label>
       ) : null}
 
       {node.config.kind === 'applyImpulse' ? (

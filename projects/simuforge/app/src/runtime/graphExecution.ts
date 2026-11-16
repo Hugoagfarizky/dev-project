@@ -10,6 +10,8 @@ import { validateGraph } from '../graph/validation.ts';
 import { RuntimeError, applyForce, applyImpulse, clearForce, toSimulationFailure } from './physics.ts';
 import type { SimulationFailure } from './physics.ts';
 import type { RuntimeBodies } from './types.ts';
+import { applyPythonActions } from '../python/actions.ts';
+import type { PythonAction } from '../python/types.ts';
 
 /**
  * M2-C graph execution engine.
@@ -40,7 +42,8 @@ export const GRAPH_EXECUTION_ERRORS = {
   INVALID_TRIGGER: 'GRAPH_EXECUTION_INVALID_TRIGGER',
   CYCLE: 'GRAPH_EXECUTION_CYCLE',
   NODE_MISSING: 'GRAPH_EXECUTION_NODE_MISSING',
-  INVALID_NODE: 'GRAPH_EXECUTION_INVALID_NODE'
+  INVALID_NODE: 'GRAPH_EXECUTION_INVALID_NODE',
+  PYTHON_FAILED: 'GRAPH_EXECUTION_PYTHON_FAILED'
 } as const;
 
 const TRIGGER_TYPES: Record<GraphNodeType, true | undefined> = {
@@ -49,7 +52,8 @@ const TRIGGER_TYPES: Record<GraphNodeType, true | undefined> = {
   onPlaneContact: true,
   applyForce: undefined,
   applyImpulse: undefined,
-  clearForce: undefined
+  clearForce: undefined,
+  runPython: undefined
 };
 
 const ACTION_TYPES: Record<GraphNodeType, true | undefined> = {
@@ -58,7 +62,8 @@ const ACTION_TYPES: Record<GraphNodeType, true | undefined> = {
   onPlaneContact: undefined,
   applyForce: true,
   applyImpulse: true,
-  clearForce: true
+  clearForce: true,
+  runPython: true
 };
 
 export function isTriggerNodeType(type: GraphNodeType): boolean {
@@ -327,6 +332,33 @@ export interface ChainExecutionResult {
   executed: NodeExecutionResult[];
   failure: ExecutionFailure | null;
   completed: boolean;
+  /**
+   * Set when the chain stopped before an asynchronous node. The caller resumes
+   * with the same plan and index once the runtime returns an outcome.
+   */
+  suspension?: ChainSuspension;
+}
+
+/** Result of one Python invocation, as the chain sees it. */
+export interface PythonNodeOutcome {
+  ok: boolean;
+  actions?: readonly PythonAction[];
+  durationMs: number;
+  code?: string;
+  message?: string;
+  line?: number | null;
+}
+
+export interface ChainSuspension {
+  nodeId: GraphNodeId;
+  index: number;
+}
+
+export interface ChainExecutionOptions {
+  /** Index in the plan to start from. Defaults to 0. */
+  startIndex?: number;
+  /** Outcome for the Python node at `startIndex`, supplied when resuming. */
+  python?: { nodeId: GraphNodeId; outcome: PythonNodeOutcome };
 }
 
 function actionDetail(node: GraphNode): string {
@@ -337,6 +369,8 @@ function actionDetail(node: GraphNode): string {
       return `J=(${node.config.impulse.x}, ${node.config.impulse.y}, ${node.config.impulse.z}) N*s`;
     case 'clearForce':
       return 'Force accumulator cleared.';
+    case 'runPython':
+      return 'Python script executed.';
     default:
       return '';
   }
@@ -378,17 +412,25 @@ function actionEntityId(node: GraphNode): string | undefined {
 /**
  * Executes a plan sequentially and atomically per node (D-M2C-01, D-M2C-08).
  * Any node failure stops the chain; successful earlier nodes are retained.
+ *
+ * Phase 07 adds one asynchronous node type. `runPython` cannot be executed here
+ * because it needs the worker; the chain stops and reports a suspension instead.
+ * The caller resumes with `{ startIndex, python }` once the runtime answers, so
+ * ordering stays deterministic and the simulation keeps stepping meanwhile.
  */
 export function executeChain(
   plan: ExecutionPlan,
   graph: Graph,
-  bodies: RuntimeBodies
+  bodies: RuntimeBodies,
+  options: ChainExecutionOptions = {}
 ): ChainExecutionResult {
   const nodesById = new Map(graph.nodes.map((node) => [node.id, node]));
   const executed: NodeExecutionResult[] = [];
   let current = bodies;
+  const startIndex = options.startIndex ?? 0;
 
-  for (const nodeId of plan.order) {
+  for (let index = startIndex; index < plan.order.length; index += 1) {
+    const nodeId = plan.order[index] as string;
     const node = nodesById.get(nodeId);
     if (!node) {
       return {
@@ -407,6 +449,61 @@ export function executeChain(
 
     if (isTriggerNodeType(node.type)) {
       executed.push({ nodeId: node.id, type: node.type, status: 'executed', detail: 'trigger' });
+      continue;
+    }
+
+    if (node.config.kind === 'runPython') {
+      const resume = options.python;
+      if (!resume || resume.nodeId !== node.id) {
+        return {
+          bodies: current,
+          executed,
+          failure: null,
+          completed: false,
+          suspension: { nodeId: node.id, index }
+        };
+      }
+
+      if (!resume.outcome.ok) {
+        return {
+          bodies: current,
+          executed,
+          failure: {
+            nodeId: node.id,
+            type: node.type,
+            code: resume.outcome.code ?? GRAPH_EXECUTION_ERRORS.PYTHON_FAILED,
+            message: resume.outcome.message ?? 'Python execution failed.',
+            severity: 'error'
+          },
+          completed: false
+        };
+      }
+
+      try {
+        current = applyPythonActions(current, resume.outcome.actions ?? []);
+      } catch (error) {
+        const failure: SimulationFailure = toSimulationFailure(error);
+        return {
+          bodies: current,
+          executed,
+          failure: {
+            nodeId: node.id,
+            type: node.type,
+            code: failure.code,
+            message: failure.message,
+            severity: failure.severity ?? 'error'
+          },
+          completed: false
+        };
+      }
+
+      const actionCount = resume.outcome.actions?.length ?? 0;
+      executed.push({
+        nodeId: node.id,
+        type: node.type,
+        status: 'executed',
+        detail: `Python script · ${actionCount} action(s) · ${Math.round(resume.outcome.durationMs)} ms`
+      });
       continue;
     }
 

@@ -1,5 +1,6 @@
 import type { AppError, WorldDocument } from '../world/types.ts';
 import type { Graph } from '../graph/types.ts';
+import type { PythonProjectData } from '../python/types.ts';
 
 export const PROJECT_FORMAT = 'simuforge.project' as const;
 export const PROJECT_SCHEMA_VERSION = 1 as const;
@@ -18,6 +19,8 @@ export interface ProjectDocument {
   world: WorldDocument;
   /** Canonical visual-scripting graph (M2-E). Optional for backward compatibility. */
   graph?: Graph | null;
+  /** Optional Python scripts (Phase 07). */
+  python?: PythonProjectData | null;
 }
 
 export type ProjectValidationResult =

@@ -28,7 +28,9 @@ export const GRAPH_DIAGNOSTIC_CODES = {
   PORT_KIND_MISMATCH: 'GRAPH_PORT_KIND_MISMATCH',
   DUPLICATE_CONNECTION: 'GRAPH_DUPLICATE_CONNECTION',
   UNSUPPORTED_CYCLE: 'GRAPH_UNSUPPORTED_CYCLE',
-  MISSING_REQUIRED_PORT: 'GRAPH_MISSING_REQUIRED_PORT'
+  MISSING_REQUIRED_PORT: 'GRAPH_MISSING_REQUIRED_PORT',
+  MISSING_SCRIPT: 'GRAPH_MISSING_SCRIPT',
+  INVALID_SCRIPT: 'GRAPH_INVALID_SCRIPT'
 } as const;
 
 function diagnostic(
@@ -121,6 +123,32 @@ function validateNodeConfig(
       break;
     }
 
+    case 'runPython': {
+      const config = node.config as { scriptId?: unknown };
+      if (typeof config.scriptId !== 'string' || config.scriptId.trim().length === 0) {
+        diagnostics.push(
+          diagnostic(
+            GRAPH_DIAGNOSTIC_CODES.MISSING_SCRIPT,
+            `Node ${node.id} requires a Python script reference.`,
+            'error',
+            { nodeId: node.id, field: 'scriptId' }
+          )
+        );
+        break;
+      }
+      if (context.scriptIds && !context.scriptIds.includes(config.scriptId)) {
+        diagnostics.push(
+          diagnostic(
+            GRAPH_DIAGNOSTIC_CODES.INVALID_SCRIPT,
+            `Node ${node.id} references unknown Python script ${config.scriptId}.`,
+            'error',
+            { nodeId: node.id, field: 'scriptId' }
+          )
+        );
+      }
+      break;
+    }
+
     default:
       diagnostics.push(
         diagnostic(
@@ -200,7 +228,8 @@ const NODE_TYPE_SET: Record<string, true> = {
   onPlaneContact: true,
   applyForce: true,
   applyImpulse: true,
-  clearForce: true
+  clearForce: true,
+  runPython: true
 };
 
 function portDefinition(type: GraphNode['type'], portId: string) {

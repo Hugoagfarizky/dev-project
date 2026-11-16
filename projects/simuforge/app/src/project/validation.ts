@@ -5,6 +5,7 @@ import { PROJECT_FORMAT, PROJECT_SCHEMA_VERSION } from './types.ts';
 import type { ProjectDocument, ProjectValidationResult } from './types.ts';
 import type { Graph } from '../graph/types.ts';
 import type { GraphValidationContext } from '../graph/types.ts';
+import { validatePythonProjectData } from '../python/validation.ts';
 
 const UUID_V4_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -84,11 +85,17 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
     };
   }
 
-  // Optional graph (M2-E). Validate against the project's actual entities; an
-  // invalid graph is stripped (not fatal) and reported via warnings so the rest
-  // of a valid project can still open.
-  let normalizedGraph: Graph | null | undefined;
   const warnings: string[] = [];
+  let normalizedPython: ReturnType<typeof validatePythonProjectData>['value'] | undefined = undefined;
+  if (value.python !== undefined) {
+    const pythonResult = validatePythonProjectData(value.python);
+    warnings.push(...pythonResult.warnings);
+    normalizedPython = pythonResult.value;
+  }
+
+  // Optional graph (M2-E). Validate against the project's actual entities and
+  // the project's Python script ids; an invalid graph is stripped (not fatal).
+  let normalizedGraph: Graph | null | undefined;
   if (value.graph !== undefined && value.graph !== null) {
     if (typeof value.graph !== 'object' || Array.isArray(value.graph)) {
       normalizedGraph = null;
@@ -98,7 +105,8 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
         entities: worldResult.value.entities.map((entity) => ({
           id: entity.id,
           components: entity.components ?? []
-        }))
+        })),
+        scriptIds: (normalizedPython?.scripts ?? []).map((script) => script.id)
       };
       const graphResult = validateGraph(value.graph as Graph, graphContext);
       if (!graphResult.valid) {
@@ -123,7 +131,8 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
       updatedAt: project.updatedAt
     },
     world: worldResult.value,
-    ...(normalizedGraph !== undefined ? { graph: normalizedGraph } : {})
+    ...(normalizedGraph !== undefined ? { graph: normalizedGraph } : {}),
+    ...(normalizedPython !== undefined ? { python: normalizedPython } : {})
   };
 
   return { ok: true, value: normalized, ...(warnings.length ? { warnings } : {}) };

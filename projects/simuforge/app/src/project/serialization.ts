@@ -18,6 +18,9 @@ export function serializeProjectDocument(project: ProjectDocument): string {
   if (project.graph) {
     payload.graph = JSON.parse(JSON.stringify(project.graph));
   }
+  if (project.python) {
+    payload.python = JSON.parse(JSON.stringify(project.python));
+  }
   return JSON.stringify(payload);
 }
 

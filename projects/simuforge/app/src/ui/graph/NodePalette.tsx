@@ -11,7 +11,8 @@ const NODE_TYPES: GraphNodeType[] = [
   'onPlaneContact',
   'applyForce',
   'applyImpulse',
-  'clearForce'
+  'clearForce',
+  'runPython'
 ];
 
 interface NodePaletteProps {

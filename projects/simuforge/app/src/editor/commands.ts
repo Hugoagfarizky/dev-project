@@ -4,6 +4,7 @@ import type { Transform, Component, Vec3 } from '../world/types.ts';
 import type { Graph } from '../graph/types.ts';
 import type { LogEntry } from '../console/types.ts';
 import type { CameraPose, GizmoMode, Preset } from './state.ts';
+import type { PythonRunOutcome, PythonRuntimeStatus } from '../python/types.ts';
 
 export type StudioCommand =
   | { type: 'project/new'; name: string }
@@ -37,5 +38,13 @@ export type StudioCommand =
   | { type: 'graph/set'; graph: Graph | null }
   | { type: 'graph/select-node'; nodeId: string | null }
   | { type: 'runtime/error'; error: AppError }
+  | { type: 'runtime/python-result'; requestId: string; outcome: PythonRunOutcome }
+  | { type: 'python/create-script'; name?: string }
+  | { type: 'python/rename-script'; scriptId: string; name: string }
+  | { type: 'python/delete-script'; scriptId: string }
+  | { type: 'python/set-source'; scriptId: string; source: string }
+  | { type: 'python/select-script'; scriptId: string | null }
+  | { type: 'python/load-runtime' }
+  | { type: 'python/runtime-status'; status: PythonRuntimeStatus; detail: string | null }
   | { type: 'log/append'; entry: LogEntry }
   | { type: 'log/clear' };

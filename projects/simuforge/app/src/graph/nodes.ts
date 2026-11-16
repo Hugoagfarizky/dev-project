@@ -21,6 +21,10 @@ export const NODE_PORT_DEFINITIONS: Record<GraphNodeType, readonly NodePortDefin
   clearForce: [
     { id: 'in', direction: 'input', kind: 'execution' },
     { id: 'out', direction: 'output', kind: 'execution' }
+  ],
+  runPython: [
+    { id: 'in', direction: 'input', kind: 'execution' },
+    { id: 'out', direction: 'output', kind: 'execution' }
   ]
 };
 

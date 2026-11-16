@@ -8,6 +8,16 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    strictPort: false
+    strictPort: false,
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'credentialless'
+    }
+  },
+  preview: {
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'credentialless'
+    }
   }
 });

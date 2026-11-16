@@ -1,7 +1,7 @@
 import { createWorldEntity } from '../world/defaults.ts';
 import { validateTransform, validateComponent } from '../world/validation.ts';
 import { transformsEqual } from '../world/transform.ts';
-import { createDefaultRuntimeState, createEmptyProject } from './state.ts';
+import { createDefaultRuntimeState, createDefaultPythonState, createEmptyProject } from './state.ts';
 import {
   advanceSimulation,
   applyForce,
@@ -34,11 +34,17 @@ import type {
   ExecutionOutcome,
   ExecutionQueueEntry,
   ExecutionResultSummary,
+  PendingPythonExecution,
   RuntimeExecutionState,
   StudioState
 } from './state.ts';
 import type { EntityType, RigidBodyComponent, WorldEntity } from '../world/types.ts';
 import type { Graph, GraphNodeType, GraphValidationContext } from '../graph/types.ts';
+import { PYTHON_FIXED_DT_SECONDS, PYTHON_SOURCE_MAX_CHARS } from '../python/limits.ts';
+import { findPythonScript, pythonScripts } from '../python/validation.ts';
+import type { PythonSnapshot } from '../python/types.ts';
+import type { PythonRunOutcome } from '../python/types.ts';
+import { PYTHON_CODES } from '../python/types.ts';
 
 export interface ReducerContext {
   idFactory: () => string;
@@ -133,7 +139,11 @@ const STRUCTURAL_COMMANDS = new Set<string>([
   'component/remove',
   'component/set',
   'demo/load-scenario',
-  'graph/set'
+  'graph/set',
+  'python/create-script',
+  'python/rename-script',
+  'python/delete-script',
+  'python/set-source'
 ]);
 
 function appendRuntimeBlockedLog(state: StudioState): StudioState {
@@ -193,7 +203,7 @@ function appendRuntimeFailureLog(
 function appendRuntimeInfoLog(
   state: StudioState,
   context: ReducerContext,
-  entry: { code: string; message: string; entityId?: string; detail?: string }
+  entry: { code: string; message: string; entityId?: string; detail?: string; source?: 'APP' | 'EDITOR' | 'RENDER' | 'IMPORT' | 'RUNTIME' | 'PYTHON' }
 ): StudioState {
   return {
     ...state,
@@ -201,7 +211,7 @@ function appendRuntimeInfoLog(
       id: context.idFactory(),
       timestamp: context.clock(),
       severity: 'info' as const,
-      source: 'RUNTIME' as const,
+      source: (entry.source ?? 'RUNTIME') as any,
       code: entry.code,
       message: entry.message,
       ...(entry.entityId ? { entityId: entry.entityId } : {}),
@@ -219,6 +229,7 @@ function appendExecutionLog(
     message: string;
     entityId?: string;
     detail?: string;
+    source?: 'APP' | 'EDITOR' | 'RENDER' | 'IMPORT' | 'RUNTIME' | 'PYTHON';
   }
 ): StudioState {
   return {
@@ -227,7 +238,7 @@ function appendExecutionLog(
       id: context.idFactory(),
       timestamp: context.clock(),
       severity: entry.severity,
-      source: 'RUNTIME' as const,
+      source: (entry.source ?? 'RUNTIME') as any,
       code: entry.code,
       message: entry.message,
       ...(entry.entityId ? { entityId: entry.entityId } : {}),
@@ -241,7 +252,41 @@ function graphValidationContext(state: StudioState): GraphValidationContext {
     entities: state.project.world.entities.map((entity) => ({
       id: entity.id,
       components: entity.components ?? []
-    }))
+    })),
+    scriptIds: pythonScripts(state.project.python).map((script) => script.id)
+  };
+}
+
+function buildPythonSnapshot(state: StudioState): PythonSnapshot {
+  const byId = new Map(state.project.world.entities.map((entity) => [entity.id, entity]));
+  const entities = Object.values(state.runtime.bodies)
+    .map((body) => {
+      const entity = byId.get(body.entityId);
+      return {
+        id: body.entityId,
+        name: entity?.name ?? body.entityId,
+        position: { ...body.transform.position },
+        velocity: { ...body.velocity }
+      };
+    })
+    .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  return {
+    entities,
+    time: state.runtime.elapsedSeconds,
+    dt: PYTHON_FIXED_DT_SECONDS
+  };
+}
+
+function toPythonNodeOutcome(outcome: PythonRunOutcome): import('../runtime/graphExecution.ts').PythonNodeOutcome {
+  if (outcome.ok) {
+    return { ok: true, actions: outcome.actions, durationMs: outcome.durationMs };
+  }
+  return {
+    ok: false,
+    durationMs: outcome.durationMs,
+    code: outcome.code,
+    message: outcome.error.message,
+    line: outcome.error.line
   };
 }
 
@@ -343,22 +388,248 @@ function enqueueExecution(
  * synchronous. Paused sessions never reach the drain. Stale-session entries are
  * rejected defensively even though cancellation clears the queue synchronously.
  */
-function drainExecution(state: StudioState, context: ReducerContext): StudioState {
-  if (state.runtime.status !== 'running') {
+function drainExecution(
+  state: StudioState,
+  context: ReducerContext,
+  resume?: { requestId: string; outcome: PythonRunOutcome }
+): StudioState {
+  let working = state;
+
+  // --- resolve a suspended Python chain if a result arrived ---------------
+  const pending = working.runtime.execution.pendingPython;
+  if (resume) {
+    if (!pending || pending.requestId !== resume.requestId) {
+      return state;
+    }
+    if (pending.entry.sessionId !== working.runtime.execution.sessionId) {
+      return state;
+    }
+
+    // Surface the script's console output under the PYTHON source.
+    for (const line of resume.outcome.logs ?? []) {
+      working = appendExecutionLog(working, context, {
+        severity: line.level === 'error' ? 'error' : line.level === 'warn' ? 'warn' : 'info',
+        code: PYTHON_CODES.COMPLETED,
+        message: line.message,
+        source: 'PYTHON'
+      } as any);
+    }
+
+    working = {
+      ...working,
+      runtime: {
+        ...working.runtime,
+        execution: { ...working.runtime.execution, pendingPython: null }
+      }
+    };
+
+    const nodeOutcome = toPythonNodeOutcome(resume.outcome);
+    const chain = executeChain(pending.plan, working.graph as Graph, working.runtime.bodies, {
+      startIndex: pending.index,
+      python: { nodeId: pending.nodeId, outcome: nodeOutcome }
+    });
+
+    let editor = working.editor;
+    for (const result of chain.executed) {
+      editor = {
+        ...editor,
+        executingGraphNodeId: result.nodeId,
+        executionSequence: editor.executionSequence + 1
+      };
+      working = appendExecutionLog(
+        { ...working, editor },
+        context,
+        {
+          severity: 'info',
+          code: GRAPH_EXECUTION_CODES.NODE_EXECUTED,
+          message: `Node ${result.nodeId} (${result.type}) executed.`,
+          ...(result.entityId ? { entityId: result.entityId } : {}),
+          ...(result.detail ? { detail: result.detail } : {})
+        }
+      );
+    }
+
+    const executedTotal = pending.executedBefore + chain.executed.length;
+
+    if (chain.suspension) {
+      const suspension = chain.suspension;
+      const node = (working.graph as Graph).nodes.find((n) => n.id === suspension.nodeId);
+      const scriptId = node && node.config.kind === 'runPython' ? node.config.scriptId : '';
+      const script = findPythonScript(working.project.python, scriptId);
+      if (!script) {
+        const failure = {
+          nodeId: suspension.nodeId,
+          type: 'runPython' as GraphNodeType,
+          code: PYTHON_CODES.SCRIPT_MISSING,
+          message: `Python script ${scriptId || '(none)'} is not available.`,
+          severity: 'error' as const
+        };
+        working = appendExecutionLog(
+          {
+            ...working,
+            editor,
+            runtime: {
+              ...working.runtime,
+              bodies: chain.bodies,
+              status: 'paused',
+              execution: {
+                ...working.runtime.execution,
+                status: working.runtime.execution.queue.length > 0 ? 'suspended' : 'idle',
+                queue: working.runtime.execution.queue,
+                lastResult: executionSummary(
+                  pending.entry,
+                  'failed',
+                  executedTotal,
+                  failure.nodeId,
+                  failure.code,
+                  failure.message,
+                  context
+                )
+              }
+            }
+          },
+          context,
+          {
+            severity: 'error',
+            code: GRAPH_EXECUTION_CODES.FAILED,
+            message: `Graph execution failed at node ${failure.nodeId} (runPython): ${failure.code} ${failure.message}`,
+            detail: 'Runtime paused automatically.'
+          }
+        );
+        return working;
+      }
+      const snapshot = buildPythonSnapshot(working);
+      const nextPending: PendingPythonExecution = {
+        requestId: context.idFactory(),
+        entry: pending.entry,
+        plan: pending.plan,
+        nodeId: suspension.nodeId,
+        index: suspension.index,
+        scriptId,
+        snapshot,
+        executedBefore: executedTotal,
+        startedAt: context.clock()
+      };
+      working = appendExecutionLog(
+        {
+          ...working,
+          editor,
+          runtime: {
+            ...working.runtime,
+            bodies: chain.bodies,
+            execution: {
+              ...working.runtime.execution,
+              status: 'executing',
+              pendingPython: nextPending
+            }
+          }
+        },
+        context,
+        {
+          severity: 'info',
+          code: PYTHON_CODES.STARTED,
+          message: `Python node ${suspension.nodeId} started script "${script.name}".`,
+          detail: 'Chain suspended until the Python runtime responds.'
+        }
+      );
+      return working;
+    }
+
+    if (chain.failure) {
+      const failure = chain.failure;
+      const paused = failure.severity === 'error';
+      working = appendExecutionLog(
+        {
+          ...working,
+          editor,
+          runtime: {
+            ...working.runtime,
+            bodies: chain.bodies,
+            status: paused ? 'paused' : working.runtime.status,
+            execution: {
+              ...working.runtime.execution,
+              status: paused
+                ? working.runtime.execution.queue.length > 0
+                  ? 'suspended'
+                  : 'idle'
+                : 'idle',
+              queue: working.runtime.execution.queue,
+              lastResult: executionSummary(
+                pending.entry,
+                'failed',
+                executedTotal,
+                failure.nodeId,
+                failure.code,
+                failure.message,
+                context
+              )
+            }
+          }
+        },
+        context,
+        {
+          severity: failure.severity,
+          code: GRAPH_EXECUTION_CODES.FAILED,
+          message: `Graph execution failed at node ${failure.nodeId} (${failure.type}): ${failure.code} ${failure.message}`,
+          ...(paused ? { detail: 'Runtime paused automatically.' } : {})
+        }
+      );
+      if (paused) {
+        return working;
+      }
+    } else {
+      working = appendExecutionLog(
+        {
+          ...working,
+          editor,
+          runtime: {
+            ...working.runtime,
+            bodies: chain.bodies,
+            execution: {
+              ...working.runtime.execution,
+              status: 'idle',
+              queue: working.runtime.execution.queue,
+              lastResult: executionSummary(
+                pending.entry,
+                'completed',
+                executedTotal,
+                null,
+                null,
+                null,
+                context
+              )
+            }
+          }
+        },
+        context,
+        {
+          severity: 'info',
+          code: GRAPH_EXECUTION_CODES.COMPLETED,
+          message: `Graph execution completed: ${executedTotal} node(s) from trigger ${pending.entry.triggerNodeId}.`
+        }
+      );
+    }
+  } else if (pending) {
+    return withExecutionStatus(working, 'executing');
+  }
+
+  // --- normal drain --------------------------------------------------------
+  if (working.runtime.status !== 'running') {
     return withExecutionStatus(
-      state,
-      state.runtime.execution.queue.length > 0 ? 'suspended' : 'idle'
+      working,
+      working.runtime.execution.queue.length > 0 ? 'suspended' : 'idle'
     );
   }
 
-  const graph = state.graph ?? null;
-  if (!graph || !state.runtime.execution.enabled) {
-    return withExecutionStatus(state, 'idle');
+  const graph = working.graph ?? null;
+  if (!graph || !working.runtime.execution.enabled) {
+    return withExecutionStatus(working, 'idle');
   }
 
-  let working = state;
-
   while (working.runtime.execution.queue.length > 0) {
+    if (working.runtime.execution.pendingPython) {
+      break;
+    }
     const execution = working.runtime.execution;
     const entry = execution.queue[0] as ExecutionQueueEntry;
     const remaining = execution.queue.slice(1);
@@ -471,6 +742,93 @@ function drainExecution(state: StudioState, context: ReducerContext): StudioStat
       );
     }
 
+    const executedTotal = chain.executed.length;
+
+    if (chain.suspension) {
+      const suspension = chain.suspension;
+      const node = graph.nodes.find((n) => n.id === suspension.nodeId);
+      const scriptId = node && node.config.kind === 'runPython' ? node.config.scriptId : '';
+      const script = findPythonScript(working.project.python, scriptId);
+      if (!script) {
+        const failure = {
+          nodeId: suspension.nodeId,
+          type: 'runPython' as GraphNodeType,
+          code: PYTHON_CODES.SCRIPT_MISSING,
+          message: `Python script ${scriptId || '(none)'} is not available.`,
+          severity: 'error' as const
+        };
+        working = appendExecutionLog(
+          {
+            ...working,
+            editor,
+            runtime: {
+              ...working.runtime,
+              bodies: chain.bodies,
+              status: 'paused',
+              execution: {
+                ...working.runtime.execution,
+                status: remaining.length > 0 ? 'suspended' : 'idle',
+                queue: remaining,
+                lastResult: executionSummary(
+                  entry,
+                  'failed',
+                  executedTotal,
+                  failure.nodeId,
+                  failure.code,
+                  failure.message,
+                  context
+                )
+              }
+            }
+          },
+          context,
+          {
+            severity: 'error',
+            code: GRAPH_EXECUTION_CODES.FAILED,
+            message: `Graph execution failed at node ${failure.nodeId} (runPython): ${failure.code} ${failure.message}`,
+            detail: 'Runtime paused automatically.'
+          }
+        );
+        break;
+      }
+      const snapshot = buildPythonSnapshot(working);
+      const nextPending: PendingPythonExecution = {
+        requestId: context.idFactory(),
+        entry,
+        plan,
+        nodeId: suspension.nodeId,
+        index: suspension.index,
+        scriptId,
+        snapshot,
+        executedBefore: executedTotal,
+        startedAt: context.clock()
+      };
+      working = appendExecutionLog(
+        {
+          ...working,
+          editor,
+          runtime: {
+            ...working.runtime,
+            bodies: chain.bodies,
+            execution: {
+              ...working.runtime.execution,
+              status: 'executing',
+              queue: remaining,
+              pendingPython: nextPending
+            }
+          }
+        },
+        context,
+        {
+          severity: 'info',
+          code: PYTHON_CODES.STARTED,
+          message: `Python node ${suspension.nodeId} started script "${script.name}".`,
+          detail: 'Chain suspended until the Python runtime responds.'
+        }
+      );
+      break;
+    }
+
     if (chain.failure) {
       const failure = chain.failure;
       const paused = failure.severity === 'error';
@@ -485,7 +843,9 @@ function drainExecution(state: StudioState, context: ReducerContext): StudioStat
             execution: {
               ...working.runtime.execution,
               status: paused
-                ? remaining.length > 0 ? 'suspended' : 'idle'
+                ? remaining.length > 0
+                  ? 'suspended'
+                  : 'idle'
                 : 'idle',
               queue: remaining,
               lastResult: executionSummary(
@@ -549,6 +909,7 @@ function drainExecution(state: StudioState, context: ReducerContext): StudioStat
   return working;
 }
 
+
 export function reduceStudioState(
   state: StudioState,
   command: StudioCommand,
@@ -565,6 +926,7 @@ export function reduceStudioState(
       }
       const now = context.clock();
       const project = createEmptyProject(context.idFactory(), command.name.trim(), now);
+      project.python = { scripts: [] };
       return {
         project,
         editor: {
@@ -586,7 +948,8 @@ export function reduceStudioState(
         },
         logs: [...state.logs],
         runtime: createDefaultRuntimeState(),
-        graph: null
+        graph: null,
+        python: createDefaultPythonState()
       };
     }
 
@@ -599,7 +962,8 @@ export function reduceStudioState(
           entities: command.document.world.entities.map((entity) => ({
             id: entity.id,
             components: entity.components ? entity.components.map((c) => ({ ...c })) : []
-          }))
+          })),
+          scriptIds: (command.document.python?.scripts ?? []).map((script) => script.id)
         };
         const result = validateGraph(incomingGraph, graphContext);
         if (result.valid) {
@@ -631,7 +995,8 @@ export function reduceStudioState(
               components: entity.components ? entity.components.map((c) => ({ ...c })) : []
             }))
           },
-          ...(restoredGraph ? { graph: restoredGraph } : {})
+          ...(restoredGraph ? { graph: restoredGraph } : {}),
+           ...(command.document.python ? { python: command.document.python } : {})
         },
         editor: {
           selectedEntityId: null,
@@ -652,7 +1017,8 @@ export function reduceStudioState(
         },
         logs: [...state.logs],
         runtime: createDefaultRuntimeState(),
-        graph: restoredGraph
+        graph: restoredGraph,
+        python: createDefaultPythonState()
       };
 
       if (graphWarning) {
@@ -945,6 +1311,117 @@ export function reduceStudioState(
       };
     }
 
+    case 'python/create-script': {
+      if (!state.project.python) {
+        state = { ...state, project: { ...state.project, python: { scripts: [] } } };
+      }
+      const scripts = pythonScripts(state.project.python);
+      const name = (command.name && command.name.trim().length > 0 ? command.name.trim() : `Script ${scripts.length + 1}`);
+      const id = context.idFactory();
+      const source = '# Write Python here. API: from simuforge import world, simulation\nworld.log("hello from python")\n';
+      const nextScripts = [...scripts, { id, name, source }];
+      const next = markDirty({
+        ...state,
+        project: { ...state.project, python: { scripts: nextScripts } },
+        python: { ...(state.python ?? createDefaultPythonState()), selectedScriptId: id }
+      });
+      return next;
+    }
+
+    case 'python/rename-script': {
+      const scripts = pythonScripts(state.project.python);
+      const nextScripts = scripts.map((script) =>
+        script.id === command.scriptId ? { ...script, name: command.name.trim() } : script
+      );
+      // validate name
+      const target = nextScripts.find((s) => s.id === command.scriptId);
+      if (!target || target.name.length === 0 || target.name.length > 128) {
+        return state;
+      }
+      // duplicate name check
+      const duplicate = nextScripts.some((s) => s.id !== command.scriptId && s.name === target.name);
+      if (duplicate) {
+        return state;
+      }
+      return markDirty({
+        ...state,
+        project: { ...state.project, python: { scripts: nextScripts } }
+      });
+    }
+
+    case 'python/delete-script': {
+      const scripts = pythonScripts(state.project.python);
+      const nextScripts = scripts.filter((script) => script.id !== command.scriptId);
+      const selected = state.python?.selectedScriptId === command.scriptId
+        ? (nextScripts[0]?.id ?? null)
+        : (state.python?.selectedScriptId ?? null);
+      return markDirty({
+        ...state,
+        project: { ...state.project, python: { scripts: nextScripts } },
+        python: { ...(state.python ?? createDefaultPythonState()), selectedScriptId: selected }
+      });
+    }
+
+    case 'python/set-source': {
+      if (command.source.length > PYTHON_SOURCE_MAX_CHARS) {
+        return appendExecutionLog(state, context, {
+          severity: 'warn',
+          code: PYTHON_CODES.SOURCE_TOO_LARGE,
+          message: `Python source exceeds ${PYTHON_SOURCE_MAX_CHARS} characters.`
+        });
+      }
+      const scripts = pythonScripts(state.project.python);
+      const nextScripts = scripts.map((script) =>
+        script.id === command.scriptId ? { ...script, source: command.source } : script
+      );
+      return markDirty({
+        ...state,
+        project: { ...state.project, python: { scripts: nextScripts } }
+      });
+    }
+
+    case 'python/select-script': {
+      return {
+        ...state,
+        python: { ...(state.python ?? createDefaultPythonState()), selectedScriptId: command.scriptId }
+      };
+    }
+
+    case 'python/load-runtime': {
+      const python = state.python ?? createDefaultPythonState();
+      return {
+        ...state,
+        python: { ...python, loadRequest: python.loadRequest + 1, runtimeStatus: 'loading', runtimeDetail: null }
+      };
+    }
+
+    case 'python/runtime-status': {
+      const python = state.python ?? createDefaultPythonState();
+      return {
+        ...state,
+        python: { ...python, runtimeStatus: command.status, runtimeDetail: command.detail }
+      };
+    }
+
+    case 'runtime/python-result': {
+      const outcome = command.outcome;
+      const python = state.python ?? createDefaultPythonState();
+      const pendingScriptId = state.runtime.execution.pendingPython?.scriptId ?? '';
+      const pendingScript = findPythonScript(state.project.python, pendingScriptId);
+      const summary = {
+        scriptId: pendingScriptId,
+        scriptName: pendingScript?.name ?? '',
+        ok: outcome.ok,
+        durationMs: outcome.durationMs,
+        message: outcome.ok ? null : outcome.error.message,
+        actionCount: outcome.ok ? outcome.actions.length : 0,
+        at: context.clock()
+      };
+      const nextPython = { ...python, lastRun: summary };
+      const next = { ...state, python: nextPython };
+      return drainExecution(next, context, { requestId: command.requestId, outcome: command.outcome });
+    }
+
     case 'log/append': {
       return {
         ...state,
@@ -984,11 +1461,13 @@ export function reduceStudioState(
             lastError: null,
             bodies,
             accumulatorSeconds: 0,
+          elapsedSeconds: 0,
             execution: {
               sessionId,
               status: 'idle',
               enabled: false,
               queue: [],
+            pendingPython: null,
               lastTrigger: null,
               lastResult: null,
               droppedEvents: state.runtime.execution.droppedEvents,
@@ -1171,11 +1650,13 @@ export function reduceStudioState(
           ...state.runtime,
           bodies,
           accumulatorSeconds: 0,
+          elapsedSeconds: 0,
           execution: {
             ...state.runtime.execution,
             sessionId,
             status: 'idle',
             queue: [],
+            pendingPython: null,
             lastTrigger: null,
             lastResult: hadQueued && cancelledEntry
               ? executionSummary(
@@ -1225,6 +1706,7 @@ export function reduceStudioState(
               ...state.runtime,
               bodies: advance.bodies,
               accumulatorSeconds: advance.accumulatorSeconds,
+          elapsedSeconds: state.runtime.elapsedSeconds + advance.steps / 60,
               execution: {
                 ...state.runtime.execution,
                 contactKeys: advance.activeContactKeys,

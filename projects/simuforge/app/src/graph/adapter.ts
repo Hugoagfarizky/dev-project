@@ -60,7 +60,8 @@ export function createCanonicalNode(
     onPlaneContact: { kind: 'onPlaneContact', targetEntityId: '' },
     applyForce: { kind: 'applyForce', targetEntityId: '', force: { x: 0, y: 0, z: 0 } },
     applyImpulse: { kind: 'applyImpulse', targetEntityId: '', impulse: { x: 0, y: 0, z: 0 } },
-    clearForce: { kind: 'clearForce', targetEntityId: '' }
+    clearForce: { kind: 'clearForce', targetEntityId: '' },
+    runPython: { kind: 'runPython', scriptId: '' }
   };
 
   return {
