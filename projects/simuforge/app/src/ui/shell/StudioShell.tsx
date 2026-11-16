@@ -13,7 +13,7 @@ import { AssetLibrary } from '../panels/AssetLibrary.js';
 import { Inspector } from '../panels/Inspector.js';
 import { GraphEditor } from '../graph/GraphEditor.js';
 import { NodePalette } from '../graph/NodePalette.js';
-// import { PythonPanel } from '../python/PythonPanel.js';
+import { PythonPanel } from '../python/PythonPanel.js';
 import { PythonRuntime } from '../../python/runtime.js';
 import { attachPythonController } from '../../python/controller.js';
 import { RuntimeMonitor } from '../panels/RuntimeMonitor.js';
@@ -53,6 +53,7 @@ export function StudioShell({ store }: StudioShellProps) {
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [showHub, setShowHub] = useState<boolean>(false);
+  const [showPython, setShowPython] = useState<boolean>(false);
   const repositoryRef = useRef<IndexedDbProjectRepository>(new IndexedDbProjectRepository());
   const layoutStorageRef = useRef<LayoutStorage>(new LayoutStorage());
   const pythonRuntimeRef = useRef<PythonRuntime | null>(null);
@@ -367,6 +368,7 @@ export function StudioShell({ store }: StudioShellProps) {
         <Button variant="secondary" size="sm" onClick={() => setShowHub(true)}>Project Hub</Button>
         <Button variant="secondary" size="sm" onClick={handleSave}>Save</Button>
         <Button variant="secondary" size="sm" onClick={handleExport}>Export</Button>
+        <Button variant="secondary" size="sm" data-testid="open-python-editor" onClick={() => setShowPython(true)}>Python</Button>
         <Button variant="secondary" size="sm" data-testid="load-demo-scenario" onClick={handleLoadDemoScenario}>Load Demo Scenario</Button>
         <Button variant="primary" size="sm" data-testid="impulse-demo-ball" onClick={handleImpulseDemoBall}>Impulse Demo Ball</Button>
       </div>
@@ -473,6 +475,17 @@ export function StudioShell({ store }: StudioShellProps) {
           </p>
         ) : null}
       </Dialog>
+      {showPython ? (
+        <div className="sf-python-modal" style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "var(--sf-bg-panel)", padding: 16, borderRadius: 8, width: "80%", maxWidth: 900, maxHeight: "80vh", overflow: "auto" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+              <strong>Python</strong>
+              <Button variant="secondary" size="sm" onClick={() => setShowPython(false)}>Close</Button>
+            </div>
+            <PythonPanel store={store} />
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
