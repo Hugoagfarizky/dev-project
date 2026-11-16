@@ -5,7 +5,7 @@
 **Status:** IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE (not closed; closure requires explicit Project Owner acceptance)  
 **Authorization:** Project Owner explicitly authorized MVP-3 WP3/WP4 on 2026-11-16 (D-MVP3-01 REJECT one-click loader; D-MVP3-02 REJECT monitor auto-follow)  
 **Implementation baseline:** `main` @ `6458a655c3f82cd2cf6be6664029935e8deb274a` (MVP-2 CLOSED — PASS)  
-**Final HEAD:** (recorded after push)
+**Implementation commit:** `aefaf1bba56883b9f8c5536b3c12e874a8b1a5a2` (pushed to `origin/main`; audit record appended in a docs-only follow-up commit)
 
 ## 1. Scope
 
@@ -66,6 +66,17 @@ Modified (closure documentation):
 - Console collapsed by default in Program preset at 1024×640 (status line is primary feedback).
 - No Python, robotics/electrical, hybrid 2D, advanced physics, extension marketplace, or cloud collaboration (out of MVP scope).
 
-## 7. Status
+## 7. Final read-only audit
+
+- Commit contents: 10 files — 1 browser spec, 1 evidence JSON, 4 screenshots, 4 documentation files. Zero changes under `app/src`; no dependency or config changes.
+- Evidence integrity: `mvp3-acceptance.json` has `allPassed: true`, 3/3 scenarios, 20 assertions, Chromium 158.0.8127.18; all four `mvp3-*` screenshots present.
+- Acceptance coverage: all six Product Spec §7.5 criteria map to named assertions (see §3).
+- Validation re-run at audit time: `npm test` 250/250 PASS; `npm run check` PASS (includes typecheck); `npm run build` PASS.
+- Regression: M1-F 1/1, M2-B 6/6, M2-C 7/7, M2-D 5/5, M2-E 2/2 all PASS. Note: these specs use fixed waits for physics timing; running several spec files concurrently (Playwright default workers) can produce transient assertion failures under CPU contention. Running the regression set serially (`--workers=1`) is deterministic and passes 21/21. Use `--workers=1` for regression evidence.
+- Documentation consistency: roadmap, readiness report, handoff, and this report agree on status (IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE, not closed), decisions, counts, and exclusions.
+- Protected state: three modified MVP-0 reports remain unstaged; untracked root `package-lock.json` untouched; `wip/m1c-physics-scratch` still at `a566c98`.
+- Audit verdict: PASS — no blocking defect, no scope violation, no unexpected change.
+
+## 8. Status
 
 MVP-3 is IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE. Not closed. Closure requires explicit Project Owner acceptance. MVP-3 is the final integration milestone; MVP-2 is already CLOSED — PASS.
