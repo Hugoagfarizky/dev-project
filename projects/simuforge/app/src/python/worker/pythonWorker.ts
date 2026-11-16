@@ -151,7 +151,13 @@ scope.onmessage = (event: MessageEvent<PythonWorkerRequest>) => {
     void (async () => {
       try {
         const loadStart = performance.now();
-        const module = (await import(/* @vite-ignore */ message.pyodideUrl)) as PyodideModule;
+        const response = await fetch(message.pyodideUrl, { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`Failed to fetch Pyodide module: ${response.status}`);
+        }
+        const source = await response.text();
+        const dataUrl = `data:application/javascript;base64,${btoa(unescape(encodeURIComponent(source)))}`;
+        const module = (await import(/* @vite-ignore */ dataUrl)) as PyodideModule;
         const loadMs = performance.now() - loadStart;
 
         const initStart = performance.now();

@@ -1,18 +1,22 @@
-import { useState } from 'react';
-import type { StudioStore } from '../../editor/store.js';
+import { useEffect, useState } from 'react';
+import { useStudioStore } from '../hooks/useStore.js';
 import { pythonScripts, findPythonScript } from '../../python/validation.js';
 
 interface PythonPanelProps {
-  store: StudioStore;
+  store: any;
 }
 
 export function PythonPanel({ store }: PythonPanelProps) {
-  const state = store.getSnapshot();
+  const state = useStudioStore(store, (s: any) => s);
   const project = state.project;
   const python = state.python ?? { selectedScriptId: null, runtimeStatus: 'idle', runtimeDetail: null, loadRequest: 0, lastRun: null };
   const scripts = pythonScripts(project.python);
   const selected = findPythonScript(project.python, python.selectedScriptId ?? '');
   const [nameDraft, setNameDraft] = useState('');
+
+  useEffect(() => {
+    store.dispatch({ type: 'python/load-runtime' });
+  }, [store]);
 
   function createScript() {
     const name = nameDraft.trim() || `Script ${scripts.length + 1}`;
@@ -21,7 +25,7 @@ export function PythonPanel({ store }: PythonPanelProps) {
   }
 
   return (
-    <details className="sf-python-panel" aria-label="Python scripts" style={{ flex: 'none' }}>
+    <details className="sf-python-panel" aria-label="Python scripts" style={{ flex: 'none' }} open>
       <summary>Python scripts</summary>
       <div className="sf-python-toolbar">
         <input
@@ -39,7 +43,7 @@ export function PythonPanel({ store }: PythonPanelProps) {
         </span>
       </div>
       <div className="sf-python-list">
-        {scripts.map((script) => (
+        {scripts.map((script: any) => (
           <button
             key={script.id}
             type="button"

@@ -476,8 +476,8 @@ export function StudioShell({ store }: StudioShellProps) {
         ) : null}
       </Dialog>
       {showPython ? (
-        <div className="sf-python-modal" style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ background: "var(--sf-bg-panel)", padding: 16, borderRadius: 8, width: "80%", maxWidth: 900, maxHeight: "80vh", overflow: "auto" }}>
+        <div className="sf-python-modal" style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+          <div style={{ background: "var(--sf-bg-panel)", padding: 16, borderRadius: 8, width: "80%", maxWidth: 900, maxHeight: "80vh", overflow: "auto", pointerEvents: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
               <strong>Python</strong>
               <Button variant="secondary" size="sm" onClick={() => setShowPython(false)}>Close</Button>
