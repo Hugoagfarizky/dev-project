@@ -1,0 +1,71 @@
+# SimuForge — MVP-3 Implementation Report
+
+**Date:** 2026-11-16 (implementation and verification)  
+**Milestone:** MVP-3 — Integrated Demonstration & Monitoring  
+**Status:** IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE (not closed; closure requires explicit Project Owner acceptance)  
+**Authorization:** Project Owner explicitly authorized MVP-3 WP3/WP4 on 2026-11-16 (D-MVP3-01 REJECT one-click loader; D-MVP3-02 REJECT monitor auto-follow)  
+**Implementation baseline:** `main` @ `6458a655c3f82cd2cf6be6664029935e8deb274a` (MVP-2 CLOSED — PASS)  
+**Final HEAD:** (recorded after push)
+
+## 1. Scope
+
+MVP-3 consolidates the MVP-0/MVP-1/MVP-2 stack into a coherent, reliable, end-to-end simulation product. No new capabilities: reuses existing implementations. Optional UX improvements (one-click demo loader, monitor auto-follow) explicitly rejected and out of scope.
+
+## 2. Implementation summary
+
+- **Browser acceptance spec** `app/tests/browser/mvp3-acceptance.spec.ts`: 3 scenarios consolidating the 6 MVP-3 acceptance criteria:
+  1. Complete demonstration: create from empty project, run, observe motion, verify floor collision, pause/resume, stop, save & reopen with graph intact.
+  2. Runtime errors visible to the user (invalid graph skip + status line).
+  3. Responsive layout at 1024×640 and 1440×900.
+- **Evidence** `reports/mvp-2/evidence/mvp3-acceptance.json`: 3/3 scenarios passed, 20 assertions, Chromium 158.0.8127.18; screenshots `mvp3-*` (4 files).
+- **No source code changes** beyond reusing existing M2-D/M2-E implementations. No new dependencies. No one-click loader, no monitor auto-follow.
+
+## 3. Acceptance criteria status (Product Spec §7.5)
+
+| # | Criterion | Status | Evidence |
+|---|-----------|--------|----------|
+| 1 | User can create the demonstration from an empty project | PASS | Scenario 1 (`demoCreated`, `graphValid`) |
+| 2 | Triggering the button moves the ball | PASS | Scenario 1 (`motionObserved`, `positionChanged`) |
+| 3 | Collision with the floor behaves correctly | PASS | Scenario 1 (`collisionHandled`) |
+| 4 | Pause, resume, and reset work in the complete scenario | PASS | Scenario 1 (`paused`, `resumed`, `stoppedToEditing`) |
+| 5 | Runtime errors are visible to the user | PASS | Scenario 2 (`errorVisibleInStatus`, `runtimeStillRunning`) |
+| 6 | The demonstration can be saved and reopened | PASS | Scenario 1 (`graphRestored`, `edgesRestored`) |
+
+## 4. Tests and validation
+
+| Check | Result |
+|---|---|
+| `npm test` | 250/250 PASS |
+| `npm run typecheck` | PASS |
+| `npm run build` | PASS |
+| `npm run check` | PASS |
+| MVP-3 Playwright | 3/3 PASS |
+| M1-F regression | 1/1 PASS |
+| M2-B regression | 6/6 PASS |
+| M2-C regression | 7/7 PASS |
+| M2-D regression | 5/5 PASS |
+| M2-E regression | 2/2 PASS |
+
+## 5. Files changed
+
+New:
+- `app/tests/browser/mvp3-acceptance.spec.ts`
+- `reports/mvp-2/evidence/mvp3-acceptance.json`
+- `reports/mvp-2/evidence/screenshots/mvp3-*` (4 files)
+- `reports/mvp-2/MVP3_IMPLEMENTATION_REPORT.md`
+
+Modified (closure documentation):
+- `reports/mvp-2/MVP2_CONSOLIDATED_ROADMAP.md`
+- `reports/mvp-2/MVP2_READINESS_REPORT.md`
+- `reports/mvp-0/PROJECT_HANDOFF.md`
+
+## 6. Known limitations
+
+- Two-click demo setup (Load Demo Scenario → Load Demo Graph) — D-MVP3-01 rejected one-click loader.
+- Runtime Monitor requires manual entity selection — D-MVP3-02 rejected auto-follow.
+- Console collapsed by default in Program preset at 1024×640 (status line is primary feedback).
+- No Python, robotics/electrical, hybrid 2D, advanced physics, extension marketplace, or cloud collaboration (out of MVP scope).
+
+## 7. Status
+
+MVP-3 is IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE. Not closed. Closure requires explicit Project Owner acceptance. MVP-3 is the final integration milestone; MVP-2 is already CLOSED — PASS.

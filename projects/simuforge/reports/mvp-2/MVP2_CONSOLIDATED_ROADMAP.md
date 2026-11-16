@@ -104,3 +104,14 @@ MVP-1 closure → M2-A → M2-B → M2-C → M2-D → M2-E.
 - Contact-event storms: rising-edge semantics (D-M2C-07) plus a bounded FIFO queue (D-M2C-04).
 - Large graph performance: measure before mandatory targets (D-M2-08).
 - Scope creep: keep deferred capabilities explicit.
+
+## 5. MVP-3 — Integrated Demonstration & Monitoring (IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE — NOT CLOSED)
+
+- Scope: consolidate MVP-0/MVP-1/MVP-2 into a coherent end-to-end simulation product. Reuse existing implementations; no new capabilities. Decisions: D-MVP3-01 REJECT one-click demo loader (keep two-step flow); D-MVP3-02 REJECT monitor auto-follow (keep manual selection).
+- Acceptance criteria (Product Spec §7.5): (1) create demo from empty project, (2) trigger moves ball, (3) floor collision correct, (4) pause/resume/reset work, (5) runtime errors visible, (6) save and reopen with graph.
+- Implementation report: `MVP3_IMPLEMENTATION_REPORT.md`
+- Browser acceptance: `app/tests/browser/mvp3-acceptance.spec.ts` (3 scenarios, 20 assertions) — all PASS.
+- Evidence: `reports/mvp-2/evidence/mvp3-acceptance.json` (3/3 passed, 20 assertions), screenshots `mvp3-*` (4 files).
+- Validation: full suite 250/250 PASS; `npm run check` PASS; `npm run build` PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5; M2-E 2/2; MVP-3 3/3.
+- Exclusions: Python, robotics/electrical, hybrid 2D, advanced physics, extension marketplace, cloud collaboration (per spec §7.6).
+- Status: IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE. Not closed. Closure requires explicit Project Owner acceptance.
