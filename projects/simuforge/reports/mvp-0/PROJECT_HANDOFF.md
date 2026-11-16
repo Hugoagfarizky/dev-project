@@ -336,14 +336,14 @@ No further implementation until explicit authorization is granted.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
 - No further MVP-2 work. M2-E was the final MVP-2 milestone. MVP-2 is CLOSED.
 
-## W. MVP-3 implementation (2026-11-16)
+## W. MVP-3 implementation and closure (2026-11-16)
 
-- MVP-3 status: IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE — NOT CLOSED.
+- MVP-3 status: CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-16).
 - Baseline: `main` @ `6458a655c3f82cd2cf6be6664029935e8deb274a` (MVP-2 CLOSED — PASS).
 - Implementation report: `reports/mvp-2/MVP3_IMPLEMENTATION_REPORT.md`.
 - Decisions: D-MVP3-01 REJECT one-click demo loader (keep two-step); D-MVP3-02 REJECT monitor auto-follow (keep manual selection).
 - Scope: consolidated browser acceptance spec `mvp3-acceptance.spec.ts` (3 scenarios covering all 6 MVP-3 acceptance criteria), evidence `mvp3-acceptance.json` (3/3 passed, 21 assertions). No new source code; reuses existing MVP-0..MVP-2 implementations.
-- Validation: full suite 250/250 PASS; `npm run check` PASS; `npm run build` PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5; M2-E 2/2; MVP-3 3/3.
+- Validation: full suite 250/250 PASS; `npm run check` PASS; `npm run build` PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5; M2-E 2/2; MVP-3 3/3; independent audit PASS.
 - Milestone register (current):
 
 | Milestone | Official status |
@@ -355,8 +355,9 @@ No further implementation until explicit authorization is granted.
 | M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-D | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
 | M2-E | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
-| MVP-3 | IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE — NOT CLOSED |
+| MVP-3 | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-16) |
 
-- MVP-3 implementation complete; not closed. MVP-3 is the final integration milestone. Closure requires explicit Project Owner acceptance.
+- MVP-0, MVP-1, MVP-2, and MVP-3 are all CLOSED — PASS. MVP-3 was the final integration milestone. No further milestone work is authorized or outstanding.
+- Browser regression constraint: the Playwright specs use fixed physics-timing waits, so run browser regression serially (`--workers=1`); concurrent multi-file runs can produce transient failures under CPU contention.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
-- Next required action: Project Owner reviews MVP-3 implementation and decides acceptance (closure) or requests changes. No MVP-3 closure without explicit Owner acceptance. No Python, robotics/electrical, hybrid 2D, advanced physics, extension marketplace, or cloud collaboration.
+- Deferred beyond MVP-3: Python integration, robotics/electrical domains, hybrid 2D, advanced physics, extension marketplace, cloud collaboration.

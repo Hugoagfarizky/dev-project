@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-16 (implementation and verification)  
 **Milestone:** MVP-3 — Integrated Demonstration & Monitoring  
-**Status:** IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE (not closed; closure requires explicit Project Owner acceptance)  
+**Status:** CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-16)  
 **Authorization:** Project Owner explicitly authorized MVP-3 WP3/WP4 on 2026-11-16 (D-MVP3-01 REJECT one-click loader; D-MVP3-02 REJECT monitor auto-follow)  
 **Implementation baseline:** `main` @ `6458a655c3f82cd2cf6be6664029935e8deb274a` (MVP-2 CLOSED — PASS)  
 **Implementation commit:** `aefaf1bba56883b9f8c5536b3c12e874a8b1a5a2` (MVP-3 spec, evidence, docs)  
@@ -74,10 +74,14 @@ Modified (closure documentation):
 - Acceptance coverage: all six Product Spec §7.5 criteria map to named assertions (see §3).
 - Validation re-run at audit time: `npm test` 250/250 PASS; `npm run check` PASS (includes typecheck); `npm run build` PASS.
 - Regression: M1-F 1/1, M2-B 6/6, M2-C 7/7, M2-D 5/5, M2-E 2/2 all PASS. Note: these specs use fixed waits for physics timing; running several spec files concurrently (Playwright default workers) can produce transient assertion failures under CPU contention. Running the regression set serially (`--workers=1`) is deterministic and passes 21/21. Use `--workers=1` for regression evidence.
-- Documentation consistency: roadmap, readiness report, handoff, and this report agree on status (IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE, not closed), decisions, counts, and exclusions.
+- Documentation consistency: roadmap, readiness report, handoff, and this report agree on status (CLOSED — PASS — PROJECT OWNER ACCEPTED, 2026-11-16), decisions, counts, and exclusions.
 - Protected state: three modified MVP-0 reports remain unstaged; untracked root `package-lock.json` untouched; `wip/m1c-physics-scratch` still at `a566c98`.
 - Audit verdict: PASS — no blocking defect, no scope violation, no unexpected change.
 
 ## 8. Status
 
-MVP-3 is IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE. Not closed. Closure requires explicit Project Owner acceptance. MVP-3 is the final integration milestone; MVP-2 is already CLOSED — PASS.
+**CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-16).**
+
+The Project Owner accepted MVP-3 on 2026-11-16 on the basis of: all six Product Spec §7.5 criteria PASS; `npm test` 250/250; MVP-3 browser 3/3 with 21 assertions; M1-F and M2-B..M2-E regression 21/21; `npm run check` and production build PASS; independent audit PASS; no blocking defects or scope violations.
+
+MVP-3 was the final integration milestone. MVP-0, MVP-1, MVP-2, and MVP-3 are all CLOSED — PASS. The documented Playwright timing constraint remains in force: run browser regression serially with `--workers=1`.

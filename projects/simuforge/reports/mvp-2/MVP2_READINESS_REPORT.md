@@ -117,10 +117,10 @@ M2-E is the final MVP-2 milestone. Closure requires explicit Project Owner accep
 
 MVP-2 is closed. M2-E was the final MVP-2 milestone. M2-C, M2-D, and M2-E are CLOSED — PASS. No further MVP-2 work remains.
 
-## 14. MVP-3 implementation
+## 14. MVP-3 implementation and closure
 
-MVP-3 implementation authorized and completed 2026-11-16. Implementation report: `MVP3_IMPLEMENTATION_REPORT.md`. Decisions D-MVP3-01 REJECT one-click loader, D-MVP3-02 REJECT monitor auto-follow. Full suite 250/250 PASS; MVP-3 browser 3/3 PASS (21 assertions); M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5; M2-E 2/2.
+MVP-3 implementation authorized and completed 2026-11-16. Implementation report: `MVP3_IMPLEMENTATION_REPORT.md`. Decisions D-MVP3-01 REJECT one-click loader, D-MVP3-02 REJECT monitor auto-follow. Full suite 250/250 PASS; MVP-3 browser 3/3 PASS (21 assertions); M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5; M2-E 2/2; `npm run check` and production build PASS; independent audit PASS.
 
 MVP-3 scope delivered: consolidated browser acceptance spec `mvp3-acceptance.spec.ts` (3 scenarios covering all 6 MVP-3 acceptance criteria), evidence `mvp3-acceptance.json` (3/3 passed, 21 assertions). No new source code; reuses existing MVP-0..MVP-2 implementations.
 
-MVP-3 is IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE (not closed). Closure requires explicit Project Owner acceptance.
+MVP-3 is CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-16). MVP-0, MVP-1, MVP-2, and MVP-3 are all CLOSED — PASS. Browser regression must run serially (`--workers=1`) because the specs use fixed physics-timing waits.
