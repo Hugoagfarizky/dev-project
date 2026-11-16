@@ -5,7 +5,8 @@
 **Status:** IMPLEMENTED / READY FOR PROJECT OWNER ACCEPTANCE (not closed; closure requires explicit Project Owner acceptance)  
 **Authorization:** Project Owner explicitly authorized MVP-3 WP3/WP4 on 2026-11-16 (D-MVP3-01 REJECT one-click loader; D-MVP3-02 REJECT monitor auto-follow)  
 **Implementation baseline:** `main` @ `6458a655c3f82cd2cf6be6664029935e8deb274a` (MVP-2 CLOSED — PASS)  
-**Implementation commit:** `aefaf1bba56883b9f8c5536b3c12e874a8b1a5a2` (pushed to `origin/main`; audit record appended in a docs-only follow-up commit)
+**Implementation commit:** `aefaf1bba56883b9f8c5536b3c12e874a8b1a5a2` (MVP-3 spec, evidence, docs)  
+**Final implementation HEAD:** `d32dd6d04dae3aef2d9f79921ce31bf3da0014e3` (adds explicit Reset coverage; pushed to `origin/main`, synchronized)
 
 ## 1. Scope
 
