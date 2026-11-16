@@ -1,6 +1,6 @@
 {
   "milestone": "MVP-3",
-  "generatedAt": "2026-11-15T18:00:43.207Z",
+  "generatedAt": "2026-11-16T06:59:46.078Z",
   "browser": "Chromium 158.0.8127.18",
   "scenarios": [
     {
@@ -18,6 +18,7 @@
         "collisionHandled": true,
         "paused": true,
         "resumed": true,
+        "resetRestoredPosition": true,
         "stoppedToEditing": true,
         "graphRestored": true,
         "edgesRestored": true

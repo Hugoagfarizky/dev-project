@@ -342,7 +342,7 @@ No further implementation until explicit authorization is granted.
 - Baseline: `main` @ `6458a655c3f82cd2cf6be6664029935e8deb274a` (MVP-2 CLOSED — PASS).
 - Implementation report: `reports/mvp-2/MVP3_IMPLEMENTATION_REPORT.md`.
 - Decisions: D-MVP3-01 REJECT one-click demo loader (keep two-step); D-MVP3-02 REJECT monitor auto-follow (keep manual selection).
-- Scope: consolidated browser acceptance spec `mvp3-acceptance.spec.ts` (3 scenarios covering all 6 MVP-3 acceptance criteria), evidence `mvp3-acceptance.json` (3/3 passed, 20 assertions). No new source code; reuses existing MVP-0..MVP-2 implementations.
+- Scope: consolidated browser acceptance spec `mvp3-acceptance.spec.ts` (3 scenarios covering all 6 MVP-3 acceptance criteria), evidence `mvp3-acceptance.json` (3/3 passed, 21 assertions). No new source code; reuses existing MVP-0..MVP-2 implementations.
 - Validation: full suite 250/250 PASS; `npm run check` PASS; `npm run build` PASS; M1-F 1/1; M2-B 6/6; M2-C 7/7; M2-D 5/5; M2-E 2/2; MVP-3 3/3.
 - Milestone register (current):
 

@@ -14,10 +14,10 @@ MVP-3 consolidates the MVP-0/MVP-1/MVP-2 stack into a coherent, reliable, end-to
 ## 2. Implementation summary
 
 - **Browser acceptance spec** `app/tests/browser/mvp3-acceptance.spec.ts`: 3 scenarios consolidating the 6 MVP-3 acceptance criteria:
-  1. Complete demonstration: create from empty project, run, observe motion, verify floor collision, pause/resume, stop, save & reopen with graph intact.
+  1. Complete demonstration: create from empty project, run, observe motion, verify floor collision, pause/resume, verify Reset restores the initial position, stop, save & reopen with graph intact.
   2. Runtime errors visible to the user (invalid graph skip + status line).
   3. Responsive layout at 1024×640 and 1440×900.
-- **Evidence** `reports/mvp-2/evidence/mvp3-acceptance.json`: 3/3 scenarios passed, 20 assertions, Chromium 158.0.8127.18; screenshots `mvp3-*` (4 files).
+- **Evidence** `reports/mvp-2/evidence/mvp3-acceptance.json`: 3/3 scenarios passed, 21 assertions, Chromium 158.0.8127.18; screenshots `mvp3-*` (4 files).
 - **No source code changes** beyond reusing existing M2-D/M2-E implementations. No new dependencies. No one-click loader, no monitor auto-follow.
 
 ## 3. Acceptance criteria status (Product Spec §7.5)
@@ -27,7 +27,7 @@ MVP-3 consolidates the MVP-0/MVP-1/MVP-2 stack into a coherent, reliable, end-to
 | 1 | User can create the demonstration from an empty project | PASS | Scenario 1 (`demoCreated`, `graphValid`) |
 | 2 | Triggering the button moves the ball | PASS | Scenario 1 (`motionObserved`, `positionChanged`) |
 | 3 | Collision with the floor behaves correctly | PASS | Scenario 1 (`collisionHandled`) |
-| 4 | Pause, resume, and reset work in the complete scenario | PASS | Scenario 1 (`paused`, `resumed`, `stoppedToEditing`) |
+| 4 | Pause, resume, and reset work in the complete scenario | PASS | Scenario 1 (`paused`, `resumed`, `resetRestoredPosition`, `stoppedToEditing`) |
 | 5 | Runtime errors are visible to the user | PASS | Scenario 2 (`errorVisibleInStatus`, `runtimeStillRunning`) |
 | 6 | The demonstration can be saved and reopened | PASS | Scenario 1 (`graphRestored`, `edgesRestored`) |
 
@@ -68,8 +68,8 @@ Modified (closure documentation):
 
 ## 7. Final read-only audit
 
-- Commit contents: 10 files — 1 browser spec, 1 evidence JSON, 4 screenshots, 4 documentation files. Zero changes under `app/src`; no dependency or config changes.
-- Evidence integrity: `mvp3-acceptance.json` has `allPassed: true`, 3/3 scenarios, 20 assertions, Chromium 158.0.8127.18; all four `mvp3-*` screenshots present.
+- Commit contents: implementation commit `aefaf1b` contains 10 files — 1 browser spec, 1 evidence JSON, 4 screenshots, 4 documentation files. A follow-up commit adds an explicit Reset assertion to the spec and refreshes the evidence JSON/screenshots. Zero changes under `app/src`; no dependency or config changes.
+- Evidence integrity: `mvp3-acceptance.json` has `allPassed: true`, 3/3 scenarios, 21 assertions, Chromium 158.0.8127.18; all four `mvp3-*` screenshots present.
 - Acceptance coverage: all six Product Spec §7.5 criteria map to named assertions (see §3).
 - Validation re-run at audit time: `npm test` 250/250 PASS; `npm run check` PASS (includes typecheck); `npm run build` PASS.
 - Regression: M1-F 1/1, M2-B 6/6, M2-C 7/7, M2-D 5/5, M2-E 2/2 all PASS. Note: these specs use fixed waits for physics timing; running several spec files concurrently (Playwright default workers) can produce transient assertion failures under CPU contention. Running the regression set serially (`--workers=1`) is deterministic and passes 21/21. Use `--workers=1` for regression evidence.

@@ -125,6 +125,16 @@ test.describe('MVP-3 acceptance', () => {
     await topButton(page, 'Play').click();
     await page.waitForTimeout(200);
     check('resumed', (await page.locator('.sf-state-pill').innerText()).trim() === 'Running');
+    await topButton(page, 'Pause').click();
+    await page.waitForTimeout(150);
+    await topButton(page, 'Reset').click();
+    await page.waitForTimeout(200);
+    const posReset = await monitorValue(page, 'Position (m)');
+    check(
+      'resetRestoredPosition',
+      Math.abs(posReset.x - positionBefore.x) < 0.05 && Math.abs(posReset.y - positionBefore.y) < 0.05,
+      `reset=${JSON.stringify(posReset)} initial=${JSON.stringify(positionBefore)}`
+    );
     await topButton(page, 'Stop').click();
     await page.waitForTimeout(200);
     check('stoppedToEditing', (await page.locator('.sf-state-pill').innerText()).trim() === 'Editing');
