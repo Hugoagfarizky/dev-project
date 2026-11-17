@@ -11,7 +11,9 @@
  * message the worker returns.
  */
 export const PYTHON_BOOTSTRAP = String.raw`
+import ast
 import builtins
+import inspect
 import json
 import sys
 import types
@@ -177,6 +179,26 @@ class _Stream:
         return False
 
 
+_stderr_stream = _Stream("warn")
+
+
+async def __sf_run(source):
+    # Capture stderr only while the user script runs. Pyodide formats an escaping
+    # Python exception by writing it to the C-level stderr buffer, so a replaced
+    # sys.stderr would silently turn the reported error message into an empty
+    # string. Restoring it in the finally block keeps the traceback intact.
+    previous = sys.stderr
+    sys.stderr = _stderr_stream
+    try:
+        flags = ast.PyCF_ALLOW_TOP_LEVEL_AWAIT
+        code = compile(source, "<exec>", "exec", flags=flags, dont_inherit=True)
+        result = eval(code, globals())
+        if inspect.isawaitable(result):
+            await result
+    finally:
+        sys.stderr = previous
+
+
 def _install_import_guard():
     real_import = builtins.__import__
 
@@ -225,5 +247,4 @@ def __sf_collect():
 _install_import_guard()
 _install_module()
 sys.stdout = _Stream("info")
-sys.stderr = _Stream("warn")
 `;

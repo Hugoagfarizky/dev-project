@@ -155,12 +155,15 @@ export function GraphEditor({ store }: GraphEditorProps) {
     };
   }, [executionSequence, executingGraphNodeId]);
 
+  const pythonProject = useStudioStore(store, (state) => state.project.python);
+
   const validationContext = useMemo<GraphValidationContext>(() => ({
     entities: entities.map((entity) => ({
       id: entity.id,
       components: entity.components ?? []
-    }))
-  }), [entities]);
+    })),
+    scriptIds: pythonProject?.scripts.map((script) => script.id) ?? []
+  }), [entities, pythonProject]);
 
   const [nodes, setNodes, onNodesChangeBase] = useNodesState(
     toReactFlowNodes(graph, [], selectedGraphNodeId).map((node) => ({

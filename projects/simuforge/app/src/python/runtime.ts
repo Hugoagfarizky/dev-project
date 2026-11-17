@@ -284,10 +284,17 @@ export class PythonRuntime {
       return;
     }
 
-    const report = parsePythonError(message.name, message.message);
+    // An abort owns the outcome: the worker's error text describes whatever
+    // interrupted the script (usually KeyboardInterrupt), not the abort reason.
+    const report = active.abortCode
+      ? abortError(active.abortCode)
+      : parsePythonError(message.name, message.message);
     const isInterrupt = /KeyboardInterrupt/.test(message.message);
     const code = active.abortCode ?? (isInterrupt ? PYTHON_CODES.CANCELLED : PYTHON_CODES.FAILED);
-    this.setStatus(code === PYTHON_CODES.CANCELLED ? 'ready' : 'error', report.message);
+    this.setStatus(
+      code === PYTHON_CODES.TIMEOUT ? 'timeout' : code === PYTHON_CODES.CANCELLED ? 'ready' : 'error',
+      report.message
+    );
     active.resolve(failureOutcome(code, report, logsResult.logs, durationMs));
   }
 

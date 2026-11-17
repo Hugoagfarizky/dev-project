@@ -15,7 +15,10 @@ export function attachPythonController(store: StudioStore, runtime: PythonRuntim
   function pump() {
     const state = store.getSnapshot();
     const python = state.python;
-    if (python && python.loadRequest > handledLoad) {
+    // `loadRequest` restarts at 0 when a project is opened, so a strictly
+    // increasing comparison would ignore the first load after hydration and
+    // leave the editor stuck on "loading".
+    if (python && python.loadRequest !== handledLoad) {
       handledLoad = python.loadRequest;
       void runtime
         .ensureReady()

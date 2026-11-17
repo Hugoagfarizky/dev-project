@@ -234,7 +234,8 @@ scope.onmessage = (event: MessageEvent<PythonWorkerRequest>) => {
       try {
         pyodide.globals.set('__sf_payload', JSON.stringify(message.snapshot));
         pyodide.runPython('__sf_prepare(__sf_payload)');
-        await pyodide.runPythonAsync(message.source);
+        pyodide.globals.set('__sf_source', message.source);
+        await pyodide.runPythonAsync('__sf_run(__sf_source)');
         const payload = collectPayload();
         respond({
           type: 'result',
@@ -248,7 +249,13 @@ scope.onmessage = (event: MessageEvent<PythonWorkerRequest>) => {
         });
       } catch (error) {
         const rawMessage = error instanceof Error ? error.message : String(error);
-        const errorName = error instanceof Error ? error.name : 'PythonError';
+        const errorType = (error as { type?: unknown }).type;
+        const errorName =
+          typeof errorType === 'string' && errorType.length > 0
+            ? errorType
+            : error instanceof Error
+              ? error.name
+              : 'PythonError';
         postFailure(
           message.requestId,
           errorName,
