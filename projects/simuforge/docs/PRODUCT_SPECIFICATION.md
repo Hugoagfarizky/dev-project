@@ -257,7 +257,12 @@ The end-to-end scenario validated by MVP-3:
 7. The user runs the simulation.
 8. The ball moves and interacts with the floor.
 
-## 8. Python Runtime (Planned, After the Initial Slice)
+## 8. Python Runtime (Delivered in Phase 07)
+
+> **Status (2026-11-17):** Phase 07 — Python Runtime is **CLOSED — PASS** (Project Owner accepted
+> 2026-11-17). Python was delivered as the increment after MVP-3; see the
+> [Phase 07 closure report](../reports/phase-07/PHASE_07_CLOSURE_REPORT.md). The requirements below
+> remain the original scope definition.
 
 Python remains part of the product vision (see §4.3) and of the long-term programming experience. It is **not** part of the initial vertical slice (MVP-0 to MVP-3).
 
@@ -353,6 +358,11 @@ Development proceeds in phases:
 | 11 | Quality, Performance & Release |
 
 Each phase must pass validation before the next phase begins.
+
+**Current phase status:** Phases 00–06 are covered by the closed MVP-0 to MVP-3 increments. Phase 07 —
+Python Runtime is **CLOSED — PASS** (Project Owner accepted 2026-11-17); see the
+[Phase 07 closure report](../reports/phase-07/PHASE_07_CLOSURE_REPORT.md). Phase 08 — Electrical &
+Electronics has not started and is not authorized.
 
 ### MVP Increment to Phase Mapping
 

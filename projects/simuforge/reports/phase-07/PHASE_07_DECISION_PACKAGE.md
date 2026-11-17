@@ -2,9 +2,15 @@
 
 **Date:** 2026-11-16  
 **Phase:** 07 — Python Runtime (next official phase after MVP-3)  
-**Status:** BLOCKED ON PROJECT OWNER DECISIONS — no production implementation started  
+**Status:** APPROVED — IMPLEMENTED — CLOSED — PASS (Project Owner accepted 2026-11-17)  
+**Closure record:** [`PHASE_07_CLOSURE_REPORT.md`](PHASE_07_CLOSURE_REPORT.md)  
 **Gate evidence:** [`../poc-04/POC_04_PYTHON_RUNTIME_REPORT.md`](../poc-04/POC_04_PYTHON_RUNTIME_REPORT.md)  
-**Proposed ADR:** [`../../../../docs/decisions/0004-python-runtime-and-execution-model.md`](../../../../docs/decisions/0004-python-runtime-and-execution-model.md)
+**ADR:** [`../../../../docs/decisions/0004-python-runtime-and-execution-model.md`](../../../../docs/decisions/0004-python-runtime-and-execution-model.md)
+
+> This document is the historical decision package that preceded implementation. Its decisions were
+> approved, the phase was implemented at commit `26a16ef`, and Phase 07 was closed as **CLOSED — PASS**
+> on 2026-11-17. Statements below describing work as blocked, not started, or awaiting Owner action
+> are retained as historical context only.
 
 ## 1. Why this package exists
 

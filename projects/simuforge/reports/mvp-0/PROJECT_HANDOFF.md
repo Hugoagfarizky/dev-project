@@ -361,3 +361,32 @@ No further implementation until explicit authorization is granted.
 - Browser regression constraint: the Playwright specs use fixed physics-timing waits, so run browser regression serially (`--workers=1`); concurrent multi-file runs can produce transient failures under CPU contention.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
 - Deferred beyond MVP-3: Python integration, robotics/electrical domains, hybrid 2D, advanced physics, extension marketplace, cloud collaboration.
+
+## X. Phase 07 official closure (2026-11-17)
+
+- Phase 07 — Python Runtime status: **CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-17)**.
+- Accepted implementation commit: `26a16ef` (`Complete Phase 07 real Pyodide acceptance and runtime fixes`); `main` = `origin/main` at acceptance.
+- Closure record: `reports/phase-07/PHASE_07_CLOSURE_REPORT.md`.
+- Acceptance: 7/7 Phase 07 criteria PASS; full suite 271/271 PASS; browser suite 34/34 PASS; dedicated Phase 07 E2E 6/6 PASS; Phase 07 runtime unit tests 13/13 PASS; typecheck, boundary, contrast, and production build PASS.
+- Real Pyodide execution confirmed in the browser: `apply_impulse((6, 0, 0))` produced `velocity.x = 6.000`.
+- Accepted limitations: the Python Worker is defense-in-depth, not a hardened security sandbox; remote/untrusted Python execution is unsupported; there is no hard memory cap (watchdog, interrupt, and termination are best-effort); Console auto-collapse at 1280×720 with the Program panel open is an accepted responsive-layout limitation.
+- Acceptance viewport was 1440×900 because 1280×720 force-collapses the Console while Program is open; MVP layout logic was not changed.
+- Milestone register (current):
+
+| Milestone / phase | Official status |
+|---|---|
+| MVP-0 | CLOSED — PASS |
+| MVP-1 | CLOSED — PASS |
+| M2-A | CLOSED — PASS |
+| M2-B | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-C | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-D | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| M2-E | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-15) |
+| MVP-3 | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-16) |
+| Phase 07 — Python Runtime | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-17) |
+| Phase 08 — Electrical & Electronics | NOT STARTED / NOT AUTHORIZED |
+
+- Phase 07 delivered the Python integration deferred at MVP-3; that deferral is now satisfied.
+- This closure increment was documentation-only: no application source, tests, dependencies, or browser evidence changed.
+- Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
+- Phase 08 has not started and is not authorized. No further milestone work begins without a separate Project Owner decision.
