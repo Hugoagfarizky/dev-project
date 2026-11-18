@@ -21,6 +21,9 @@ export function serializeProjectDocument(project: ProjectDocument): string {
   if (project.python) {
     payload.python = JSON.parse(JSON.stringify(project.python));
   }
+  if (project.electrical) {
+    payload.electrical = JSON.parse(JSON.stringify(project.electrical));
+  }
   return JSON.stringify(payload);
 }
 

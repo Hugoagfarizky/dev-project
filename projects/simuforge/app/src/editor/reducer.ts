@@ -1,5 +1,9 @@
 import { createWorldEntity } from '../world/defaults.ts';
+import { cloneComponents } from '../world/components.ts';
 import { validateTransform, validateComponent } from '../world/validation.ts';
+import { validateElectricalDocument } from '../electrical/validation.ts';
+import { createEmptyElectricalDocument } from '../electrical/types.ts';
+import type { ElectricalDocument } from '../electrical/types.ts';
 import { transformsEqual } from '../world/transform.ts';
 import { createDefaultRuntimeState, createDefaultPythonState, createEmptyProject } from './state.ts';
 import {
@@ -126,7 +130,7 @@ function cloneEntity(entity: WorldEntity): WorldEntity {
       rotation: { ...entity.transform.rotation },
       scale: { ...entity.transform.scale }
     },
-    components: entity.components ? entity.components.map((component) => ({ ...component })) : []
+    components: cloneComponents(entity.components)
   };
 }
 
@@ -138,6 +142,10 @@ const STRUCTURAL_COMMANDS = new Set<string>([
   'component/add',
   'component/remove',
   'component/set',
+  'electrical/set',
+  'electrical/add-wire',
+  'electrical/remove-wire',
+  'electrical/set-layout',
   'demo/load-scenario',
   'graph/set',
   'python/create-script',
@@ -203,7 +211,7 @@ function appendRuntimeFailureLog(
 function appendRuntimeInfoLog(
   state: StudioState,
   context: ReducerContext,
-  entry: { code: string; message: string; entityId?: string; detail?: string; source?: 'APP' | 'EDITOR' | 'RENDER' | 'IMPORT' | 'RUNTIME' | 'PYTHON' }
+  entry: { code: string; message: string; entityId?: string; detail?: string; source?: 'APP' | 'EDITOR' | 'RENDER' | 'IMPORT' | 'RUNTIME' | 'PYTHON' | 'ELECTRICAL' }
 ): StudioState {
   return {
     ...state,
@@ -229,7 +237,7 @@ function appendExecutionLog(
     message: string;
     entityId?: string;
     detail?: string;
-    source?: 'APP' | 'EDITOR' | 'RENDER' | 'IMPORT' | 'RUNTIME' | 'PYTHON';
+    source?: 'APP' | 'EDITOR' | 'RENDER' | 'IMPORT' | 'RUNTIME' | 'PYTHON' | 'ELECTRICAL';
   }
 ): StudioState {
   return {
@@ -244,6 +252,73 @@ function appendExecutionLog(
       ...(entry.entityId ? { entityId: entry.entityId } : {}),
       ...(entry.detail ? { detail: entry.detail } : {})
     }].slice(-500)
+  };
+}
+
+function appendElectricalWarnings(
+  state: StudioState,
+  context: ReducerContext,
+  warnings: readonly string[]
+): StudioState {
+  let next = state;
+  for (const warning of warnings) {
+    next = appendExecutionLog(next, context, {
+      severity: 'warn',
+      code: 'ELECTRICAL_INVALID_SECTION',
+      message: warning,
+      source: 'ELECTRICAL'
+    });
+  }
+  return next;
+}
+
+function writeElectricalDocument(
+  state: StudioState,
+  context: ReducerContext,
+  document: ElectricalDocument | null
+): StudioState {
+  const result = validateElectricalDocument(document, state.project.world.entities);
+  const next = markDirty({
+    ...state,
+    project: { ...state.project, electrical: result.value }
+  });
+  return appendElectricalWarnings(next, context, result.warnings);
+}
+
+function pruneElectricalForEntity(
+  document: ElectricalDocument | null | undefined,
+  entityId: string
+): ElectricalDocument | null | undefined {
+  if (!document) {
+    return document;
+  }
+  return {
+    ...document,
+    wires: document.wires.filter(
+      (wire) => wire.from.entityId !== entityId && wire.to.entityId !== entityId
+    ),
+    layout: document.layout.filter((entry) => entry.entityId !== entityId)
+  };
+}
+
+function pruneElectricalForComponent(
+  document: ElectricalDocument | null | undefined,
+  entityId: string,
+  componentId: string
+): ElectricalDocument | null | undefined {
+  if (!document) {
+    return document;
+  }
+  return {
+    ...document,
+    wires: document.wires.filter(
+      (wire) =>
+        !(wire.from.entityId === entityId && wire.from.componentId === componentId) &&
+        !(wire.to.entityId === entityId && wire.to.componentId === componentId)
+    ),
+    layout: document.layout.filter(
+      (entry) => !(entry.entityId === entityId && entry.componentId === componentId)
+    )
   };
 }
 
@@ -992,11 +1067,18 @@ export function reduceStudioState(
                 scale: { ...entity.transform.scale }
               },
               metadata: { ...entity.metadata },
-              components: entity.components ? entity.components.map((c) => ({ ...c })) : []
+              components: cloneComponents(entity.components)
             }))
           },
           ...(restoredGraph ? { graph: restoredGraph } : {}),
-           ...(command.document.python ? { python: command.document.python } : {})
+          ...(command.document.python ? { python: command.document.python } : {}),
+          ...(command.document.electrical !== undefined
+            ? {
+                electrical: command.document.electrical
+                  ? (JSON.parse(JSON.stringify(command.document.electrical)) as ElectricalDocument)
+                  : null
+              }
+            : {})
         },
         editor: {
           selectedEntityId: null,
@@ -1099,6 +1181,7 @@ export function reduceStudioState(
       if (!exists) {
         return state;
       }
+      const prunedElectrical = pruneElectricalForEntity(state.project.electrical, command.id);
       return markDirty({
         ...state,
         project: {
@@ -1106,7 +1189,8 @@ export function reduceStudioState(
           world: {
             ...state.project.world,
             entities: state.project.world.entities.filter((entity) => entity.id !== command.id)
-          }
+          },
+          ...(prunedElectrical !== undefined ? { electrical: prunedElectrical } : {})
         },
         editor: state.editor.selectedEntityId === command.id
           ? { ...state.editor, selectedEntityId: null }
@@ -1203,6 +1287,11 @@ export function reduceStudioState(
       if (!existing.some((component) => component.id === command.componentId)) {
         return state;
       }
+      const prunedElectrical = pruneElectricalForComponent(
+        state.project.electrical,
+        command.entityId,
+        command.componentId
+      );
       return markDirty({
         ...state,
         project: {
@@ -1213,7 +1302,8 @@ export function reduceStudioState(
               ...item,
               components: (item.components ?? []).filter((component) => component.id !== command.componentId)
             }))
-          }
+          },
+          ...(prunedElectrical !== undefined ? { electrical: prunedElectrical } : {})
         }
       });
     }
@@ -1245,6 +1335,40 @@ export function reduceStudioState(
             }))
           }
         }
+      });
+    }
+
+    case 'electrical/set': {
+      return writeElectricalDocument(state, context, command.document);
+    }
+
+    case 'electrical/add-wire': {
+      const document = state.project.electrical ?? createEmptyElectricalDocument();
+      if (document.wires.some((wire) => wire.id === command.wire.id)) {
+        return state;
+      }
+      return writeElectricalDocument(state, context, {
+        ...document,
+        wires: [...document.wires, command.wire]
+      });
+    }
+
+    case 'electrical/remove-wire': {
+      const document = state.project.electrical;
+      if (!document || !document.wires.some((wire) => wire.id === command.wireId)) {
+        return state;
+      }
+      return writeElectricalDocument(state, context, {
+        ...document,
+        wires: document.wires.filter((wire) => wire.id !== command.wireId)
+      });
+    }
+
+    case 'electrical/set-layout': {
+      const document = state.project.electrical ?? createEmptyElectricalDocument();
+      return writeElectricalDocument(state, context, {
+        ...document,
+        layout: command.layout
       });
     }
 

@@ -5,6 +5,11 @@ import type { Graph } from '../graph/types.ts';
 import type { LogEntry } from '../console/types.ts';
 import type { CameraPose, GizmoMode, Preset } from './state.ts';
 import type { PythonRunOutcome, PythonRuntimeStatus } from '../python/types.ts';
+import type {
+  ElectricalDocument,
+  ElectricalLayoutEntry,
+  Wire
+} from '../electrical/types.ts';
 
 export type StudioCommand =
   | { type: 'project/new'; name: string }
@@ -19,6 +24,10 @@ export type StudioCommand =
   | { type: 'component/add'; entityId: string; component: Component }
   | { type: 'component/remove'; entityId: string; componentId: string }
   | { type: 'component/set'; entityId: string; component: Component }
+  | { type: 'electrical/set'; document: ElectricalDocument | null }
+  | { type: 'electrical/add-wire'; wire: Wire }
+  | { type: 'electrical/remove-wire'; wireId: string }
+  | { type: 'electrical/set-layout'; layout: ElectricalLayoutEntry[] }
   | { type: 'selection/set'; id: string | null }
   | { type: 'gizmo/set-mode'; mode: GizmoMode }
   | { type: 'grid/set-visible'; visible: boolean }

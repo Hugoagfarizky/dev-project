@@ -1,6 +1,7 @@
 import type { AppError, WorldDocument } from '../world/types.ts';
 import type { Graph } from '../graph/types.ts';
 import type { PythonProjectData } from '../python/types.ts';
+import type { ElectricalDocument } from '../electrical/types.ts';
 
 export const PROJECT_FORMAT = 'simuforge.project' as const;
 export const PROJECT_SCHEMA_VERSION = 1 as const;
@@ -21,6 +22,12 @@ export interface ProjectDocument {
   graph?: Graph | null;
   /** Optional Python scripts (Phase 07). */
   python?: PythonProjectData | null;
+  /**
+   * Optional Phase 08 circuit wiring and schematic layout. Electrical
+   * components themselves live on world entities. Kept optional under schema
+   * v1 so projects without electrical data open unchanged.
+   */
+  electrical?: ElectricalDocument | null;
 }
 
 export type ProjectValidationResult =

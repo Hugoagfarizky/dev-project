@@ -6,6 +6,8 @@ import type { ProjectDocument, ProjectValidationResult } from './types.ts';
 import type { Graph } from '../graph/types.ts';
 import type { GraphValidationContext } from '../graph/types.ts';
 import { validatePythonProjectData } from '../python/validation.ts';
+import { validateElectricalDocument } from '../electrical/validation.ts';
+import type { ElectricalDocument } from '../electrical/types.ts';
 
 const UUID_V4_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -121,6 +123,15 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
     normalizedGraph = null;
   }
 
+  // Optional Phase 08 electrical section. Structural corruption is stripped
+  // with a warning; semantic circuit errors are retained and disable solving.
+  let normalizedElectrical: ElectricalDocument | null | undefined;
+  if (value.electrical !== undefined) {
+    const electricalResult = validateElectricalDocument(value.electrical, worldResult.value.entities);
+    warnings.push(...electricalResult.warnings);
+    normalizedElectrical = electricalResult.value;
+  }
+
   const normalized: ProjectDocument = {
     format: PROJECT_FORMAT,
     schemaVersion: PROJECT_SCHEMA_VERSION,
@@ -132,7 +143,8 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
     },
     world: worldResult.value,
     ...(normalizedGraph !== undefined ? { graph: normalizedGraph } : {}),
-    ...(normalizedPython !== undefined ? { python: normalizedPython } : {})
+    ...(normalizedPython !== undefined ? { python: normalizedPython } : {}),
+    ...(normalizedElectrical !== undefined ? { electrical: normalizedElectrical } : {})
   };
 
   return { ok: true, value: normalized, ...(warnings.length ? { warnings } : {}) };

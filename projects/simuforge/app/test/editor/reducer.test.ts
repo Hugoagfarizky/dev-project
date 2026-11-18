@@ -346,3 +346,84 @@ test('component/add rejects an invalid electrical value', () => {
   const entity = state.project.world.entities.find((e) => e.id === id);
   assert.equal(entity?.components?.length ?? 0, 0);
 });
+
+const OTHER_ID = '33333333-3333-4333-8333-333333333333';
+const GROUND_ID = '44444444-4444-4444-8444-444444444444';
+const WIRE_ID = '55555555-5555-4555-8555-555555555555';
+
+function circuitState(): StudioState {
+  const base = initialState();
+  return {
+    ...base,
+    project: {
+      ...base.project,
+      world: {
+        ...base.project.world,
+        entities: [
+          {
+            ...base.project.world.entities[0],
+            components: [{ id: COMP_ID, type: 'resistor', enabled: true, resistance: 100 }]
+          },
+          {
+            id: OTHER_ID,
+            name: 'Ground',
+            type: 'cube',
+            transform: { position: { x: 1, y: 0, z: 0 }, rotation: { x: 0, y: 0, z: 0, w: 1 }, scale: { x: 1, y: 1, z: 1 } },
+            metadata: {},
+            components: [{ id: GROUND_ID, type: 'ground', enabled: true }]
+          }
+        ]
+      },
+      electrical: {
+        format: 'simuforge.electrical',
+        schemaVersion: 1,
+        wires: [
+          {
+            id: WIRE_ID,
+            from: { entityId: id, componentId: COMP_ID, terminalId: 'a' },
+            to: { entityId: OTHER_ID, componentId: GROUND_ID, terminalId: 'g' }
+          }
+        ],
+        layout: [{ entityId: id, componentId: COMP_ID, x: 10, y: 20 }]
+      }
+    }
+  };
+}
+
+test('electrical/add-wire and electrical/remove-wire round-trip a wire', () => {
+  const state = circuitState();
+  const without = reduceStudioState(state, { type: 'electrical/remove-wire', wireId: WIRE_ID });
+  assert.equal(without.project.electrical?.wires.length, 0);
+  assert.equal(without.project.electrical?.layout.length, 1);
+
+  const again = reduceStudioState(without, {
+    type: 'electrical/add-wire',
+    wire: state.project.electrical!.wires[0]
+  });
+  assert.equal(again.project.electrical?.wires.length, 1);
+  assert.equal(again.project.electrical?.wires[0].id, WIRE_ID);
+});
+
+test('component/remove prunes wires and layout that reference the component', () => {
+  const next = reduceStudioState(circuitState(), {
+    type: 'component/remove',
+    entityId: id,
+    componentId: COMP_ID
+  });
+  assert.equal(next.project.electrical?.wires.length, 0);
+  assert.equal(next.project.electrical?.layout.length, 0);
+});
+
+test('entity/delete prunes wires and layout that reference the entity', () => {
+  const next = reduceStudioState(circuitState(), { type: 'entity/delete', id: OTHER_ID });
+  assert.equal(next.project.electrical?.wires.length, 0);
+  assert.equal(next.project.world.entities.length, 1);
+});
+
+test('electrical/set strips a structurally invalid section', () => {
+  const next = reduceStudioState(circuitState(), {
+    type: 'electrical/set',
+    document: { format: 'wrong', schemaVersion: 1, wires: [], layout: [] } as never
+  });
+  assert.equal(next.project.electrical, null);
+});
