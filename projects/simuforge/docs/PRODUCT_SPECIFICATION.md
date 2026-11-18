@@ -365,7 +365,9 @@ Python Runtime is **CLOSED — PASS** (Project Owner accepted 2026-11-17); see t
 Electronics is **CLOSED - PASS** (Project Owner accepted 2026-11-18); see the
 [Phase 08 closure report](../reports/phase-08/PHASE_08_CLOSURE_REPORT.md). Phase 09 — Robotics &
 Automation is **CLOSED - PASS** (Project Owner accepted 2026-11-18); see the
-[Phase 09 closure report](../reports/phase-09/PHASE_09_CLOSURE_REPORT.md). Phase 10 not started.
+[Phase 09 closure report](../reports/phase-09/PHASE_09_CLOSURE_REPORT.md). Phase 10 — Extensibility is
+**PLANNING COMPLETE — PENDING PROJECT OWNER APPROVAL** (2026-11-18); planning documents in
+`../reports/phase-10/`. Implementation requires separate authorization. Phase 11 not started.
 
 ### MVP Increment to Phase Mapping
 
