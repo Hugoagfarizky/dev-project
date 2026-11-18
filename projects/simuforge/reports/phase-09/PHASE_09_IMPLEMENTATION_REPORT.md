@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-18  
 **Phase:** 09 — Robotics & Automation  
-**Status:** IMPLEMENTATION COMPLETE — PENDING PROJECT OWNER ACCEPTANCE  
+**Status:** CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-18)  
 **Implementation commits:** `53d3d6d` (P09-0..P09-6), `b115cf9` (planning package)  
 **HEAD / origin/main:** `b115cf934dbc38af6ac8feb6b4f711509ec2a7e2`
 
@@ -66,6 +66,7 @@
 
 ## 7. Project Owner acceptance
 
-**Status: PENDING.** Phase 09 is NOT marked CLOSED — PASS. Awaiting explicit Project Owner acceptance.
+**Status: ACCEPTED.** Phase 09 is CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-18).
+See `PHASE_09_CLOSURE_REPORT.md`.
 
 Phase 10 has not started and is not authorized.

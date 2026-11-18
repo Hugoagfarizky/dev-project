@@ -385,7 +385,7 @@ No further implementation until explicit authorization is granted.
 | MVP-3 | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-16) |
 | Phase 07 - Python Runtime | CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-17) |
 | Phase 08 - Electrical & Electronics | CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-18) |
-| Phase 09 - Robotics & Automation | IMPLEMENTATION COMPLETE - PENDING OWNER ACCEPTANCE |
+| Phase 09 - Robotics & Automation | CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-18) |
 
 - Phase 07 delivered the Python integration deferred at MVP-3; that deferral is now satisfied.
 - This closure increment was documentation-only: no application source, tests, dependencies, or browser evidence changed.
@@ -400,8 +400,8 @@ No further implementation until explicit authorization is granted.
 - Closure report: eports/phase-08/PHASE_08_CLOSURE_REPORT.md.
 - Scope delivered: DC resistive operating point, typed electrical components, MNA solver, runtime integration, Circuit tab, diagnostics, graph electrical actions. Deferred to Phase 09: motors, generators, actuators, AC, transient/RLC, nonlinear devices.
 
-## Z. Phase 09 implementation and verification (2026-11-18)
-- Phase 09 - Robotics & Automation status: **IMPLEMENTATION COMPLETE - PENDING OWNER ACCEPTANCE**.
+## Z. Phase 09 closure (2026-11-18)
+- Phase 09 - Robotics & Automation status: **CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-18)**.
 - Approved decisions: D-P09-01..D-P09-07 (2026-11-18).
 - Planning documents: eports/phase-09/PHASE_09_PLANNING_REPORT.md, PHASE_09_DECISION_PACKAGE.md, PHASE_09_ARCHITECTURE_PROPOSAL.md, PHASE_09_MILESTONE_MATRIX.md, PHASE_09_VALIDATION_STRATEGY.md.
 - P09-0 implementation requires separate explicit Project Owner authorization.
