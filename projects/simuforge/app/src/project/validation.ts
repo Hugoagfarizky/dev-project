@@ -85,7 +85,7 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
     };
   }
 
-  const warnings: string[] = [];
+  const warnings: string[] = [...(worldResult.warnings ?? [])];
   let normalizedPython: ReturnType<typeof validatePythonProjectData>['value'] | undefined = undefined;
   if (value.python !== undefined) {
     const pythonResult = validatePythonProjectData(value.python);

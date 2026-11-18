@@ -1,7 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { parseProjectDocument, serializeProjectDocument } from '../../src/project/serialization.ts';
-import { createEmptyWorld } from '../../src/world/defaults.ts';
+import { createEmptyWorld, createWorldEntity } from '../../src/world/defaults.ts';
+import { createComponent } from '../../src/world/components.ts';
 
 test('validates a valid project envelope', () => {
   const json = JSON.stringify({
@@ -103,4 +104,31 @@ test('round-trips a project document', () => {
   };
   const parsed = parseProjectDocument(serializeProjectDocument(project));
   assert.equal(parsed.ok, true);
+});
+
+test('export/import preserves entity components', () => {
+  const world = createEmptyWorld();
+  const entity = createWorldEntity('cube', '22222222-2222-4222-8222-222222222222', 'Circuit');
+  entity.components = [
+    createComponent('voltageSource', '33333333-3333-4333-8333-333333333333')!,
+    createComponent('ground', '44444444-4444-4444-8444-444444444444')!
+  ];
+  world.entities.push(entity);
+  const project = {
+    format: 'simuforge.project' as const,
+    schemaVersion: 1 as const,
+    project: {
+      id: '11111111-1111-4111-8111-111111111111',
+      name: 'Components',
+      createdAt: '2026-11-06T00:00:00.000Z',
+      updatedAt: '2026-11-06T00:00:00.000Z'
+    },
+    world
+  };
+
+  const parsed = parseProjectDocument(serializeProjectDocument(project));
+  assert.equal(parsed.ok, true);
+  if (parsed.ok) {
+    assert.deepEqual(parsed.value.world.entities[0].components, entity.components);
+  }
 });

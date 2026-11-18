@@ -1,4 +1,5 @@
 import { WORLD_FORMAT, WORLD_SCHEMA_VERSION, cloneTransform } from './defaults.ts';
+import { cloneComponents } from './components.ts';
 import { validateWorldDocument } from './validation.ts';
 import type { WorldDocument } from './types.ts';
 
@@ -11,7 +12,10 @@ export function serializeWorldDocument(world: WorldDocument): string {
       name: entity.name,
       type: entity.type,
       transform: cloneTransform(entity.transform),
-      metadata: { ...entity.metadata }
+      metadata: { ...entity.metadata },
+      // Phase 08 fixes the MVP round-trip defect: components are authored data
+      // and must survive export/import exactly like the transform does.
+      components: cloneComponents(entity.components)
     }))
   });
 }

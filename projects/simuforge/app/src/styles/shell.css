@@ -869,6 +869,69 @@ select:focus-visible {
   font-size: var(--sf-text-xs);
 }
 
+/* Phase 08 component authoring */
+
+.sf-component-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sf-space-2);
+}
+
+.sf-component-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sf-space-2);
+  padding: var(--sf-space-2);
+  border: 1px solid var(--sf-border-subtle);
+  border-radius: var(--sf-radius-sm);
+  background: var(--sf-bg-input);
+}
+
+.sf-component-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sf-space-2);
+}
+
+.sf-component-card-title {
+  display: flex;
+  align-items: center;
+  gap: var(--sf-space-1-5);
+  color: var(--sf-text-secondary);
+  font-size: var(--sf-text-xs);
+  font-weight: 600;
+}
+
+.sf-component-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--sf-space-1-5);
+  color: var(--sf-text-secondary);
+  font-size: var(--sf-text-xs);
+}
+
+.sf-component-id {
+  margin: 0;
+  color: var(--sf-text-tertiary);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 9px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sf-add-component select {
+  width: 100%;
+  min-height: 26px;
+  padding: 2px var(--sf-space-1-5);
+  border: 1px solid var(--sf-border-subtle);
+  border-radius: var(--sf-radius-sm);
+  background: var(--sf-bg-input);
+  color: var(--sf-text-primary);
+  font-size: var(--sf-text-xs);
+}
+
 /* I-05 Empty World overlay */
 
 .sf-empty-world-overlay {

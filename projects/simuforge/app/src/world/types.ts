@@ -38,7 +38,43 @@ export interface RigidBodyComponent extends Component {
   angularVelocity: Vec3;
 }
 
-export type AnyComponent = RigidBodyComponent | Component;
+/**
+ * Phase 08 ideal DC voltage source. The value is the authored terminal voltage
+ * in volts; negative values invert the polarity. Runtime voltage overrides are
+ * transient and never written back to this component.
+ */
+export interface VoltageSourceComponent extends Component {
+  type: 'voltageSource';
+  voltage: number;
+}
+
+/** Phase 08 linear resistor. `resistance` is in ohms and must be positive. */
+export interface ResistorComponent extends Component {
+  type: 'resistor';
+  resistance: number;
+}
+
+/**
+ * Phase 08 ideal switch. `closed` is the authored initial state. Graph actions
+ * and runtime controls use a transient override instead of mutating this value.
+ */
+export interface SwitchComponent extends Component {
+  type: 'switch';
+  closed: boolean;
+}
+
+/** Phase 08 circuit reference node. All ground components share one net. */
+export interface GroundComponent extends Component {
+  type: 'ground';
+}
+
+export type ElectricalComponent =
+  | VoltageSourceComponent
+  | ResistorComponent
+  | SwitchComponent
+  | GroundComponent;
+
+export type AnyComponent = RigidBodyComponent | ElectricalComponent | Component;
 
 export interface WorldEntity {
   id: EntityId;

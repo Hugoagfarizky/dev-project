@@ -316,3 +316,33 @@ test('component/remove removes a component', () => {
   const entity = s2.project.world.entities.find((e) => e.id === id);
   assert.equal(entity?.components?.length, 0);
 });
+
+test('component/add and component/set accept electrical components', () => {
+  const resistorId = '55555555-5555-4555-8555-555555555555';
+  const s1 = reduceStudioState(initialState(), {
+    type: 'component/add',
+    entityId: id,
+    component: { id: resistorId, type: 'resistor', enabled: true, resistance: 100 }
+  });
+  const added = s1.project.world.entities.find((e) => e.id === id)?.components?.[0];
+  assert.equal(added?.type, 'resistor');
+  assert.equal((added as { resistance?: number }).resistance, 100);
+
+  const s2 = reduceStudioState(s1, {
+    type: 'component/set',
+    entityId: id,
+    component: { id: resistorId, type: 'resistor', enabled: true, resistance: 220 }
+  });
+  const updated = s2.project.world.entities.find((e) => e.id === id)?.components?.[0];
+  assert.equal((updated as { resistance?: number }).resistance, 220);
+});
+
+test('component/add rejects an invalid electrical value', () => {
+  const state = reduceStudioState(initialState(), {
+    type: 'component/add',
+    entityId: id,
+    component: { id: COMP_ID, type: 'resistor', enabled: true, resistance: 0 }
+  });
+  const entity = state.project.world.entities.find((e) => e.id === id);
+  assert.equal(entity?.components?.length ?? 0, 0);
+});

@@ -1,5 +1,6 @@
 import type { AppError, Component, EntityType, Quat, Vec3, WorldDocument, WorldEntity } from './types.ts';
 import { MIN_SCALE, WORLD_FORMAT, WORLD_SCHEMA_VERSION } from './defaults.ts';
+import { cloneComponents, isElectricalComponentType } from './components.ts';
 import { normalizeQuaternion, quaternionLength } from './transform.ts';
 
 const UUID_V4_PATTERN =
@@ -72,7 +73,7 @@ export function validateTransform(value: unknown, path: string): AppError | null
   return null;
 }
 
-export function validateComponent(value: unknown, path: string): AppError | null {
+function validateComponentBase(value: unknown, path: string): AppError | null {
   if (!isPlainObject(value)) {
     return fail('VALIDATION_FAILED', 'Component must be an object', path);
   }
@@ -84,6 +85,44 @@ export function validateComponent(value: unknown, path: string): AppError | null
   }
   if (typeof value.enabled !== 'boolean') {
     return fail('VALIDATION_FAILED', 'enabled must be a boolean', `${path}.enabled`);
+  }
+  return null;
+}
+
+function validateComponentTypeSpecific(value: Record<string, unknown>, path: string): AppError | null {
+  if (value.type === 'voltageSource') {
+    if (
+      typeof value.voltage !== 'number' ||
+      !Number.isFinite(value.voltage) ||
+      Math.abs(value.voltage) > 1_000_000
+    ) {
+      return fail(
+        'VALIDATION_FAILED',
+        'voltage must be a finite number with magnitude at most 1,000,000 V',
+        `${path}.voltage`
+      );
+    }
+  }
+
+  if (value.type === 'resistor') {
+    if (
+      typeof value.resistance !== 'number' ||
+      !Number.isFinite(value.resistance) ||
+      value.resistance <= 0 ||
+      value.resistance > 1_000_000_000_000
+    ) {
+      return fail(
+        'VALIDATION_FAILED',
+        'resistance must be a finite number greater than zero and at most 1e12 ohms',
+        `${path}.resistance`
+      );
+    }
+  }
+
+  if (value.type === 'switch') {
+    if (typeof value.closed !== 'boolean') {
+      return fail('VALIDATION_FAILED', 'closed must be a boolean', `${path}.closed`);
+    }
   }
 
   if (value.type === 'rigidBody') {
@@ -117,7 +156,45 @@ export function validateComponent(value: unknown, path: string): AppError | null
   return null;
 }
 
-export function validateWorldDocument(value: unknown): { ok: true; value: WorldDocument } | { ok: false; error: AppError } {
+/**
+ * Authoring validation. Both structural and type-specific errors are fatal, so
+ * the editor cannot commit an electrical value the solver would reject.
+ */
+export function validateComponent(value: unknown, path: string): AppError | null {
+  const baseError = validateComponentBase(value, path);
+  if (baseError) {
+    return baseError;
+  }
+  return validateComponentTypeSpecific(value as Record<string, unknown>, path);
+}
+
+/**
+ * Document validation. Structural errors stay fatal for every component type,
+ * but an invalid electrical value is reported as a warning and retained so the
+ * project still opens with its authored data intact (D-P08-03).
+ */
+export function validateComponentForDocument(
+  value: unknown,
+  path: string
+): { error: AppError | null; warning: string | null } {
+  const baseError = validateComponentBase(value, path);
+  if (baseError) {
+    return { error: baseError, warning: null };
+  }
+  const specificError = validateComponentTypeSpecific(value as Record<string, unknown>, path);
+  if (!specificError) {
+    return { error: null, warning: null };
+  }
+  const type = (value as { type: string }).type;
+  if (isElectricalComponentType(type)) {
+    return { error: null, warning: `${specificError.code}: ${specificError.message}${specificError.path ? ` (${specificError.path})` : ''}` };
+  }
+  return { error: specificError, warning: null };
+}
+
+export function validateWorldDocument(value: unknown):
+  | { ok: true; value: WorldDocument; warnings?: string[] }
+  | { ok: false; error: AppError } {
   if (!isPlainObject(value)) {
     return { ok: false, error: fail('VALIDATION_FAILED', 'World document must be an object') };
   }
@@ -135,6 +212,7 @@ export function validateWorldDocument(value: unknown): { ok: true; value: WorldD
   }
 
   const seenIds = new Set<string>();
+  const warnings: string[] = [];
 
   for (let index = 0; index < value.entities.length; index += 1) {
     const entity = value.entities[index];
@@ -177,9 +255,15 @@ export function validateWorldDocument(value: unknown): { ok: true; value: WorldD
       const seenComponentIds = new Set<string>();
       for (let cIndex = 0; cIndex < entity.components.length; cIndex += 1) {
         const component = entity.components[cIndex];
-        const componentError = validateComponent(component, `${entityPath}.components[${cIndex}]`);
-        if (componentError) {
-          return { ok: false, error: componentError };
+        const componentResult = validateComponentForDocument(
+          component,
+          `${entityPath}.components[${cIndex}]`
+        );
+        if (componentResult.error) {
+          return { ok: false, error: componentResult.error };
+        }
+        if (componentResult.warning) {
+          warnings.push(componentResult.warning);
         }
         const comp = component as { id: string };
         if (seenComponentIds.has(comp.id)) {
@@ -201,7 +285,7 @@ export function validateWorldDocument(value: unknown): { ok: true; value: WorldD
     },
     metadata: { ...(entity.metadata as Record<string, unknown>) },
     components: Array.isArray(entity.components)
-      ? (entity.components.map((component: unknown) => ({ ...(component as Record<string, unknown>) })) as Component[])
+      ? cloneComponents(entity.components as Component[])
       : []
   })) as WorldEntity[];
 
@@ -211,6 +295,7 @@ export function validateWorldDocument(value: unknown): { ok: true; value: WorldD
       format: WORLD_FORMAT,
       schemaVersion: WORLD_SCHEMA_VERSION,
       entities: normalizedEntities
-    }
+    },
+    ...(warnings.length > 0 ? { warnings } : {})
   };
 }
