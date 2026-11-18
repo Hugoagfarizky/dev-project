@@ -42,6 +42,8 @@ export type StudioCommand =
   | { type: 'runtime/apply-force'; entityId: string; force: Vec3 }
   | { type: 'runtime/apply-impulse'; entityId: string; impulse: Vec3 }
   | { type: 'runtime/clear-force'; entityId?: string }
+  | { type: 'runtime/set-switch'; entityId: string; componentId: string; closed: boolean }
+  | { type: 'runtime/set-source-voltage'; entityId: string; componentId: string; voltage: number }
   | { type: 'runtime/graph-trigger'; triggerNodeId?: string }
   | { type: 'demo/load-scenario' }
   | { type: 'graph/set'; graph: Graph | null }

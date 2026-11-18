@@ -3,7 +3,11 @@ import type {
   Component,
   ComponentId,
   ElectricalComponent,
-  RigidBodyComponent
+  GroundComponent,
+  ResistorComponent,
+  RigidBodyComponent,
+  SwitchComponent,
+  VoltageSourceComponent
 } from './types.ts';
 
 export type ComponentCategory = 'physics' | 'electrical';
@@ -44,6 +48,22 @@ export function isRigidBodyComponent(component: Component): component is RigidBo
 
 export function isElectricalComponent(component: Component): component is ElectricalComponent {
   return isElectricalComponentType(component.type);
+}
+
+export function isVoltageSourceComponent(component: Component): component is VoltageSourceComponent {
+  return component.type === 'voltageSource';
+}
+
+export function isResistorComponent(component: Component): component is ResistorComponent {
+  return component.type === 'resistor';
+}
+
+export function isSwitchComponent(component: Component): component is SwitchComponent {
+  return component.type === 'switch';
+}
+
+export function isGroundComponent(component: Component): component is GroundComponent {
+  return component.type === 'ground';
 }
 
 const DEFINITIONS: readonly ComponentDefinition[] = [

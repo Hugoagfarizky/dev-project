@@ -5,6 +5,8 @@ import type { RuntimeBodies } from '../runtime/types.ts';
 import type { GraphNodeType } from '../graph/types.ts';
 import type { PythonSnapshot, PythonRuntimeStatus } from '../python/types.ts';
 import type { ExecutionPlan } from '../runtime/graphExecution.ts';
+import type { CircuitSolution } from '../electrical/solver.ts';
+import type { ElectricalDiagnostic } from '../electrical/types.ts';
 import { createEmptyWorld } from '../world/defaults.ts';
 
 export type GizmoMode = 'translate' | 'rotate' | 'scale';
@@ -102,6 +104,28 @@ export interface RuntimeExecutionState {
   pendingPython: PendingPythonExecution | null;
 }
 
+export type RuntimeElectricalStatus = 'idle' | 'solved' | 'invalid' | 'failed';
+
+/**
+ * Phase 08 transient electrical runtime slice. Holds the last valid DC solution,
+ * live switch/source overrides, and solver diagnostics. Never persisted: the
+ * authored circuit stays in `project.electrical` and entity components.
+ */
+export interface RuntimeElectricalState {
+  status: RuntimeElectricalStatus;
+  /** Last valid solution. Preserved when a later re-solve fails. */
+  solution: CircuitSolution | null;
+  diagnostics: readonly ElectricalDiagnostic[];
+  /** Live switch overrides keyed by `entityId/componentId`. */
+  switchStates: Record<string, boolean>;
+  /** Live source voltage overrides keyed by `entityId/componentId`. */
+  sourceVoltages: Record<string, number>;
+  /** Number of solve attempts in this runtime session. */
+  solveCount: number;
+  /** Duration of the most recent solve attempt in milliseconds. */
+  lastSolveMs: number;
+}
+
 export interface RuntimeState {
   status: RuntimeStatus;
   snapshot: RuntimeSnapshot | null;
@@ -112,6 +136,8 @@ export interface RuntimeState {
   /** Simulation time in seconds (fixed-step count * dt). Transient. */
   elapsedSeconds: number;
   execution: RuntimeExecutionState;
+  /** Runtime-only electrical state; never persisted (D-P08-03). */
+  electrical: RuntimeElectricalState;
 }
 
 export interface EditorState {
@@ -161,6 +187,18 @@ export function createDefaultExecutionState(): RuntimeExecutionState {
   };
 }
 
+export function createDefaultElectricalState(): RuntimeElectricalState {
+  return {
+    status: 'idle',
+    solution: null,
+    diagnostics: [],
+    switchStates: {},
+    sourceVoltages: {},
+    solveCount: 0,
+    lastSolveMs: 0
+  };
+}
+
 export function createDefaultRuntimeState(): RuntimeState {
   return {
     status: 'editing',
@@ -169,7 +207,8 @@ export function createDefaultRuntimeState(): RuntimeState {
     bodies: {},
     accumulatorSeconds: 0,
     elapsedSeconds: 0,
-    execution: createDefaultExecutionState()
+    execution: createDefaultExecutionState(),
+    electrical: createDefaultElectricalState()
   };
 }
 

@@ -1,5 +1,8 @@
 import type { StudioState } from './state.ts';
 import type { WorldDocument, WorldEntity } from '../world/types.ts';
+import type { ComponentResult } from '../electrical/solver.ts';
+import { electricalOverrideKey } from '../runtime/electrical.ts';
+import { isSwitchComponent, isVoltageSourceComponent } from '../world/components.ts';
 
 export function selectWorld(state: StudioState): WorldDocument {
   return state.project.world;
@@ -107,4 +110,57 @@ export function selectSelectedRuntimeBody(state: StudioState): StudioState['runt
   const selectedId = state.editor.selectedEntityId;
   if (selectedId === null) return null;
   return state.runtime.bodies[selectedId] ?? null;
+}
+
+export function selectRuntimeElectrical(state: StudioState): StudioState['runtime']['electrical'] {
+  return state.runtime.electrical;
+}
+
+export function selectElectricalComponentResult(
+  state: StudioState,
+  entityId: string,
+  componentId: string
+): ComponentResult | null {
+  return (
+    state.runtime.electrical.solution?.components.find(
+      (result) => result.entityId === entityId && result.componentId === componentId
+    ) ?? null
+  );
+}
+
+/**
+ * Live switch state: the runtime override when simulation is active, otherwise
+ * the authored component value.
+ */
+export function selectEffectiveSwitchClosed(
+  state: StudioState,
+  entityId: string,
+  componentId: string
+): boolean | null {
+  const entity = state.project.world.entities.find((item) => item.id === entityId);
+  const component = entity?.components?.find((item) => item.id === componentId);
+  if (!component || !isSwitchComponent(component)) {
+    return null;
+  }
+  if (state.runtime.status === 'editing') {
+    return component.closed;
+  }
+  return state.runtime.electrical.switchStates[electricalOverrideKey(entityId, componentId)] ?? component.closed;
+}
+
+/** Live source voltage: runtime override when active, else authored value. */
+export function selectEffectiveSourceVoltage(
+  state: StudioState,
+  entityId: string,
+  componentId: string
+): number | null {
+  const entity = state.project.world.entities.find((item) => item.id === entityId);
+  const component = entity?.components?.find((item) => item.id === componentId);
+  if (!component || !isVoltageSourceComponent(component)) {
+    return null;
+  }
+  if (state.runtime.status === 'editing') {
+    return component.voltage;
+  }
+  return state.runtime.electrical.sourceVoltages[electricalOverrideKey(entityId, componentId)] ?? component.voltage;
 }

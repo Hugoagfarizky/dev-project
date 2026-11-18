@@ -1,11 +1,17 @@
 import { createWorldEntity } from '../world/defaults.ts';
-import { cloneComponents } from '../world/components.ts';
+import { cloneComponents, isSwitchComponent, isVoltageSourceComponent } from '../world/components.ts';
 import { validateTransform, validateComponent } from '../world/validation.ts';
 import { validateElectricalDocument } from '../electrical/validation.ts';
-import { createEmptyElectricalDocument } from '../electrical/types.ts';
-import type { ElectricalDocument } from '../electrical/types.ts';
+import { ELECTRICAL_CODES, createEmptyElectricalDocument } from '../electrical/types.ts';
+import type { ElectricalDiagnostic, ElectricalDocument } from '../electrical/types.ts';
+import {
+  collectAuthoredElectricalOverrides,
+  electricalOverrideKey,
+  solveElectricalCircuit
+} from '../runtime/electrical.ts';
+import type { ElectricalOverrides } from '../runtime/electrical.ts';
 import { transformsEqual } from '../world/transform.ts';
-import { createDefaultRuntimeState, createDefaultPythonState, createEmptyProject } from './state.ts';
+import { createDefaultRuntimeState, createDefaultPythonState, createDefaultElectricalState, createEmptyProject } from './state.ts';
 import {
   advanceSimulation,
   applyForce,
@@ -53,11 +59,14 @@ import { PYTHON_CODES } from '../python/types.ts';
 export interface ReducerContext {
   idFactory: () => string;
   clock: () => string;
+  /** Optional monotonic millisecond timer used for solver evidence. */
+  now?: () => number;
 }
 
 const defaultContext: ReducerContext = {
   idFactory: () => crypto.randomUUID(),
-  clock: () => new Date().toISOString()
+  clock: () => new Date().toISOString(),
+  now: () => (typeof performance === 'undefined' ? Date.now() : performance.now())
 };
 
 const DEFAULT_NAME_BASE: Record<EntityType, string> = {
@@ -320,6 +329,143 @@ function pruneElectricalForComponent(
       (entry) => !(entry.entityId === entityId && entry.componentId === componentId)
     )
   };
+}
+
+function appendElectricalDiagnostics(
+  state: StudioState,
+  context: ReducerContext,
+  diagnostics: readonly ElectricalDiagnostic[]
+): StudioState {
+  const seen = new Set<string>();
+  let next = state;
+  let logged = 0;
+
+  for (const diagnostic of diagnostics) {
+    const key = `${diagnostic.code}:${diagnostic.message}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    if (logged >= 8) {
+      next = appendExecutionLog(next, context, {
+        severity: 'warn',
+        code: ELECTRICAL_CODES.INVALID_CIRCUIT,
+        message: `Electrical diagnostics truncated: ${diagnostics.length - logged} additional issue(s).`,
+        source: 'ELECTRICAL'
+      });
+      break;
+    }
+    next = appendExecutionLog(next, context, {
+      severity: 'warn',
+      code: diagnostic.code,
+      message: diagnostic.message,
+      source: 'ELECTRICAL'
+    });
+    logged += 1;
+  }
+
+  return next;
+}
+
+interface ElectricalSolveOptions {
+  /** Pause the runtime when the solver throws unexpectedly (D-P08-06). */
+  pauseOnUnexpectedFailure: boolean;
+  /** Log a successful solve. Used on Play and Reset, not on every toggle. */
+  logSolved: boolean;
+}
+
+/**
+ * Solves the DC circuit for the current runtime overrides and commits the
+ * result atomically. Invalid circuits keep the last valid solution and never
+ * pause physics; unexpected solver exceptions pause and preserve state.
+ */
+function solveElectricalRuntime(
+  state: StudioState,
+  context: ReducerContext,
+  overrides: ElectricalOverrides,
+  options: ElectricalSolveOptions
+): StudioState {
+  const now = context.now ?? (() => Date.now());
+  const startedAt = now();
+  const previous = state.runtime.electrical;
+
+  let outcome: ReturnType<typeof solveElectricalCircuit>;
+  let failureMessage: string | null = null;
+  try {
+    outcome = solveElectricalCircuit(state.project.world.entities, state.project.electrical, overrides);
+  } catch (error) {
+    outcome = { status: 'invalid', solution: null, diagnostics: [] };
+    failureMessage = error instanceof Error ? error.message : String(error);
+  }
+  const durationMs = Math.max(0, now() - startedAt);
+
+  const status: StudioState['runtime']['electrical']['status'] = failureMessage
+    ? 'failed'
+    : outcome.status;
+  const solution =
+    outcome.status === 'solved' ? outcome.solution : status === 'idle' ? null : previous.solution;
+  const attempted = !(status === 'idle');
+
+  let next: StudioState = {
+    ...state,
+    runtime: {
+      ...state.runtime,
+      lastError: failureMessage
+        ? { code: ELECTRICAL_CODES.SOLVE_FAILED, message: failureMessage }
+        : status === 'solved'
+          ? null
+          : state.runtime.lastError,
+      electrical: {
+        status,
+        solution,
+        diagnostics: outcome.diagnostics,
+        switchStates: overrides.switchStates,
+        sourceVoltages: overrides.sourceVoltages,
+        solveCount: previous.solveCount + (attempted ? 1 : 0),
+        lastSolveMs: durationMs
+      }
+    }
+  };
+
+  if (status === 'solved' && options.logSolved) {
+    next = appendExecutionLog(next, context, {
+      severity: 'info',
+      code: ELECTRICAL_CODES.SOLVED,
+      message: `Electrical circuit solved: ${outcome.solution?.nets.length ?? 0} net(s), ${outcome.solution?.branches.length ?? 0} branch(es) in ${durationMs.toFixed(1)} ms.`,
+      source: 'ELECTRICAL'
+    });
+  }
+
+  if (status === 'invalid') {
+    next = appendElectricalDiagnostics(next, context, outcome.diagnostics);
+  }
+
+  if (status === 'failed') {
+    const message = failureMessage ?? 'Unknown solver failure';
+    next = appendExecutionLog(next, context, {
+      severity: 'error',
+      code: ELECTRICAL_CODES.SOLVE_FAILED,
+      message: `Electrical solver failed unexpectedly: ${message}`,
+      detail: 'Last valid electrical state preserved.',
+      source: 'ELECTRICAL'
+    });
+
+    if (options.pauseOnUnexpectedFailure && next.runtime.status === 'running') {
+      next = {
+        ...next,
+        runtime: {
+          ...next.runtime,
+          status: 'paused',
+          execution: {
+            ...next.runtime.execution,
+            status: next.runtime.execution.queue.length > 0 ? 'suspended' : 'idle'
+          }
+        }
+      };
+    }
+  }
+
+  return next;
 }
 
 function graphValidationContext(state: StudioState): GraphValidationContext {
@@ -1596,9 +1742,22 @@ export function reduceStudioState(
               lastResult: null,
               droppedEvents: state.runtime.execution.droppedEvents,
               contactKeys: []
-            }
+            },
+            electrical: createDefaultElectricalState()
           }
         };
+
+        // D-P08-06: an invalid authored circuit warns and disables electrical
+        // solving, but Play and the physics/graph runtime stay available.
+        next = solveElectricalRuntime(
+          next,
+          context,
+          collectAuthoredElectricalOverrides(snapshot.entities),
+          { pauseOnUnexpectedFailure: true, logSolved: true }
+        );
+        if (next.runtime.status === 'paused') {
+          return next;
+        }
 
         if (!graph) {
           return next;
@@ -1806,6 +1965,18 @@ export function reduceStudioState(
           detail: 'On Start does not re-fire on Reset (D-M2C-02).'
         });
       }
+
+      // Reset discards runtime switch/source overrides and re-solves from the
+      // authored circuit. The previous solution is not reused.
+      next = solveElectricalRuntime(
+        {
+          ...next,
+          runtime: { ...next.runtime, electrical: createDefaultElectricalState() }
+        },
+        context,
+        collectAuthoredElectricalOverrides(restored),
+        { pauseOnUnexpectedFailure: true, logSolved: true }
+      );
       return next;
     }
 
@@ -1967,6 +2138,59 @@ export function reduceStudioState(
       } catch (error) {
         return appendRuntimeFailureLog(state, toSimulationFailure(error), context, 'paused');
       }
+    }
+
+    case 'runtime/set-switch': {
+      if (state.runtime.status === 'editing') {
+        return state;
+      }
+      const entity = state.project.world.entities.find((item) => item.id === command.entityId);
+      const component = entity?.components?.find((item) => item.id === command.componentId);
+      if (!component || !isSwitchComponent(component) || !component.enabled) {
+        return state;
+      }
+      const key = electricalOverrideKey(command.entityId, command.componentId);
+      const current = state.runtime.electrical.switchStates[key] ?? component.closed;
+      if (current === command.closed) {
+        return state;
+      }
+      return solveElectricalRuntime(
+        state,
+        context,
+        {
+          switchStates: { ...state.runtime.electrical.switchStates, [key]: command.closed },
+          sourceVoltages: state.runtime.electrical.sourceVoltages
+        },
+        { pauseOnUnexpectedFailure: true, logSolved: false }
+      );
+    }
+
+    case 'runtime/set-source-voltage': {
+      if (state.runtime.status === 'editing') {
+        return state;
+      }
+      if (!Number.isFinite(command.voltage) || Math.abs(command.voltage) > 1_000_000) {
+        return state;
+      }
+      const entity = state.project.world.entities.find((item) => item.id === command.entityId);
+      const component = entity?.components?.find((item) => item.id === command.componentId);
+      if (!component || !isVoltageSourceComponent(component) || !component.enabled) {
+        return state;
+      }
+      const key = electricalOverrideKey(command.entityId, command.componentId);
+      const current = state.runtime.electrical.sourceVoltages[key] ?? component.voltage;
+      if (current === command.voltage) {
+        return state;
+      }
+      return solveElectricalRuntime(
+        state,
+        context,
+        {
+          switchStates: state.runtime.electrical.switchStates,
+          sourceVoltages: { ...state.runtime.electrical.sourceVoltages, [key]: command.voltage }
+        },
+        { pauseOnUnexpectedFailure: true, logSolved: false }
+      );
     }
 
     case 'runtime/graph-trigger': {
