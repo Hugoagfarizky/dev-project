@@ -385,12 +385,13 @@ No further implementation until explicit authorization is granted.
 | MVP-3 | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-16) |
 | Phase 07 - Python Runtime | CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-17) |
 | Phase 08 - Electrical & Electronics | CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-18) |
+| Phase 09 - Robotics & Automation | IMPLEMENTATION COMPLETE - PENDING OWNER ACCEPTANCE |
 
 - Phase 07 delivered the Python integration deferred at MVP-3; that deferral is now satisfied.
 - This closure increment was documentation-only: no application source, tests, dependencies, or browser evidence changed.
 - Protected unrelated working-tree state preserved: three modified MVP-0 reports remain modified and unstaged; untracked root `package-lock.json` untouched; WIP branch `wip/m1c-physics-scratch` at `a566c98` untouched.
 - Phase 08 is CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-18). See `reports/phase-08/PHASE_08_CLOSURE_REPORT.md`.
-- Phase 09 has not started and is not authorized. No further milestone work begins without a separate Project Owner decision.
+- Phase 09 planning finalized and approved (2026-11-18). Status: PLANNING FINALIZED - APPROVED - NOT STARTED. Planning documents: `reports/phase-09/`. P09-0 implementation requires separate explicit authorization. No further milestone work begins without a separate Project Owner decision.
 
 ## Y. Phase 08 official closure (2026-11-18)
 - Phase 08 - Electrical & Electronics status: **CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-18)**.
@@ -398,3 +399,9 @@ No further implementation until explicit authorization is granted.
 - Acceptance: 10/10 Phase 08 criteria PASS; npm run check PASS; npm test 331/331 PASS; build PASS; Playwright 36/36 PASS; Phase 08 browser E2E 2/2 PASS.
 - Closure report: eports/phase-08/PHASE_08_CLOSURE_REPORT.md.
 - Scope delivered: DC resistive operating point, typed electrical components, MNA solver, runtime integration, Circuit tab, diagnostics, graph electrical actions. Deferred to Phase 09: motors, generators, actuators, AC, transient/RLC, nonlinear devices.
+
+## Z. Phase 09 implementation and verification (2026-11-18)
+- Phase 09 - Robotics & Automation status: **IMPLEMENTATION COMPLETE - PENDING OWNER ACCEPTANCE**.
+- Approved decisions: D-P09-01..D-P09-07 (2026-11-18).
+- Planning documents: eports/phase-09/PHASE_09_PLANNING_REPORT.md, PHASE_09_DECISION_PACKAGE.md, PHASE_09_ARCHITECTURE_PROPOSAL.md, PHASE_09_MILESTONE_MATRIX.md, PHASE_09_VALIDATION_STRATEGY.md.
+- P09-0 implementation requires separate explicit Project Owner authorization.
