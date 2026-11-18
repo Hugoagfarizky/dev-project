@@ -932,6 +932,72 @@ select:focus-visible {
   font-size: var(--sf-text-xs);
 }
 
+/* Phase 08 electrical read-out */
+
+.sf-electrical-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sf-space-2);
+}
+
+.sf-electrical-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sf-space-1);
+  padding: var(--sf-space-2);
+  border: 1px solid var(--sf-border-subtle);
+  border-radius: var(--sf-radius-sm);
+  background: var(--sf-bg-input);
+}
+
+.sf-electrical-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sf-space-2);
+}
+
+.sf-electrical-card-title {
+  color: var(--sf-text-secondary);
+  font-size: var(--sf-text-xs);
+  font-weight: 600;
+}
+
+.sf-electrical-status {
+  padding: 1px var(--sf-space-1-5);
+  border: 1px solid var(--sf-border-strong);
+  border-radius: 999px;
+  color: var(--sf-text-secondary);
+  font-family: var(--sf-font-mono);
+  font-size: var(--sf-text-2xs);
+}
+
+.sf-electrical-status-solved {
+  border-color: var(--sf-success);
+  color: var(--sf-success);
+}
+
+.sf-electrical-status-open {
+  border-color: var(--sf-warning);
+  color: var(--sf-warning);
+}
+
+.sf-electrical-status-disabled {
+  opacity: 0.6;
+}
+
+.sf-electrical-values {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sf-electrical-warning {
+  margin: 0;
+  color: var(--sf-danger);
+  font-size: var(--sf-text-2xs);
+}
+
 /* I-05 Empty World overlay */
 
 .sf-empty-world-overlay {
@@ -1079,6 +1145,254 @@ select:focus-visible {
   width: 100%;
   min-width: 0;
   min-height: 0;
+}
+
+/* Phase 08 Program tabs */
+
+.sf-program {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--sf-space-1-5);
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sf-program-tabs {
+  display: flex;
+  flex: none;
+  gap: 2px;
+  width: fit-content;
+  padding: 2px;
+  border: 1px solid var(--sf-border-subtle);
+  border-radius: var(--sf-radius-sm);
+  background: var(--sf-bg-panel);
+}
+
+.sf-program-tab {
+  padding: 2px var(--sf-space-2);
+  border: none;
+  border-radius: calc(var(--sf-radius-sm) - 1px);
+  background: transparent;
+  color: var(--sf-text-secondary);
+  font-size: var(--sf-text-xs);
+  cursor: pointer;
+}
+
+.sf-program-tab[aria-selected='true'] {
+  background: var(--sf-bg-raised);
+  color: var(--sf-text-primary);
+}
+
+.sf-program-tab:focus-visible {
+  outline: 1px solid var(--sf-accent);
+  outline-offset: 1px;
+}
+
+.sf-program-content {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sf-program-tabpanel {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Phase 08 circuit tab */
+
+.sf-circuit-workspace {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--sf-space-1-5);
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sf-circuit-palette {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sf-space-1);
+}
+
+.sf-circuit-palette-label {
+  color: var(--sf-text-tertiary);
+  font-size: var(--sf-text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sf-circuit-lock {
+  flex: none;
+  padding: 2px var(--sf-space-2);
+  border: 1px solid var(--sf-warning);
+  border-radius: var(--sf-radius-sm);
+  color: var(--sf-warning);
+  font-size: var(--sf-text-2xs);
+}
+
+.sf-circuit-editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--sf-border-subtle);
+  border-radius: var(--sf-radius-sm);
+  background: var(--sf-bg-canvas);
+}
+
+.sf-circuit-status {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sf-space-2);
+  min-height: 22px;
+  padding: 0 var(--sf-space-2);
+  border-bottom: 1px solid var(--sf-border-subtle);
+  background: var(--sf-bg-panel);
+}
+
+.sf-circuit-status-chip {
+  padding: 1px var(--sf-space-1-5);
+  border: 1px solid var(--sf-border-strong);
+  border-radius: 999px;
+  color: var(--sf-text-secondary);
+  font-size: var(--sf-text-2xs);
+  font-weight: 600;
+}
+
+.sf-circuit-status-solved {
+  border-color: var(--sf-success);
+  color: var(--sf-success);
+}
+
+.sf-circuit-status-invalid,
+.sf-circuit-status-failed {
+  border-color: var(--sf-danger);
+  color: var(--sf-danger);
+}
+
+.sf-circuit-status-detail {
+  color: var(--sf-text-tertiary);
+  font-family: var(--sf-font-mono);
+  font-size: var(--sf-text-2xs);
+}
+
+.sf-circuit-canvas {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sf-circuit-empty {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  padding: var(--sf-space-4);
+  color: var(--sf-text-tertiary);
+  font-size: var(--sf-text-sm);
+  text-align: center;
+  pointer-events: none;
+}
+
+.sf-circuit-diagnostics {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 40%;
+  padding: var(--sf-space-1) var(--sf-space-2);
+  overflow: auto;
+  border-top: 1px solid var(--sf-border-strong);
+  background: var(--sf-bg-panel);
+  font-size: var(--sf-text-xs);
+}
+
+.sf-circuit-diagnostic {
+  color: var(--sf-text-secondary);
+}
+
+.sf-circuit-diagnostic-error {
+  color: var(--sf-danger);
+}
+
+.sf-circuit-diagnostic-warning {
+  color: var(--sf-warning);
+}
+
+.sf-circuit-node {
+  min-width: 130px;
+  padding: var(--sf-space-2);
+  border: 1px solid var(--sf-border-strong);
+  border-radius: var(--sf-radius-md);
+  background: var(--sf-bg-raised);
+  color: var(--sf-text-primary);
+  font-size: var(--sf-text-xs);
+  box-shadow: var(--sf-elevation-1);
+}
+
+.sf-circuit-node-selected {
+  border-color: var(--sf-accent);
+}
+
+.sf-circuit-node-solved {
+  border-left: 3px solid var(--sf-success);
+}
+
+.sf-circuit-node-open {
+  border-left: 3px solid var(--sf-warning);
+}
+
+.sf-circuit-node-disabled {
+  opacity: 0.55;
+}
+
+.sf-circuit-node-title {
+  color: var(--sf-text-secondary);
+  font-size: var(--sf-text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sf-circuit-node-value {
+  margin-top: 2px;
+  font-family: var(--sf-font-mono);
+  font-size: var(--sf-text-xs);
+}
+
+.sf-circuit-node-live {
+  margin-top: 2px;
+  color: var(--sf-success);
+  font-family: var(--sf-font-mono);
+  font-size: var(--sf-text-2xs);
+}
+
+.sf-circuit-editor .react-flow__handle {
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--sf-border-strong);
+  background: var(--sf-bg-input);
+}
+
+.sf-circuit-editor .react-flow__handle:hover {
+  background: var(--sf-accent);
 }
 
 .sf-graph-palette {

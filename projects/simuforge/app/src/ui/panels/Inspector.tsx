@@ -6,6 +6,7 @@ import { Button } from '../common/Button';
 import { createPrimitive } from './primitives.js';
 import { TransformSection } from './TransformSection.js';
 import { ComponentsSection } from './ComponentsSection.js';
+import { ElectricalSection } from './ElectricalSection.js';
 import { RuntimeControls } from './RuntimeControls.js';
 import { GraphNodeInspector } from '../graph/GraphNodeInspector.js';
 import { selectSelectedGraphNodeId } from '../../editor/selectors.js';
@@ -64,6 +65,7 @@ export function Inspector({ store }: InspectorProps) {
 
       <TransformSection entity={selected} store={store} />
       <ComponentsSection entity={selected} store={store} />
+      <ElectricalSection entity={selected} store={store} />
       <RuntimeControls store={store} />
     </div>
   );

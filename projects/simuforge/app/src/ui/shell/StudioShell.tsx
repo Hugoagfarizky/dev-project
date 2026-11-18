@@ -13,6 +13,7 @@ import { AssetLibrary } from '../panels/AssetLibrary.js';
 import { Inspector } from '../panels/Inspector.js';
 import { GraphEditor } from '../graph/GraphEditor.js';
 import { NodePalette } from '../graph/NodePalette.js';
+import { CircuitWorkspace } from '../circuit/CircuitWorkspace.js';
 import { PythonPanel } from '../python/PythonPanel.js';
 import { PythonRuntime } from '../../python/runtime.js';
 import { attachPythonController } from '../../python/controller.js';
@@ -54,6 +55,7 @@ export function StudioShell({ store }: StudioShellProps) {
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [showHub, setShowHub] = useState<boolean>(false);
   const [showPython, setShowPython] = useState<boolean>(false);
+  const [programTab, setProgramTab] = useState<'graph' | 'circuit'>('graph');
   const repositoryRef = useRef<IndexedDbProjectRepository>(new IndexedDbProjectRepository());
   const layoutStorageRef = useRef<LayoutStorage>(new LayoutStorage());
   const pythonRuntimeRef = useRef<PythonRuntime | null>(null);
@@ -422,12 +424,58 @@ export function StudioShell({ store }: StudioShellProps) {
             title="Program"
             collapsed={collapsed.program}
             onToggle={() => togglePanel('program')}
-            summary="Graph"
+            summary={programTab === 'graph' ? 'Graph' : 'Circuit'}
             className="sf-graph-panel"
           >
-            <div className="sf-graph-workspace">
-              <NodePalette store={store} />
-              <GraphEditor store={store} />
+            <div className="sf-program">
+              <div className="sf-program-tabs" role="tablist" aria-label="Program views">
+                <button
+                  type="button"
+                  role="tab"
+                  id="sf-program-tab-graph"
+                  aria-selected={programTab === 'graph'}
+                  aria-controls="sf-program-panel-graph"
+                  className="sf-program-tab"
+                  data-testid="program-tab-graph"
+                  onClick={() => setProgramTab('graph')}
+                >
+                  Graph
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  id="sf-program-tab-circuit"
+                  aria-selected={programTab === 'circuit'}
+                  aria-controls="sf-program-panel-circuit"
+                  className="sf-program-tab"
+                  data-testid="program-tab-circuit"
+                  onClick={() => setProgramTab('circuit')}
+                >
+                  Circuit
+                </button>
+              </div>
+              <div className="sf-program-content">
+                {programTab === 'graph' ? (
+                  <div
+                    className="sf-graph-workspace"
+                    role="tabpanel"
+                    id="sf-program-panel-graph"
+                    aria-labelledby="sf-program-tab-graph"
+                  >
+                    <NodePalette store={store} />
+                    <GraphEditor store={store} />
+                  </div>
+                ) : (
+                  <div
+                    className="sf-program-tabpanel"
+                    role="tabpanel"
+                    id="sf-program-panel-circuit"
+                    aria-labelledby="sf-program-tab-circuit"
+                  >
+                    <CircuitWorkspace store={store} />
+                  </div>
+                )}
+              </div>
             </div>
             {/* <PythonPanel store={store} /> */}
           </Panel>
