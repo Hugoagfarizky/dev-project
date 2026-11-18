@@ -25,6 +25,14 @@ export const NODE_PORT_DEFINITIONS: Record<GraphNodeType, readonly NodePortDefin
   runPython: [
     { id: 'in', direction: 'input', kind: 'execution' },
     { id: 'out', direction: 'output', kind: 'execution' }
+  ],
+  setSwitch: [
+    { id: 'in', direction: 'input', kind: 'execution' },
+    { id: 'out', direction: 'output', kind: 'execution' }
+  ],
+  setSourceVoltage: [
+    { id: 'in', direction: 'input', kind: 'execution' },
+    { id: 'out', direction: 'output', kind: 'execution' }
   ]
 };
 

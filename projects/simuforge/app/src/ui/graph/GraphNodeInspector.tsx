@@ -1,8 +1,13 @@
 import { useStudioStore } from '../hooks/useStore.js';
-import { selectGraph, selectSelectedGraphNodeId } from '../../editor/selectors.js';
+import {
+  selectEntities,
+  selectGraph,
+  selectSelectedGraphNodeId
+} from '../../editor/selectors.js';
 import type { StudioStore } from '../../editor/store.js';
 import type { Graph, GraphNode } from '../../graph/types.js';
 import { pythonScripts } from '../../python/validation.js';
+import { componentLabel } from '../../world/components.js';
 
 interface GraphNodeInspectorProps {
   store: StudioStore;
@@ -19,12 +24,25 @@ function updateNode(graph: Graph | null, nodeId: string, updater: (node: GraphNo
 export function GraphNodeInspector({ store }: GraphNodeInspectorProps) {
   const graph = useStudioStore(store, selectGraph) as Graph | null;
   const selectedId = useStudioStore(store, selectSelectedGraphNodeId);
+  const entities = useStudioStore(store, selectEntities);
   const node = graph?.nodes.find((item) => item.id === selectedId) ?? null;
   const scripts = pythonScripts(store.getSnapshot().project.python);
 
   if (!node) {
     return <div className="sf-graph-inspector-empty">No graph node selected.</div>;
   }
+
+  const electricalConfig =
+    node.config.kind === 'setSwitch' || node.config.kind === 'setSourceVoltage'
+      ? node.config
+      : null;
+  const expectedType = electricalConfig?.kind === 'setSwitch' ? 'switch' : 'voltageSource';
+  const targetEntity = electricalConfig
+    ? entities.find((entity) => entity.id === electricalConfig.targetEntityId) ?? null
+    : null;
+  const targetComponents = (targetEntity?.components ?? []).filter(
+    (component) => component.type === expectedType
+  );
 
   function setConfig(nextConfig: GraphNode['config']) {
     const nextGraph = updateNode(graph, node!.id, (current) => ({ ...current, config: nextConfig }));
@@ -118,6 +136,80 @@ export function GraphNodeInspector({ store }: GraphNodeInspectorProps) {
               />
             </label>
           ))}
+        </>
+      ) : null}
+
+      {node.config.kind === 'setSwitch' || node.config.kind === 'setSourceVoltage' ? (
+        <>
+          <label className="sf-inspector-row">
+            <span className="sf-inspector-label">Target entity</span>
+            <select
+              value={node.config.targetEntityId}
+              onChange={(event) => {
+                const nextEntity = entities.find((entity) => entity.id === event.target.value);
+                const nextComponent = (nextEntity?.components ?? []).find(
+                  (component) => component.type === expectedType
+                );
+                setConfig({
+                  ...node.config,
+                  targetEntityId: event.target.value,
+                  targetComponentId: nextComponent?.id ?? ''
+                } as GraphNode['config']);
+              }}
+            >
+              <option value="">(none)</option>
+              {entities.map((entity) => (
+                <option key={entity.id} value={entity.id}>
+                  {entity.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="sf-inspector-row">
+            <span className="sf-inspector-label">{componentLabel(expectedType)}</span>
+            <select
+              value={node.config.targetComponentId}
+              onChange={(event) =>
+                setConfig({ ...node.config, targetComponentId: event.target.value } as GraphNode['config'])
+              }
+            >
+              <option value="">(none)</option>
+              {targetComponents.map((component) => (
+                <option key={component.id} value={component.id}>
+                  {componentLabel(component.type)} · {component.id.slice(0, 8)}
+                </option>
+              ))}
+            </select>
+          </label>
+          {node.config.kind === 'setSwitch' ? (
+            <label className="sf-inspector-row">
+              <span className="sf-inspector-label">State</span>
+              <select
+                value={node.config.closed ? 'closed' : 'open'}
+                onChange={(event) =>
+                  setConfig({ ...node.config, closed: event.target.value === 'closed' } as GraphNode['config'])
+                }
+              >
+                <option value="closed">Close switch</option>
+                <option value="open">Open switch</option>
+              </select>
+            </label>
+          ) : (
+            <label className="sf-inspector-row">
+              <span className="sf-inspector-label">Voltage (V)</span>
+              <input
+                type="number"
+                value={node.config.voltage}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  setConfig({
+                    ...node.config,
+                    voltage: Number.isFinite(value) ? value : 0
+                  } as GraphNode['config']);
+                }}
+              />
+            </label>
+          )}
         </>
       ) : null}
     </div>

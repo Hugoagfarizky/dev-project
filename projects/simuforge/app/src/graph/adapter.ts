@@ -61,7 +61,9 @@ export function createCanonicalNode(
     applyForce: { kind: 'applyForce', targetEntityId: '', force: { x: 0, y: 0, z: 0 } },
     applyImpulse: { kind: 'applyImpulse', targetEntityId: '', impulse: { x: 0, y: 0, z: 0 } },
     clearForce: { kind: 'clearForce', targetEntityId: '' },
-    runPython: { kind: 'runPython', scriptId: '' }
+    runPython: { kind: 'runPython', scriptId: '' },
+    setSwitch: { kind: 'setSwitch', targetEntityId: '', targetComponentId: '', closed: false },
+    setSourceVoltage: { kind: 'setSourceVoltage', targetEntityId: '', targetComponentId: '', voltage: 0 }
   };
 
   return {

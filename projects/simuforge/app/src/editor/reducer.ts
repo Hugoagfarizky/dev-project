@@ -468,6 +468,40 @@ function solveElectricalRuntime(
   return next;
 }
 
+function chainElectricalContext(state: StudioState): {
+  entities: StudioState['project']['world']['entities'];
+  overrides: ElectricalOverrides;
+} {
+  return {
+    entities: state.project.world.entities,
+    overrides: {
+      switchStates: state.runtime.electrical.switchStates,
+      sourceVoltages: state.runtime.electrical.sourceVoltages
+    }
+  };
+}
+
+/**
+ * Commits the electrical overrides produced by a graph chain. No-op when the
+ * chain changed nothing, so ordinary graphs never trigger a redundant solve.
+ * Invalid results warn and preserve the last solution; unexpected failures
+ * pause the runtime (D-P08-06).
+ */
+function commitChainElectrical(
+  state: StudioState,
+  context: ReducerContext,
+  chain: { electrical: ElectricalOverrides | null },
+  input: { overrides: ElectricalOverrides }
+): StudioState {
+  if (!chain.electrical || chain.electrical === input.overrides) {
+    return state;
+  }
+  return solveElectricalRuntime(state, context, chain.electrical, {
+    pauseOnUnexpectedFailure: true,
+    logSolved: false
+  });
+}
+
 function graphValidationContext(state: StudioState): GraphValidationContext {
   return {
     entities: state.project.world.entities.map((entity) => ({
@@ -645,10 +679,13 @@ function drainExecution(
     };
 
     const nodeOutcome = toPythonNodeOutcome(resume.outcome);
+    const electricalContext = chainElectricalContext(working);
     const chain = executeChain(pending.plan, working.graph as Graph, working.runtime.bodies, {
       startIndex: pending.index,
-      python: { nodeId: pending.nodeId, outcome: nodeOutcome }
+      python: { nodeId: pending.nodeId, outcome: nodeOutcome },
+      electrical: electricalContext
     });
+    working = commitChainElectrical(working, context, chain, electricalContext);
 
     let editor = working.editor;
     for (const result of chain.executed) {
@@ -941,7 +978,11 @@ function drainExecution(
       }
     );
 
-    const chain = executeChain(plan, graph, working.runtime.bodies);
+    const electricalContext = chainElectricalContext(working);
+    const chain = executeChain(plan, graph, working.runtime.bodies, {
+      electrical: electricalContext
+    });
+    working = commitChainElectrical(working, context, chain, electricalContext);
 
     let editor = working.editor;
     for (const result of chain.executed) {

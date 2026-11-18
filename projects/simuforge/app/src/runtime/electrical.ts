@@ -1,6 +1,7 @@
 import { buildNetlist } from '../electrical/netlist.ts';
 import { solveCircuit } from '../electrical/solver.ts';
 import type { CircuitSolution } from '../electrical/solver.ts';
+import { MAX_SOURCE_VOLTAGE } from '../electrical/types.ts';
 import type { ElectricalDiagnostic, ElectricalDocument } from '../electrical/types.ts';
 import { isElectricalComponentType, isSwitchComponent, isVoltageSourceComponent } from '../world/components.ts';
 import type { WorldEntity } from '../world/types.ts';
@@ -104,6 +105,102 @@ export function hasElectricalComponents(entities: readonly WorldEntity[]): boole
   return entities.some((entity) =>
     (entity.components ?? []).some((component) => isElectricalComponentType(component.type))
   );
+}
+
+/** Phase 08 graph action: open/close a switch or set a source voltage. */
+export type ElectricalAction =
+  | { kind: 'switch'; entityId: string; componentId: string; closed: boolean }
+  | { kind: 'sourceVoltage'; entityId: string; componentId: string; voltage: number };
+
+export type ElectricalActionFailure = 'target' | 'value';
+
+export type ElectricalActionResult =
+  | { ok: true; overrides: ElectricalOverrides }
+  | { ok: false; reason: ElectricalActionFailure; message: string };
+
+/**
+ * Applies one graph electrical action to a clone-on-write override map. Returns
+ * the same overrides object when the value is unchanged, so callers can skip a
+ * redundant re-solve. Authored components are never mutated.
+ */
+export function applyElectricalAction(
+  entities: readonly WorldEntity[],
+  overrides: ElectricalOverrides,
+  action: ElectricalAction
+): ElectricalActionResult {
+  const entity = entities.find((item) => item.id === action.entityId);
+  if (!entity) {
+    return {
+      ok: false,
+      reason: 'target',
+      message: `Entity ${action.entityId} does not exist.`
+    };
+  }
+
+  const component = (entity.components ?? []).find((item) => item.id === action.componentId);
+  if (!component) {
+    return {
+      ok: false,
+      reason: 'target',
+      message: `Component ${action.componentId} does not exist on entity ${action.entityId}.`
+    };
+  }
+  if (!component.enabled) {
+    return {
+      ok: false,
+      reason: 'target',
+      message: `Component ${action.componentId} is disabled.`
+    };
+  }
+
+  const key = electricalOverrideKey(action.entityId, action.componentId);
+
+  if (action.kind === 'switch') {
+    if (!isSwitchComponent(component)) {
+      return {
+        ok: false,
+        reason: 'target',
+        message: `Component ${action.componentId} is not a switch.`
+      };
+    }
+    const current = overrides.switchStates[key] ?? component.closed;
+    if (current === action.closed) {
+      return { ok: true, overrides };
+    }
+    return {
+      ok: true,
+      overrides: {
+        switchStates: { ...overrides.switchStates, [key]: action.closed },
+        sourceVoltages: overrides.sourceVoltages
+      }
+    };
+  }
+
+  if (!isVoltageSourceComponent(component)) {
+    return {
+      ok: false,
+      reason: 'target',
+      message: `Component ${action.componentId} is not a voltage source.`
+    };
+  }
+  if (!Number.isFinite(action.voltage) || Math.abs(action.voltage) > MAX_SOURCE_VOLTAGE) {
+    return {
+      ok: false,
+      reason: 'value',
+      message: `Voltage must be finite and within ±${MAX_SOURCE_VOLTAGE} V.`
+    };
+  }
+  const current = overrides.sourceVoltages[key] ?? component.voltage;
+  if (current === action.voltage) {
+    return { ok: true, overrides };
+  }
+  return {
+    ok: true,
+    overrides: {
+      switchStates: overrides.switchStates,
+      sourceVoltages: { ...overrides.sourceVoltages, [key]: action.voltage }
+    }
+  };
 }
 
 /**

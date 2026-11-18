@@ -3,6 +3,9 @@ import type { ComponentId, EntityId } from '../world/types.ts';
 export const ELECTRICAL_FORMAT = 'simuforge.electrical';
 export const ELECTRICAL_SCHEMA_VERSION = 1;
 
+/** Authored and runtime source voltage magnitude limit. */
+export const MAX_SOURCE_VOLTAGE = 1_000_000;
+
 export type TerminalId = string;
 
 /** Stable reference to one terminal of one component on one entity. */

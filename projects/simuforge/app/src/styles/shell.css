@@ -1140,6 +1140,7 @@ select:focus-visible {
 
 .sf-graph-workspace {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: var(--sf-space-1-5);
   width: 100%;
@@ -1150,6 +1151,7 @@ select:focus-visible {
 /* Phase 08 Program tabs */
 
 .sf-program {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -1160,24 +1162,27 @@ select:focus-visible {
 }
 
 .sf-program-tabs {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  z-index: 5;
   display: flex;
-  flex: none;
   gap: 2px;
-  width: fit-content;
-  padding: 2px;
+  padding: 1px;
   border: 1px solid var(--sf-border-subtle);
   border-radius: var(--sf-radius-sm);
   background: var(--sf-bg-panel);
 }
 
 .sf-program-tab {
-  padding: 2px var(--sf-space-2);
+  padding: 1px var(--sf-space-1-5);
   border: none;
   border-radius: calc(var(--sf-radius-sm) - 1px);
   background: transparent;
   color: var(--sf-text-secondary);
-  font-size: var(--sf-text-xs);
+  font-size: var(--sf-text-2xs);
   cursor: pointer;
+  line-height: 1.2;
 }
 
 .sf-program-tab[aria-selected='true'] {
@@ -1193,6 +1198,7 @@ select:focus-visible {
 .sf-program-content {
   display: flex;
   flex: 1;
+  flex-direction: column;
   min-width: 0;
   min-height: 0;
 }
@@ -1200,6 +1206,7 @@ select:focus-visible {
 .sf-program-tabpanel {
   display: flex;
   flex: 1;
+  flex-direction: column;
   min-width: 0;
   min-height: 0;
 }
@@ -1398,7 +1405,8 @@ select:focus-visible {
 .sf-graph-palette {
   display: flex;
   flex: none;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   gap: var(--sf-space-1);
 }
 
@@ -1571,8 +1579,8 @@ select:focus-visible {
 }
 
 .sf-graph-editor .react-flow__handle {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   border: 1px solid var(--sf-border-strong);
   background: var(--sf-bg-panel);
   z-index: 3;

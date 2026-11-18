@@ -12,6 +12,9 @@ import type { SimulationFailure } from './physics.ts';
 import type { RuntimeBodies } from './types.ts';
 import { applyPythonActions } from '../python/actions.ts';
 import type { PythonAction } from '../python/types.ts';
+import { applyElectricalAction } from './electrical.ts';
+import type { ElectricalOverrides } from './electrical.ts';
+import type { WorldEntity } from '../world/types.ts';
 
 /**
  * M2-C graph execution engine.
@@ -43,7 +46,9 @@ export const GRAPH_EXECUTION_ERRORS = {
   CYCLE: 'GRAPH_EXECUTION_CYCLE',
   NODE_MISSING: 'GRAPH_EXECUTION_NODE_MISSING',
   INVALID_NODE: 'GRAPH_EXECUTION_INVALID_NODE',
-  PYTHON_FAILED: 'GRAPH_EXECUTION_PYTHON_FAILED'
+  PYTHON_FAILED: 'GRAPH_EXECUTION_PYTHON_FAILED',
+  ELECTRICAL_TARGET: 'GRAPH_EXECUTION_ELECTRICAL_TARGET',
+  ELECTRICAL_VALUE: 'GRAPH_EXECUTION_ELECTRICAL_VALUE'
 } as const;
 
 const TRIGGER_TYPES: Record<GraphNodeType, true | undefined> = {
@@ -53,7 +58,9 @@ const TRIGGER_TYPES: Record<GraphNodeType, true | undefined> = {
   applyForce: undefined,
   applyImpulse: undefined,
   clearForce: undefined,
-  runPython: undefined
+  runPython: undefined,
+  setSwitch: undefined,
+  setSourceVoltage: undefined
 };
 
 const ACTION_TYPES: Record<GraphNodeType, true | undefined> = {
@@ -63,7 +70,9 @@ const ACTION_TYPES: Record<GraphNodeType, true | undefined> = {
   applyForce: true,
   applyImpulse: true,
   clearForce: true,
-  runPython: true
+  runPython: true,
+  setSwitch: true,
+  setSourceVoltage: true
 };
 
 export function isTriggerNodeType(type: GraphNodeType): boolean {
@@ -329,6 +338,12 @@ export interface ExecutionFailure {
 export interface ChainExecutionResult {
   /** Bodies after the last successful node. A failed node commits nothing. */
   bodies: RuntimeBodies;
+  /**
+   * Electrical overrides after the last successful node. Null when the caller
+   * supplied no electrical context. Reference-equal to the input overrides when
+   * no electrical node changed anything, so callers can skip a re-solve.
+   */
+  electrical: ElectricalOverrides | null;
   executed: NodeExecutionResult[];
   failure: ExecutionFailure | null;
   completed: boolean;
@@ -359,6 +374,14 @@ export interface ChainExecutionOptions {
   startIndex?: number;
   /** Outcome for the Python node at `startIndex`, supplied when resuming. */
   python?: { nodeId: GraphNodeId; outcome: PythonNodeOutcome };
+  /**
+   * Phase 08: enables `setSwitch` and `setSourceVoltage`. The entities are the
+   * authored world; overrides are the current transient runtime values.
+   */
+  electrical?: {
+    entities: readonly WorldEntity[];
+    overrides: ElectricalOverrides;
+  };
 }
 
 function actionDetail(node: GraphNode): string {
@@ -371,6 +394,10 @@ function actionDetail(node: GraphNode): string {
       return 'Force accumulator cleared.';
     case 'runPython':
       return 'Python script executed.';
+    case 'setSwitch':
+      return `Switch ${node.config.targetEntityId}/${node.config.targetComponentId} → ${node.config.closed ? 'closed' : 'open'}`;
+    case 'setSourceVoltage':
+      return `Source ${node.config.targetEntityId}/${node.config.targetComponentId} → ${node.config.voltage} V`;
     default:
       return '';
   }
@@ -403,6 +430,8 @@ function actionEntityId(node: GraphNode): string | undefined {
     case 'applyImpulse':
     case 'clearForce':
     case 'onPlaneContact':
+    case 'setSwitch':
+    case 'setSourceVoltage':
       return node.config.targetEntityId;
     default:
       return undefined;
@@ -427,6 +456,7 @@ export function executeChain(
   const nodesById = new Map(graph.nodes.map((node) => [node.id, node]));
   const executed: NodeExecutionResult[] = [];
   let current = bodies;
+  let electrical = options.electrical?.overrides ?? null;
   const startIndex = options.startIndex ?? 0;
 
   for (let index = startIndex; index < plan.order.length; index += 1) {
@@ -435,6 +465,7 @@ export function executeChain(
     if (!node) {
       return {
         bodies: current,
+        electrical,
         executed,
         failure: {
           nodeId,
@@ -457,6 +488,7 @@ export function executeChain(
       if (!resume || resume.nodeId !== node.id) {
         return {
           bodies: current,
+          electrical,
           executed,
           failure: null,
           completed: false,
@@ -467,6 +499,7 @@ export function executeChain(
       if (!resume.outcome.ok) {
         return {
           bodies: current,
+          electrical,
           executed,
           failure: {
             nodeId: node.id,
@@ -485,6 +518,7 @@ export function executeChain(
         const failure: SimulationFailure = toSimulationFailure(error);
         return {
           bodies: current,
+          electrical,
           executed,
           failure: {
             nodeId: node.id,
@@ -507,6 +541,69 @@ export function executeChain(
       continue;
     }
 
+    if (node.config.kind === 'setSwitch' || node.config.kind === 'setSourceVoltage') {
+      if (!options.electrical || electrical === null) {
+        return {
+          bodies: current,
+          electrical,
+          executed,
+          failure: {
+            nodeId: node.id,
+            type: node.type,
+            code: GRAPH_EXECUTION_ERRORS.INVALID_NODE,
+            message: `Node ${node.id} (${node.type}) requires an electrical runtime context.`,
+            severity: 'error'
+          },
+          completed: false
+        };
+      }
+
+      const action =
+        node.config.kind === 'setSwitch'
+          ? {
+              kind: 'switch' as const,
+              entityId: node.config.targetEntityId,
+              componentId: node.config.targetComponentId,
+              closed: node.config.closed
+            }
+          : {
+              kind: 'sourceVoltage' as const,
+              entityId: node.config.targetEntityId,
+              componentId: node.config.targetComponentId,
+              voltage: node.config.voltage
+            };
+
+      const result = applyElectricalAction(options.electrical.entities, electrical, action);
+      if (!result.ok) {
+        return {
+          bodies: current,
+          electrical,
+          executed,
+          failure: {
+            nodeId: node.id,
+            type: node.type,
+            code:
+              result.reason === 'value'
+                ? GRAPH_EXECUTION_ERRORS.ELECTRICAL_VALUE
+                : GRAPH_EXECUTION_ERRORS.ELECTRICAL_TARGET,
+            message: result.message,
+            severity: 'error'
+          },
+          completed: false
+        };
+      }
+
+      electrical = result.overrides;
+      executed.push({
+        nodeId: node.id,
+        type: node.type,
+        status: 'executed',
+        entityId: node.config.targetEntityId,
+        detail: actionDetail(node)
+      });
+      continue;
+    }
+
     try {
       const next = applyAction(current, node);
       current = next;
@@ -522,6 +619,7 @@ export function executeChain(
       const failure: SimulationFailure = toSimulationFailure(error);
       return {
         bodies: current,
+        electrical,
         executed,
         failure: {
           nodeId: node.id,
@@ -535,7 +633,7 @@ export function executeChain(
     }
   }
 
-  return { bodies: current, executed, failure: null, completed: true };
+  return { bodies: current, electrical, executed, failure: null, completed: true };
 }
 
 export interface PlaneContactPayload {

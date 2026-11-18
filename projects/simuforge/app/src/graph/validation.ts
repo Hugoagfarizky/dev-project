@@ -7,6 +7,7 @@ import type {
   GraphValidationResult
 } from './types.ts';
 import { getNodePortDefinitions } from './nodes.ts';
+import { MAX_SOURCE_VOLTAGE } from '../electrical/types.ts';
 
 export const GRAPH_DIAGNOSTIC_CODES = {
   MISSING_GRAPH_ID: 'GRAPH_MISSING_ID',
@@ -17,6 +18,8 @@ export const GRAPH_DIAGNOSTIC_CODES = {
   INVALID_NODE_CONFIG: 'GRAPH_INVALID_NODE_CONFIG',
   MISSING_TARGET_ENTITY: 'GRAPH_MISSING_TARGET_ENTITY',
   INVALID_TARGET_ENTITY: 'GRAPH_INVALID_TARGET_ENTITY',
+  MISSING_TARGET_COMPONENT: 'GRAPH_MISSING_TARGET_COMPONENT',
+  INVALID_TARGET_COMPONENT: 'GRAPH_INVALID_TARGET_COMPONENT',
   NON_FINITE_NUMBER: 'GRAPH_NON_FINITE_NUMBER',
   EMPTY_EDGE_ID: 'GRAPH_EMPTY_EDGE_ID',
   DUPLICATE_EDGE_ID: 'GRAPH_DUPLICATE_EDGE_ID',
@@ -117,6 +120,108 @@ function validateNodeConfig(
             `Node ${node.id} target ${config.targetEntityId} is a static plane and cannot receive force or impulse.`,
             'error',
             { nodeId: node.id, field: 'targetEntityId' }
+          )
+        );
+      }
+      break;
+    }
+
+    case 'setSwitch':
+    case 'setSourceVoltage': {
+      const config = node.config as {
+        targetEntityId?: unknown;
+        targetComponentId?: unknown;
+        closed?: unknown;
+        voltage?: unknown;
+      };
+      if (typeof config.targetEntityId !== 'string' || config.targetEntityId.trim().length === 0) {
+        diagnostics.push(
+          diagnostic(
+            GRAPH_DIAGNOSTIC_CODES.MISSING_TARGET_ENTITY,
+            `Node ${node.id} requires a non-empty targetEntityId.`,
+            'error',
+            { nodeId: node.id, field: 'targetEntityId' }
+          )
+        );
+        break;
+      }
+
+      const entity = context.entities.find((item) => item.id === config.targetEntityId);
+      if (!entity) {
+        diagnostics.push(
+          diagnostic(
+            GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_ENTITY,
+            `Node ${node.id} references unknown entity ${config.targetEntityId}.`,
+            'error',
+            { nodeId: node.id, field: 'targetEntityId' }
+          )
+        );
+        break;
+      }
+
+      if (
+        typeof config.targetComponentId !== 'string' ||
+        config.targetComponentId.trim().length === 0
+      ) {
+        diagnostics.push(
+          diagnostic(
+            GRAPH_DIAGNOSTIC_CODES.MISSING_TARGET_COMPONENT,
+            `Node ${node.id} requires a non-empty targetComponentId.`,
+            'error',
+            { nodeId: node.id, field: 'targetComponentId' }
+          )
+        );
+        break;
+      }
+
+      const expectedType = node.config.kind === 'setSwitch' ? 'switch' : 'voltageSource';
+      const component = entity.components.find((item) => item.id === config.targetComponentId);
+      if (!component || component.type !== expectedType) {
+        diagnostics.push(
+          diagnostic(
+            GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_COMPONENT,
+            `Node ${node.id} target ${config.targetComponentId} is not a ${expectedType} component on entity ${config.targetEntityId}.`,
+            'error',
+            { nodeId: node.id, field: 'targetComponentId' }
+          )
+        );
+        break;
+      }
+
+      if (!component.enabled) {
+        diagnostics.push(
+          diagnostic(
+            GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_COMPONENT,
+            `Node ${node.id} target ${config.targetComponentId} is disabled.`,
+            'error',
+            { nodeId: node.id, field: 'targetComponentId' }
+          )
+        );
+        break;
+      }
+
+      if (node.config.kind === 'setSwitch' && typeof config.closed !== 'boolean') {
+        diagnostics.push(
+          diagnostic(
+            GRAPH_DIAGNOSTIC_CODES.INVALID_NODE_CONFIG,
+            `Node ${node.id} switch state must be a boolean.`,
+            'error',
+            { nodeId: node.id, field: 'closed' }
+          )
+        );
+        break;
+      }
+
+      if (
+        node.config.kind === 'setSourceVoltage' &&
+        (!isFiniteNumber(config.voltage) || Math.abs(config.voltage) > MAX_SOURCE_VOLTAGE)
+      ) {
+        diagnostics.push(
+          diagnostic(
+            GRAPH_DIAGNOSTIC_CODES.NON_FINITE_NUMBER,
+            `Node ${node.id} voltage must be finite and within ±${MAX_SOURCE_VOLTAGE} V.`,
+            'error',
+            { nodeId: node.id, field: 'voltage' }
           )
         );
       }
@@ -229,7 +334,9 @@ const NODE_TYPE_SET: Record<string, true> = {
   applyForce: true,
   applyImpulse: true,
   clearForce: true,
-  runPython: true
+  runPython: true,
+  setSwitch: true,
+  setSourceVoltage: true
 };
 
 function portDefinition(type: GraphNode['type'], portId: string) {

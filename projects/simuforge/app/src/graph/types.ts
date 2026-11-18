@@ -15,7 +15,9 @@ export type GraphNodeType =
   | 'applyForce'
   | 'applyImpulse'
   | 'clearForce'
-  | 'runPython';
+  | 'runPython'
+  | 'setSwitch'
+  | 'setSourceVoltage';
 
 export type GraphPortDirection = 'input' | 'output';
 export type GraphPortKind = 'execution';
@@ -78,6 +80,26 @@ export interface RunPythonNodeConfig {
   scriptId: string;
 }
 
+/**
+ * Phase 08: opens or closes an authored switch during simulation. The runtime
+ * override is transient; the authored component value is never rewritten
+ * (D-P08-03, D-P08-04).
+ */
+export interface SetSwitchNodeConfig {
+  kind: 'setSwitch';
+  targetEntityId: string;
+  targetComponentId: string;
+  closed: boolean;
+}
+
+/** Phase 08: sets a runtime source voltage without rewriting the authored value. */
+export interface SetSourceVoltageNodeConfig {
+  kind: 'setSourceVoltage';
+  targetEntityId: string;
+  targetComponentId: string;
+  voltage: number;
+}
+
 export type GraphNodeConfig =
   | OnStartNodeConfig
   | ManualTriggerNodeConfig
@@ -85,7 +107,9 @@ export type GraphNodeConfig =
   | ApplyForceNodeConfig
   | ApplyImpulseNodeConfig
   | ClearForceNodeConfig
-  | RunPythonNodeConfig;
+  | RunPythonNodeConfig
+  | SetSwitchNodeConfig
+  | SetSourceVoltageNodeConfig;
 
 export interface GraphNode extends GraphNodeBase {
   config: GraphNodeConfig;
@@ -131,7 +155,12 @@ export interface GraphValidationResult {
 export interface GraphValidationContext {
   entities: readonly {
     id: string;
-    components: readonly { type: string; enabled: boolean; collider?: { kind: string } }[];
+    components: readonly {
+      id: string;
+      type: string;
+      enabled: boolean;
+      collider?: { kind: string };
+    }[];
   }[];
   /**
    * Ids of the project's Python scripts. When provided, a `runPython` node must

@@ -427,55 +427,21 @@ export function StudioShell({ store }: StudioShellProps) {
             summary={programTab === 'graph' ? 'Graph' : 'Circuit'}
             className="sf-graph-panel"
           >
-            <div className="sf-program">
-              <div className="sf-program-tabs" role="tablist" aria-label="Program views">
-                <button
-                  type="button"
-                  role="tab"
-                  id="sf-program-tab-graph"
-                  aria-selected={programTab === 'graph'}
-                  aria-controls="sf-program-panel-graph"
-                  className="sf-program-tab"
-                  data-testid="program-tab-graph"
-                  onClick={() => setProgramTab('graph')}
-                >
-                  Graph
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  id="sf-program-tab-circuit"
-                  aria-selected={programTab === 'circuit'}
-                  aria-controls="sf-program-panel-circuit"
-                  className="sf-program-tab"
-                  data-testid="program-tab-circuit"
-                  onClick={() => setProgramTab('circuit')}
-                >
-                  Circuit
-                </button>
+            <div className="sf-program" style={{ position: 'relative' }}>
+              <div className="sf-program-tabs" role="tablist" aria-label="Program views" style={{ position: 'absolute', top: 2, right: 2, zIndex: 5 }}>
+                <button type="button" role="tab" className="sf-program-tab" data-testid="program-tab-graph" aria-selected={programTab === 'graph'} onClick={() => setProgramTab('graph')}>Graph</button>
+                <button type="button" role="tab" className="sf-program-tab" data-testid="program-tab-circuit" aria-selected={programTab === 'circuit'} onClick={() => setProgramTab('circuit')}>Circuit</button>
               </div>
-              <div className="sf-program-content">
-                {programTab === 'graph' ? (
-                  <div
-                    className="sf-graph-workspace"
-                    role="tabpanel"
-                    id="sf-program-panel-graph"
-                    aria-labelledby="sf-program-tab-graph"
-                  >
-                    <NodePalette store={store} />
-                    <GraphEditor store={store} />
-                  </div>
-                ) : (
-                  <div
-                    className="sf-program-tabpanel"
-                    role="tabpanel"
-                    id="sf-program-panel-circuit"
-                    aria-labelledby="sf-program-tab-circuit"
-                  >
-                    <CircuitWorkspace store={store} />
-                  </div>
-                )}
-              </div>
+              {programTab === 'graph' ? (
+                <div className="sf-graph-workspace">
+                  <NodePalette store={store} />
+                  <GraphEditor store={store} />
+                </div>
+              ) : (
+                <div className="sf-circuit-workspace">
+                  <CircuitWorkspace store={store} />
+                </div>
+              )}
             </div>
             {/* <PythonPanel store={store} /> */}
           </Panel>

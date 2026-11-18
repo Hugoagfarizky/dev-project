@@ -24,6 +24,10 @@ function configSummary(node: GraphNode): string {
       return `Target: ${node.config.targetEntityId || '(none)'}`;
     case 'runPython':
       return `Script: ${(node.config as { scriptId: string }).scriptId || '(none)'}`;
+    case 'setSwitch':
+      return `Target: ${node.config.targetEntityId || '(none)'} · Switch: ${node.config.targetComponentId || '(none)'} · ${node.config.closed ? 'Close' : 'Open'}`;
+    case 'setSourceVoltage':
+      return `Target: ${node.config.targetEntityId || '(none)'} · Source: ${node.config.targetComponentId || '(none)'} · ${node.config.voltage} V`;
   }
 }
 

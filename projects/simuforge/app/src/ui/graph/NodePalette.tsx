@@ -12,7 +12,9 @@ const NODE_TYPES: GraphNodeType[] = [
   'applyForce',
   'applyImpulse',
   'clearForce',
-  'runPython'
+  'runPython',
+  'setSwitch',
+  'setSourceVoltage'
 ];
 
 interface NodePaletteProps {
