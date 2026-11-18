@@ -1,16 +1,19 @@
 import type {
+  ActuatorComponent,
   AnyComponent,
   Component,
   ComponentId,
   ElectricalComponent,
   GroundComponent,
+  JointComponent,
   ResistorComponent,
   RigidBodyComponent,
+  SensorComponent,
   SwitchComponent,
   VoltageSourceComponent
 } from './types.ts';
 
-export type ComponentCategory = 'physics' | 'electrical';
+export type ComponentCategory = 'physics' | 'electrical' | 'robotics';
 
 export interface ComponentTerminalDefinition {
   id: string;
@@ -42,6 +45,20 @@ export function isElectricalComponentType(type: string): type is ElectricalCompo
   return ELECTRICAL_COMPONENT_TYPE_SET.has(type);
 }
 
+export const ROBOTICS_COMPONENT_TYPES = [
+  'joint',
+  'actuator',
+  'sensor'
+] as const;
+
+export type RoboticsComponentType = (typeof ROBOTICS_COMPONENT_TYPES)[number];
+
+const ROBOTICS_COMPONENT_TYPE_SET: ReadonlySet<string> = new Set(ROBOTICS_COMPONENT_TYPES);
+
+export function isRoboticsComponentType(type: string): type is RoboticsComponentType {
+  return ROBOTICS_COMPONENT_TYPE_SET.has(type);
+}
+
 export function isRigidBodyComponent(component: Component): component is RigidBodyComponent {
   return component.type === 'rigidBody';
 }
@@ -64,6 +81,18 @@ export function isSwitchComponent(component: Component): component is SwitchComp
 
 export function isGroundComponent(component: Component): component is GroundComponent {
   return component.type === 'ground';
+}
+
+export function isJointComponent(component: Component): component is JointComponent {
+  return component.type === 'joint';
+}
+
+export function isActuatorComponent(component: Component): component is ActuatorComponent {
+  return component.type === 'actuator';
+}
+
+export function isSensorComponent(component: Component): component is SensorComponent {
+  return component.type === 'sensor';
 }
 
 const DEFINITIONS: readonly ComponentDefinition[] = [
@@ -124,6 +153,63 @@ const DEFINITIONS: readonly ComponentDefinition[] = [
     description: 'Circuit reference node. All ground components share the same net.',
     terminals: [{ id: 'g', label: 'G' }],
     create: (id) => ({ id, type: 'ground', enabled: true })
+  },
+  {
+    type: 'joint',
+    label: 'Joint',
+    category: 'robotics',
+    description: 'Revolute or prismatic joint linking a parent and child entity.',
+    terminals: [],
+    create: (id) => ({
+      id,
+      type: 'joint',
+      enabled: true,
+      kind: 'revolute',
+      parentEntityId: '',
+      childEntityId: '',
+      axis: { x: 0, y: 1, z: 0 },
+      limit: { min: -Math.PI, max: Math.PI }
+    })
+  },
+  {
+    type: 'actuator',
+    label: 'Actuator',
+    category: 'robotics',
+    description: 'DC motor actuator driving a joint from an electrical input.',
+    terminals: [],
+    create: (id) => ({
+      id,
+      type: 'actuator',
+      enabled: true,
+      kind: 'dcMotor',
+      jointId: '',
+      mode: 'voltage',
+      voltage: 0,
+      motor: {
+        resistance: 10,
+        torqueConstant: 0.1,
+        backEmfConstant: 0.1,
+        maxSpeed: 100,
+        maxTorque: 10,
+        inertia: 0.01
+      }
+    })
+  },
+  {
+    type: 'sensor',
+    label: 'Sensor',
+    category: 'robotics',
+    description: 'Contact, position, or velocity sensor reading simulated state.',
+    terminals: [],
+    create: (id) => ({
+      id,
+      type: 'sensor',
+      enabled: true,
+      kind: 'position',
+      targetEntityId: '',
+      axis: { x: 0, y: 1, z: 0 },
+      threshold: 0
+    })
   }
 ];
 

@@ -68,13 +68,57 @@ export interface GroundComponent extends Component {
   type: 'ground';
 }
 
+/** Phase 09 revolute or prismatic joint linking two entities. */
+export interface JointComponent extends Component {
+  type: 'joint';
+  kind: 'revolute' | 'prismatic';
+  parentEntityId: string;
+  childEntityId: string;
+  axis: Vec3;
+  limit: { min: number; max: number };
+}
+
+/** Phase 09 DC motor actuator driving a joint from an electrical input. */
+export interface ActuatorComponent extends Component {
+  type: 'actuator';
+  kind: 'dcMotor';
+  jointId: string;
+  mode: 'voltage' | 'position' | 'velocity';
+  electricalSourceEntityId?: string;
+  electricalSourceComponentId?: string;
+  voltage: number;
+  motor: {
+    resistance: number;
+    torqueConstant: number;
+    backEmfConstant: number;
+    maxSpeed: number;
+    maxTorque: number;
+    inertia: number;
+  };
+}
+
+/** Phase 09 sensor reading a simulated quantity. */
+export interface SensorComponent extends Component {
+  type: 'sensor';
+  kind: 'contact' | 'position' | 'velocity';
+  targetEntityId: string;
+  axis?: Vec3;
+  threshold?: number;
+}
+
 export type ElectricalComponent =
   | VoltageSourceComponent
   | ResistorComponent
   | SwitchComponent
   | GroundComponent;
 
-export type AnyComponent = RigidBodyComponent | ElectricalComponent | Component;
+export type RoboticsComponent = JointComponent | ActuatorComponent | SensorComponent;
+
+export type AnyComponent =
+  | RigidBodyComponent
+  | ElectricalComponent
+  | RoboticsComponent
+  | Component;
 
 export interface WorldEntity {
   id: EntityId;

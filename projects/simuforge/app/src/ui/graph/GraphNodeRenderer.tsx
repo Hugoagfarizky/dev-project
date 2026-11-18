@@ -28,6 +28,10 @@ function configSummary(node: GraphNode): string {
       return `Target: ${node.config.targetEntityId || '(none)'} · Switch: ${node.config.targetComponentId || '(none)'} · ${node.config.closed ? 'Close' : 'Open'}`;
     case 'setSourceVoltage':
       return `Target: ${node.config.targetEntityId || '(none)'} · Source: ${node.config.targetComponentId || '(none)'} · ${node.config.voltage} V`;
+    case 'setActuator':
+      return `Target: ${node.config.targetEntityId || '(none)'} · Actuator: ${node.config.targetComponentId || '(none)'} · ${node.config.value}`;
+    case 'readSensor':
+      return `Target: ${node.config.targetEntityId || '(none)'} · Sensor: ${node.config.targetComponentId || '(none)'}`;
   }
 }
 

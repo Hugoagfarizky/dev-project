@@ -116,6 +116,10 @@ export function selectRuntimeElectrical(state: StudioState): StudioState['runtim
   return state.runtime.electrical;
 }
 
+export function selectRuntimeRobotics(state: StudioState): StudioState['runtime']['robotics'] {
+  return state.runtime.robotics;
+}
+
 export function selectElectricalComponentResult(
   state: StudioState,
   entityId: string,

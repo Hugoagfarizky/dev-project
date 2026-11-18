@@ -153,6 +153,85 @@ function validateComponentTypeSpecific(value: Record<string, unknown>, path: str
     if (angularVelocityError) return angularVelocityError;
   }
 
+  if (value.type === 'joint') {
+    if (value.kind !== 'revolute' && value.kind !== 'prismatic') {
+      return fail('VALIDATION_FAILED', 'kind must be revolute or prismatic', `${path}.kind`);
+    }
+    if (typeof value.parentEntityId !== 'string' || value.parentEntityId.trim().length === 0) {
+      return fail('VALIDATION_FAILED', 'parentEntityId must be a non-empty string', `${path}.parentEntityId`);
+    }
+    if (typeof value.childEntityId !== 'string' || value.childEntityId.trim().length === 0) {
+      return fail('VALIDATION_FAILED', 'childEntityId must be a non-empty string', `${path}.childEntityId`);
+    }
+    const axisError = validateVec3(value.axis, `${path}.axis`);
+    if (axisError) return axisError;
+    if (!isPlainObject(value.limit)) {
+      return fail('VALIDATION_FAILED', 'limit must be an object', `${path}.limit`);
+    }
+    const limit = value.limit as Record<string, unknown>;
+    if (typeof limit.min !== 'number' || !Number.isFinite(limit.min)) {
+      return fail('VALIDATION_FAILED', 'limit.min must be finite', `${path}.limit.min`);
+    }
+    if (typeof limit.max !== 'number' || !Number.isFinite(limit.max)) {
+      return fail('VALIDATION_FAILED', 'limit.max must be finite', `${path}.limit.max`);
+    }
+    if (limit.min > limit.max) {
+      return fail('VALIDATION_FAILED', 'limit.min must be <= limit.max', `${path}.limit`);
+    }
+  }
+
+  if (value.type === 'actuator') {
+    if (value.kind !== 'dcMotor') {
+      return fail('VALIDATION_FAILED', 'kind must be dcMotor', `${path}.kind`);
+    }
+    if (typeof value.jointId !== 'string' || value.jointId.trim().length === 0) {
+      return fail('VALIDATION_FAILED', 'jointId must be a non-empty string', `${path}.jointId`);
+    }
+    if (value.mode !== 'voltage' && value.mode !== 'position' && value.mode !== 'velocity') {
+      return fail('VALIDATION_FAILED', 'mode must be voltage, position, or velocity', `${path}.mode`);
+    }
+    if (typeof value.voltage !== 'number' || !Number.isFinite(value.voltage)) {
+      return fail('VALIDATION_FAILED', 'voltage must be finite', `${path}.voltage`);
+    }
+    if (!isPlainObject(value.motor)) {
+      return fail('VALIDATION_FAILED', 'motor must be an object', `${path}.motor`);
+    }
+    const motor = value.motor as Record<string, unknown>;
+    for (const field of ['resistance', 'torqueConstant', 'backEmfConstant', 'maxSpeed', 'maxTorque', 'inertia']) {
+      if (typeof motor[field] !== 'number' || !Number.isFinite(motor[field] as number)) {
+        return fail('VALIDATION_FAILED', `${field} must be finite`, `${path}.motor.${field}`);
+      }
+    }
+    if ((motor.resistance as number) <= 0) {
+      return fail('VALIDATION_FAILED', 'resistance must be > 0', `${path}.motor.resistance`);
+    }
+    if ((motor.inertia as number) <= 0) {
+      return fail('VALIDATION_FAILED', 'inertia must be > 0', `${path}.motor.inertia`);
+    }
+    if (value.electricalSourceEntityId !== undefined && typeof value.electricalSourceEntityId !== 'string') {
+      return fail('VALIDATION_FAILED', 'electricalSourceEntityId must be a string', `${path}.electricalSourceEntityId`);
+    }
+    if (value.electricalSourceComponentId !== undefined && typeof value.electricalSourceComponentId !== 'string') {
+      return fail('VALIDATION_FAILED', 'electricalSourceComponentId must be a string', `${path}.electricalSourceComponentId`);
+    }
+  }
+
+  if (value.type === 'sensor') {
+    if (value.kind !== 'contact' && value.kind !== 'position' && value.kind !== 'velocity') {
+      return fail('VALIDATION_FAILED', 'kind must be contact, position, or velocity', `${path}.kind`);
+    }
+    if (typeof value.targetEntityId !== 'string' || value.targetEntityId.trim().length === 0) {
+      return fail('VALIDATION_FAILED', 'targetEntityId must be a non-empty string', `${path}.targetEntityId`);
+    }
+    if (value.axis !== undefined) {
+      const axisError = validateVec3(value.axis, `${path}.axis`);
+      if (axisError) return axisError;
+    }
+    if (value.threshold !== undefined && (typeof value.threshold !== 'number' || !Number.isFinite(value.threshold))) {
+      return fail('VALIDATION_FAILED', 'threshold must be finite', `${path}.threshold`);
+    }
+  }
+
   return null;
 }
 

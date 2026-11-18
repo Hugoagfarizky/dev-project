@@ -14,7 +14,9 @@ const NODE_TYPES: GraphNodeType[] = [
   'clearForce',
   'runPython',
   'setSwitch',
-  'setSourceVoltage'
+  'setSourceVoltage',
+  'setActuator',
+  'readSensor'
 ];
 
 interface NodePaletteProps {

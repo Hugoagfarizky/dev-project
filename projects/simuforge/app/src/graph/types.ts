@@ -17,7 +17,9 @@ export type GraphNodeType =
   | 'clearForce'
   | 'runPython'
   | 'setSwitch'
-  | 'setSourceVoltage';
+  | 'setSourceVoltage'
+  | 'setActuator'
+  | 'readSensor';
 
 export type GraphPortDirection = 'input' | 'output';
 export type GraphPortKind = 'execution';
@@ -100,6 +102,19 @@ export interface SetSourceVoltageNodeConfig {
   voltage: number;
 }
 
+export interface SetActuatorNodeConfig {
+  kind: 'setActuator';
+  targetEntityId: string;
+  targetComponentId: string;
+  value: number;
+}
+
+export interface ReadSensorNodeConfig {
+  kind: 'readSensor';
+  targetEntityId: string;
+  targetComponentId: string;
+}
+
 export type GraphNodeConfig =
   | OnStartNodeConfig
   | ManualTriggerNodeConfig
@@ -109,7 +124,9 @@ export type GraphNodeConfig =
   | ClearForceNodeConfig
   | RunPythonNodeConfig
   | SetSwitchNodeConfig
-  | SetSourceVoltageNodeConfig;
+  | SetSourceVoltageNodeConfig
+  | SetActuatorNodeConfig
+  | ReadSensorNodeConfig;
 
 export interface GraphNode extends GraphNodeBase {
   config: GraphNodeConfig;

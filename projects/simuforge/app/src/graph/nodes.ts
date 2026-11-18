@@ -33,6 +33,14 @@ export const NODE_PORT_DEFINITIONS: Record<GraphNodeType, readonly NodePortDefin
   setSourceVoltage: [
     { id: 'in', direction: 'input', kind: 'execution' },
     { id: 'out', direction: 'output', kind: 'execution' }
+  ],
+  setActuator: [
+    { id: 'in', direction: 'input', kind: 'execution' },
+    { id: 'out', direction: 'output', kind: 'execution' }
+  ],
+  readSensor: [
+    { id: 'in', direction: 'input', kind: 'execution' },
+    { id: 'out', direction: 'output', kind: 'execution' }
   ]
 };
 

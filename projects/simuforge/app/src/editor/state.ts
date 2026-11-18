@@ -138,6 +138,8 @@ export interface RuntimeState {
   execution: RuntimeExecutionState;
   /** Runtime-only electrical state; never persisted (D-P08-03). */
   electrical: RuntimeElectricalState;
+  /** Runtime-only robotics state; never persisted. */
+  robotics: RuntimeRoboticsState;
 }
 
 export interface EditorState {
@@ -199,6 +201,32 @@ export function createDefaultElectricalState(): RuntimeElectricalState {
   };
 }
 
+export type RuntimeRoboticsStatus = 'idle' | 'solved' | 'invalid' | 'failed';
+
+export interface RuntimeRoboticsState {
+  status: RuntimeRoboticsStatus;
+  jointAngles: Record<string, number>;
+  jointVelocities: Record<string, number>;
+  actuatorStates: Record<string, { voltage: number; current: number; torque: number; speed: number }>;
+  sensorReadings: Record<string, number | boolean>;
+  diagnostics: readonly { code: string; severity: 'error' | 'warning'; message: string }[];
+  solveCount: number;
+  lastSolveMs: number;
+}
+
+export function createDefaultRoboticsState(): RuntimeRoboticsState {
+  return {
+    status: 'idle',
+    jointAngles: {},
+    jointVelocities: {},
+    actuatorStates: {},
+    sensorReadings: {},
+    diagnostics: [],
+    solveCount: 0,
+    lastSolveMs: 0
+  };
+}
+
 export function createDefaultRuntimeState(): RuntimeState {
   return {
     status: 'editing',
@@ -208,7 +236,8 @@ export function createDefaultRuntimeState(): RuntimeState {
     accumulatorSeconds: 0,
     elapsedSeconds: 0,
     execution: createDefaultExecutionState(),
-    electrical: createDefaultElectricalState()
+    electrical: createDefaultElectricalState(),
+    robotics: createDefaultRoboticsState()
   };
 }
 

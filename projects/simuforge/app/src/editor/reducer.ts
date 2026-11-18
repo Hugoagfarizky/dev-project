@@ -10,8 +10,12 @@ import {
   solveElectricalCircuit
 } from '../runtime/electrical.ts';
 import type { ElectricalOverrides } from '../runtime/electrical.ts';
+import {
+  hasRoboticsComponents,
+  stepRobotics
+} from '../runtime/robotics.ts';
 import { transformsEqual } from '../world/transform.ts';
-import { createDefaultRuntimeState, createDefaultPythonState, createDefaultElectricalState, createEmptyProject } from './state.ts';
+import { createDefaultRuntimeState, createDefaultPythonState, createDefaultElectricalState, createDefaultRoboticsState, createEmptyProject } from './state.ts';
 import {
   advanceSimulation,
   applyForce,
@@ -683,9 +687,13 @@ function drainExecution(
     const chain = executeChain(pending.plan, working.graph as Graph, working.runtime.bodies, {
       startIndex: pending.index,
       python: { nodeId: pending.nodeId, outcome: nodeOutcome },
-      electrical: electricalContext
+      electrical: electricalContext,
+      robotics: { state: working.runtime.robotics }
     });
     working = commitChainElectrical(working, context, chain, electricalContext);
+    if (chain.robotics) {
+      working = { ...working, runtime: { ...working.runtime, robotics: chain.robotics } };
+    }
 
     let editor = working.editor;
     for (const result of chain.executed) {
@@ -980,9 +988,13 @@ function drainExecution(
 
     const electricalContext = chainElectricalContext(working);
     const chain = executeChain(plan, graph, working.runtime.bodies, {
-      electrical: electricalContext
+      electrical: electricalContext,
+      robotics: { state: working.runtime.robotics }
     });
     working = commitChainElectrical(working, context, chain, electricalContext);
+    if (chain.robotics) {
+      working = { ...working, runtime: { ...working.runtime, robotics: chain.robotics } };
+    }
 
     let editor = working.editor;
     for (const result of chain.executed) {
@@ -1784,7 +1796,8 @@ export function reduceStudioState(
               droppedEvents: state.runtime.execution.droppedEvents,
               contactKeys: []
             },
-            electrical: createDefaultElectricalState()
+            electrical: createDefaultElectricalState(),
+            robotics: createDefaultRoboticsState()
           }
         };
 
@@ -2012,7 +2025,7 @@ export function reduceStudioState(
       next = solveElectricalRuntime(
         {
           ...next,
-          runtime: { ...next.runtime, electrical: createDefaultElectricalState() }
+          runtime: { ...next.runtime, electrical: createDefaultElectricalState(), robotics: createDefaultRoboticsState() }
         },
         context,
         collectAuthoredElectricalOverrides(restored),
@@ -2071,6 +2084,23 @@ export function reduceStudioState(
           }
         }
       };
+
+      // Step robotics state deterministically on the fixed timestep.
+      if (hasRoboticsComponents(state.project.world.entities)) {
+        const roboticsState = stepRobotics(
+          state.runtime.robotics,
+          state.project.world.entities,
+          {
+            switchStates: state.runtime.electrical.switchStates,
+            sourceVoltages: state.runtime.electrical.sourceVoltages
+          },
+          advance.steps > 0 ? advance.steps / 60 : command.deltaSeconds
+        );
+        next = {
+          ...next,
+          runtime: { ...next.runtime, robotics: roboticsState }
+        };
+      }
 
       // D-M2C-07: rising-edge contacts fire matching On Plane Contact triggers.
       if (advance.contacts.length > 0 && next.graph && next.runtime.execution.enabled) {
@@ -2232,6 +2262,14 @@ export function reduceStudioState(
         },
         { pauseOnUnexpectedFailure: true, logSolved: false }
       );
+    }
+
+    case 'runtime/set-actuator': {
+      if (state.runtime.status === 'editing') return state;
+      const next = { ...state.runtime.robotics };
+      const prev = next.actuatorStates[command.componentId] ?? { voltage: 0, current: 0, torque: 0, speed: 0 };
+      next.actuatorStates = { ...next.actuatorStates, [command.componentId]: { ...prev, voltage: command.value } };
+      return { ...state, runtime: { ...state.runtime, robotics: next } };
     }
 
     case 'runtime/graph-trigger': {

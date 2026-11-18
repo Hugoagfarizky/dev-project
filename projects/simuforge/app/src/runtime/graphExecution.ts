@@ -10,6 +10,7 @@ import { validateGraph } from '../graph/validation.ts';
 import { RuntimeError, applyForce, applyImpulse, clearForce, toSimulationFailure } from './physics.ts';
 import type { SimulationFailure } from './physics.ts';
 import type { RuntimeBodies } from './types.ts';
+import type { RuntimeRoboticsState } from '../editor/state.ts';
 import { applyPythonActions } from '../python/actions.ts';
 import type { PythonAction } from '../python/types.ts';
 import { applyElectricalAction } from './electrical.ts';
@@ -60,7 +61,9 @@ const TRIGGER_TYPES: Record<GraphNodeType, true | undefined> = {
   clearForce: undefined,
   runPython: undefined,
   setSwitch: undefined,
-  setSourceVoltage: undefined
+  setSourceVoltage: undefined,
+  setActuator: undefined,
+  readSensor: undefined
 };
 
 const ACTION_TYPES: Record<GraphNodeType, true | undefined> = {
@@ -72,7 +75,9 @@ const ACTION_TYPES: Record<GraphNodeType, true | undefined> = {
   clearForce: true,
   runPython: true,
   setSwitch: true,
-  setSourceVoltage: true
+  setSourceVoltage: true,
+  setActuator: true,
+  readSensor: true
 };
 
 export function isTriggerNodeType(type: GraphNodeType): boolean {
@@ -344,6 +349,7 @@ export interface ChainExecutionResult {
    * no electrical node changed anything, so callers can skip a re-solve.
    */
   electrical: ElectricalOverrides | null;
+  robotics: RuntimeRoboticsState | null;
   executed: NodeExecutionResult[];
   failure: ExecutionFailure | null;
   completed: boolean;
@@ -382,6 +388,10 @@ export interface ChainExecutionOptions {
     entities: readonly WorldEntity[];
     overrides: ElectricalOverrides;
   };
+  /** Phase 09: enables `setActuator` and `readSensor`. */
+  robotics?: {
+    state: RuntimeRoboticsState;
+  };
 }
 
 function actionDetail(node: GraphNode): string {
@@ -398,6 +408,10 @@ function actionDetail(node: GraphNode): string {
       return `Switch ${node.config.targetEntityId}/${node.config.targetComponentId} → ${node.config.closed ? 'closed' : 'open'}`;
     case 'setSourceVoltage':
       return `Source ${node.config.targetEntityId}/${node.config.targetComponentId} → ${node.config.voltage} V`;
+    case 'setActuator':
+      return `Actuator ${node.config.targetEntityId}/${node.config.targetComponentId} → ${node.config.value}`;
+    case 'readSensor':
+      return `Sensor ${node.config.targetEntityId}/${node.config.targetComponentId}`;
     default:
       return '';
   }
@@ -430,8 +444,8 @@ function actionEntityId(node: GraphNode): string | undefined {
     case 'applyImpulse':
     case 'clearForce':
     case 'onPlaneContact':
-    case 'setSwitch':
-    case 'setSourceVoltage':
+    case 'setActuator':
+    case 'readSensor':
       return node.config.targetEntityId;
     default:
       return undefined;
@@ -457,6 +471,7 @@ export function executeChain(
   const executed: NodeExecutionResult[] = [];
   let current = bodies;
   let electrical = options.electrical?.overrides ?? null;
+  let robotics = options.robotics?.state ?? null;
   const startIndex = options.startIndex ?? 0;
 
   for (let index = startIndex; index < plan.order.length; index += 1) {
@@ -466,7 +481,7 @@ export function executeChain(
       return {
         bodies: current,
         electrical,
-        executed,
+        robotics,        executed,
         failure: {
           nodeId,
           type: plan.triggerType,
@@ -489,7 +504,7 @@ export function executeChain(
         return {
           bodies: current,
           electrical,
-          executed,
+        robotics,          executed,
           failure: null,
           completed: false,
           suspension: { nodeId: node.id, index }
@@ -500,7 +515,7 @@ export function executeChain(
         return {
           bodies: current,
           electrical,
-          executed,
+        robotics,          executed,
           failure: {
             nodeId: node.id,
             type: node.type,
@@ -519,7 +534,7 @@ export function executeChain(
         return {
           bodies: current,
           electrical,
-          executed,
+        robotics,          executed,
           failure: {
             nodeId: node.id,
             type: node.type,
@@ -546,7 +561,7 @@ export function executeChain(
         return {
           bodies: current,
           electrical,
-          executed,
+        robotics,          executed,
           failure: {
             nodeId: node.id,
             type: node.type,
@@ -578,7 +593,7 @@ export function executeChain(
         return {
           bodies: current,
           electrical,
-          executed,
+        robotics,          executed,
           failure: {
             nodeId: node.id,
             type: node.type,
@@ -594,6 +609,40 @@ export function executeChain(
       }
 
       electrical = result.overrides;
+      executed.push({
+        nodeId: node.id,
+        type: node.type,
+        status: 'executed',
+        entityId: node.config.targetEntityId,
+        detail: actionDetail(node)
+      });
+      continue;
+    }
+
+    if (node.config.kind === 'setActuator' || node.config.kind === 'readSensor') {
+      if (!options.robotics || robotics === null) {
+        return {
+          bodies: current,
+          electrical,
+          robotics,
+          executed,
+          failure: {
+            nodeId: node.id,
+            type: node.type,
+            code: GRAPH_EXECUTION_ERRORS.INVALID_NODE,
+            message: `Node ${node.id} (${node.type}) requires a robotics runtime context.`,
+            severity: 'error'
+          },
+          completed: false
+        };
+      }
+      if (node.config.kind === 'setActuator') {
+        // Store target value in actuator state (transient)
+        const actuatorStates = { ...robotics.actuatorStates };
+        const prev = actuatorStates[node.config.targetComponentId] ?? { voltage: 0, current: 0, torque: 0, speed: 0 };
+        actuatorStates[node.config.targetComponentId] = { ...prev, voltage: node.config.value };
+        robotics = { ...robotics, actuatorStates };
+      }
       executed.push({
         nodeId: node.id,
         type: node.type,
@@ -620,7 +669,7 @@ export function executeChain(
       return {
         bodies: current,
         electrical,
-        executed,
+        robotics,        executed,
         failure: {
           nodeId: node.id,
           type: node.type,
@@ -633,7 +682,7 @@ export function executeChain(
     }
   }
 
-  return { bodies: current, electrical, executed, failure: null, completed: true };
+  return { bodies: current, electrical, robotics, executed, failure: null, completed: true };
 }
 
 export interface PlaneContactPayload {

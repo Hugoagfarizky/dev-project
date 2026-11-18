@@ -15,9 +15,10 @@ const ID = '11111111-1111-4111-8111-111111111111';
 test('registry exposes deterministic definitions', () => {
   assert.deepEqual(
     COMPONENT_DEFINITIONS.map((definition) => definition.type),
-    ['rigidBody', 'voltageSource', 'resistor', 'switch', 'ground']
+    ['rigidBody', 'voltageSource', 'resistor', 'switch', 'ground', 'joint', 'actuator', 'sensor']
   );
   assert.equal(COMPONENT_DEFINITIONS.filter((definition) => definition.category === 'electrical').length, 4);
+  assert.equal(COMPONENT_DEFINITIONS.filter((definition) => definition.category === 'robotics').length, 3);
 });
 
 test('creates valid defaults for every registered component', () => {

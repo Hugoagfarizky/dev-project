@@ -228,6 +228,54 @@ function validateNodeConfig(
       break;
     }
 
+    case 'setActuator':
+    case 'readSensor': {
+      const config = node.config as {
+        targetEntityId?: unknown;
+        targetComponentId?: unknown;
+        value?: unknown;
+      };
+      if (typeof config.targetEntityId !== 'string' || config.targetEntityId.trim().length === 0) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.MISSING_TARGET_ENTITY, `Node ${node.id} requires a non-empty targetEntityId.`, 'error', { nodeId: node.id, field: 'targetEntityId' })
+        );
+        break;
+      }
+      const entity = context.entities.find((item) => item.id === config.targetEntityId);
+      if (!entity) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_ENTITY, `Node ${node.id} references unknown entity ${config.targetEntityId}.`, 'error', { nodeId: node.id, field: 'targetEntityId' })
+        );
+        break;
+      }
+      if (typeof config.targetComponentId !== 'string' || config.targetComponentId.trim().length === 0) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.MISSING_TARGET_COMPONENT, `Node ${node.id} requires a non-empty targetComponentId.`, 'error', { nodeId: node.id, field: 'targetComponentId' })
+        );
+        break;
+      }
+      const expectedType = node.config.kind === 'setActuator' ? 'actuator' : 'sensor';
+      const component = entity.components.find((item) => item.id === config.targetComponentId);
+      if (!component || component.type !== expectedType) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_COMPONENT, `Node ${node.id} target is not a ${expectedType} component.`, 'error', { nodeId: node.id, field: 'targetComponentId' })
+        );
+        break;
+      }
+      if (!component.enabled) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_COMPONENT, `Node ${node.id} target is disabled.`, 'error', { nodeId: node.id, field: 'targetComponentId' })
+        );
+        break;
+      }
+      if (node.config.kind === 'setActuator' && !isFiniteNumber(config.value)) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.NON_FINITE_NUMBER, `Node ${node.id} value must be finite.`, 'error', { nodeId: node.id, field: 'value' })
+        );
+      }
+      break;
+    }
+
     case 'runPython': {
       const config = node.config as { scriptId?: unknown };
       if (typeof config.scriptId !== 'string' || config.scriptId.trim().length === 0) {
@@ -336,7 +384,9 @@ const NODE_TYPE_SET: Record<string, true> = {
   clearForce: true,
   runPython: true,
   setSwitch: true,
-  setSourceVoltage: true
+  setSourceVoltage: true,
+  setActuator: true,
+  readSensor: true
 };
 
 function portDefinition(type: GraphNode['type'], portId: string) {

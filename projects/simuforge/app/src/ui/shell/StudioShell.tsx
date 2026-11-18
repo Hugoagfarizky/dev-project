@@ -14,6 +14,7 @@ import { Inspector } from '../panels/Inspector.js';
 import { GraphEditor } from '../graph/GraphEditor.js';
 import { NodePalette } from '../graph/NodePalette.js';
 import { CircuitWorkspace } from '../circuit/CircuitWorkspace.js';
+import { RoboticsWorkspace } from '../robotics/RoboticsWorkspace.js';
 import { PythonPanel } from '../python/PythonPanel.js';
 import { PythonRuntime } from '../../python/runtime.js';
 import { attachPythonController } from '../../python/controller.js';
@@ -55,7 +56,7 @@ export function StudioShell({ store }: StudioShellProps) {
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [showHub, setShowHub] = useState<boolean>(false);
   const [showPython, setShowPython] = useState<boolean>(false);
-  const [programTab, setProgramTab] = useState<'graph' | 'circuit'>('graph');
+  const [programTab, setProgramTab] = useState<'graph' | 'circuit' | 'robotics'>('graph');
   const repositoryRef = useRef<IndexedDbProjectRepository>(new IndexedDbProjectRepository());
   const layoutStorageRef = useRef<LayoutStorage>(new LayoutStorage());
   const pythonRuntimeRef = useRef<PythonRuntime | null>(null);
@@ -431,16 +432,19 @@ export function StudioShell({ store }: StudioShellProps) {
               <div className="sf-program-tabs" role="tablist" aria-label="Program views" style={{ position: 'absolute', top: 2, right: 2, zIndex: 5 }}>
                 <button type="button" role="tab" className="sf-program-tab" data-testid="program-tab-graph" aria-selected={programTab === 'graph'} onClick={() => setProgramTab('graph')}>Graph</button>
                 <button type="button" role="tab" className="sf-program-tab" data-testid="program-tab-circuit" aria-selected={programTab === 'circuit'} onClick={() => setProgramTab('circuit')}>Circuit</button>
+                <button type="button" role="tab" className="sf-program-tab" data-testid="program-tab-robotics" aria-selected={programTab === 'robotics'} onClick={() => setProgramTab('robotics')}>Robotics</button>
               </div>
               {programTab === 'graph' ? (
                 <div className="sf-graph-workspace">
                   <NodePalette store={store} />
                   <GraphEditor store={store} />
                 </div>
-              ) : (
+              ) : programTab === 'circuit' ? (
                 <div className="sf-circuit-workspace">
                   <CircuitWorkspace store={store} />
                 </div>
+              ) : (
+                <RoboticsWorkspace store={store} />
               )}
             </div>
             {/* <PythonPanel store={store} /> */}

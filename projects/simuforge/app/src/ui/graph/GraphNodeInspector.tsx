@@ -36,10 +36,22 @@ export function GraphNodeInspector({ store }: GraphNodeInspectorProps) {
     node.config.kind === 'setSwitch' || node.config.kind === 'setSourceVoltage'
       ? node.config
       : null;
-  const expectedType = electricalConfig?.kind === 'setSwitch' ? 'switch' : 'voltageSource';
-  const targetEntity = electricalConfig
-    ? entities.find((entity) => entity.id === electricalConfig.targetEntityId) ?? null
-    : null;
+  const roboticsConfig =
+    node.config.kind === 'setActuator' || node.config.kind === 'readSensor'
+      ? node.config
+      : null;
+  const expectedType = electricalConfig
+    ? electricalConfig.kind === 'setSwitch'
+      ? 'switch'
+      : 'voltageSource'
+    : roboticsConfig?.kind === 'setActuator'
+      ? 'actuator'
+      : 'sensor';
+  const targetEntity = roboticsConfig
+    ? entities.find((entity) => entity.id === roboticsConfig.targetEntityId) ?? null
+    : electricalConfig
+      ? entities.find((entity) => entity.id === electricalConfig.targetEntityId) ?? null
+      : null;
   const targetComponents = (targetEntity?.components ?? []).filter(
     (component) => component.type === expectedType
   );
@@ -210,6 +222,71 @@ export function GraphNodeInspector({ store }: GraphNodeInspectorProps) {
               />
             </label>
           )}
+        </>
+      ) : null}
+      {node.config.kind === 'setActuator' || node.config.kind === 'readSensor' ? (
+        <>
+          <label className="sf-inspector-row">
+            <span className="sf-inspector-label">Target entity</span>
+            <select
+              value={node.config.targetEntityId}
+              onChange={(event) => {
+                const nextEntity = entities.find((entity) => entity.id === event.target.value);
+                const expectedType = node.config.kind === 'setActuator' ? 'actuator' : 'sensor';
+                const nextComponent = (nextEntity?.components ?? []).find(
+                  (component) => component.type === expectedType
+                );
+                setConfig({
+                  ...node.config,
+                  targetEntityId: event.target.value,
+                  targetComponentId: nextComponent?.id ?? ''
+                } as GraphNode['config']);
+              }}
+            >
+              <option value="">(none)</option>
+              {entities.map((entity) => (
+                <option key={entity.id} value={entity.id}>
+                  {entity.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="sf-inspector-row">
+            <span className="sf-inspector-label">
+              {node.config.kind === 'setActuator' ? 'Actuator' : 'Sensor'}
+            </span>
+            <select
+              value={node.config.targetComponentId}
+              onChange={(event) =>
+                setConfig({ ...node.config, targetComponentId: event.target.value } as GraphNode['config'])
+              }
+            >
+              <option value="">(none)</option>
+              {(targetEntity?.components ?? [])
+                .filter((component) => component.type === (node.config.kind === 'setActuator' ? 'actuator' : 'sensor'))
+                .map((component) => (
+                  <option key={component.id} value={component.id}>
+                    {componentLabel(component.type)} · {component.id.slice(0, 8)}
+                  </option>
+                ))}
+            </select>
+          </label>
+          {node.config.kind === 'setActuator' ? (
+            <label className="sf-inspector-row">
+              <span className="sf-inspector-label">Value</span>
+              <input
+                type="number"
+                value={node.config.value}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  setConfig({
+                    ...node.config,
+                    value: Number.isFinite(value) ? value : 0
+                  } as GraphNode['config']);
+                }}
+              />
+            </label>
+          ) : null}
         </>
       ) : null}
     </div>

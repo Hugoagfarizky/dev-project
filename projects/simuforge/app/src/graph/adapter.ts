@@ -63,7 +63,9 @@ export function createCanonicalNode(
     clearForce: { kind: 'clearForce', targetEntityId: '' },
     runPython: { kind: 'runPython', scriptId: '' },
     setSwitch: { kind: 'setSwitch', targetEntityId: '', targetComponentId: '', closed: false },
-    setSourceVoltage: { kind: 'setSourceVoltage', targetEntityId: '', targetComponentId: '', voltage: 0 }
+    setSourceVoltage: { kind: 'setSourceVoltage', targetEntityId: '', targetComponentId: '', voltage: 0 },
+    setActuator: { kind: 'setActuator', targetEntityId: '', targetComponentId: '', value: 0 },
+    readSensor: { kind: 'readSensor', targetEntityId: '', targetComponentId: '' }
   };
 
   return {
