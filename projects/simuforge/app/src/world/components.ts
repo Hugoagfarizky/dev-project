@@ -13,7 +13,7 @@ import type {
   VoltageSourceComponent
 } from './types.ts';
 
-export type ComponentCategory = 'physics' | 'electrical' | 'robotics';
+export type ComponentCategory = 'physics' | 'electrical' | 'robotics' | 'extension';
 
 export interface ComponentTerminalDefinition {
   id: string;
@@ -215,18 +215,64 @@ const DEFINITIONS: readonly ComponentDefinition[] = [
 
 const DEFINITION_BY_TYPE = new Map(DEFINITIONS.map((definition) => [definition.type, definition]));
 
+/** Built-in component definitions. Never mutated by extensions. */
 export const COMPONENT_DEFINITIONS: readonly ComponentDefinition[] = DEFINITIONS;
 
+/**
+ * Phase 10: extension-provided component definitions. The registry lives here so
+ * the world layer stays free of extension/UI dependencies; the extension layer
+ * registers and unregisters definitions through these functions.
+ */
+const DYNAMIC_DEFINITIONS = new Map<string, ComponentDefinition>();
+
+export function registerDynamicComponentDefinition(definition: ComponentDefinition): void {
+  if (DEFINITION_BY_TYPE.has(definition.type)) {
+    throw new Error(`Component type "${definition.type}" is reserved by a built-in component.`);
+  }
+  DYNAMIC_DEFINITIONS.set(definition.type, definition);
+}
+
+export function unregisterDynamicComponentDefinition(type: string): void {
+  DYNAMIC_DEFINITIONS.delete(type);
+}
+
+export function resetDynamicComponentDefinitions(): void {
+  DYNAMIC_DEFINITIONS.clear();
+}
+
+/** True when the type is a built-in component type. */
+export function isReservedComponentType(type: string): boolean {
+  return DEFINITION_BY_TYPE.has(type);
+}
+
+/** True when the type is currently registered by an extension. */
+export function isDynamicComponentType(type: string): boolean {
+  return DYNAMIC_DEFINITIONS.has(type);
+}
+
+/**
+ * True when the type is known to the registry, optionally including extension
+ * types declared by a document that has not been loaded into the registry yet.
+ */
+export function isKnownComponentType(type: string, extra?: ReadonlySet<string>): boolean {
+  return DEFINITION_BY_TYPE.has(type) || DYNAMIC_DEFINITIONS.has(type) || (extra?.has(type) ?? false);
+}
+
 export function getComponentDefinition(type: string): ComponentDefinition | null {
-  return DEFINITION_BY_TYPE.get(type) ?? null;
+  return DEFINITION_BY_TYPE.get(type) ?? DYNAMIC_DEFINITIONS.get(type) ?? null;
+}
+
+/** Built-in definitions first, then registered extension definitions. */
+export function getComponentDefinitions(): readonly ComponentDefinition[] {
+  return [...DEFINITIONS, ...DYNAMIC_DEFINITIONS.values()];
 }
 
 export function componentLabel(type: string): string {
-  return DEFINITION_BY_TYPE.get(type)?.label ?? type;
+  return getComponentDefinition(type)?.label ?? type;
 }
 
 export function componentTerminals(type: string): readonly ComponentTerminalDefinition[] {
-  return DEFINITION_BY_TYPE.get(type)?.terminals ?? [];
+  return getComponentDefinition(type)?.terminals ?? [];
 }
 
 /**
@@ -236,7 +282,7 @@ export function componentTerminals(type: string): readonly ComponentTerminalDefi
  * registry cannot describe.
  */
 export function createComponent(type: string, id: ComponentId): AnyComponent | null {
-  const definition = DEFINITION_BY_TYPE.get(type);
+  const definition = getComponentDefinition(type);
   return definition ? definition.create(id) : null;
 }
 

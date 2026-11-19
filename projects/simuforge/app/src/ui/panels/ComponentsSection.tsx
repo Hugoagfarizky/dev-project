@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import type { StudioStore } from '../../editor/store.js';
+import { selectProjectExtensions } from '../../editor/selectors.js';
+import { useStudioStore } from '../hooks/useStore.js';
 import type {
   Component,
   ResistorComponent,
@@ -9,9 +11,11 @@ import type {
   WorldEntity
 } from '../../world/types.js';
 import {
-  COMPONENT_DEFINITIONS,
   componentLabel,
   createComponent,
+  getComponentDefinition,
+  getComponentDefinitions,
+  isDynamicComponentType,
   isElectricalComponent,
   isRigidBodyComponent
 } from '../../world/components.js';
@@ -110,7 +114,72 @@ export function ComponentCard({ entity, component, store }: ComponentCardProps) 
       {isElectricalComponent(component) ? (
         <p className="sf-component-id" title={component.id}>{component.id}</p>
       ) : null}
+      {isDynamicComponentType(component.type) ? (
+        <ExtensionComponentFields entity={entity} component={component} store={store} />
+      ) : null}
     </article>
+  );
+}
+
+function ExtensionComponentFields({
+  entity,
+  component,
+  store
+}: {
+  entity: WorldEntity;
+  component: Component;
+  store: StudioStore;
+}) {
+  const definition = getComponentDefinition(component.type);
+  const entries = Object.entries(component as unknown as Record<string, unknown>).filter(
+    ([key]) => key !== 'id' && key !== 'type' && key !== 'enabled'
+  );
+  return (
+    <>
+      <p className="sf-inspector-note">{definition?.description ?? 'Extension-provided component.'}</p>
+      {entries.map(([key, value]) => {
+        if (typeof value === 'number') {
+          return (
+            <NumericField
+              key={key}
+              id={`${component.id}-${key}`}
+              label={key}
+              value={value}
+              onCommit={(next) => updateComponent(store, entity, component, { [key]: next })}
+            />
+          );
+        }
+        if (typeof value === 'boolean') {
+          return (
+            <label className="sf-component-toggle" key={key}>
+              <input
+                type="checkbox"
+                checked={value}
+                onChange={(event) =>
+                  updateComponent(store, entity, component, { [key]: event.target.checked })
+                }
+              />
+              <span>{key}</span>
+            </label>
+          );
+        }
+        if (typeof value === 'string') {
+          return (
+            <label className="sf-inspector-row" key={key}>
+              <span className="sf-inspector-label">{key}</span>
+              <input
+                type="text"
+                value={value}
+                onChange={(event) =>
+                  updateComponent(store, entity, component, { [key]: event.target.value })
+                }
+              />
+            </label>
+          );
+        }
+        return null;
+      })}
+    </>
   );
 }
 
@@ -150,9 +219,15 @@ function RigidBodyFields({ entity, component, store }: { entity: WorldEntity; co
 export function AddComponentMenu({ entity, store }: AddComponentMenuProps) {
   const components = entity.components ?? [];
   const hasRigidBody = components.some(isRigidBodyComponent);
+  // Subscribe so a newly installed/removed extension refreshes the menu even
+  // when the selected entity itself did not change.
+  const extensions = useStudioStore(store, selectProjectExtensions);
   const available = useMemo(
-    () => COMPONENT_DEFINITIONS.filter((definition) => !(definition.type === 'rigidBody' && hasRigidBody)),
-    [hasRigidBody]
+    () =>
+      getComponentDefinitions().filter(
+        (definition) => !(definition.type === 'rigidBody' && hasRigidBody)
+      ),
+    [hasRigidBody, extensions]
   );
 
   function add(type: string): void {
@@ -185,6 +260,13 @@ export function AddComponentMenu({ entity, store }: AddComponentMenuProps) {
             <option key={definition.type} value={definition.type}>{definition.label}</option>
           ))}
         </optgroup>
+        {available.some((definition) => definition.category === 'extension') ? (
+          <optgroup label="Extensions">
+            {available.filter((definition) => definition.category === 'extension').map((definition) => (
+              <option key={definition.type} value={definition.type}>{definition.label}</option>
+            ))}
+          </optgroup>
+        ) : null}
       </select>
     </div>
   );

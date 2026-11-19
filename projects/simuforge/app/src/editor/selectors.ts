@@ -120,6 +120,14 @@ export function selectRuntimeRobotics(state: StudioState): StudioState['runtime'
   return state.runtime.robotics;
 }
 
+export function selectProjectExtensions(state: StudioState): StudioState['project']['extensions'] {
+  return state.project.extensions ?? null;
+}
+
+export function selectRuntimeExtensions(state: StudioState): StudioState['runtime']['extensions'] {
+  return state.runtime.extensions;
+}
+
 export function selectElectricalComponentResult(
   state: StudioState,
   entityId: string,

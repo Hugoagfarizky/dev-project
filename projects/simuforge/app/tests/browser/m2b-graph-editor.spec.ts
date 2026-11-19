@@ -128,8 +128,8 @@ test.describe('M2-B graph editor', () => {
     await openProgram(page);
 
     const paletteButtons = page.locator('.sf-graph-palette button');
-    await expect(paletteButtons).toHaveCount(11);
-    check('paletteHasSixNodes', (await paletteButtons.count()) === 11);
+    await expect(paletteButtons).toHaveCount(13);
+    check('paletteHasSixNodes', (await paletteButtons.count()) === 13);
 
     await expect(page.locator('.sf-graph-empty')).toBeVisible();
     check('emptyStateVisible', await page.locator('.sf-graph-empty').isVisible());
@@ -320,7 +320,7 @@ test.describe('M2-B graph editor', () => {
       check(`${label}CanvasVisible`, await page.locator('.react-flow').isVisible());
       check(`${label}InspectorVisible`, await inspector.isVisible());
       check(`${label}DiagnosticsVisible`, await diagnostics.isVisible());
-      check(`${label}PaletteButtonsVisible`, (await palette.locator('button:visible').count()) === 11);
+      check(`${label}PaletteButtonsVisible`, (await palette.locator('button:visible').count()) === 13);
 
       const paletteBox = await palette.boundingBox();
       const editorBox = await editor.boundingBox();

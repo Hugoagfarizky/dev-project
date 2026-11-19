@@ -28,6 +28,16 @@ export interface PythonEntitySnapshot {
   velocity: Vec3;
 }
 
+/** Read-only view of one project-local extension handed to a script. */
+export interface PythonExtensionSnapshot {
+  id: string;
+  name: string;
+  version: string;
+  enabled: boolean;
+  permissions: string[];
+  components: string[];
+}
+
 /** Immutable snapshot a script may read for one invocation. */
 export interface PythonSnapshot {
   entities: PythonEntitySnapshot[];
@@ -35,6 +45,10 @@ export interface PythonSnapshot {
   time: number;
   /** Fixed simulation timestep in seconds. */
   dt: number;
+  /** Phase 10: installed project-local extensions (read-only). */
+  extensions?: PythonExtensionSnapshot[];
+  /** Phase 10: transient extension component values keyed by component id. */
+  extensionValues?: Record<string, number>;
 }
 
 /**

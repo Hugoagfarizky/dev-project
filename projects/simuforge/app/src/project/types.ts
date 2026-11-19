@@ -2,6 +2,7 @@ import type { AppError, WorldDocument } from '../world/types.ts';
 import type { Graph } from '../graph/types.ts';
 import type { PythonProjectData } from '../python/types.ts';
 import type { ElectricalDocument } from '../electrical/types.ts';
+import type { ExtensionDocument } from '../extensions/types.ts';
 
 export const PROJECT_FORMAT = 'simuforge.project' as const;
 export const PROJECT_SCHEMA_VERSION = 1 as const;
@@ -28,6 +29,11 @@ export interface ProjectDocument {
    * v1 so projects without electrical data open unchanged.
    */
   electrical?: ElectricalDocument | null;
+  /**
+   * Optional Phase 10 project-local extensions. Kept optional under schema v1 so
+   * projects without extensions open unchanged (D-P10-04, D-P10-05).
+   */
+  extensions?: ExtensionDocument | null;
 }
 
 export type ProjectValidationResult =

@@ -24,6 +24,9 @@ export function serializeProjectDocument(project: ProjectDocument): string {
   if (project.electrical) {
     payload.electrical = JSON.parse(JSON.stringify(project.electrical));
   }
+  if (project.extensions) {
+    payload.extensions = JSON.parse(JSON.stringify(project.extensions));
+  }
   return JSON.stringify(payload);
 }
 

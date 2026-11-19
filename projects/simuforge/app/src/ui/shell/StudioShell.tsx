@@ -18,6 +18,9 @@ import { RoboticsWorkspace } from '../robotics/RoboticsWorkspace.js';
 import { PythonPanel } from '../python/PythonPanel.js';
 import { PythonRuntime } from '../../python/runtime.js';
 import { attachPythonController } from '../../python/controller.js';
+import { ExtensionHost } from '../../extensions/host.js';
+import { attachExtensionController } from '../../extensions/controller.js';
+import { ExtensionManager } from '../extensions/ExtensionManager.js';
 import { RuntimeMonitor } from '../panels/RuntimeMonitor.js';
 import { Dialog } from '../common/Dialog';
 import { Button } from '../common/Button';
@@ -56,14 +59,41 @@ export function StudioShell({ store }: StudioShellProps) {
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [showHub, setShowHub] = useState<boolean>(false);
   const [showPython, setShowPython] = useState<boolean>(false);
-  const [programTab, setProgramTab] = useState<'graph' | 'circuit' | 'robotics'>('graph');
+  const [programTab, setProgramTab] = useState<'graph' | 'circuit' | 'robotics' | 'extensions'>('graph');
   const repositoryRef = useRef<IndexedDbProjectRepository>(new IndexedDbProjectRepository());
   const layoutStorageRef = useRef<LayoutStorage>(new LayoutStorage());
   const pythonRuntimeRef = useRef<PythonRuntime | null>(null);
+  const extensionHostRef = useRef<ExtensionHost | null>(null);
   if (pythonRuntimeRef.current === null) {
     pythonRuntimeRef.current = new PythonRuntime({
       onStatus(status, detail) {
         store.dispatch({ type: 'python/runtime-status', status, detail });
+      }
+    });
+  }
+  if (extensionHostRef.current === null) {
+    extensionHostRef.current = new ExtensionHost({
+      onDiagnostic(diagnostic) {
+        if (diagnostic.severity === 'error') {
+          store.dispatch({
+            type: 'runtime/extension-failure',
+            code: diagnostic.code,
+            message: diagnostic.message,
+            ...(diagnostic.extensionId ? { extensionId: diagnostic.extensionId } : {})
+          });
+          return;
+        }
+        store.dispatch({
+          type: 'log/append',
+          entry: {
+            id: crypto.randomUUID(),
+            timestamp: new Date().toISOString(),
+            severity: diagnostic.severity === 'warning' ? 'warn' : 'info',
+            source: 'EXTENSION',
+            code: diagnostic.code,
+            message: diagnostic.message
+          }
+        });
       }
     });
   }
@@ -103,6 +133,13 @@ export function StudioShell({ store }: StudioShellProps) {
       return () => handle.dispose();
     }
     return undefined;
+  }, []);
+
+  useEffect(() => {
+    const host = extensionHostRef.current;
+    if (!host) return undefined;
+    const handle = attachExtensionController(store, host);
+    return () => handle.dispose();
   }, []);
 
   useEffect(() => {
@@ -425,7 +462,7 @@ export function StudioShell({ store }: StudioShellProps) {
             title="Program"
             collapsed={collapsed.program}
             onToggle={() => togglePanel('program')}
-            summary={programTab === 'graph' ? 'Graph' : 'Circuit'}
+            summary={programTab === 'graph' ? 'Graph' : programTab === 'circuit' ? 'Circuit' : programTab === 'robotics' ? 'Robotics' : 'Extensions'}
             className="sf-graph-panel"
           >
             <div className="sf-program" style={{ position: 'relative' }}>
@@ -433,6 +470,7 @@ export function StudioShell({ store }: StudioShellProps) {
                 <button type="button" role="tab" className="sf-program-tab" data-testid="program-tab-graph" aria-selected={programTab === 'graph'} onClick={() => setProgramTab('graph')}>Graph</button>
                 <button type="button" role="tab" className="sf-program-tab" data-testid="program-tab-circuit" aria-selected={programTab === 'circuit'} onClick={() => setProgramTab('circuit')}>Circuit</button>
                 <button type="button" role="tab" className="sf-program-tab" data-testid="program-tab-robotics" aria-selected={programTab === 'robotics'} onClick={() => setProgramTab('robotics')}>Robotics</button>
+                <button type="button" role="tab" className="sf-program-tab" data-testid="program-tab-extensions" aria-selected={programTab === 'extensions'} onClick={() => setProgramTab('extensions')}>Extensions</button>
               </div>
               {programTab === 'graph' ? (
                 <div className="sf-graph-workspace">
@@ -443,8 +481,10 @@ export function StudioShell({ store }: StudioShellProps) {
                 <div className="sf-circuit-workspace">
                   <CircuitWorkspace store={store} />
                 </div>
-              ) : (
+              ) : programTab === 'robotics' ? (
                 <RoboticsWorkspace store={store} />
+              ) : (
+                <ExtensionManager store={store} />
               )}
             </div>
             {/* <PythonPanel store={store} /> */}

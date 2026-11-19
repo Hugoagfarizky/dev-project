@@ -140,6 +140,8 @@ export interface RuntimeState {
   electrical: RuntimeElectricalState;
   /** Runtime-only robotics state; never persisted. */
   robotics: RuntimeRoboticsState;
+  /** Runtime-only extension state; never persisted. */
+  extensions: RuntimeExtensionState;
 }
 
 export interface EditorState {
@@ -227,6 +229,35 @@ export function createDefaultRoboticsState(): RuntimeRoboticsState {
   };
 }
 
+export type RuntimeExtensionStatus = 'idle' | 'loaded' | 'error';
+
+export interface RuntimeExtensionState {
+  status: RuntimeExtensionStatus;
+  loadedExtensions: string[];
+  enabledExtensions: string[];
+  diagnostics: readonly import('../extensions/types.ts').ExtensionDiagnostic[];
+  /** Transient values written by extension graph nodes, keyed by component id. */
+  componentValues: Record<string, number>;
+  /** Latest module outputs, keyed by `${extensionId}:${moduleId}`. */
+  moduleOutputs: Record<string, number | string | boolean | null>;
+  /** Number of hook invocations observed in this runtime session. */
+  tickCount: number;
+  lastTickMs: number;
+}
+
+export function createDefaultExtensionState(): RuntimeExtensionState {
+  return {
+    status: 'idle',
+    loadedExtensions: [],
+    enabledExtensions: [],
+    diagnostics: [],
+    componentValues: {},
+    moduleOutputs: {},
+    tickCount: 0,
+    lastTickMs: 0
+  };
+}
+
 export function createDefaultRuntimeState(): RuntimeState {
   return {
     status: 'editing',
@@ -237,7 +268,8 @@ export function createDefaultRuntimeState(): RuntimeState {
     elapsedSeconds: 0,
     execution: createDefaultExecutionState(),
     electrical: createDefaultElectricalState(),
-    robotics: createDefaultRoboticsState()
+    robotics: createDefaultRoboticsState(),
+    extensions: createDefaultExtensionState()
   };
 }
 

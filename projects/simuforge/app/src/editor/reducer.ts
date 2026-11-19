@@ -15,7 +15,14 @@ import {
   stepRobotics
 } from '../runtime/robotics.ts';
 import { transformsEqual } from '../world/transform.ts';
-import { createDefaultRuntimeState, createDefaultPythonState, createDefaultElectricalState, createDefaultRoboticsState, createEmptyProject } from './state.ts';
+import type { ExtensionDiagnostic } from '../extensions/types.ts';
+import {
+  EXTENSION_CODES,
+  EXTENSION_MAX_DIAGNOSTICS,
+  createEmptyExtensionDocument
+} from '../extensions/types.ts';
+import { validateExtensionEntry } from '../extensions/validation.ts';
+import { createDefaultRuntimeState, createDefaultPythonState, createDefaultElectricalState, createDefaultRoboticsState, createDefaultExtensionState, createEmptyProject } from './state.ts';
 import {
   advanceSimulation,
   applyForce,
@@ -164,7 +171,10 @@ const STRUCTURAL_COMMANDS = new Set<string>([
   'python/create-script',
   'python/rename-script',
   'python/delete-script',
-  'python/set-source'
+  'python/set-source',
+  'extension/install',
+  'extension/remove',
+  'extension/set-enabled'
 ]);
 
 function appendRuntimeBlockedLog(state: StudioState): StudioState {
@@ -250,7 +260,7 @@ function appendExecutionLog(
     message: string;
     entityId?: string;
     detail?: string;
-    source?: 'APP' | 'EDITOR' | 'RENDER' | 'IMPORT' | 'RUNTIME' | 'PYTHON' | 'ELECTRICAL';
+    source?: 'APP' | 'EDITOR' | 'RENDER' | 'IMPORT' | 'RUNTIME' | 'PYTHON' | 'ELECTRICAL' | 'EXTENSION';
   }
 ): StudioState {
   return {
@@ -507,13 +517,48 @@ function commitChainElectrical(
 }
 
 function graphValidationContext(state: StudioState): GraphValidationContext {
+  const extensionComponentTypes: string[] = [];
+  for (const entry of state.project.extensions?.entries ?? []) {
+    for (const component of entry.manifest.components ?? []) {
+      extensionComponentTypes.push(component.type);
+    }
+  }
   return {
     entities: state.project.world.entities.map((entity) => ({
       id: entity.id,
       components: entity.components ?? []
     })),
-    scriptIds: pythonScripts(state.project.python).map((script) => script.id)
+    scriptIds: pythonScripts(state.project.python).map((script) => script.id),
+    extensionComponentTypes
   };
+}
+
+function chainExtensionContext(state: StudioState): {
+  state: StudioState['runtime']['extensions'];
+  manifests: import('../extensions/types.ts').ExtensionManifest[];
+  entities: StudioState['project']['world']['entities'];
+} {
+  return {
+    state: state.runtime.extensions,
+    manifests: (state.project.extensions?.entries ?? [])
+      .filter((entry) => entry.enabled)
+      .map((entry) => entry.manifest),
+    entities: state.project.world.entities
+  };
+}
+
+/**
+ * Commits extension runtime state produced by a graph chain. Transient values
+ * only; the authored project is never touched.
+ */
+function commitChainExtension(
+  state: StudioState,
+  chain: { extension: StudioState['runtime']['extensions'] | null }
+): StudioState {
+  if (!chain.extension || chain.extension === state.runtime.extensions) {
+    return state;
+  }
+  return { ...state, runtime: { ...state.runtime, extensions: chain.extension } };
 }
 
 function buildPythonSnapshot(state: StudioState): PythonSnapshot {
@@ -529,10 +574,20 @@ function buildPythonSnapshot(state: StudioState): PythonSnapshot {
       };
     })
     .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const extensions = (state.project.extensions?.entries ?? []).map((entry) => ({
+    id: entry.manifest.id,
+    name: entry.manifest.name,
+    version: entry.manifest.version,
+    enabled: entry.enabled,
+    permissions: (entry.manifest.permissions ?? []).slice(),
+    components: (entry.manifest.components ?? []).map((component) => component.type)
+  }));
   return {
     entities,
     time: state.runtime.elapsedSeconds,
-    dt: PYTHON_FIXED_DT_SECONDS
+    dt: PYTHON_FIXED_DT_SECONDS,
+    extensions,
+    extensionValues: { ...state.runtime.extensions.componentValues }
   };
 }
 
@@ -684,13 +739,16 @@ function drainExecution(
 
     const nodeOutcome = toPythonNodeOutcome(resume.outcome);
     const electricalContext = chainElectricalContext(working);
+    const extensionContext = chainExtensionContext(working);
     const chain = executeChain(pending.plan, working.graph as Graph, working.runtime.bodies, {
       startIndex: pending.index,
       python: { nodeId: pending.nodeId, outcome: nodeOutcome },
       electrical: electricalContext,
-      robotics: { state: working.runtime.robotics }
+      robotics: { state: working.runtime.robotics },
+      extension: extensionContext
     });
     working = commitChainElectrical(working, context, chain, electricalContext);
+    working = commitChainExtension(working, chain);
     if (chain.robotics) {
       working = { ...working, runtime: { ...working.runtime, robotics: chain.robotics } };
     }
@@ -987,11 +1045,14 @@ function drainExecution(
     );
 
     const electricalContext = chainElectricalContext(working);
+    const extensionContext = chainExtensionContext(working);
     const chain = executeChain(plan, graph, working.runtime.bodies, {
       electrical: electricalContext,
-      robotics: { state: working.runtime.robotics }
+      robotics: { state: working.runtime.robotics },
+      extension: extensionContext
     });
     working = commitChainElectrical(working, context, chain, electricalContext);
+    working = commitChainExtension(working, chain);
     if (chain.robotics) {
       working = { ...working, runtime: { ...working.runtime, robotics: chain.robotics } };
     }
@@ -1571,6 +1632,193 @@ export function reduceStudioState(
       });
     }
 
+    case 'extension/install': {
+      const result = validateExtensionEntry(command.entry);
+      if (!result.ok || !result.entry) {
+        return appendExecutionLog(state, context, {
+          severity: 'error',
+          code: EXTENSION_CODES.INVALID_MANIFEST,
+          message: `Extension could not be installed: ${result.errors.join(' ')}`,
+          source: 'EXTENSION'
+        });
+      }
+      const document = state.project.extensions ?? createEmptyExtensionDocument();
+      const entry = result.entry;
+      const exists = document.entries.some((item) => item.manifest.id === entry.manifest.id);
+      const entries = exists
+        ? document.entries.map((item) =>
+            item.manifest.id === entry.manifest.id ? entry : item
+          )
+        : [...document.entries, entry];
+      return appendExecutionLog(
+        markDirty({
+          ...state,
+          project: { ...state.project, extensions: { ...document, entries } }
+        }),
+        context,
+        {
+          severity: 'info',
+          code: exists ? EXTENSION_CODES.UPDATED : EXTENSION_CODES.INSTALLED,
+          message: `Extension "${entry.manifest.name}" ${exists ? 'updated' : 'installed'}.`,
+          source: 'EXTENSION'
+        }
+      );
+    }
+
+    case 'extension/remove': {
+      const document = state.project.extensions;
+      const removed = document?.entries.find((item) => item.manifest.id === command.extensionId);
+      if (!document || !removed) {
+        return state;
+      }
+      return appendExecutionLog(
+        markDirty({
+          ...state,
+          project: {
+            ...state.project,
+            extensions: {
+              ...document,
+              entries: document.entries.filter((item) => item.manifest.id !== command.extensionId)
+            }
+          }
+        }),
+        context,
+        {
+          severity: 'info',
+          code: EXTENSION_CODES.REMOVED,
+          message: `Extension "${removed.manifest.name}" removed.`,
+          source: 'EXTENSION'
+        }
+      );
+    }
+
+    case 'extension/set-enabled': {
+      const document = state.project.extensions;
+      const entry = document?.entries.find((item) => item.manifest.id === command.extensionId);
+      if (!document || !entry || entry.enabled === command.enabled) {
+        return state;
+      }
+      return appendExecutionLog(
+        markDirty({
+          ...state,
+          project: {
+            ...state.project,
+            extensions: {
+              ...document,
+              entries: document.entries.map((item) =>
+                item.manifest.id === command.extensionId
+                  ? { ...item, enabled: command.enabled }
+                  : item
+              )
+            }
+          }
+        }),
+        context,
+        {
+          severity: 'info',
+          code: command.enabled ? EXTENSION_CODES.ENABLED : EXTENSION_CODES.DISABLED,
+          message: `Extension "${entry.manifest.name}" ${command.enabled ? 'enabled' : 'disabled'}.`,
+          source: 'EXTENSION'
+        }
+      );
+    }
+
+    case 'runtime/extension-status': {
+      const loadedExtensions = command.states
+        .filter((item) => item.status === 'ready')
+        .map((item) => item.extensionId);
+      const enabledExtensions = (state.project.extensions?.entries ?? [])
+        .filter((entry) => entry.enabled)
+        .map((entry) => entry.manifest.id);
+      const status: StudioState['runtime']['extensions']['status'] = command.states.some(
+        (item) => item.status === 'error'
+      )
+        ? 'error'
+        : command.states.length > 0 && command.states.every((item) => item.status === 'ready')
+          ? 'loaded'
+          : 'idle';
+      return {
+        ...state,
+        runtime: {
+          ...state.runtime,
+          extensions: {
+            ...state.runtime.extensions,
+            status,
+            loadedExtensions,
+            enabledExtensions,
+            diagnostics: command.diagnostics.slice(-EXTENSION_MAX_DIAGNOSTICS)
+          }
+        }
+      };
+    }
+
+    case 'runtime/extension-output': {
+      const diagnostics = [
+        ...state.runtime.extensions.diagnostics,
+        ...command.diagnostics
+      ].slice(-EXTENSION_MAX_DIAGNOSTICS);
+      return {
+        ...state,
+        runtime: {
+          ...state.runtime,
+          extensions: {
+            ...state.runtime.extensions,
+            moduleOutputs: {
+              ...state.runtime.extensions.moduleOutputs,
+              ...command.outputs
+            },
+            diagnostics,
+            tickCount: state.runtime.extensions.tickCount + 1,
+            lastTickMs: command.lastTickMs
+          }
+        }
+      };
+    }
+
+    case 'runtime/extension-failure': {
+      const key = `${command.extensionId ?? 'unknown'}:${command.code}:${command.message}`;
+      const duplicate = state.runtime.extensions.diagnostics.some(
+        (item) =>
+          item.severity === 'error' &&
+          `${item.extensionId ?? 'unknown'}:${item.code}:${item.message}` === key
+      );
+      if (duplicate) {
+        return state;
+      }
+      const diagnostic: ExtensionDiagnostic = {
+        code: command.code,
+        severity: 'error',
+        message: command.message,
+        ...(command.extensionId ? { extensionId: command.extensionId } : {})
+      };
+      const running = state.runtime.status !== 'editing';
+      return appendExecutionLog(
+        {
+          ...state,
+          runtime: {
+            ...state.runtime,
+            status: running ? 'paused' : state.runtime.status,
+            extensions: {
+              ...state.runtime.extensions,
+              status: 'error',
+              diagnostics: [
+                ...state.runtime.extensions.diagnostics,
+                diagnostic
+              ].slice(-EXTENSION_MAX_DIAGNOSTICS)
+            }
+          }
+        },
+        context,
+        {
+          severity: 'error',
+          code: command.code,
+          message: command.message,
+          source: 'EXTENSION',
+          ...(running ? { detail: 'Runtime paused automatically.' } : {})
+        }
+      );
+    }
+
     case 'selection/set': {
       if (command.id !== null && !state.project.world.entities.some((entity) => entity.id === command.id)) {
         return state;
@@ -1797,7 +2045,8 @@ export function reduceStudioState(
               contactKeys: []
             },
             electrical: createDefaultElectricalState(),
-            robotics: createDefaultRoboticsState()
+            robotics: createDefaultRoboticsState(),
+            extensions: createDefaultExtensionState()
           }
         };
 
@@ -2025,7 +2274,7 @@ export function reduceStudioState(
       next = solveElectricalRuntime(
         {
           ...next,
-          runtime: { ...next.runtime, electrical: createDefaultElectricalState(), robotics: createDefaultRoboticsState() }
+          runtime: { ...next.runtime, electrical: createDefaultElectricalState(), robotics: createDefaultRoboticsState(), extensions: createDefaultExtensionState() }
         },
         context,
         collectAuthoredElectricalOverrides(restored),

@@ -10,6 +10,9 @@ import type {
   ElectricalLayoutEntry,
   Wire
 } from '../electrical/types.ts';
+import type { ExtensionDiagnostic, ExtensionEntry } from '../extensions/types.ts';
+import type { ExtensionHostState } from '../extensions/host.ts';
+import type { ExtensionOutputValue } from '../extensions/protocol.ts';
 
 export type StudioCommand =
   | { type: 'project/new'; name: string }
@@ -45,6 +48,12 @@ export type StudioCommand =
   | { type: 'runtime/set-switch'; entityId: string; componentId: string; closed: boolean }
   | { type: 'runtime/set-source-voltage'; entityId: string; componentId: string; voltage: number }
   | { type: 'runtime/set-actuator'; entityId: string; componentId: string; value: number }
+  | { type: 'runtime/extension-status'; states: ExtensionHostState[]; diagnostics: ExtensionDiagnostic[] }
+  | { type: 'runtime/extension-output'; outputs: Record<string, ExtensionOutputValue>; diagnostics: ExtensionDiagnostic[]; lastTickMs: number }
+  | { type: 'runtime/extension-failure'; code: string; message: string; extensionId?: string }
+  | { type: 'extension/install'; entry: ExtensionEntry }
+  | { type: 'extension/remove'; extensionId: string }
+  | { type: 'extension/set-enabled'; extensionId: string; enabled: boolean }
   | { type: 'runtime/graph-trigger'; triggerNodeId?: string }
   | { type: 'demo/load-scenario' }
   | { type: 'graph/set'; graph: Graph | null }

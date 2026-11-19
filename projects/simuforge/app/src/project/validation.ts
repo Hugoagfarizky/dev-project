@@ -8,6 +8,8 @@ import type { GraphValidationContext } from '../graph/types.ts';
 import { validatePythonProjectData } from '../python/validation.ts';
 import { validateElectricalDocument } from '../electrical/validation.ts';
 import type { ElectricalDocument } from '../electrical/types.ts';
+import { validateExtensionDocument } from '../extensions/validation.ts';
+import type { ExtensionDocument } from '../extensions/types.ts';
 
 const UUID_V4_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -74,7 +76,22 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
     return { ok: false, error: fail('INVALID_PROJECT_TIMESTAMP', 'project.updatedAt must be greater than or equal to project.createdAt', 'project.updatedAt') };
   }
 
-  const worldResult = validateWorldDocument(value.world);
+  // Optional Phase 10 extensions are validated before the world so extension
+  // component types are known when world components are checked. Structural
+  // corruption is stripped with a warning; the project still opens.
+  const warnings: string[] = [];
+  let normalizedExtensions: ExtensionDocument | undefined;
+  const knownComponentTypes = new Set<string>();
+  if (value.extensions !== undefined && value.extensions !== null) {
+    const extensionResult = validateExtensionDocument(value.extensions);
+    warnings.push(...extensionResult.warnings);
+    normalizedExtensions = extensionResult.value;
+    for (const type of extensionResult.knownComponentTypes) {
+      knownComponentTypes.add(type);
+    }
+  }
+
+  const worldResult = validateWorldDocument(value.world, { knownComponentTypes });
   if (!worldResult.ok) {
     const path = worldResult.error.path ? `world.${worldResult.error.path}` : 'world';
     return {
@@ -87,7 +104,7 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
     };
   }
 
-  const warnings: string[] = [...(worldResult.warnings ?? [])];
+  warnings.push(...(worldResult.warnings ?? []));
   let normalizedPython: ReturnType<typeof validatePythonProjectData>['value'] | undefined = undefined;
   if (value.python !== undefined) {
     const pythonResult = validatePythonProjectData(value.python);
@@ -108,7 +125,8 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
           id: entity.id,
           components: entity.components ?? []
         })),
-        scriptIds: (normalizedPython?.scripts ?? []).map((script) => script.id)
+        scriptIds: (normalizedPython?.scripts ?? []).map((script) => script.id),
+        extensionComponentTypes: Array.from(knownComponentTypes)
       };
       const graphResult = validateGraph(value.graph as Graph, graphContext);
       if (!graphResult.valid) {
@@ -144,7 +162,8 @@ export function validateProjectDocument(value: unknown): ProjectValidationResult
     world: worldResult.value,
     ...(normalizedGraph !== undefined ? { graph: normalizedGraph } : {}),
     ...(normalizedPython !== undefined ? { python: normalizedPython } : {}),
-    ...(normalizedElectrical !== undefined ? { electrical: normalizedElectrical } : {})
+    ...(normalizedElectrical !== undefined ? { electrical: normalizedElectrical } : {}),
+    ...(normalizedExtensions !== undefined ? { extensions: normalizedExtensions } : {})
   };
 
   return { ok: true, value: normalized, ...(warnings.length ? { warnings } : {}) };

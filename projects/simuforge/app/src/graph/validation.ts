@@ -8,6 +8,7 @@ import type {
 } from './types.ts';
 import { getNodePortDefinitions } from './nodes.ts';
 import { MAX_SOURCE_VOLTAGE } from '../electrical/types.ts';
+import { isDynamicComponentType } from '../world/components.ts';
 
 export const GRAPH_DIAGNOSTIC_CODES = {
   MISSING_GRAPH_ID: 'GRAPH_MISSING_ID',
@@ -276,6 +277,62 @@ function validateNodeConfig(
       break;
     }
 
+    case 'setExtensionValue':
+    case 'readExtensionValue': {
+      const config = node.config as {
+        targetEntityId?: unknown;
+        targetComponentId?: unknown;
+        value?: unknown;
+      };
+      if (typeof config.targetEntityId !== 'string' || config.targetEntityId.trim().length === 0) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.MISSING_TARGET_ENTITY, `Node ${node.id} requires a non-empty targetEntityId.`, 'error', { nodeId: node.id, field: 'targetEntityId' })
+        );
+        break;
+      }
+      const entity = context.entities.find((item) => item.id === config.targetEntityId);
+      if (!entity) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_ENTITY, `Node ${node.id} references unknown entity ${config.targetEntityId}.`, 'error', { nodeId: node.id, field: 'targetEntityId' })
+        );
+        break;
+      }
+      if (typeof config.targetComponentId !== 'string' || config.targetComponentId.trim().length === 0) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.MISSING_TARGET_COMPONENT, `Node ${node.id} requires a non-empty targetComponentId.`, 'error', { nodeId: node.id, field: 'targetComponentId' })
+        );
+        break;
+      }
+      const component = entity.components.find((item) => item.id === config.targetComponentId);
+      if (!component) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_COMPONENT, `Node ${node.id} target ${config.targetComponentId} does not exist on entity ${config.targetEntityId}.`, 'error', { nodeId: node.id, field: 'targetComponentId' })
+        );
+        break;
+      }
+      const isExtensionType =
+        isDynamicComponentType(component.type) ||
+        (context.extensionComponentTypes?.includes(component.type) ?? false);
+      if (!isExtensionType) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_COMPONENT, `Node ${node.id} target ${config.targetComponentId} is not an extension component.`, 'error', { nodeId: node.id, field: 'targetComponentId' })
+        );
+        break;
+      }
+      if (!component.enabled) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.INVALID_TARGET_COMPONENT, `Node ${node.id} target ${config.targetComponentId} is disabled.`, 'error', { nodeId: node.id, field: 'targetComponentId' })
+        );
+        break;
+      }
+      if (node.config.kind === 'setExtensionValue' && !isFiniteNumber(config.value)) {
+        diagnostics.push(
+          diagnostic(GRAPH_DIAGNOSTIC_CODES.NON_FINITE_NUMBER, `Node ${node.id} value must be finite.`, 'error', { nodeId: node.id, field: 'value' })
+        );
+      }
+      break;
+    }
+
     case 'runPython': {
       const config = node.config as { scriptId?: unknown };
       if (typeof config.scriptId !== 'string' || config.scriptId.trim().length === 0) {
@@ -386,7 +443,9 @@ const NODE_TYPE_SET: Record<string, true> = {
   setSwitch: true,
   setSourceVoltage: true,
   setActuator: true,
-  readSensor: true
+  readSensor: true,
+  setExtensionValue: true,
+  readExtensionValue: true
 };
 
 function portDefinition(type: GraphNode['type'], portId: string) {

@@ -51,6 +51,8 @@ _state = {
     "actions": [],
     "logs": [],
     "truncated": False,
+    "extensions": [],
+    "extension_values": {},
 }
 
 
@@ -150,6 +152,47 @@ class World:
         _append_log("info", message)
 
 
+class Extension:
+    """Read-only view of one project-local extension."""
+
+    __slots__ = ("_id", "_name", "_version", "_enabled", "_permissions", "_components")
+
+    def __init__(self, data):
+        self._id = str(data.get("id", ""))
+        self._name = str(data.get("name", ""))
+        self._version = str(data.get("version", ""))
+        self._enabled = bool(data.get("enabled", False))
+        self._permissions = tuple(str(item) for item in data.get("permissions", []))
+        self._components = tuple(str(item) for item in data.get("components", []))
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def version(self):
+        return self._version
+
+    @property
+    def enabled(self):
+        return self._enabled
+
+    @property
+    def permissions(self):
+        return self._permissions
+
+    @property
+    def components(self):
+        return self._components
+
+    def __repr__(self):
+        return "Extension(" + repr(self._name) + ")"
+
+
 class Simulation:
     @property
     def time(self):
@@ -158,6 +201,14 @@ class Simulation:
     @property
     def dt(self):
         return _state["dt"]
+
+    @property
+    def extensions(self):
+        return tuple(_state["extensions"])
+
+    def extension_value(self, component_id):
+        """Return the transient value of an extension component, or None."""
+        return _state["extension_values"].get(str(component_id))
 
 
 class _Stream:
@@ -218,6 +269,7 @@ def _install_module():
     module.world = World()
     module.simulation = Simulation()
     module.Entity = Entity
+    module.Extension = Extension
     sys.modules["simuforge"] = module
 
 
@@ -230,6 +282,14 @@ def __sf_prepare(payload):
     _state["truncated"] = False
     _state["time"] = float(data.get("time", 0.0))
     _state["dt"] = float(data.get("dt", 0.0))
+    _state["extensions"] = []
+    for item in data.get("extensions", []) or []:
+        _state["extensions"].append(Extension(item))
+    _state["extension_values"] = {}
+    for key, value in (data.get("extensionValues", {}) or {}).items():
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            continue
+        _state["extension_values"][str(key)] = float(value)
     for item in data.get("entities", []):
         entity = Entity(item)
         _state["entities"].append(entity)

@@ -5,8 +5,15 @@ import {
   componentTerminals,
   createComponent,
   getComponentDefinition,
+  getComponentDefinitions,
+  isDynamicComponentType,
   isElectricalComponentType,
-  isRigidBodyComponent
+  isKnownComponentType,
+  isReservedComponentType,
+  isRigidBodyComponent,
+  registerDynamicComponentDefinition,
+  resetDynamicComponentDefinitions,
+  unregisterDynamicComponentDefinition
 } from '../../src/world/components.ts';
 import type { RigidBodyComponent } from '../../src/world/types.ts';
 
@@ -70,4 +77,65 @@ test('rigid-body predicate narrows only rigid bodies', () => {
   const rigidBody = createComponent('rigidBody', ID) as RigidBodyComponent;
   assert.equal(isRigidBodyComponent(rigidBody), true);
   assert.equal(isRigidBodyComponent(createComponent('resistor', ID)!), false);
+});
+
+test('dynamic extension definitions extend the registry without touching built-ins', () => {
+  resetDynamicComponentDefinitions();
+  try {
+    assert.equal(isDynamicComponentType('sampleOscillator'), false);
+    assert.equal(isKnownComponentType('sampleOscillator'), false);
+    assert.equal(createComponent('sampleOscillator', ID), null);
+
+    registerDynamicComponentDefinition({
+      type: 'sampleOscillator',
+      label: 'Sample Oscillator',
+      category: 'extension',
+      description: 'test',
+      terminals: [],
+      create: (id) => ({ id, type: 'sampleOscillator', enabled: true, frequency: 2 })
+    });
+
+    assert.equal(isDynamicComponentType('sampleOscillator'), true);
+    assert.equal(isKnownComponentType('sampleOscillator'), true);
+    assert.equal(isReservedComponentType('sampleOscillator'), false);
+    assert.deepEqual(createComponent('sampleOscillator', ID), {
+      id: ID,
+      type: 'sampleOscillator',
+      enabled: true,
+      frequency: 2
+    });
+    assert.equal(getComponentDefinition('sampleOscillator')?.category, 'extension');
+    assert.equal(
+      getComponentDefinitions().filter((definition) => definition.type === 'sampleOscillator').length,
+      1
+    );
+    // Built-in order is unchanged.
+    assert.deepEqual(
+      COMPONENT_DEFINITIONS.map((definition) => definition.type),
+      ['rigidBody', 'voltageSource', 'resistor', 'switch', 'ground', 'joint', 'actuator', 'sensor']
+    );
+
+    unregisterDynamicComponentDefinition('sampleOscillator');
+    assert.equal(isDynamicComponentType('sampleOscillator'), false);
+    assert.equal(createComponent('sampleOscillator', ID), null);
+  } finally {
+    resetDynamicComponentDefinitions();
+  }
+});
+
+test('dynamic registry refuses to shadow a built-in type', () => {
+  assert.equal(isReservedComponentType('rigidBody'), true);
+  assert.throws(() =>
+    registerDynamicComponentDefinition({
+      type: 'rigidBody',
+      label: 'Fake',
+      category: 'extension',
+      description: 'test',
+      terminals: [],
+      create: (id) => ({ id, type: 'rigidBody', enabled: true })
+    })
+  );
+  // The real built-in is untouched.
+  assert.equal(getComponentDefinition('rigidBody')?.label, 'Rigid Body');
+  resetDynamicComponentDefinitions();
 });

@@ -65,7 +65,9 @@ export function createCanonicalNode(
     setSwitch: { kind: 'setSwitch', targetEntityId: '', targetComponentId: '', closed: false },
     setSourceVoltage: { kind: 'setSourceVoltage', targetEntityId: '', targetComponentId: '', voltage: 0 },
     setActuator: { kind: 'setActuator', targetEntityId: '', targetComponentId: '', value: 0 },
-    readSensor: { kind: 'readSensor', targetEntityId: '', targetComponentId: '' }
+    readSensor: { kind: 'readSensor', targetEntityId: '', targetComponentId: '' },
+    setExtensionValue: { kind: 'setExtensionValue', targetEntityId: '', targetComponentId: '', value: 0 },
+    readExtensionValue: { kind: 'readExtensionValue', targetEntityId: '', targetComponentId: '' }
   };
 
   return {

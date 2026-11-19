@@ -10,12 +10,14 @@ import { validateGraph } from '../graph/validation.ts';
 import { RuntimeError, applyForce, applyImpulse, clearForce, toSimulationFailure } from './physics.ts';
 import type { SimulationFailure } from './physics.ts';
 import type { RuntimeBodies } from './types.ts';
-import type { RuntimeRoboticsState } from '../editor/state.ts';
+import type { RuntimeExtensionState, RuntimeRoboticsState } from '../editor/state.ts';
 import { applyPythonActions } from '../python/actions.ts';
 import type { PythonAction } from '../python/types.ts';
 import { applyElectricalAction } from './electrical.ts';
 import type { ElectricalOverrides } from './electrical.ts';
 import type { WorldEntity } from '../world/types.ts';
+import type { ExtensionManifest } from '../extensions/types.ts';
+import { hasPermission } from '../extensions/permissions.ts';
 
 /**
  * M2-C graph execution engine.
@@ -49,7 +51,9 @@ export const GRAPH_EXECUTION_ERRORS = {
   INVALID_NODE: 'GRAPH_EXECUTION_INVALID_NODE',
   PYTHON_FAILED: 'GRAPH_EXECUTION_PYTHON_FAILED',
   ELECTRICAL_TARGET: 'GRAPH_EXECUTION_ELECTRICAL_TARGET',
-  ELECTRICAL_VALUE: 'GRAPH_EXECUTION_ELECTRICAL_VALUE'
+  ELECTRICAL_VALUE: 'GRAPH_EXECUTION_ELECTRICAL_VALUE',
+  EXTENSION_TARGET: 'GRAPH_EXECUTION_EXTENSION_TARGET',
+  EXTENSION_PERMISSION: 'GRAPH_EXECUTION_EXTENSION_PERMISSION'
 } as const;
 
 const TRIGGER_TYPES: Record<GraphNodeType, true | undefined> = {
@@ -63,7 +67,9 @@ const TRIGGER_TYPES: Record<GraphNodeType, true | undefined> = {
   setSwitch: undefined,
   setSourceVoltage: undefined,
   setActuator: undefined,
-  readSensor: undefined
+  readSensor: undefined,
+  setExtensionValue: undefined,
+  readExtensionValue: undefined
 };
 
 const ACTION_TYPES: Record<GraphNodeType, true | undefined> = {
@@ -77,7 +83,9 @@ const ACTION_TYPES: Record<GraphNodeType, true | undefined> = {
   setSwitch: true,
   setSourceVoltage: true,
   setActuator: true,
-  readSensor: true
+  readSensor: true,
+  setExtensionValue: true,
+  readExtensionValue: true
 };
 
 export function isTriggerNodeType(type: GraphNodeType): boolean {
@@ -350,6 +358,8 @@ export interface ChainExecutionResult {
    */
   electrical: ElectricalOverrides | null;
   robotics: RuntimeRoboticsState | null;
+  /** Phase 10: extension runtime state after the last successful node. */
+  extension: RuntimeExtensionState | null;
   executed: NodeExecutionResult[];
   failure: ExecutionFailure | null;
   completed: boolean;
@@ -392,6 +402,12 @@ export interface ChainExecutionOptions {
   robotics?: {
     state: RuntimeRoboticsState;
   };
+  /** Phase 10: enables `setExtensionValue` and `readExtensionValue`. */
+  extension?: {
+    state: RuntimeExtensionState;
+    manifests: readonly ExtensionManifest[];
+    entities: readonly WorldEntity[];
+  };
 }
 
 function actionDetail(node: GraphNode): string {
@@ -412,6 +428,10 @@ function actionDetail(node: GraphNode): string {
       return `Actuator ${node.config.targetEntityId}/${node.config.targetComponentId} → ${node.config.value}`;
     case 'readSensor':
       return `Sensor ${node.config.targetEntityId}/${node.config.targetComponentId}`;
+    case 'setExtensionValue':
+      return `Extension component ${node.config.targetEntityId}/${node.config.targetComponentId} → ${node.config.value}`;
+    case 'readExtensionValue':
+      return `Extension component ${node.config.targetEntityId}/${node.config.targetComponentId}`;
     default:
       return '';
   }
@@ -446,6 +466,8 @@ function actionEntityId(node: GraphNode): string | undefined {
     case 'onPlaneContact':
     case 'setActuator':
     case 'readSensor':
+    case 'setExtensionValue':
+    case 'readExtensionValue':
       return node.config.targetEntityId;
     default:
       return undefined;
@@ -472,6 +494,7 @@ export function executeChain(
   let current = bodies;
   let electrical = options.electrical?.overrides ?? null;
   let robotics = options.robotics?.state ?? null;
+  let extension = options.extension?.state ?? null;
   const startIndex = options.startIndex ?? 0;
 
   for (let index = startIndex; index < plan.order.length; index += 1) {
@@ -481,7 +504,9 @@ export function executeChain(
       return {
         bodies: current,
         electrical,
-        robotics,        executed,
+        robotics,
+        extension,
+        executed,
         failure: {
           nodeId,
           type: plan.triggerType,
@@ -504,7 +529,9 @@ export function executeChain(
         return {
           bodies: current,
           electrical,
-        robotics,          executed,
+          robotics,
+          extension,
+          executed,
           failure: null,
           completed: false,
           suspension: { nodeId: node.id, index }
@@ -515,7 +542,9 @@ export function executeChain(
         return {
           bodies: current,
           electrical,
-        robotics,          executed,
+          robotics,
+          extension,
+          executed,
           failure: {
             nodeId: node.id,
             type: node.type,
@@ -534,7 +563,9 @@ export function executeChain(
         return {
           bodies: current,
           electrical,
-        robotics,          executed,
+          robotics,
+          extension,
+          executed,
           failure: {
             nodeId: node.id,
             type: node.type,
@@ -561,7 +592,9 @@ export function executeChain(
         return {
           bodies: current,
           electrical,
-        robotics,          executed,
+          robotics,
+          extension,
+          executed,
           failure: {
             nodeId: node.id,
             type: node.type,
@@ -593,7 +626,9 @@ export function executeChain(
         return {
           bodies: current,
           electrical,
-        robotics,          executed,
+          robotics,
+          extension,
+          executed,
           failure: {
             nodeId: node.id,
             type: node.type,
@@ -625,6 +660,7 @@ export function executeChain(
           bodies: current,
           electrical,
           robotics,
+          extension,
           executed,
           failure: {
             nodeId: node.id,
@@ -637,11 +673,104 @@ export function executeChain(
         };
       }
       if (node.config.kind === 'setActuator') {
-        // Store target value in actuator state (transient)
         const actuatorStates = { ...robotics.actuatorStates };
         const prev = actuatorStates[node.config.targetComponentId] ?? { voltage: 0, current: 0, torque: 0, speed: 0 };
         actuatorStates[node.config.targetComponentId] = { ...prev, voltage: node.config.value };
         robotics = { ...robotics, actuatorStates };
+      }
+      executed.push({
+        nodeId: node.id,
+        type: node.type,
+        status: 'executed',
+        entityId: node.config.targetEntityId,
+        detail: actionDetail(node)
+      });
+      continue;
+    }
+
+    if (node.config.kind === 'setExtensionValue' || node.config.kind === 'readExtensionValue') {
+      if (!options.extension || extension === null) {
+        return {
+          bodies: current,
+          electrical,
+          robotics,
+          extension,
+          executed,
+          failure: {
+            nodeId: node.id,
+            type: node.type,
+            code: GRAPH_EXECUTION_ERRORS.INVALID_NODE,
+            message: `Node ${node.id} (${node.type}) requires an extension runtime context.`,
+            severity: 'error'
+          },
+          completed: false
+        };
+      }
+
+      const extensionConfig = node.config;
+      const entity = options.extension.entities.find((item) => item.id === extensionConfig.targetEntityId);
+      const component = entity?.components?.find((item) => item.id === extensionConfig.targetComponentId);
+      if (!component) {
+        return {
+          bodies: current,
+          electrical,
+          robotics,
+          extension,
+          executed,
+          failure: {
+            nodeId: node.id,
+            type: node.type,
+            code: GRAPH_EXECUTION_ERRORS.EXTENSION_TARGET,
+            message: `Node ${node.id} target ${node.config.targetComponentId} does not exist.`,
+            severity: 'error'
+          },
+          completed: false
+        };
+      }
+      const manifest = options.extension.manifests.find((item) =>
+        (item.components ?? []).some((definition) => definition.type === component.type)
+      );
+      if (!manifest) {
+        return {
+          bodies: current,
+          electrical,
+          robotics,
+          extension,
+          executed,
+          failure: {
+            nodeId: node.id,
+            type: node.type,
+            code: GRAPH_EXECUTION_ERRORS.EXTENSION_TARGET,
+            message: `Node ${node.id} target component type "${component.type}" is not provided by an installed extension.`,
+            severity: 'error'
+          },
+          completed: false
+        };
+      }
+      const permission = node.config.kind === 'setExtensionValue' ? 'write:components' : 'read:world';
+      if (!hasPermission(manifest, permission)) {
+        return {
+          bodies: current,
+          electrical,
+          robotics,
+          extension,
+          executed,
+          failure: {
+            nodeId: node.id,
+            type: node.type,
+            code: GRAPH_EXECUTION_ERRORS.EXTENSION_PERMISSION,
+            message: `Extension "${manifest.name}" did not declare the "${permission}" permission.`,
+            severity: 'error'
+          },
+          completed: false
+        };
+      }
+
+      if (node.config.kind === 'setExtensionValue') {
+        extension = {
+          ...extension,
+          componentValues: { ...extension.componentValues, [component.id]: node.config.value }
+        };
       }
       executed.push({
         nodeId: node.id,
@@ -669,7 +798,9 @@ export function executeChain(
       return {
         bodies: current,
         electrical,
-        robotics,        executed,
+        robotics,
+        extension,
+        executed,
         failure: {
           nodeId: node.id,
           type: node.type,
@@ -682,7 +813,7 @@ export function executeChain(
     }
   }
 
-  return { bodies: current, electrical, robotics, executed, failure: null, completed: true };
+  return { bodies: current, electrical, robotics, extension, executed, failure: null, completed: true };
 }
 
 export interface PlaneContactPayload {

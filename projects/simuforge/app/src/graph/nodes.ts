@@ -41,6 +41,14 @@ export const NODE_PORT_DEFINITIONS: Record<GraphNodeType, readonly NodePortDefin
   readSensor: [
     { id: 'in', direction: 'input', kind: 'execution' },
     { id: 'out', direction: 'output', kind: 'execution' }
+  ],
+  setExtensionValue: [
+    { id: 'in', direction: 'input', kind: 'execution' },
+    { id: 'out', direction: 'output', kind: 'execution' }
+  ],
+  readExtensionValue: [
+    { id: 'in', direction: 'input', kind: 'execution' },
+    { id: 'out', direction: 'output', kind: 'execution' }
   ]
 };
 

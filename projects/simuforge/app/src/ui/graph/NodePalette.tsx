@@ -16,7 +16,9 @@ const NODE_TYPES: GraphNodeType[] = [
   'setSwitch',
   'setSourceVoltage',
   'setActuator',
-  'readSensor'
+  'readSensor',
+  'setExtensionValue',
+  'readExtensionValue'
 ];
 
 interface NodePaletteProps {

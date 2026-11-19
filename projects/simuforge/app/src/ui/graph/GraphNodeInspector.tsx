@@ -8,6 +8,7 @@ import type { StudioStore } from '../../editor/store.js';
 import type { Graph, GraphNode } from '../../graph/types.js';
 import { pythonScripts } from '../../python/validation.js';
 import { componentLabel } from '../../world/components.js';
+import { isDynamicComponentType } from '../../world/components.js';
 
 interface GraphNodeInspectorProps {
   store: StudioStore;
@@ -40,6 +41,10 @@ export function GraphNodeInspector({ store }: GraphNodeInspectorProps) {
     node.config.kind === 'setActuator' || node.config.kind === 'readSensor'
       ? node.config
       : null;
+  const extensionConfig =
+    node.config.kind === 'setExtensionValue' || node.config.kind === 'readExtensionValue'
+      ? node.config
+      : null;
   const expectedType = electricalConfig
     ? electricalConfig.kind === 'setSwitch'
       ? 'switch'
@@ -51,7 +56,9 @@ export function GraphNodeInspector({ store }: GraphNodeInspectorProps) {
     ? entities.find((entity) => entity.id === roboticsConfig.targetEntityId) ?? null
     : electricalConfig
       ? entities.find((entity) => entity.id === electricalConfig.targetEntityId) ?? null
-      : null;
+      : extensionConfig
+        ? entities.find((entity) => entity.id === extensionConfig.targetEntityId) ?? null
+        : null;
   const targetComponents = (targetEntity?.components ?? []).filter(
     (component) => component.type === expectedType
   );
@@ -272,6 +279,68 @@ export function GraphNodeInspector({ store }: GraphNodeInspectorProps) {
             </select>
           </label>
           {node.config.kind === 'setActuator' ? (
+            <label className="sf-inspector-row">
+              <span className="sf-inspector-label">Value</span>
+              <input
+                type="number"
+                value={node.config.value}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  setConfig({
+                    ...node.config,
+                    value: Number.isFinite(value) ? value : 0
+                  } as GraphNode['config']);
+                }}
+              />
+            </label>
+          ) : null}
+        </>
+      ) : null}
+      {node.config.kind === 'setExtensionValue' || node.config.kind === 'readExtensionValue' ? (
+        <>
+          <label className="sf-inspector-row">
+            <span className="sf-inspector-label">Target entity</span>
+            <select
+              value={node.config.targetEntityId}
+              onChange={(event) => {
+                const nextEntity = entities.find((entity) => entity.id === event.target.value);
+                const nextComponent = (nextEntity?.components ?? []).find((component) =>
+                  isDynamicComponentType(component.type)
+                );
+                setConfig({
+                  ...node.config,
+                  targetEntityId: event.target.value,
+                  targetComponentId: nextComponent?.id ?? ''
+                } as GraphNode['config']);
+              }}
+            >
+              <option value="">(none)</option>
+              {entities.map((entity) => (
+                <option key={entity.id} value={entity.id}>
+                  {entity.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="sf-inspector-row">
+            <span className="sf-inspector-label">Extension component</span>
+            <select
+              value={node.config.targetComponentId}
+              onChange={(event) =>
+                setConfig({ ...node.config, targetComponentId: event.target.value } as GraphNode['config'])
+              }
+            >
+              <option value="">(none)</option>
+              {(targetEntity?.components ?? [])
+                .filter((component) => isDynamicComponentType(component.type))
+                .map((component) => (
+                  <option key={component.id} value={component.id}>
+                    {componentLabel(component.type)} · {component.id.slice(0, 8)}
+                  </option>
+                ))}
+            </select>
+          </label>
+          {node.config.kind === 'setExtensionValue' ? (
             <label className="sf-inspector-row">
               <span className="sf-inspector-label">Value</span>
               <input

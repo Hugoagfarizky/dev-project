@@ -1,6 +1,6 @@
 import type { AppError, Component, EntityType, Quat, Vec3, WorldDocument, WorldEntity } from './types.ts';
 import { MIN_SCALE, WORLD_FORMAT, WORLD_SCHEMA_VERSION } from './defaults.ts';
-import { cloneComponents, isElectricalComponentType } from './components.ts';
+import { cloneComponents, isElectricalComponentType, isKnownComponentType } from './components.ts';
 import { normalizeQuaternion, quaternionLength } from './transform.ts';
 
 const UUID_V4_PATTERN =
@@ -254,7 +254,8 @@ export function validateComponent(value: unknown, path: string): AppError | null
  */
 export function validateComponentForDocument(
   value: unknown,
-  path: string
+  path: string,
+  knownComponentTypes?: ReadonlySet<string>
 ): { error: AppError | null; warning: string | null } {
   const baseError = validateComponentBase(value, path);
   if (baseError) {
@@ -262,6 +263,15 @@ export function validateComponentForDocument(
   }
   const specificError = validateComponentTypeSpecific(value as Record<string, unknown>, path);
   if (!specificError) {
+    const type = (value as { type: string }).type;
+    if (!isKnownComponentType(type, knownComponentTypes)) {
+      // D-P10-04: unknown extension types degrade gracefully. Keep the component
+      // and its authored data; surface a warning instead of failing the load.
+      return {
+        error: null,
+        warning: `UNKNOWN_COMPONENT_TYPE: component type "${type}" is not registered; it was kept but will be ignored at runtime (${path}).`
+      };
+    }
     return { error: null, warning: null };
   }
   const type = (value as { type: string }).type;
@@ -271,7 +281,10 @@ export function validateComponentForDocument(
   return { error: specificError, warning: null };
 }
 
-export function validateWorldDocument(value: unknown):
+export function validateWorldDocument(
+  value: unknown,
+  options?: { knownComponentTypes?: ReadonlySet<string> }
+):
   | { ok: true; value: WorldDocument; warnings?: string[] }
   | { ok: false; error: AppError } {
   if (!isPlainObject(value)) {
@@ -336,7 +349,8 @@ export function validateWorldDocument(value: unknown):
         const component = entity.components[cIndex];
         const componentResult = validateComponentForDocument(
           component,
-          `${entityPath}.components[${cIndex}]`
+          `${entityPath}.components[${cIndex}]`,
+          options?.knownComponentTypes
         );
         if (componentResult.error) {
           return { ok: false, error: componentResult.error };

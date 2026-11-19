@@ -19,7 +19,9 @@ export type GraphNodeType =
   | 'setSwitch'
   | 'setSourceVoltage'
   | 'setActuator'
-  | 'readSensor';
+  | 'readSensor'
+  | 'setExtensionValue'
+  | 'readExtensionValue';
 
 export type GraphPortDirection = 'input' | 'output';
 export type GraphPortKind = 'execution';
@@ -115,6 +117,25 @@ export interface ReadSensorNodeConfig {
   targetComponentId: string;
 }
 
+/**
+ * Phase 10: writes a transient value to an extension-provided component. The
+ * extension must declare `write:components`; the authored component is never
+ * mutated.
+ */
+export interface SetExtensionValueNodeConfig {
+  kind: 'setExtensionValue';
+  targetEntityId: string;
+  targetComponentId: string;
+  value: number;
+}
+
+/** Phase 10: reads an extension component value as a pass-through action. */
+export interface ReadExtensionValueNodeConfig {
+  kind: 'readExtensionValue';
+  targetEntityId: string;
+  targetComponentId: string;
+}
+
 export type GraphNodeConfig =
   | OnStartNodeConfig
   | ManualTriggerNodeConfig
@@ -126,7 +147,9 @@ export type GraphNodeConfig =
   | SetSwitchNodeConfig
   | SetSourceVoltageNodeConfig
   | SetActuatorNodeConfig
-  | ReadSensorNodeConfig;
+  | ReadSensorNodeConfig
+  | SetExtensionValueNodeConfig
+  | ReadExtensionValueNodeConfig;
 
 export interface GraphNode extends GraphNodeBase {
   config: GraphNodeConfig;
@@ -185,6 +208,12 @@ export interface GraphValidationContext {
    * presence of a non-empty reference is checked.
    */
   scriptIds?: readonly string[];
+  /**
+   * Phase 10: component types declared by the project's extensions. When
+   * provided, extension graph nodes may target them even before the dynamic
+   * registry is populated.
+   */
+  extensionComponentTypes?: readonly string[];
 }
 
 export interface GraphParseResult {
