@@ -387,7 +387,7 @@ No further implementation until explicit authorization is granted.
 | Phase 08 - Electrical & Electronics | CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-18) |
 | Phase 09 - Robotics & Automation | CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-18) |
 | Phase 10 - Extensibility | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-19) |
-| Phase 11 - Quality, Performance & Release | IMPLEMENTED - READY FOR PROJECT OWNER ACCEPTANCE (2026-11-19) |
+| Phase 11 - Quality, Performance & Release | CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-20) |
 
 - Phase 07 delivered the Python integration deferred at MVP-3; that deferral is now satisfied.
 - This closure increment was documentation-only: no application source, tests, dependencies, or browser evidence changed.
@@ -425,10 +425,13 @@ No further implementation until explicit authorization is granted.
 - Known limitations: the worker is defense-in-depth, not a security sandbox; no hard memory/CPU cap beyond the hook timeout; graph integration uses two fixed node types; failed workers require disable/enable to retry.
 - Phase 10 is CLOSED. Phase 11 is NOT STARTED and NOT AUTHORIZED.
 
-## AC. Phase 11 planning (2026-11-19)
-- Phase 11 - Quality, Performance & Release status: **PLANNING COMPLETE - PENDING PROJECT OWNER APPROVAL (2026-11-19)**.
-- Planning documents: reports/phase-11/PHASE_11_PLANNING_REPORT.md, PHASE_11_DECISION_PACKAGE.md, PHASE_11_ARCHITECTURE_PROPOSAL.md, PHASE_11_MILESTONE_MATRIX.md, PHASE_11_VALIDATION_STRATEGY.md.
-- Scope: quality hardening, performance benchmark and optimization, security/reliability, compatibility and UX, release preparation, final validation.
-- Decisions: D-P11-01..D-P11-08 (pending approval).
-- POC-06 Hybrid 2D/3D: NOT PERFORMED. Recommended: limited feasibility spike in Phase 11 (validation only, not product implementation); not a release blocker unless structural conflict.
-- Implementation NOT authorized. Phase 11 is NOT STARTED.
+## AC. Phase 11 closure (2026-11-20)
+- Phase 11 - Quality, Performance & Release status: **CLOSED — PASS — PROJECT OWNER ACCEPTED (2026-11-20)**.
+- Implementation commit: `5b5cd6f0ccb896170ac359417ca4a4000c6ae2d4`.
+- Closure report: reports/phase-11/PHASE_11_CLOSURE_REPORT.md.
+- Final acceptance report: reports/phase-11/PHASE_11_FINAL_ACCEPTANCE_REPORT.md.
+- Release version: v1.0.0.
+- Release tag: v1.0.0 (pushed to origin).
+- Validation: `npm run check` PASS; `npm test` 362/362 PASS; `npm run build` PASS; Playwright 40/40 PASS; Phase 10 E2E 2/2 PASS.
+- Known limitations: see reports/phase-11/KNOWN_LIMITATIONS.md.
+- All roadmap phases 00-11 are CLOSED. No Phase 12. Phase 11 is the final phase.

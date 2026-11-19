@@ -369,10 +369,9 @@ Automation is **CLOSED - PASS** (Project Owner accepted 2026-11-18); see the
 **CLOSED — PASS — PROJECT OWNER ACCEPTED** (2026-11-19); see the
 [Phase 10 closure report](../reports/phase-10/PHASE_10_CLOSURE_REPORT.md) and the
 [Phase 10 implementation report](../reports/phase-10/PHASE_10_IMPLEMENTATION_REPORT.md). Phase 11 —
-Quality, Performance & Release is **IMPLEMENTED — READY FOR PROJECT OWNER ACCEPTANCE**
-(2026-11-19); see the
-[Phase 11 final acceptance report](../reports/phase-11/PHASE_11_FINAL_ACCEPTANCE_REPORT.md).
-Implementation complete.
+Quality, Performance & Release is **CLOSED — PASS — PROJECT OWNER ACCEPTED**
+(2026-11-20); see the
+[Phase 11 closure report](../reports/phase-11/PHASE_11_CLOSURE_REPORT.md). All roadmap phases 00–11 are closed.
 
 ### MVP Increment to Phase Mapping
 
