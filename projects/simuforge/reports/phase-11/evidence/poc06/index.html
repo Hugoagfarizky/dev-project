@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>POC-06 Hybrid 2D/3D Feasibility</title>
+  <style>
+    body { margin: 0; background: #111; color: #eee; font-family: sans-serif; }
+    #wrap { position: relative; width: 800px; height: 600px; }
+    canvas { position: absolute; top: 0; left: 0; }
+    #hud { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.6); padding: 8px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <canvas id="gl" width="800" height="600"></canvas>
+    <canvas id="overlay" width="800" height="600"></canvas>
+    <div id="hud">measuring...</div>
+  </div>
+  <script>
+    const glCanvas = document.getElementById('gl');
+    const overlay = document.getElementById('overlay');
+    const gl = glCanvas.getContext('webgl2');
+    const ctx2d = overlay.getContext('2d');
+    let frames = 0, t0 = performance.now(), minFps = Infinity, maxFps = 0, samples = [];
+    function drawGL() {
+      gl.viewport(0, 0, 800, 600);
+      gl.clearColor(0.1, 0.12, 0.18, 1);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+    }
+    function draw2D() {
+      ctx2d.clearRect(0, 0, 800, 600);
+      ctx2d.fillStyle = 'rgba(255,255,255,0.8)';
+      for (let i = 0; i < 50; i++) {
+        ctx2d.fillRect((i * 37) % 800, (i * 53) % 600, 4, 4);
+      }
+      ctx2d.fillStyle = '#0f0';
+      ctx2d.font = '14px monospace';
+      ctx2d.fillText('2D overlay active', 10, 20);
+    }
+    function loop() {
+      drawGL();
+      draw2D();
+      frames++;
+      const now = performance.now();
+      if (now - t0 >= 1000) {
+        const fps = frames * 1000 / (now - t0);
+        samples.push(fps);
+        minFps = Math.min(minFps, fps);
+        maxFps = Math.max(maxFps, fps);
+        document.getElementById('hud').textContent = `fps ${fps.toFixed(1)} (min ${minFps.toFixed(1)}, max ${maxFps.toFixed(1)}, samples ${samples.length})`;
+        frames = 0;
+        t0 = now;
+      }
+      if (samples.length < 3) requestAnimationFrame(loop);
+      else window.__poc06Done = { samples, minFps, maxFps, avgFps: samples.reduce((a,b)=>a+b,0)/samples.length };
+    }
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

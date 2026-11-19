@@ -1,0 +1,138 @@
+{
+  "environment": {
+    "node": "v24.22.2",
+    "platform": "win32",
+    "arch": "x64",
+    "cpus": 16,
+    "totalMemoryMB": 16088,
+    "timestamp": "2026-11-19T13:33:27.393Z"
+  },
+  "measurements": [
+    {
+      "name": "physics.createRuntimeBodies (n=10)",
+      "iterations": 50,
+      "medianMs": 0.0043,
+      "p95Ms": 0.0196,
+      "meanMs": 0.0191,
+      "minMs": 0.0036,
+      "maxMs": 0.6655
+    },
+    {
+      "name": "physics.stepBodies (n=10)",
+      "iterations": 200,
+      "medianMs": 0.0142,
+      "p95Ms": 0.04,
+      "meanMs": 0.0185,
+      "minMs": 0.0038,
+      "maxMs": 0.231
+    },
+    {
+      "name": "physics.createRuntimeBodies (n=100)",
+      "iterations": 50,
+      "medianMs": 0.0116,
+      "p95Ms": 0.1802,
+      "meanMs": 0.0325,
+      "minMs": 0.0101,
+      "maxMs": 0.451
+    },
+    {
+      "name": "physics.stepBodies (n=100)",
+      "iterations": 200,
+      "medianMs": 0.0502,
+      "p95Ms": 0.1224,
+      "meanMs": 0.056,
+      "minMs": 0.0314,
+      "maxMs": 0.4437
+    },
+    {
+      "name": "physics.createRuntimeBodies (n=500)",
+      "iterations": 50,
+      "medianMs": 0.0703,
+      "p95Ms": 0.3403,
+      "meanMs": 0.1209,
+      "minMs": 0.0502,
+      "maxMs": 0.6328
+    },
+    {
+      "name": "physics.stepBodies (n=500)",
+      "iterations": 200,
+      "medianMs": 0.1784,
+      "p95Ms": 0.4212,
+      "meanMs": 0.221,
+      "minMs": 0.159,
+      "maxMs": 1.0279
+    },
+    {
+      "name": "project.validateProjectDocument (n=10)",
+      "iterations": 50,
+      "medianMs": 0.0005,
+      "p95Ms": 0.0017,
+      "meanMs": 0.0006,
+      "minMs": 0.0004,
+      "maxMs": 0.0024
+    },
+    {
+      "name": "project.validateProjectDocument (n=100)",
+      "iterations": 50,
+      "medianMs": 0.0005,
+      "p95Ms": 0.0005,
+      "meanMs": 0.0005,
+      "minMs": 0.0004,
+      "maxMs": 0.0007
+    },
+    {
+      "name": "project.validateProjectDocument (n=500)",
+      "iterations": 50,
+      "medianMs": 0.0005,
+      "p95Ms": 0.0005,
+      "meanMs": 0.0005,
+      "minMs": 0.0004,
+      "maxMs": 0.0008
+    },
+    {
+      "name": "graph.buildExecutionPlan (nodes=5)",
+      "iterations": 50,
+      "medianMs": 0.0062,
+      "p95Ms": 0.0083,
+      "meanMs": 0.0065,
+      "minMs": 0.0056,
+      "maxMs": 0.0168
+    },
+    {
+      "name": "graph.executeChain (nodes=5)",
+      "iterations": 50,
+      "medianMs": 0.0054,
+      "p95Ms": 0.0098,
+      "meanMs": 0.0064,
+      "minMs": 0.0051,
+      "maxMs": 0.025
+    },
+    {
+      "name": "graph.buildExecutionPlan (nodes=50)",
+      "iterations": 50,
+      "medianMs": 0.0619,
+      "p95Ms": 0.1687,
+      "meanMs": 0.0767,
+      "minMs": 0.0437,
+      "maxMs": 0.2904
+    },
+    {
+      "name": "graph.executeChain (nodes=50)",
+      "iterations": 50,
+      "medianMs": 0.0261,
+      "p95Ms": 0.0479,
+      "meanMs": 0.0374,
+      "minMs": 0.0208,
+      "maxMs": 0.3894
+    },
+    {
+      "name": "extensions.validateExtensionDocument (5 entries)",
+      "iterations": 100,
+      "medianMs": 0.0094,
+      "p95Ms": 0.0165,
+      "meanMs": 0.0109,
+      "minMs": 0.0089,
+      "maxMs": 0.0835
+    }
+  ]
+}
