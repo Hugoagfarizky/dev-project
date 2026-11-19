@@ -386,7 +386,7 @@ No further implementation until explicit authorization is granted.
 | Phase 07 - Python Runtime | CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-17) |
 | Phase 08 - Electrical & Electronics | CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-18) |
 | Phase 09 - Robotics & Automation | CLOSED - PASS - PROJECT OWNER ACCEPTED (2026-11-18) |
-| Phase 10 - Extensibility | PLANNING COMPLETE - PENDING PROJECT OWNER APPROVAL |
+| Phase 10 - Extensibility | IMPLEMENTED - VALIDATED - PENDING PROJECT OWNER ACCEPTANCE (2026-11-19) |
 
 - Phase 07 delivered the Python integration deferred at MVP-3; that deferral is now satisfied.
 - This closure increment was documentation-only: no application source, tests, dependencies, or browser evidence changed.
@@ -408,8 +408,17 @@ No further implementation until explicit authorization is granted.
 - P09-0 implementation requires separate explicit Project Owner authorization.
 
 ## AA. Phase 10 planning (2026-11-18)
-- Phase 10 - Extensibility status: **PLANNING COMPLETE - PENDING PROJECT OWNER APPROVAL**.
-- Planning documents: eports/phase-10/PHASE_10_PLANNING_REPORT.md, PHASE_10_DECISION_PACKAGE.md, PHASE_10_ARCHITECTURE_PROPOSAL.md, PHASE_10_MILESTONE_MATRIX.md, PHASE_10_VALIDATION_STRATEGY.md.
+- Phase 10 - Extensibility planning was approved 2026-11-18.
+- Planning documents: reports/phase-10/PHASE_10_PLANNING_REPORT.md, PHASE_10_DECISION_PACKAGE.md, PHASE_10_ARCHITECTURE_PROPOSAL.md, PHASE_10_MILESTONE_MATRIX.md, PHASE_10_VALIDATION_STRATEGY.md.
 - Scope: local-first extension system (custom components + custom simulation modules), Web Worker isolation, declarative permissions, project-local storage.
-- Decisions: D-P10-01..D-P10-07 (recommended, pending approval).
-- Implementation NOT authorized. Phase 10 is NOT STARTED.
+- Decisions: D-P10-01..D-P10-07 (approved).
+- Implementation was separately authorized and delivered; see section AB.
+
+## AB. Phase 10 implementation (2026-11-19)
+- Phase 10 - Extensibility status: **IMPLEMENTED - VALIDATED - PENDING PROJECT OWNER ACCEPTANCE (2026-11-19)**.
+- Implementation commit: `4184bf38fb00b28a65cf7877b065718f0eefd305`.
+- Report: reports/phase-10/PHASE_10_IMPLEMENTATION_REPORT.md.
+- Delivered: project-local extension document under schema v1, dynamic component registry with unknown-type degradation, one Web Worker per enabled module extension, host-enforced declarative permissions, lifecycle hooks (`onPlay`/`onTick`/`onStop`/`onReset`), timeout/crash handling, extension manager UI with diagnostics and edit lock, `setExtensionValue`/`readExtensionValue` graph nodes, and read-only Python access via `simulation.extensions` / `simulation.extension_value`.
+- Validation: `npm run check` PASS; `npm test` 362/362 PASS; `npm run build` PASS; Playwright (`--workers=1`) 39/39 PASS; Phase 10 browser E2E 2/2 PASS.
+- Known limitations: the worker is defense-in-depth, not a security sandbox; no hard memory/CPU cap beyond the hook timeout; graph integration uses two fixed node types; failed workers require disable/enable to retry.
+- Formal Phase 10 CLOSED status requires Project Owner acceptance. Phase 11 is NOT STARTED.
